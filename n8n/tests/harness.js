@@ -89,8 +89,8 @@ check("rules: empty table stops the run with a clear error", threw);
 
 // ---------- 2. Assemble drafts ----------
 const assembleMarket = { market_slides: [{ slide: offering.slide, sources: offering.sources }, { slide: topic.slide, sources: topic.sources }] };
-const nodesA = { "Template rules": tr, checkProfiler, "Brief Organizer": { output: briefOut } };
-const A = run("assemble_drafts.js", { nodes: nodesA, json: assembleMarket }).json;
+const nodesA = { "Template rules": tr, checkProfiler, "Brief Organizer": { output: briefOut }, "Assemble market": assembleMarket };
+const A = run("assemble_drafts.js", { nodes: nodesA, json: {} }).json;
 fs.writeFileSync(path.join(OUT, "assembled.json"), JSON.stringify(A, null, 1));
 const heads = A.items.filter(i => /_headline$/.test(i.variable)).map(i => i.variable);
 check("assemble: 5 findings kept of 5 candidates", heads.length === 5, heads);
@@ -105,7 +105,7 @@ check("assemble: footer fits its limit", A.values.sources_market_01.length <= 20
 check("assemble: fixed text and client name", A.values.cover_subtitle_01 === "A proposal for MetalCo" && A.values.section_02 === "Market Research", A.values.cover_subtitle_01);
 check("assemble: copy budget leaves room for the citation", A.items.find(i => i.variable === "finding_01_context").max_chars === 90 - " [1]".length, A.items.find(i => i.variable === "finding_01_context").max_chars);
 check("assemble: headlines carry no citation budget", A.items.find(i => i.variable === "finding_01_headline").max_chars === 80);
-const Aempty = run("assemble_drafts.js", { nodes: nodesA, json: { market_slides: [] } }).json;
+const Aempty = run("assemble_drafts.js", { nodes: { ...nodesA, "Assemble market": { market_slides: [] } }, json: {} }).json;
 check("assemble: no research -> no items, no footer", Aempty.items.length === 0 && !Aempty.values.sources_market_01);
 
 // A faithful copywriter: shortens wording, keeps every figure, name and place.
@@ -174,6 +174,45 @@ const Pc = run("build_render_payload.js", { nodes: { "Assemble drafts": A, "Temp
 fs.writeFileSync(path.join(OUT, "payload_clean.json"), JSON.stringify(Pc, null, 1));
 const Pe = run("build_render_payload.js", { nodes: { "Assemble drafts": Aempty, "Template rules": tr }, json: { final: {} } }).json;
 fs.writeFileSync(path.join(OUT, "payload_empty.json"), JSON.stringify(Pe, null, 1));
+
+// ---------- 5. Phase Architect v2: input, validation, Context slide, payload ----------
+const PA = path.join(ROOT, "phase_architect");
+const jl = f => JSON.parse(fs.readFileSync(path.join(PA, f), "utf8"));
+const briefB = jl("tests/scenario_B_brief.json");
+const cfg = { today: "2026-10-16", jargon_never: ["leverage", "deep dive", "MVP", "transformation", "best practice", "end-to-end"] };
+const nodesP = { "Brief Organizer": { output: briefB }, checkProfiler: { output: { problem_focus: "topic", topic: "claims operating model", market: "Non-life insurance, Portugal" } }, Config: cfg };
+const AI = run("architect_input.js", { nodes: nodesP, json: { market_findings: [{ actor: "ASF", summary: "New guidance", scope_risk: "high", dimension: "constraints", why_it_matters_to_scope: "x" }] } }).json;
+const ai = AI.architect_input;
+check("architect input: weeks available to the Board date (Mar 15, 2027, minus 2 to start)", ai.weeks_available === 19, ai.weeks_available);
+check("architect input: success criteria split into items", ai.success_criteria_list.length === 2, ai.success_criteria_list);
+check("architect input: method library embedded", Array.isArray(ai.method_library) && ai.method_library.length === 5);
+check("architect input: findings trimmed to actor/summary/scope_risk", Object.keys(ai.market_findings[0]).join() === "actor,summary,scope_risk");
+check("architect input: market output passed through", Array.isArray(AI.market_findings));
+const nodesV = { "Architect input": AI, Config: cfg };
+const VB = run("validate_plan.js", { nodes: nodesV, json: { output: jl("runs/r5_B.json") } }).json;
+check("validate: tested plan B passes", VB.valid && VB.retry_input === null, VB.violations);
+const VBad = run("validate_plan.js", { nodes: nodesV, json: { output: jl("runs/r2_B2.json") } }).json;
+check("validate: plan over the deadline fails and carries a retry input", !VBad.valid && VBad.violations.some(v => /weeks_available/.test(v)) && VBad.retry_input.previous_output && VBad.retry_input.violations.length === VBad.violations.length, VBad.violations);
+const VErr = run("validate_plan.js", { nodes: nodesV, json: { error: { message: "Payment required" } } }).json;
+check("validate: agent error -> invalid, named, no phases", !VErr.valid && /Payment required/.test(VErr.agent_error) && VErr.output.phases.length === 0, VErr.violations.slice(0, 2));
+const APpending = run("assemble_drafts.js", { nodes: nodesA, json: VB }).json;
+check("context slide: rows still pending in the table are not drafted", !APpending.items.some(i => /^(solution|outcome)_/.test(i.variable)) && APpending.workplan);
+// Same run with the table rows switched on (fills_from phase_architect:plan), as after the template gets the variables.
+const trOn = { ...tr, _rules: tr._rules.map(r => /^pending:phase_architect/.test(r.fills_from || "") ? { ...r, fills_from: "phase_architect:plan" } : r) };
+const AP = run("assemble_drafts.js", { nodes: { ...nodesA, "Template rules": trOn }, json: VB }).json;
+const sol = AP.items.filter(i => /^solution_/.test(i.variable));
+const out = AP.items.filter(i => /^outcome_/.test(i.variable));
+check("context slide: 5 solution lines and 4 outcome lines drafted", sol.length === 5 && out.length === 4, AP.items.filter(i => /^(solution|outcome)_/.test(i.variable)).map(i => i.variable + ": " + i.draft));
+check("context slide: phase names and weeks come from the plan", VB.output.phases.every(p => sol.some(i => i.draft.startsWith(p.name + " ("))), sol.map(i => i.draft));
+check("context slide: outcomes are plan deliverables", out.every(i => VB.output.deliverables.some(d => i.draft.startsWith(d.name))), out.map(i => i.draft));
+check("assemble: workplan carried with the client name", AP.workplan && AP.workplan.client === "MetalCo" && AP.workplan.phases.length === 2);
+const APx = run("assemble_drafts.js", { nodes: nodesA, json: VErr }).json;
+check("assemble: no plan -> no approach drafts, no workplan, a warning", !APx.items.some(i => /^(solution|outcome)_/.test(i.variable)) && APx.workplan === null && APx.warnings.some(w => /No phase plan/.test(w)));
+const cleanP = { output: { items: AP.items.map(it => ({ variable: it.variable, text: it.draft.length <= (it.max_chars || 1e9) ? it.draft : it.draft.slice(0, it.max_chars) })) } };
+const CP = run("check_copy.js", { nodes: { "Assemble drafts": AP }, json: cleanP }).json;
+const PP = run("build_render_payload.js", { nodes: { "Assemble drafts": AP, "Template rules": trOn }, json: CP }).json;
+fs.writeFileSync(path.join(OUT, "payload_workplan.json"), JSON.stringify(PP, null, 1));
+check("payload: workplan sent to the renderer", PP.workplan && PP.workplan.deliverables.length > 0);
 
 const failed = results.filter(r => !r.ok);
 results.forEach(r => console.log((r.ok ? "PASS " : "FAIL ") + r.name + (r.ok ? "" : "  -> " + JSON.stringify(r.detail))));

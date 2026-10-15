@@ -209,7 +209,7 @@ def _default_rule(name):
 
 
 # --------------------------------------------------------------- builder
-def build_deck(values, rules=None, template=TEMPLATE):
+def build_deck(values, rules=None, template=TEMPLATE, workplan=None):
     values = dict(values or {})
     warnings = []
     prs = _load_template(template)
@@ -324,13 +324,13 @@ def build_deck(values, rules=None, template=TEMPLATE):
 
     # 5. work plan slides (Phase Architect v2): timeline, deliverables, steering
     #    meetings, drawn in code and placed right after the market research slide
-    plan = values.get("workplan")
+    plan = workplan if workplan is not None else values.get("workplan")
     if isinstance(plan, dict) and plan.get("phases"):
-        import workplan
-        added = workplan.add_workplan_slides(
+        import workplan as wp
+        added = wp.add_workplan_slides(
             prs, plan,
-            section=str(values.get("workplan_section") or "Approach"),
-            client=str(values.get("workplan_client") or "[Client]"))
+            section=str(plan.get("section") or values.get("workplan_section") or "Approach"),
+            client=str(plan.get("client") or values.get("workplan_client") or "[Client]"))
         lst = prs.slides._sldIdLst
         ids = list(lst)
         new_ids = ids[len(ids) - len(added):]

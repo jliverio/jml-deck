@@ -1,4 +1,4 @@
-// Phase Architect v2 — n8n Code node. Generated from validate_plan_v2.js; edit that file, not this one.
+// Phase Architect v2 validator. Generated from phase_architect/validate_plan_v2.js; edit that file and regenerate.
 // Phase Architect v2 — deterministic validator and plan compiler.
 // Pure function: validatePlan(arch, ctx) -> { plan, violations, repairs }.
 //   arch: the agent's JSON (schema_v2.json)
@@ -293,20 +293,23 @@ function validatePlan(arch, ctx) {
 
 
 // ---------------- n8n wrapper ----------------
-// Code node "Validate plan" (Run Once for Each Item), directly after "Phase Architect" and again after
-// "Phase Architect (retry)". Input $json.output = agent JSON. Output: { output: plan, valid, violations, repairs, retry_input }.
-const inp = $('Architect input').item.json.architect_input;
-const cfg = $('Config').item.json;
-const r = validatePlan($json.output || {}, {
+// Validate plan / Validate plan (retry) (Code, run once for each item). Input: Phase Architect or its retry.
+// Output: { output: compiled plan, valid, violations, repairs, retry_input, agent_error }.
+const inp = $('Architect input').first().json.architect_input;
+const cfg = $('Config').first().json;
+const agentError = $json && $json.error ? String($json.error.message || $json.error) : '';
+const r = validatePlan(($json && $json.output) || {}, {
   brief: inp.brief,
   success_criteria_list: inp.success_criteria_list,
   jargon_never: cfg.jargon_never,
   weeks_available: inp.weeks_available
 });
+const violations = agentError ? ['agent_error: ' + agentError, ...r.violations] : r.violations;
 return { json: {
   output: r.plan,
-  valid: r.violations.length === 0,
-  violations: r.violations,
+  valid: violations.length === 0,
+  violations,
   repairs: r.repairs,
-  retry_input: r.violations.length ? { ...inp, previous_output: $json.output, violations: r.violations } : null
+  agent_error: agentError || null,
+  retry_input: violations.length ? { ...inp, previous_output: ($json && $json.output) || null, violations } : null
 } };

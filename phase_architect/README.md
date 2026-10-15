@@ -10,11 +10,11 @@ Turns the brief into the three work-plan slides a partner expects in a proposal:
 
 | Step | Who | What |
 |---|---|---|
-| Architect input | Code (`n8n_architect_input_node.js`) | Brief fields, numbered success criteria, profiler focus, market findings, **weeks available to the deadline** (date parsed from `timeline`, minus 2 weeks to contract), **method library** |
+| Architect input | Code (`n8n/code/architect_input.js`) | Brief fields, numbered success criteria, profiler focus, market findings, **weeks available to the deadline** (date parsed from `timeline`, minus 2 weeks to contract), **method library** |
 | Phase Architect | LLM (`prompt_v2.md`, `schema_v2.json`) | Governing question; nearest firm archetype, adapted; phases; 2–4 workstreams per phase, each answering one sub-question and traced to the problem, a success criterion or a gate; 1–2 deliverables per workstream with a due week; steering events with attendees, deliverables presented, one decision and an agenda |
-| Validate plan | Code (`n8n_validate_plan_node.js`, generated from `validate_plan_v2.js`) | Computes every week; repairs arithmetic; returns content **violations** (see below) |
+| Validate plan | Code (`n8n/code/validate_plan.js`, generated from `validate_plan_v2.js`) | Computes every week; repairs arithmetic; returns content **violations** (see below) |
 | Retry once | LLM, same prompt | Input + `previous_output` + `violations`; tested: it changes only what was flagged |
-| Render | `workplan.py` (called from `varfill.build_deck` when the payload has `workplan`) | Draws the slides in template v1.1 style; **titles are composed from the numbers**, so a title can never disagree with its chart |
+| Render | `workplan.py`, called from `varfill.build_deck(..., workplan=)`; `app.py` passes the payload's `workplan` | Draws the slides in template v1.1 style; **titles are composed from the numbers**, so a title can never disagree with its chart |
 
 **What the validator enforces** (each check maps to a failure seen in testing):
 
@@ -60,21 +60,19 @@ Scenario A is the offering case: MetalCo marketplace, assessment plus pilot, 20 
 - It does not separate an internal steering committee from a counterparty body such as a distributors council.
 - It has no calendar: no holidays, no start date.
 
-## Wiring into n8n (not applied: the live workflow is untouched)
+## Wiring into n8n
+
+Applied to the workflow draft (not published):
 
 ```
-Assemble market → Architect input (Code) → Phase Architect (agent, prompt_v2 + schema_v2, Sonnet, ~8k tokens)
-  → Validate plan (Code) → IF valid
-       ├─ yes → Assemble deck JSON
-       └─ no  → Phase Architect (retry; text = {{ JSON.stringify($json.retry_input) }}) → Validate plan (2) → Assemble deck JSON
+Assemble market → Architect input → Phase Architect → Validate plan → Plan valid?
+   ├─ true  → Assemble drafts → Copywriter → … → Build render payload (adds `workplan`) → Build deck
+   └─ false → Phase Architect retry → Validate plan (retry) → Assemble drafts
 ```
 
-- **Config.** Add `method_library` = the `archetypes` array from `method_library.json`.
-- **Assemble deck JSON.** Add `workplan: $('Validate plan').item.json.output`, `workplan_client: <client name>`, and an agenda topic "Approach".
-- **Renderer.**
-  - `app.py` still imports `templatefill`, not `varfill`. The workplan slides only appear through `varfill.build_deck`.
-  - Template slide 4 ("Context") is hard-coded sample text describing a 24-week Blueprint + Pilot project. It will contradict any other plan. Turn it into variables or drop it.
-  - There is no "Approach" section divider; the slides carry "Approach" in the on-page tracker.
+- **Errors.** Both agents continue on error. An API failure (for example n8n credits) becomes a named violation. If the retry also fails, the deck still builds without the work-plan slides, and the run log says why.
+- **Context slide.** `Assemble drafts` drafts `solution_*` and `outcome_*` from the plan once their table rows read `phase_architect:plan`. Today they read `pending:phase_architect` and template 1.1 has no variables on that slide, so they are skipped. That slide still prints the hard-coded 24-week sample text until the template is changed.
+- **Renderer.** The render service ignores `workplan` until this branch is merged and deployed.
 
 ## Files
 
@@ -83,8 +81,8 @@ prompt_v2.md                   system message
 schema_v2.json                 output parser schema
 method_library.json            firm archetypes (Config data, not prompt)
 validate_plan_v2.js            validator / plan compiler (source of truth)
-n8n_validate_plan_node.js      same, wrapped for an n8n Code node
-n8n_architect_input_node.js    builds the agent input
+../n8n/code/validate_plan.js   same, wrapped for the n8n Code nodes (generated)
+../n8n/code/architect_input.js builds the agent input; embeds method_library.json
 run_validate.js, make_run_prompt.py, show.py   test harness
 tests/                         scenario briefs and inputs, reference fixture
 runs/                          every test run, compiled plans, final_{A,B,C}.json
