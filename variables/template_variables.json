@@ -90,23 +90,33 @@
   "example": ""
  },
  {
+  "variable": "summary_title_01",
+  "draft_chars": null,
+  "max_chars": 90,
+  "limit_basis": "estimated",
+  "fills_from": "summary_writer:title",
+  "writing_rule": "One full sentence naming the client, no final period. With a plan: what the work as a whole will do, with the total duration and the number of phases. Without a plan: what the client wants.",
+  "if_empty": "firm_todo",
+  "example": "We will design and pilot MetalCo's marketplace in two phases over 16 weeks"
+ },
+ {
   "variable": "objective_01",
   "draft_chars": null,
   "max_chars": 127,
   "limit_basis": "estimated",
-  "fills_from": "pending:brief_organizer",
-  "writing_rule": "One client goal per line, in the client's own terms. Client or goal as the subject, present tense. Use the brief's own figures. No solution or firm language.",
+  "fills_from": "summary_writer:objectives",
+  "writing_rule": "One client goal per line, verb first, no subject, in the client's own words. Every condition the client stated appears. No solution or firm language.",
   "if_empty": "firm_todo",
-  "example": "MetalCo wants to launch a digital marketplace for construction materials."
+  "example": "Launch a digital marketplace for construction materials."
  },
  {
   "variable": "objective_02",
   "draft_chars": null,
   "max_chars": 127,
   "limit_basis": "estimated",
-  "fills_from": "pending:brief_organizer",
-  "writing_rule": "One client goal per line, in the client's own terms. Client or goal as the subject, present tense. Use the brief's own figures. No solution or firm language.",
-  "if_empty": "firm_todo",
+  "fills_from": "summary_writer:objectives",
+  "writing_rule": "One client goal per line, verb first, no subject, in the client's own words. Every condition the client stated appears. No solution or firm language.",
+  "if_empty": "hide_line",
   "example": "Reach smaller contractors directly without losing distributor margins."
  },
  {
@@ -114,9 +124,9 @@
   "draft_chars": null,
   "max_chars": 127,
   "limit_basis": "estimated",
-  "fills_from": "pending:brief_organizer",
-  "writing_rule": "One client goal per line, in the client's own terms. Client or goal as the subject, present tense. Use the brief's own figures. No solution or firm language.",
-  "if_empty": "firm_todo",
+  "fills_from": "summary_writer:objectives",
+  "writing_rule": "One client goal per line, verb first, no subject, in the client's own words. Every condition the client stated appears. No solution or firm language.",
+  "if_empty": "hide_line",
   "example": "Grow digital revenue to 10% of sales within two years."
  },
  {
@@ -124,9 +134,9 @@
   "draft_chars": null,
   "max_chars": 127,
   "limit_basis": "estimated",
-  "fills_from": "pending:brief_organizer",
-  "writing_rule": "One client goal per line, in the client's own terms. Client or goal as the subject, present tense. Use the brief's own figures. No solution or firm language.",
-  "if_empty": "firm_todo",
+  "fills_from": "summary_writer:objectives",
+  "writing_rule": "One client goal per line, verb first, no subject, in the client's own words. Every condition the client stated appears. No solution or firm language.",
+  "if_empty": "hide_line",
   "example": "Launch in Iberia first, then expand to other markets."
  },
  {
@@ -134,49 +144,49 @@
   "draft_chars": null,
   "max_chars": 95,
   "limit_basis": "estimated",
-  "fills_from": "pending:phase_architect",
-  "writing_rule": "The firm as subject, future tense (\"will\"). One phase or workstream per line. Phase names and lengths only as the Phase Architect sets them.",
+  "fills_from": "summary_writer:solution",
+  "writing_rule": "Line 1: total duration, number of phases and how they run. Then one line per phase, \"Name (N weeks): objective\". Last, what stays outside the phases, only when the brief or the plan says so. Future tense. Names and weeks exactly as the Phase Architect set them.",
   "if_empty": "firm_todo",
-  "example": "[Firm] will run a 16-week project in two phases: Blueprint and Pilot."
+  "example": "The work will run 16 weeks in two phases, one after the other."
  },
  {
   "variable": "solution_02",
   "draft_chars": null,
   "max_chars": 95,
   "limit_basis": "estimated",
-  "fills_from": "pending:phase_architect",
-  "writing_rule": "The firm as subject, future tense (\"will\"). One phase or workstream per line. Phase names and lengths only as the Phase Architect sets them.",
-  "if_empty": "firm_todo",
-  "example": "Blueprint (6 weeks): define the marketplace model, pricing and channel rules."
+  "fills_from": "summary_writer:solution",
+  "writing_rule": "Line 1: total duration, number of phases and how they run. Then one line per phase, \"Name (N weeks): objective\". Last, what stays outside the phases, only when the brief or the plan says so. Future tense. Names and weeks exactly as the Phase Architect set them.",
+  "if_empty": "hide_line",
+  "example": "Design (6 weeks): Define the marketplace model, pricing and channel rules."
  },
  {
   "variable": "solution_03",
   "draft_chars": null,
   "max_chars": 95,
   "limit_basis": "estimated",
-  "fills_from": "pending:phase_architect",
-  "writing_rule": "The firm as subject, future tense (\"will\"). One phase or workstream per line. Phase names and lengths only as the Phase Architect sets them.",
-  "if_empty": "firm_todo",
-  "example": "Pilot (10 weeks): launch with 50 contractors in Madrid and measure uptake."
+  "fills_from": "summary_writer:solution",
+  "writing_rule": "Line 1: total duration, number of phases and how they run. Then one line per phase, \"Name (N weeks): objective\". Last, what stays outside the phases, only when the brief or the plan says so. Future tense. Names and weeks exactly as the Phase Architect set them.",
+  "if_empty": "hide_line",
+  "example": "Pilot (10 weeks): Launch with a first group of contractors and measure uptake."
  },
  {
   "variable": "solution_04",
   "draft_chars": null,
   "max_chars": 95,
   "limit_basis": "estimated",
-  "fills_from": "pending:phase_architect",
-  "writing_rule": "The firm as subject, future tense (\"will\"). One phase or workstream per line. Phase names and lengths only as the Phase Architect sets them.",
-  "if_empty": "firm_todo",
-  "example": "Weekly steering with MetalCo's commercial and IT leads."
+  "fills_from": "summary_writer:solution",
+  "writing_rule": "Line 1: total duration, number of phases and how they run. Then one line per phase, \"Name (N weeks): objective\". Last, what stays outside the phases, only when the brief or the plan says so. Future tense. Names and weeks exactly as the Phase Architect set them.",
+  "if_empty": "hide_line",
+  "example": "The rollout after the pilot will not be part of these phases."
  },
  {
   "variable": "solution_05",
   "draft_chars": null,
   "max_chars": 95,
   "limit_basis": "estimated",
-  "fills_from": "pending:phase_architect",
-  "writing_rule": "The firm as subject, future tense (\"will\"). One phase or workstream per line. Phase names and lengths only as the Phase Architect sets them.",
-  "if_empty": "firm_todo",
+  "fills_from": "summary_writer:solution",
+  "writing_rule": "Line 1: total duration, number of phases and how they run. Then one line per phase, \"Name (N weeks): objective\". Last, what stays outside the phases, only when the brief or the plan says so. Future tense. Names and weeks exactly as the Phase Architect set them.",
+  "if_empty": "hide_line",
   "example": ""
  },
  {
@@ -184,40 +194,40 @@
   "draft_chars": null,
   "max_chars": 127,
   "limit_basis": "estimated",
-  "fills_from": "pending:phase_architect",
-  "writing_rule": "Lead with the deliverable as a noun phrase, then what it gives the client. Do not promise results the firm cannot control.",
+  "fills_from": "summary_writer:outcomes",
+  "writing_rule": "A deliverable the client receives, as a noun phrase in the plan's own words. No promised results and no adjective the deliverable does not carry.",
   "if_empty": "firm_todo",
-  "example": "Marketplace blueprint: operating model, pricing and channel-conflict rules."
+  "example": "Marketplace business model blueprint"
  },
  {
   "variable": "outcome_02",
   "draft_chars": null,
   "max_chars": 127,
   "limit_basis": "estimated",
-  "fills_from": "pending:phase_architect",
-  "writing_rule": "Lead with the deliverable as a noun phrase, then what it gives the client. Do not promise results the firm cannot control.",
-  "if_empty": "firm_todo",
-  "example": "Live pilot with uptake and margin data from real contractors."
+  "fills_from": "summary_writer:outcomes",
+  "writing_rule": "A deliverable the client receives, as a noun phrase in the plan's own words. No promised results and no adjective the deliverable does not carry.",
+  "if_empty": "hide_line",
+  "example": "Roadmap and feature backlog for a first version"
  },
  {
   "variable": "outcome_03",
   "draft_chars": null,
   "max_chars": 127,
   "limit_basis": "estimated",
-  "fills_from": "pending:phase_architect",
-  "writing_rule": "Lead with the deliverable as a noun phrase, then what it gives the client. Do not promise results the firm cannot control.",
-  "if_empty": "firm_todo",
-  "example": "Business case for Iberian roll-out, with risks and phasing."
+  "fills_from": "summary_writer:outcomes",
+  "writing_rule": "A deliverable the client receives, as a noun phrase in the plan's own words. No promised results and no adjective the deliverable does not carry.",
+  "if_empty": "hide_line",
+  "example": "Business case including implementation plan and roadmap"
  },
  {
   "variable": "outcome_04",
   "draft_chars": null,
   "max_chars": 127,
   "limit_basis": "estimated",
-  "fills_from": "pending:phase_architect",
-  "writing_rule": "Lead with the deliverable as a noun phrase, then what it gives the client. Do not promise results the firm cannot control.",
-  "if_empty": "firm_todo",
-  "example": "Go/no-go recommendation on scale-up."
+  "fills_from": "summary_writer:outcomes",
+  "writing_rule": "A deliverable the client receives, as a noun phrase in the plan's own words. No promised results and no adjective the deliverable does not carry.",
+  "if_empty": "hide_line",
+  "example": ""
  },
  {
   "variable": "finding_01_headline",

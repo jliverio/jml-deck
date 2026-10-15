@@ -2,7 +2,7 @@
 JML AI Analyst - deck render service.
 
 POST /render   header X-API-Key: <secret>
-  Variable payload (template 1.1):
+  Variable payload (template 1.2):
     {"values": {variable: text}, "rules": [table rows], "meta": {"filename": "..."}}
     -> 200 .pptx, header X-Render-Warnings (JSON list, may be empty)
     -> 422 {"error": ...} when the template, the table and the values disagree
@@ -33,7 +33,7 @@ PPTX = "application/vnd.openxmlformats-officedocument.presentationml.presentatio
 @app.get("/health")
 def health():
     return jsonify(ok=True, service="jml-deck", auth=bool(API_KEY),
-                   renderer="variables-1.1", legacy=LEGACY,
+                   renderer="variables-1.2", legacy=LEGACY,
                    template=os.path.exists(varfill.TEMPLATE))
 
 

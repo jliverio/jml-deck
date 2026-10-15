@@ -1,4 +1,4 @@
-"""Offline tests for varfill.py against template 1.1 and the seed table.
+"""Offline tests for varfill.py against template 1.2 and the seed table.
 
 Run:  python3 tests/test_varfill.py
 """
@@ -17,7 +17,7 @@ import varfill  # noqa: E402
 
 RULES = json.load(open(os.path.join(ROOT, "variables", "template_variables.json")))
 METALCO = json.load(open(os.path.join(HERE, "metalco.json")))
-VAR_RE = re.compile(r"(?<![A-Za-z0-9_])(cover|section|finding|sources|next_step|objective|solution|outcome)_[a-z0-9_]+")
+VAR_RE = re.compile(r"(?<![A-Za-z0-9_])(cover|section|finding|sources|next_step|summary|objective|solution|outcome)_[a-z0-9_]+")
 
 
 def walk(shapes):
@@ -72,7 +72,7 @@ check("empty result line hidden (finding 2 has 2 lines)",
 src = [t for t in tx if t[0] == 6 and t[2].startswith("Sources:")]
 check("sources footer filled", src and "[1] Hierros" in src[0][2], src)
 check("no cut warnings on realistic input", not [w for w in warns if " cut to " in w], warns)
-check("slide-4 rows reported as not in template", any("13 table rows" in w for w in warns), warns)
+check("every table row has a variable in the template", not any("table rows have no variable" in w for w in warns), warns)
 
 # 3. empty action removes the whole finding row (remove_row)
 v = dict(METALCO)
@@ -140,6 +140,35 @@ v["finding_01_context"] = "Spanish contractors moved a growing share of their st
 _, tx11 = texts(varfill.build_deck(v, RULES)[0])
 l11 = [t[2] for t in tx11 if t[0] == 6 and "Spanish contractors" in t[2]][0].split("\n")[0]
 check("cut keeps the citation", l11.endswith("\u2026 [1, 2]") and len(l11) <= 90, l11)
+
+# 12. slide 4 (summary), template 1.2
+SUM = json.load(open(os.path.join(HERE, "summary_doc06.json")))
+NOPLAN = json.load(open(os.path.join(HERE, "summary_noplan.json")))
+
+
+def slide4(values):
+    prs = Presentation(io.BytesIO(varfill.build_deck(values, RULES)[0]))
+    s4 = list(prs.slides)[3]
+    shapes = {sh.name: sh for sh in walk(s4.shapes) if getattr(sh, "has_text_frame", False)}
+    col = lambda name: [p.text for p in shapes[name].text_frame.paragraphs if p.text.strip()]
+    return (shapes["Title 1"].text_frame.text, col("Google Shape;881;p247"),
+            col("Google Shape;882;p247"), col("Google Shape;883;p247"))
+
+
+t, o, so, oc = slide4({**METALCO, **SUM})
+check("slide 4: sentence title printed", t == SUM["summary_title_01"], t)
+check("slide 4: four objectives", o == [SUM[f"objective_{k:02d}"] for k in range(1, 5)], o)
+n_sol = sum(1 for k in range(1, 6) if SUM[f"solution_{k:02d}"])
+check("slide 4: unused solution lines hidden", len(so) == n_sol, so)
+check("slide 4: outcomes printed", oc[0] == SUM["outcome_01"], oc)
+_, tx12 = texts(varfill.build_deck({**METALCO, **SUM}, RULES)[0])
+check("slide 4: no sample text left", not any(w in t2[2] for t2 in tx12 for w in ("proven methodology", "de-risked", "Consulting firm]")))
+t, o, so, oc = slide4({**METALCO, **NOPLAN})
+check("slide 4, no plan: one placeholder line in Solution", so == ["[Firm to complete] The proposed approach and phases."], so)
+check("slide 4, no plan: one placeholder line in Outcomes", oc == ["[Firm to complete] The expected results and deliverables."], oc)
+t, o, so, oc = slide4(METALCO)
+check("slide 4, nothing sent: one [Firm to complete] per column",
+      o == ["[Firm to complete]"] and so == ["[Firm to complete]"] and oc == ["[Firm to complete]"] and t == "[Firm to complete]", (t, o, so, oc))
 
 failed = [r for r in results if not r[1]]
 for name, ok, detail in results:
