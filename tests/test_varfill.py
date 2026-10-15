@@ -134,6 +134,13 @@ _, tx10 = texts(varfill.build_deck(METALCO, rules)[0])
 check("table if_empty overrides the default",
       any("Eurostat reported" in t[2] and "[Firm to complete]" in t[2] for t in tx10))
 
+# 11. a line ending in a citation keeps the citation when it has to be cut
+v = dict(METALCO)
+v["finding_01_context"] = "Spanish contractors moved a growing share of their steel purchasing to online channels during 2024 and 2025 across the whole of Iberia. [1, 2]"
+_, tx11 = texts(varfill.build_deck(v, RULES)[0])
+l11 = [t[2] for t in tx11 if t[0] == 6 and "Spanish contractors" in t[2]][0].split("\n")[0]
+check("cut keeps the citation", l11.endswith("\u2026 [1, 2]") and len(l11) <= 90, l11)
+
 failed = [r for r in results if not r[1]]
 for name, ok, detail in results:
     print(("PASS " if ok else "FAIL ") + name + ("" if ok else f"  -> {detail}"))

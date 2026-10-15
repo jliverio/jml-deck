@@ -88,10 +88,16 @@ def _load_template(path):
     return Presentation(io.BytesIO(raw))
 
 
+CITATION = re.compile(r"\s\[\d+(?:,\s*\d+)*\]$")
+
+
 def _shorten(s, n):
     s = " ".join(str(s).split())
     if not n or len(s) <= n:
         return s
+    m = CITATION.search(s)
+    if m and len(m.group()) < n - 10:  # keep the source citation; cut the sentence
+        return _shorten(s[: m.start()], n - len(m.group())) + m.group()
     if "; " in s:  # a list: keep whole entries only
         out = ""
         for part in s.split("; "):
