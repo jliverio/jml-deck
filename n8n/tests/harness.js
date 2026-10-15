@@ -197,6 +197,7 @@ const VErr = run("validate_plan.js", { nodes: nodesV, json: { error: { message: 
 check("validate: agent error -> invalid, named, no phases", !VErr.valid && /Payment required/.test(VErr.agent_error) && VErr.output.phases.length === 0, VErr.violations.slice(0, 2));
 const APpending = run("assemble_drafts.js", { nodes: nodesA, json: VB }).json;
 check("context slide: rows still pending in the table are not drafted", !APpending.items.some(i => /^(solution|outcome)_/.test(i.variable)) && APpending.workplan);
+check("context slide: pending rows named in the run log", APpending.warnings.some(w => /still marked pending:phase_architect/.test(w)), APpending.warnings);
 // Same run with the table rows switched on (fills_from phase_architect:plan), as after the template gets the variables.
 const trOn = { ...tr, _rules: tr._rules.map(r => /^pending:phase_architect/.test(r.fills_from || "") ? { ...r, fills_from: "phase_architect:plan" } : r) };
 const AP = run("assemble_drafts.js", { nodes: { ...nodesA, "Template rules": trOn }, json: VB }).json;
@@ -207,7 +208,7 @@ check("context slide: phase names and weeks come from the plan", VB.output.phase
 check("context slide: outcomes are plan deliverables", out.every(i => VB.output.deliverables.some(d => i.draft.startsWith(d.name))), out.map(i => i.draft));
 check("assemble: workplan carried with the client name", AP.workplan && AP.workplan.client === "MetalCo" && AP.workplan.phases.length === 2);
 const APx = run("assemble_drafts.js", { nodes: nodesA, json: VErr }).json;
-check("assemble: no plan -> no approach drafts, no workplan, a warning", !APx.items.some(i => /^(solution|outcome)_/.test(i.variable)) && APx.workplan === null && APx.warnings.some(w => /No phase plan/.test(w)));
+check("assemble: no plan -> no approach drafts, no workplan, a warning naming the agent error", !APx.items.some(i => /^(solution|outcome)_/.test(i.variable)) && APx.workplan === null && APx.warnings.some(w => /No phase plan.*Payment required/.test(w)) && !APx.warnings.some(w => /plan kept/.test(w)), APx.warnings);
 const cleanP = { output: { items: AP.items.map(it => ({ variable: it.variable, text: it.draft.length <= (it.max_chars || 1e9) ? it.draft : it.draft.slice(0, it.max_chars) })) } };
 const CP = run("check_copy.js", { nodes: { "Assemble drafts": AP }, json: cleanP }).json;
 const PP = run("build_render_payload.js", { nodes: { "Assemble drafts": AP, "Template rules": trOn }, json: CP }).json;

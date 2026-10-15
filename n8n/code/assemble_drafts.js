@@ -152,13 +152,18 @@ if (plan) {
     if (e.decision) usedDecision.add(e.decision);
     drafts[outSlots[i]] = { draft: `${d.name}${why}`, refs: [] };
   });
-  const filled = solSlots.length && outSlots.length;
-  if (!filled) warnings.push('The template_variables table has no solution/outcome rows for the Phase Architect.');
+  if (!solSlots.length || !outSlots.length) {
+    const pending = rules.filter(r => /^pending:phase_architect/.test(fills(r))).length;
+    warnings.push(pending
+      ? `Context slide approach rows are still marked pending:phase_architect in template_variables (${pending} rows); the plan reaches the work-plan slides only.`
+      : 'The template_variables table has no solution/outcome rows for the Phase Architect; the plan reaches the work-plan slides only.');
+  }
+  if ($json && Array.isArray($json.violations) && $json.violations.length) {
+    warnings.push(`Phase plan kept with ${$json.violations.length} unresolved check(s): ${$json.violations.slice(0, 5).join('; ')}`);
+  }
 } else {
-  warnings.push('No phase plan reached the deck: the Context slide approach columns and the work plan slides are left for the firm.');
-}
-if ($json && Array.isArray($json.violations) && $json.violations.length) {
-  warnings.push(`Phase plan kept with ${$json.violations.length} unresolved check(s): ${$json.violations.slice(0, 5).join('; ')}`);
+  const why = ($json && $json.agent_error) ? ` Phase Architect error: ${$json.agent_error}` : '';
+  warnings.push('No phase plan reached the deck: the work-plan slides are left out.' + why);
 }
 
 // 6. The Copywriter's work list.
