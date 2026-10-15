@@ -1,0 +1,337 @@
+{
+ "basis": {
+  "governing_question": "How can [Client] create a foothold in the digital space through a marketplace without major cannibalization or short-term loss?",
+  "archetype_id": "new_venture_build"
+ },
+ "phases": [
+  {
+   "name": "Design",
+   "order": 1,
+   "duration_weeks": {
+    "min": 6,
+    "max": 6
+   },
+   "duration_derived": false,
+   "objective_one_line": "Answer the key questions on the marketplace and agree a blueprint for the pilot",
+   "gate": {
+    "label": "Go/no-go on pilot",
+    "decision": "Do we launch the pilot on this blueprint?"
+   },
+   "depends_on_assumptions": [
+    "engagement_type",
+    "engagement_length",
+    "stakeholders",
+    "timeline",
+    "prior_attempts"
+   ]
+  },
+  {
+   "name": "Pilot",
+   "order": 2,
+   "duration_weeks": {
+    "min": 18,
+    "max": 18
+   },
+   "duration_derived": false,
+   "objective_one_line": "Build a first version and launch it with a small group of users, then test and iterate",
+   "gate": {
+    "label": "Go/no-go on beta",
+    "decision": "Do we launch the local beta phase on this business case?"
+   },
+   "depends_on_assumptions": [
+    "engagement_type",
+    "engagement_length",
+    "stakeholders",
+    "success_criteria",
+    "timeline",
+    "out_of_scope"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Scope & hypotheses",
+   "answers": "Which questions must the blueprint answer?",
+   "traces_to": [
+    "problem_statement"
+   ],
+   "start_offset": 0,
+   "duration": 1,
+   "follows": [],
+   "activities": [
+    "Set hypotheses on each blueprint component",
+    "Agree interview and data plan"
+   ],
+   "deliverables": [
+    {
+     "id": "D1",
+     "name": "Hypotheses on each blueprint component",
+     "kind": "design"
+    }
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Analyze",
+   "answers": "Which hypotheses hold for customers and the market?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_offset": 1,
+   "duration": 4,
+   "follows": [
+    "W1"
+   ],
+   "activities": [
+    "Interview target customers",
+    "Test hypotheses with a wireframe prototype"
+   ],
+   "deliverables": [
+    {
+     "id": "D2",
+     "name": "Wireframe prototype",
+     "kind": "build"
+    }
+   ]
+  },
+  {
+   "id": "W3",
+   "phase_order": 1,
+   "name": "Plan",
+   "answers": "What does the pilot need to start?",
+   "traces_to": [
+    "gate:1"
+   ],
+   "start_offset": 5,
+   "duration": 1,
+   "follows": [
+    "W2"
+   ],
+   "activities": [
+    "Write the blueprint",
+    "Plan the pilot phase in detail"
+   ],
+   "deliverables": [
+    {
+     "id": "D3",
+     "name": "Blueprint with tested hypotheses",
+     "kind": "decision_pack"
+    },
+    {
+     "id": "D4",
+     "name": "Detailed plan for the pilot phase",
+     "kind": "design"
+    }
+   ]
+  },
+  {
+   "id": "W4",
+   "phase_order": 2,
+   "name": "Enable",
+   "answers": "Who and what does the venture need inside the parent?",
+   "traces_to": [
+    "success_criteria:3",
+    "success_criteria:4"
+   ],
+   "start_offset": 0,
+   "duration": 15,
+   "follows": [],
+   "activities": [
+    "Agree KPIs with key stakeholders",
+    "Identify and onboard key internal hires"
+   ],
+   "deliverables": [
+    {
+     "id": "D5",
+     "name": "Strategic KPIs agreed with key stakeholders",
+     "kind": "enablement"
+    }
+   ]
+  },
+  {
+   "id": "W5",
+   "phase_order": 2,
+   "name": "Validate",
+   "answers": "Which customers do we launch with?",
+   "traces_to": [
+    "problem_statement"
+   ],
+   "start_offset": 0,
+   "duration": 3,
+   "follows": [],
+   "activities": [
+    "Identify the first customer target group",
+    "Validate demand with that group"
+   ],
+   "deliverables": [
+    {
+     "id": "D6",
+     "name": "First customer target group",
+     "kind": "analysis"
+    }
+   ]
+  },
+  {
+   "id": "W6",
+   "phase_order": 2,
+   "name": "Build",
+   "answers": "Does a first version work with real users?",
+   "traces_to": [
+    "success_criteria:1",
+    "success_criteria:2"
+   ],
+   "start_offset": 2,
+   "duration": 13,
+   "follows": [
+    "W5"
+   ],
+   "activities": [
+    "Build the first version",
+    "Launch to a small group of users and iterate"
+   ],
+   "deliverables": [
+    {
+     "id": "D7",
+     "name": "First version launched to a small user group",
+     "kind": "build"
+    }
+   ]
+  },
+  {
+   "id": "W7",
+   "phase_order": 2,
+   "name": "Plan scale-up",
+   "answers": "What would launching the local beta take?",
+   "traces_to": [
+    "gate:2"
+   ],
+   "start_offset": 12,
+   "duration": 6,
+   "follows": [
+    "W6"
+   ],
+   "activities": [
+    "Build the business case",
+    "Draft the implementation plan and roadmap"
+   ],
+   "deliverables": [
+    {
+     "id": "D8",
+     "name": "Business case with implementation plan and roadmap",
+     "kind": "decision_pack"
+    }
+   ]
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 2,
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week_in_phase": 1,
+    "label": "Kick-off",
+    "purpose": "Align on scope, plan and team",
+    "presents": [],
+    "decision": null,
+    "agenda": [
+     "Align on the governing question and scope",
+     "Confirm the plan and interview list"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "checkin",
+    "phase_order": 1,
+    "week_in_phase": 4,
+    "label": "Mid-phase check-in",
+    "purpose": "Review early evidence",
+    "presents": [
+     "D1"
+    ],
+    "decision": "Are the hypotheses the right ones to test?",
+    "agenda": [
+     "Review the hypotheses",
+     "Discuss early customer evidence"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "gate",
+    "phase_order": 1,
+    "week_in_phase": 6,
+    "label": "Go/no-go on pilot",
+    "purpose": "Decide whether to start the pilot",
+    "presents": [
+     "D1",
+     "D2",
+     "D3",
+     "D4"
+    ],
+    "decision": "Do we launch the pilot on this blueprint?",
+    "agenda": [
+     "Present the blueprint and prototype",
+     "Decide on the pilot"
+    ]
+   },
+   {
+    "id": "G4",
+    "type": "workshop",
+    "phase_order": 2,
+    "week_in_phase": 5,
+    "label": "Workshop 1: first findings",
+    "purpose": "First findings and broad direction",
+    "presents": [
+     "D6"
+    ],
+    "decision": "Are we aligned on the solution hypotheses and direction?",
+    "agenda": [
+     "Present first findings from both phases",
+     "Align on where the big questions remain"
+    ]
+   },
+   {
+    "id": "G5",
+    "type": "workshop",
+    "phase_order": 2,
+    "week_in_phase": 13,
+    "label": "Workshop 2: key questions",
+    "purpose": "Detailed findings and key questions",
+    "presents": [
+     "D6"
+    ],
+    "decision": "Do we confirm the solution, positioning and business model view?",
+    "agenda": [
+     "Present detailed solution components",
+     "Discuss the enablement plan and incentives"
+    ]
+   },
+   {
+    "id": "G6",
+    "type": "gate",
+    "phase_order": 2,
+    "week_in_phase": 18,
+    "label": "Go/no-go on beta",
+    "purpose": "Decide on the local beta phase",
+    "presents": [
+     "D5",
+     "D7",
+     "D8"
+    ],
+    "decision": "Do we launch the local beta phase on this business case?",
+    "agenda": [
+     "Present the implementation plan and investment case",
+     "Decide on next steps"
+    ]
+   }
+  ]
+ },
+ "architect_notes": [
+  "Engagement type and the 24-week length are the firm's own proposal; every phase and week count rests on them."
+ ]
+}

@@ -218,12 +218,16 @@ def build_deck(values, rules=None, template=TEMPLATE):
 
     # 0. normalise split variables, collect what the template holds
     present = set()
+    market_idx = None
     for si, sl in enumerate(slides, 1):
         for sh in _text_shapes(sl):
             for p in sh.text_frame.paragraphs:
                 _join_split_tokens(p, f"slide {si} / {sh.name}")
                 for r in p.runs:
-                    present.update(TOKEN.findall(r.text))
+                    found = TOKEN.findall(r.text)
+                    present.update(found)
+                    if market_idx is None and "finding_01_headline" in found:
+                        market_idx = si - 1
 
     # 1. template and table must agree
     if table is not None:
@@ -317,6 +321,24 @@ def build_deck(values, rules=None, template=TEMPLATE):
                     if any(m.group() in present for m in TOKEN.finditer(r.text)):
                         r.text = TOKEN.sub(lambda m: FIRM_TODO if m.group() in present else m.group(), r.text)
                         warnings.append("a variable survived filling and was replaced")
+
+    # 5. work plan slides (Phase Architect v2): timeline, deliverables, steering
+    #    meetings, drawn in code and placed right after the market research slide
+    plan = values.get("workplan")
+    if isinstance(plan, dict) and plan.get("phases"):
+        import workplan
+        added = workplan.add_workplan_slides(
+            prs, plan,
+            section=str(values.get("workplan_section") or "Approach"),
+            client=str(values.get("workplan_client") or "[Client]"))
+        lst = prs.slides._sldIdLst
+        ids = list(lst)
+        new_ids = ids[len(ids) - len(added):]
+        anchor = market_idx if market_idx is not None else max(len(ids) - len(added) - 3, 0)
+        for el in new_ids:
+            lst.remove(el)
+        for k, el in enumerate(new_ids):
+            lst.insert(anchor + 1 + k, el)
 
     out = io.BytesIO()
     prs.save(out)
