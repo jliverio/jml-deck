@@ -1,0 +1,143 @@
+"""
+Seed for the n8n data table `template_variables` (template 1.1).
+
+The live copy is the n8n data table; this file is the version-controlled
+starting point and the input for the renderer's offline tests.
+
+Columns
+  variable      exact name as written in the template
+  draft_chars   length the drafting agent may write (blank: no drafting stage)
+  max_chars     longest text that fits the box (what the renderer enforces)
+  limit_basis   measured (test render) or estimated (box geometry)
+  fills_from    who supplies the value:
+                  fixed:<text>          literal text; {client_name} is filled in
+                  researcher:<field>    market researchers: summary, context,
+                                        action, result, sources
+                  pending:<agent>       not built yet; treated as empty
+                  none                  slot not used
+  writing_rule  instruction given to the agent that writes or shortens it
+  if_empty      what the renderer does when the value is empty:
+                  remove_row  delete the grouped row (agenda topic, finding,
+                              next step)
+                  hide_line   delete just this line
+                  clear       blank the whole line, label included
+                  firm_todo   print [Firm to complete]
+  example       sample text in the expected style (fictional MetalCo brief)
+"""
+import csv
+import json
+import os
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+rows = []
+
+
+def add(variable, max_chars, basis, fills_from, rule, if_empty, example="", draft=None):
+    rows.append({
+        "variable": variable,
+        "draft_chars": draft,
+        "max_chars": max_chars,
+        "limit_basis": basis,
+        "fills_from": fills_from,
+        "writing_rule": rule,
+        "if_empty": if_empty,
+        "example": example,
+    })
+
+
+# Slide 1
+add("cover_title_01", 21, "measured", "fixed:Consulting Proposal",
+    "Title Case, at most 4 words. Generic until a topic-specific rule is agreed.",
+    "firm_todo", "Consulting Proposal")
+add("cover_subtitle_01", 100, "measured", "fixed:A proposal for {client_name}",
+    "\"A proposal for [client short name]\". Use the name the client uses for itself, "
+    "without legal suffixes (SA, GmbH, Ltd).",
+    "firm_todo", "A proposal for MetalCo")
+
+# Sections (agenda, dividers, slide headers)
+sections = {1: "Context", 2: "Market Research", 3: "Next Steps"}
+for n in range(1, 8):
+    add(f"section_{n:02d}", 20, "measured",
+        f"fixed:{sections[n]}" if n in sections else "none",
+        "Title Case noun phrase, 1 to 3 words. Same text on the agenda, the divider and the "
+        "slide header. No numbers (the template prints them).",
+        "remove_row", sections.get(n, ""))
+
+# Slide 4 (not variables in the template yet)
+obj = ["MetalCo wants to launch a digital marketplace for construction materials.",
+       "Reach smaller contractors directly without losing distributor margins.",
+       "Grow digital revenue to 10% of sales within two years.",
+       "Launch in Iberia first, then expand to other markets."]
+for n in range(1, 5):
+    add(f"objective_{n:02d}", 127, "estimated", "pending:brief_organizer",
+        "One client goal per line, in the client's own terms. Client or goal as the subject, "
+        "present tense. Use the brief's own figures. No solution or firm language.",
+        "firm_todo", obj[n - 1])
+sol = ["[Firm] will run a 16-week project in two phases: Blueprint and Pilot.",
+       "Blueprint (6 weeks): define the marketplace model, pricing and channel rules.",
+       "Pilot (10 weeks): launch with 50 contractors in Madrid and measure uptake.",
+       "Weekly steering with MetalCo's commercial and IT leads.", ""]
+for n in range(1, 6):
+    add(f"solution_{n:02d}", 95, "estimated", "pending:phase_architect",
+        "The firm as subject, future tense (\"will\"). One phase or workstream per line. Phase "
+        "names and lengths only as the Phase Architect sets them.",
+        "firm_todo", sol[n - 1])
+out = ["Marketplace blueprint: operating model, pricing and channel-conflict rules.",
+       "Live pilot with uptake and margin data from real contractors.",
+       "Business case for Iberian roll-out, with risks and phasing.",
+       "Go/no-go recommendation on scale-up."]
+for n in range(1, 5):
+    add(f"outcome_{n:02d}", 127, "estimated", "pending:phase_architect",
+        "Lead with the deliverable as a noun phrase, then what it gives the client. Do not "
+        "promise results the firm cannot control.",
+        "firm_todo", out[n - 1])
+
+# Slide 6: market findings (CAR)
+ex = {
+    "headline": "A competitor already sells in MetalCo's target channel.",
+    "context": "Spanish contractors moved more of their purchasing online in 2024.",
+    "action_taken": "Hierros García launched an online steel marketplace in Spain in March 2025.",
+    "result_achieved": "Hierros García reported 1,200 registered contractors by June 2025.",
+}
+spec = [
+    ("headline", 80, "researcher:summary", "remove_row",
+     "Why the finding matters to the client's problem, naming the part of the problem it "
+     "touches. Describe the link, not a response. No \"should\" or \"must\", no advice."),
+    ("context", 90, "researcher:context", "hide_line",
+     "The situation that led to the action. Name the country or region if the source does. "
+     "Past tense for what happened. No judgment adjectives."),
+    ("action_taken", 90, "researcher:action", "remove_row",
+     "Start with the actor's name (the slide has no separate actor box). What they did or "
+     "announced, past tense. No judgment adjectives."),
+    ("result_achieved", 90, "researcher:result", "hide_line",
+     "What came of it, only as a source reports it. \"[Publisher] projects\" for a forecast. "
+     "When no source reports a result, write \"Not yet reported\"; the line is then hidden on the slide."),
+]
+for n in range(1, 6):
+    for key, mx, fills, empty, rule in spec:
+        add(f"finding_{n:02d}_{key}", mx, "measured", fills, rule, empty,
+            ex[key] if n == 1 else "", draft=mx * 2)
+add("sources_market_01", 204, "measured", "researcher:sources",
+    "The template prints \"Sources:\"; this holds only the list, built by code: \"[1] "
+    "Publisher, Title, Year; [2] ...\" in order of first citation, one list across both "
+    "researchers. Titles are dropped before any source is. URLs never appear on the slide.",
+    "clear", "[1] Hierros García, press release, 2025; [2] Eurostat, B2B e-commerce, 2024")
+
+# Slide 8
+steps = ["Confirm engagement scope, length and the stakeholders on both sides.",
+         "Develop the detailed phase plan and deliverables.",
+         "Agree commercial terms and the project team before kickoff."]
+for n in range(1, 7):
+    add(f"next_step_{n:02d}", 115, "measured",
+        f"fixed:{steps[n - 1]}" if n <= 3 else "none",
+        "Verb first, one action per step. Add who and when if known.",
+        "remove_row", steps[n - 1] if n <= 3 else "")
+
+if __name__ == "__main__":
+    json.dump(rows, open(os.path.join(HERE, "template_variables.json"), "w"),
+              ensure_ascii=False, indent=1)
+    with open(os.path.join(HERE, "template_variables.csv"), "w", newline="", encoding="utf-8") as fh:
+        w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
+        w.writeheader()
+        w.writerows(rows)
+    print(len(rows), "rows written")

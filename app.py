@@ -1,35 +1,40 @@
 """
-JML AI Analyst — deck render service.
+JML AI Analyst - deck render service.
 
-POST /render   body = deck JSON (see CONTRACT.md) ; header X-API-Key: <secret>
-               -> 200 with the .pptx as binary (application/vnd...presentation)
-GET  /health   -> 200 {"ok": true}
-
-Auth: if env JML_API_KEY is set, every /render must send a matching X-API-Key.
-Run locally:  JML_API_KEY=changeme python app.py   (listens on $PORT or 8080)
+POST /render   header X-API-Key: <secret>
+  Variable payload (template 1.1):
+    {"values": {variable: text}, "rules": [table rows], "meta": {"filename": "..."}}
+    -> 200 .pptx, header X-Render-Warnings (JSON list, may be empty)
+    -> 422 {"error": ...} when the template, the table and the values disagree
+  Legacy payload ({"cover": ..., "context": ...}) -> previous renderer.
+GET  /health   -> 200 {"ok": true, ...}
 """
-import os
 import json
-from flask import Flask, request, jsonify, Response
+import os
 
-# Prefer the template-based renderer; fall back to the generic one only if the
-# bundled template didn't ship, so the loop never hard-fails on a bad deploy.
-_HERE = os.path.dirname(os.path.abspath(__file__))
-if os.path.exists(os.path.join(_HERE, "template.pptx")):
-    from templatefill import build_deck
-    RENDERER = "template"
+from flask import Flask, Response, jsonify, request
+
+import varfill
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+if os.path.exists(os.path.join(HERE, "template.pptx")):
+    from templatefill import build_deck as legacy_build
+    LEGACY = "template"
 else:
-    from deckgen import build_deck
-    RENDERER = "generic"
+    from deckgen import build_deck as legacy_build
+    LEGACY = "generic"
 
 app = Flask(__name__)
 API_KEY = os.environ.get("JML_API_KEY", "")
-MAX_BYTES = 1_000_000  # reject absurd payloads
+MAX_BYTES = 1_000_000
+PPTX = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
 
 
 @app.get("/health")
 def health():
-    return jsonify(ok=True, service="jml-deck", auth=bool(API_KEY), renderer=RENDERER)
+    return jsonify(ok=True, service="jml-deck", auth=bool(API_KEY),
+                   renderer="variables-1.1", legacy=LEGACY,
+                   template=os.path.exists(varfill.TEMPLATE))
 
 
 @app.post("/render")
@@ -43,18 +48,25 @@ def render():
         data = json.loads(raw) if raw else {}
     except Exception as e:
         return jsonify(error=f"invalid JSON: {e}"), 400
+
+    fname = ((data.get("meta") or {}).get("filename")) or "proposal_draft.pptx"
+    warnings = []
     try:
-        pptx = build_deck(data)
+        if "values" in data:
+            pptx, warnings = varfill.build_deck(data.get("values") or {}, data.get("rules"))
+        else:
+            pptx = legacy_build(data)
+    except (varfill.TemplateCapacityError, varfill.TemplateRulesError,
+            varfill.TemplateFormatError) as e:
+        return jsonify(error=str(e), kind=type(e).__name__), 422
     except Exception as e:
         return jsonify(error=f"render failed: {e}"), 500
-    fname = (data.get("meta", {}) or {}).get("filename", "proposal_draft.pptx")
-    return Response(
-        pptx,
-        mimetype="application/vnd.openxmlformats-officedocument.presentationml.presentation",
-        headers={"Content-Disposition": f'attachment; filename="{fname}"'},
-    )
+
+    return Response(pptx, mimetype=PPTX, headers={
+        "Content-Disposition": f'attachment; filename="{fname}"',
+        "X-Render-Warnings": json.dumps(warnings[:20]),
+    })
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", "8080"))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", "8080")))
