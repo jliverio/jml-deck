@@ -141,6 +141,43 @@ _, tx11 = texts(varfill.build_deck(v, RULES)[0])
 l11 = [t[2] for t in tx11 if t[0] == 6 and "Spanish contractors" in t[2]][0].split("\n")[0]
 check("cut keeps the citation", l11.endswith("\u2026 [1, 2]") and len(l11) <= 90, l11)
 
+# 12. template 1.2: Context variables, Approach section, work-plan slides drawn in place
+PLAN = json.load(open(os.path.join(ROOT, "phase_architect", "runs", "final_B.json")))["plan"]
+PLAN["client"] = "Atl\u00e2ntico Seguros"
+# The live table (15 Oct 2026) hides empty Context lines after the first; the seed file predates that.
+RULES12 = [dict(r, if_empty="hide_line") if re.fullmatch(r"(objective|solution|outcome)_0[2-9]", r["variable"]) else r
+           for r in RULES] + [{"variable": "summary_title_01", "max_chars": 90, "if_empty": "firm_todo"}]
+v = dict(METALCO, section_04="Approach", summary_title_01="We will diagnose the claims delays in 12 to 16 weeks",
+         objective_01="Understand why claims take too long.", solution_01="The work will run 12 to 16 weeks.",
+         outcome_01="Prioritized causes of settlement delay")
+b12, w12 = varfill.build_deck(v, RULES12, workplan=PLAN, version="1.2")
+prs12, tx12 = texts(b12)
+check("1.2: 13 slides", len(prs12.slides) == 13, len(prs12.slides))
+check("1.2: no variable survives", not any(VAR_RE.search(t[2]) for t in tx12), [t for t in tx12 if VAR_RE.search(t[2])][:3])
+agenda = [t[2] for t in tx12 if t[0] == 2]
+check("1.2: agenda reads Context, Market Research, Approach, Next Steps",
+      [a for a in agenda if a in ("Context", "Market Research", "Approach", "Next Steps")] == ["Context", "Market Research", "Approach", "Next Steps"], agenda)
+check("1.2: Context slide title and columns filled",
+      any(t[0] == 4 and t[2].startswith("We will diagnose") for t in tx12) and any(t[0] == 4 and "Prioritized causes" in t[2] for t in tx12))
+check("1.2: empty Context lines hidden, not marked", not any(t[0] == 4 and "[Firm to complete]" in t[2] for t in tx12),
+      [t[2] for t in tx12 if t[0] == 4])
+check("1.2: Approach divider is 3, Next Steps divider is 4",
+      any(t[0] == 7 and t[2] == "Approach" for t in tx12) and any(t[0] == 7 and t[2] == "3" for t in tx12)
+      and any(t[0] == 11 and t[2] == "4" for t in tx12), [t[2] for t in tx12 if t[0] in (7, 11)])
+check("1.2: work-plan slides drawn in place with titles from the plan",
+      any(t[0] == 8 and t[2].startswith("The work runs") for t in tx12) and any(t[0] == 9 and "deliverables" in t[2] for t in tx12)
+      and any(t[0] == 10 and "steering meetings" in t[2] for t in tx12))
+check("1.2: work-plan slides carry the Approach tracker", sum(1 for t in tx12 if t[0] in (8, 9, 10) and t[2] == "Approach") == 3)
+_, tx12n = texts(varfill.build_deck(v, RULES12, version="1.2")[0])
+check("1.2 without a plan: slides kept and marked [Firm to complete]",
+      sum(1 for t in tx12n if t[0] in (8, 9, 10) and t[2].startswith("[Firm to complete]")) == 3)
+try:
+    varfill.build_deck(v, RULES12, version="9.9"); bad = False
+except varfill.TemplateRulesError:
+    bad = True
+check("unknown template version is refused", bad)
+check("1.1 stays the default", len(texts(varfill.build_deck(METALCO, RULES)[0])[0].slides) == 9)
+
 failed = [r for r in results if not r[1]]
 for name, ok, detail in results:
     print(("PASS " if ok else "FAIL ") + name + ("" if ok else f"  -> {detail}"))

@@ -106,9 +106,31 @@ def _line(slide, x1, y1, x2, y2, color=BLACK, width=0.75, dash=False):
     return c
 
 
-def _new_slide(prs, title, subtitle, section):
-    layout = prs.slide_layouts[0]  # "Default": title, subtitle, on-page tracker
+def _new_slide(prs, title, subtitle, section, slide=None, after=None):
+    """Use the template's marked slide when given; otherwise add a slide on the
+    "Default" layout (after `after` when given). The tracker (idx 17) is only
+    written on new slides: on template slides the renderer has filled it."""
+    if slide is not None:
+        s = slide
+        for ph in s.placeholders:
+            idx = ph.placeholder_format.idx
+            if idx == 0:
+                ph.text_frame.text = title
+            elif idx == 1:
+                ph.text_frame.text = subtitle
+        return s
+    layout = after.slide_layout if after is not None else prs.slide_layouts[0]
     s = prs.slides.add_slide(layout)
+    if after is not None:
+        lst = prs.slides._sldIdLst
+        ids = list(lst)
+        pos = [i for i, sl in enumerate(prs.slides) if sl.slide_id == after.slide_id][0]
+        el = ids[-1]
+        lst.remove(el)
+        lst.insert(pos + 1, el)
+        for ph in after.placeholders:
+            if ph.placeholder_format.idx == 17:
+                section = ph.text_frame.text or section
     for ph in s.placeholders:
         idx = ph.placeholder_format.idx
         if idx == 0:
@@ -152,10 +174,10 @@ def titles(plan):
 
 
 # ------------------------------------------------------------------ slide 1: timeline
-def timeline_slide(prs, plan, section, client):
+def timeline_slide(prs, plan, section, client, slide=None):
     T = titles(plan)
     ranged = any(p["duration_weeks"]["min"] != p["duration_weeks"]["max"] for p in plan["phases"])
-    s = _new_slide(prs, T["timeline"], "Plan by workstream and week" + (" (drawn on the longer estimate)" if ranged else ""), section)
+    s = _new_slide(prs, T["timeline"], "Plan by workstream and week" + (" (drawn on the longer estimate)" if ranged else ""), section, slide=slide)
     total = plan["total_duration_weeks"]["max"]
     phases = plan["phases"]
     wss = plan["workstreams"]
@@ -280,9 +302,9 @@ def timeline_slide(prs, plan, section, client):
 
 
 # ------------------------------------------------------------------ slide 2: deliverables
-def deliverables_slide(prs, plan, section, client):
+def deliverables_slide(prs, plan, section, client, slide=None):
     T = titles(plan)
-    s = _new_slide(prs, T["deliverables"], "Deliverables by workstream", section)
+    s = _new_slide(prs, T["deliverables"], "Deliverables by workstream", section, slide=slide)
     phases = {p["order"]: p for p in plan["phases"]}
     dels = {d["id"]: d for d in plan["deliverables"]}
     order = sorted(plan["workstreams"], key=lambda w: (w["phase_order"], w["start_week"], w["id"]))
@@ -319,7 +341,7 @@ def deliverables_slide(prs, plan, section, client):
 
 
 # ------------------------------------------------------------------ slide 3: steering meetings
-def governance_slides(prs, plan, section, client, per_slide=4):
+def governance_slides(prs, plan, section, client, per_slide=4, slide=None):
     T = titles(plan)
     dels = {d["id"]: d for d in plan["deliverables"]}
     evs = [e for e in plan["governance"]["events"] if e["type"] != "kickoff"]
@@ -343,7 +365,11 @@ def governance_slides(prs, plan, section, client, per_slide=4):
         ph_names = sorted({phase_by[e["phase_order"]]["name"] for e in chunk}, key=lambda n: [p["name"] for p in plan["phases"]].index(n))
         sub = "Steering meetings – " + " and ".join(ph_names) + (" phase" if len(ph_names) == 1 else " phases")
         title = T["governance"] if ci == 0 else T["governance"] + " (continued)"
-        s = _new_slide(prs, title, sub, section)
+        if slide is not None:
+            s = _new_slide(prs, title, sub, section, slide=slide if ci == 0 else None,
+                           after=None if ci == 0 else slides[-1])
+        else:
+            s = _new_slide(prs, title, sub, section)
         n = max(len(chunk), 3)
         gap = Inches(0.35)
         cw = (W - gap * (n - 1)) / n
@@ -386,6 +412,38 @@ def governance_slides(prs, plan, section, client, per_slide=4):
 def add_workplan_slides(prs, plan, section="Approach", client="[Client]"):
     out = [timeline_slide(prs, plan, section, client), deliverables_slide(prs, plan, section, client)]
     out += governance_slides(prs, plan, section, client)
+    return out
+
+
+MARKERS = ("timeline", "deliverables", "steering")
+
+
+def marked_slides(prs):
+    """{kind: slide} for template slides whose shape is named workplan:<kind>."""
+    out = {}
+    for sl in prs.slides:
+        for sh in sl.shapes:
+            if sh.name.startswith("workplan:") and sh.name[9:] in MARKERS:
+                out[sh.name[9:]] = sl
+    return out
+
+
+def fill_template_slides(prs, plan, marked, client="[Client]"):
+    """Draw the plan onto the template's work-plan slides. Without a plan the
+    slides stay and say what the firm has to complete."""
+    if not (isinstance(plan, dict) and plan.get("phases")):
+        todo = {"timeline": "Work plan: timeline by workstream", "deliverables": "Deliverables by workstream",
+                "steering": "Steering meetings"}
+        for kind, sl in marked.items():
+            _new_slide(prs, "[Firm to complete] " + todo[kind], "", "", slide=sl)
+        return list(marked.values())
+    out = []
+    if "timeline" in marked:
+        out.append(timeline_slide(prs, plan, "", client, slide=marked["timeline"]))
+    if "deliverables" in marked:
+        out.append(deliverables_slide(prs, plan, "", client, slide=marked["deliverables"]))
+    if "steering" in marked:
+        out += governance_slides(prs, plan, "", client, slide=marked["steering"])
     return out
 
 

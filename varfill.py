@@ -37,6 +37,12 @@ from pptx.enum.shapes import MSO_SHAPE_TYPE
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE = os.path.join(HERE, "template_v1_1.potx")
+# Template chosen by the payload's "template" field; 1.1 stays the default so
+# callers that send no version (the published workflow) are unchanged.
+TEMPLATES = {
+    "1.1": TEMPLATE,
+    "1.2": os.path.join(HERE, "template_v1_2.potx"),  # Context variables + Approach section
+}
 FIRM_TODO = "[Firm to complete]"
 TOKEN = re.compile(r"(?<![A-Za-z0-9_])[a-z0-9]+(?:_[a-z0-9]+)+(?![A-Za-z0-9_])")
 POLICIES = {"remove_row", "hide_line", "clear", "firm_todo"}
@@ -209,8 +215,12 @@ def _default_rule(name):
 
 
 # --------------------------------------------------------------- builder
-def build_deck(values, rules=None, template=TEMPLATE, workplan=None):
+def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=None):
     values = dict(values or {})
+    if version:
+        if str(version) not in TEMPLATES:
+            raise TemplateRulesError(f"Unknown template version {version!r}; known: {', '.join(TEMPLATES)}")
+        template = TEMPLATES[str(version)]
     warnings = []
     prs = _load_template(template)
     slides = list(prs.slides)
@@ -323,10 +333,18 @@ def build_deck(values, rules=None, template=TEMPLATE, workplan=None):
                         warnings.append("a variable survived filling and was replaced")
 
     # 5. work plan slides (Phase Architect v2): timeline, deliverables, steering
-    #    meetings, drawn in code and placed right after the market research slide
+    #    meetings. Template 1.2 holds marked slides (shape named workplan:<kind>)
+    #    that are drawn on; older templates get the slides added after market research.
+    import workplan as wp
     plan = workplan if workplan is not None else values.get("workplan")
-    if isinstance(plan, dict) and plan.get("phases"):
-        import workplan as wp
+    has_plan = isinstance(plan, dict) and bool(plan.get("phases"))
+    marked = wp.marked_slides(prs)
+    if marked:
+        wp.fill_template_slides(prs, plan if has_plan else None, marked,
+                                client=str((plan or {}).get("client") or "[Client]"))
+        if not has_plan:
+            warnings.append("no work plan in the payload: the work-plan slides say [Firm to complete]")
+    elif has_plan:
         added = wp.add_workplan_slides(
             prs, plan,
             section=str(plan.get("section") or values.get("workplan_section") or "Approach"),
