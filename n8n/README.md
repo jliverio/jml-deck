@@ -14,9 +14,9 @@ and tested here first.
 | code/build_render_payload.js | Build render payload |
 | code/validate_brief.js | Validate brief |
 | code/architect_input.js | Architect input |
-| code/validate_plan.js | Validate plan, Validate plan (retry) (generated from phase_architect/validate_plan_v2.js) |
-| ../phase_architect/prompt_v2.md | Phase Architect, Phase Architect retry (system message) |
-| ../phase_architect/schema_v2.json | Phases schema, Phases retry schema |
+| code/validate_plan.js | Validate plan (generated from phase_architect/validate_plan_v2.js) |
+| ../phase_architect/prompt_v2.md | Phase Architect (system message) |
+| ../phase_architect/schema_v2.json | Phases schema |
 | prompts/02b_offering_researcher.txt | Offering researcher (system message) |
 | prompts/02c_topic_researcher.txt | Topic researcher (system message) |
 | prompts/04_copywriter_variables.txt | Copywriter and Copywriter retry (system message) |
@@ -27,7 +27,7 @@ The variable rules live in the n8n data table `template_variables`
 
 Flow: Gmail → Config → Brief Organizer → Client Profiler → Read template
 variables → Template rules → researchers (rules injected) → Architect input → Phase
-Architect → Validate plan → [Phase Architect retry → Validate plan (retry)] → Assemble drafts →
+Architect → Validate plan → Plan valid? [once back to Phase Architect with the violations] → Assemble drafts →
 Copywriter (one call, whole deck) → Check copy → [Copywriter retry → Check
 retry] → Build render payload → Build deck (Render) → reply.
 

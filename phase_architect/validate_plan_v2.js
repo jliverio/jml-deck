@@ -4,7 +4,7 @@
 //   ctx:  { brief, success_criteria_list: [string], jargon_never: [string] }
 // Arithmetic is repaired silently and logged in `repairs`; content problems
 // go to `violations` (sent back to the agent once as `violations`).
-// The same code runs in the n8n "Validate plan" Code node (see n8n_validate_plan_node.js).
+// The same code runs in the n8n "Validate plan" Code node (n8n/code/validate_plan.js).
 
 const LIM = { ws_name: 28, deliverable: 60, activity: 60, label: 28, purpose: 45, decision: 90, agenda: 80, gate_label: 22, objective_words: 20, answers_words: 20, gq_words: 25, note_words: 25 };
 const AGENDA_VERBS = ['Present', 'Review', 'Align', 'Discuss', 'Confirm', 'Decide'];

@@ -67,7 +67,7 @@ Applied to the workflow draft (not published):
 ```
 Assemble market → Architect input → Phase Architect → Validate plan → Plan valid?
    ├─ true  → Assemble drafts → Copywriter → … → Build render payload (adds `workplan`) → Build deck
-   └─ false → Phase Architect retry → Validate plan (retry) → Assemble drafts
+   └─ false → back to Phase Architect (input = previous answer + violations) → Validate plan → Plan valid? (second pass always continues)
 ```
 
 - **Errors.** Both agents continue on error. An API failure (for example n8n credits) becomes a named violation. If the retry also fails, the deck still builds without the work-plan slides, and the run log says why.

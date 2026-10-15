@@ -1,4 +1,4 @@
-// Assemble drafts (Code, run once for each item). Input: Validate plan or Validate plan (retry);
+// Assemble drafts (Code, run once for each item). Input: Plan valid? (true branch: a compiled phase plan);
 // the market findings are read from Assemble market.
 // Maps every agent output to its template variable, using `fills_from` in the
 // template_variables table. Produces:
