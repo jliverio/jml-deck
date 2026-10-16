@@ -61,6 +61,14 @@ their stubs, and the deck is built without market research (checkProfiler logs
 `profiler_failed`). Copywriter, Phase Architect and Summary Writer already
 continued on error with code fallbacks.
 
+Phase Architect model: claude-sonnet-5-5, output cap 32,000 with streaming on
+(the Anthropic SDK refuses non-streaming calls above ~21k tokens). Long
+engagements need it: a 40-week plan with 10 workstreams retried once and used
+the room (execution 555). Streaming hides the token count in the run log.
+Plan size limits (prompt + validator): up to 12 workstreams (more than 8 only
+past 16 weeks) and 16 deliverables; the schema tolerates 16 workstreams so an
+oversized plan reaches the validator and gets a retry instead of a parser error.
+
 ## Phase Architect wiring tests (in n8n, agents pinned)
 
 `node n8n/tests/make_pins.js valid|invalid|error` writes pin data that pins

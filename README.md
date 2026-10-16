@@ -93,3 +93,14 @@ render cleanly; more will overflow the slide.
 `proposal_draft.pptx`.
 
 Send me the live URL and I'll build the assembly node and wire these two in.
+
+## Work-plan slides and plan size
+
+`workplan.py` scales with the plan: the week axis labels about 16 ticks at most
+(every week up to 16 weeks, then every 2, 4, 8...), timeline rows shrink to 0.3"
+and then continue on a second page (whole phases kept together), the
+deliverables table pages at 13 lines with balanced pages, and steering meetings
+page at 4 per slide. `python3 tests/workplan_stress.py [outdir]` checks 36
+synthetic plans (4-52 weeks, 3-12 workstreams) for text overflow, overlaps and
+shapes off the slide. Live check on the Navigator brief at 6, 12, 24 and 40
+weeks: executions 403, 50, 404 and 555.
