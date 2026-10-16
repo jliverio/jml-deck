@@ -26,7 +26,9 @@ and tested here first.
 | code/final_summary.js | Final summary |
 | prompts/06_summary_writer.txt | Summary Writer and Summary Writer retry (system message) |
 | prompts/06_summary_writer_schema.json | Summary schema, Summary retry schema |
-| workflows/search_slim.sdk.js | Separate workflow "JML tool: web search (slim)" (bK1o2w8TdT4WUeUL), called by Search: Offering and Search: Topic |
+| workflows/search_slim.sdk.js | Separate workflow "JML tool: web search (slim)" (bK1o2w8TdT4WUeUL), called by Search: Offering, Search: Topic and Search: Profiler |
+| workflows/read_page.sdk.js | Separate workflow "JML tool: read page" (4Iq16peRkEXybs11), called by Read page: Offering, Read page: Topic and Read page: Profiler |
+| prompts/02a_client_profiler.txt | Client Profiler (system message) |
 
 The three summary node files are built from shared parts (`_summary_input.js`, `_summary_checker.js`,
 `*_tail.js`) by `python3 tools/build_n8n_code.py`; edit the parts, rebuild, then paste.
