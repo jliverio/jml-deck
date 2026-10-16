@@ -1,0 +1,487 @@
+{
+ "plan": {
+  "basis": {
+   "governing_question": "Why do property and health claims take too long to settle, and what claims operating model should Atlântico Seguros move to?",
+   "archetype_id": "operating_model_redesign"
+  },
+  "total_duration_weeks": {
+   "min": 12,
+   "max": 21
+  },
+  "phases": [
+   {
+    "name": "Diagnostic",
+    "order": 1,
+    "start_week": 1,
+    "end_week": 8,
+    "duration_weeks": {
+     "min": 4,
+     "max": 8
+    },
+    "duration_derived": false,
+    "objective_one_line": "Establish why property and health claims take too long to settle and what customers experience along the way.",
+    "gate": {
+     "label": "Findings sign-off",
+     "decision": "Do the findings correctly locate where property and health claims lose time?"
+    },
+    "depends_on_assumptions": [
+     "engagement_length"
+    ],
+    "workstream_ids": [
+     "W1",
+     "W2",
+     "W3"
+    ]
+   },
+   {
+    "name": "Design",
+    "order": 2,
+    "start_week": 9,
+    "end_week": 18,
+    "duration_weeks": {
+     "min": 6,
+     "max": 10
+    },
+    "duration_derived": false,
+    "objective_one_line": "Define the claims operating model options for property and health claims and test them against settlement time and satisfaction.",
+    "gate": {
+     "label": "Design sign-off",
+     "decision": "Does the steering group endorse the recommendation to take to the Board?"
+    },
+    "depends_on_assumptions": [
+     "engagement_length"
+    ],
+    "workstream_ids": [
+     "W4",
+     "W5",
+     "W6"
+    ]
+   },
+   {
+    "name": "Handover",
+    "order": 3,
+    "start_week": 19,
+    "end_week": 21,
+    "duration_weeks": {
+     "min": 2,
+     "max": 3
+    },
+    "duration_derived": false,
+    "objective_one_line": "Present the findings and recommendations to the COO, Head of Claims and the Board in a written report and presentation.",
+    "gate": {
+     "label": "Final readout",
+     "decision": "Are the report and presentation ready to go to the Board of Directors?"
+    },
+    "depends_on_assumptions": [
+     "engagement_length"
+    ],
+    "workstream_ids": [
+     "W7"
+    ]
+   }
+  ],
+  "workstreams": [
+   {
+    "id": "W1",
+    "phase_order": 1,
+    "name": "Claims process baseline",
+    "answers": "How do property and health claims flow today, and where does settlement time build up?",
+    "traces_to": [
+     "problem_statement",
+     "success_criteria:1"
+    ],
+    "start_week": 1,
+    "end_week": 5,
+    "follows": [],
+    "activities": [
+     "Map property and health claims from filing to payment",
+     "Analyze operational data on handling and settlement times",
+     "Review the 2024 lean program's effect on motor claims"
+    ],
+    "deliverable_ids": [
+     "D1"
+    ]
+   },
+   {
+    "id": "W2",
+    "phase_order": 1,
+    "name": "Handler and customer views",
+    "answers": "What do claims handlers and customers experience as causes of delay, and how satisfied are customers today?",
+    "traces_to": [
+     "problem_statement",
+     "success_criteria:2"
+    ],
+    "start_week": 1,
+    "end_week": 5,
+    "follows": [],
+    "activities": [
+     "Interview claims handlers and managers who do the work",
+     "Review customer satisfaction results and complaint records",
+     "Interview customers with recent property and health claims"
+    ],
+    "deliverable_ids": [
+     "D2"
+    ]
+   },
+   {
+    "id": "W3",
+    "phase_order": 1,
+    "name": "Delay drivers and levers",
+    "answers": "Which causes explain the delay in settlement, and which can be changed without replacing the claims IT system?",
+    "traces_to": [
+     "problem_statement",
+     "success_criteria:1",
+     "gate:1"
+    ],
+    "start_week": 4,
+    "end_week": 8,
+    "follows": [
+     "W1",
+     "W2"
+    ],
+    "activities": [
+     "Test candidate delay causes against claims case files",
+     "Size the effect of each cause on settlement time",
+     "Separate causes that need replacing the claims IT system"
+    ],
+    "deliverable_ids": [
+     "D3",
+     "D4"
+    ]
+   },
+   {
+    "id": "W4",
+    "phase_order": 2,
+    "name": "Target model options",
+    "answers": "Which claims operating models could Atlântico Seguros adopt for property and health claims?",
+    "traces_to": [
+     "problem_statement",
+     "gate:2"
+    ],
+    "start_week": 9,
+    "end_week": 13,
+    "follows": [],
+    "activities": [
+     "Draft operating model options for property and health claims",
+     "Agree option assessment criteria with the steering group"
+    ],
+    "deliverable_ids": [
+     "D5"
+    ]
+   },
+   {
+    "id": "W5",
+    "phase_order": 2,
+    "name": "Option impact assessment",
+    "answers": "How would each option change settlement time and customer satisfaction for property and health claims?",
+    "traces_to": [
+     "success_criteria:1",
+     "success_criteria:2",
+     "gate:2"
+    ],
+    "start_week": 12,
+    "end_week": 16,
+    "follows": [
+     "W4"
+    ],
+    "activities": [
+     "Model each option's effect on settlement time",
+     "Check each option against customer satisfaction measures",
+     "Test feasibility with claims handlers and managers"
+    ],
+    "deliverable_ids": [
+     "D6"
+    ]
+   },
+   {
+    "id": "W6",
+    "phase_order": 2,
+    "name": "Recommendation and roadmap",
+    "answers": "Which option best meets the success criteria, and in what sequence would the move happen?",
+    "traces_to": [
+     "problem_statement",
+     "gate:2"
+    ],
+    "start_week": 15,
+    "end_week": 18,
+    "follows": [
+     "W4",
+     "W5"
+    ],
+    "activities": [
+     "Compare options on the agreed criteria",
+     "Sequence the move to the chosen model in steps",
+     "Plan the move without replacing the claims IT system"
+    ],
+    "deliverable_ids": [
+     "D7",
+     "D8"
+    ]
+   },
+   {
+    "id": "W7",
+    "phase_order": 3,
+    "name": "Report and Board materials",
+    "answers": "How will the findings and recommendation be put to the COO, Head of Claims and the Board?",
+    "traces_to": [
+     "problem_statement",
+     "gate:3"
+    ],
+    "start_week": 19,
+    "end_week": 21,
+    "follows": [],
+    "activities": [
+     "Draft the written report from the engagement findings",
+     "Prepare the Board presentation with the sponsors",
+     "Confirm the handover with the COO and Head of Claims"
+    ],
+    "deliverable_ids": [
+     "D9",
+     "D10"
+    ]
+   }
+  ],
+  "deliverables": [
+   {
+    "id": "D1",
+    "name": "Settlement-time baseline for property and health claims",
+    "kind": "analysis",
+    "workstream_id": "W1",
+    "phase_order": 1,
+    "due_week": 4,
+    "presented_at": "Workshop 1: first findings"
+   },
+   {
+    "id": "D2",
+    "name": "Customer satisfaction baseline and handler pain points",
+    "kind": "analysis",
+    "workstream_id": "W2",
+    "phase_order": 1,
+    "due_week": 4,
+    "presented_at": "Workshop 1: first findings"
+   },
+   {
+    "id": "D3",
+    "name": "Ranked causes of delay in claims settlement",
+    "kind": "analysis",
+    "workstream_id": "W3",
+    "phase_order": 1,
+    "due_week": 7,
+    "presented_at": "Findings sign-off"
+   },
+   {
+    "id": "D4",
+    "name": "Diagnostic readout with improvement areas by claim type",
+    "kind": "decision_pack",
+    "workstream_id": "W3",
+    "phase_order": 1,
+    "due_week": 8,
+    "presented_at": "Findings sign-off"
+   },
+   {
+    "id": "D5",
+    "name": "Claims operating model options with assessment criteria",
+    "kind": "design",
+    "workstream_id": "W4",
+    "phase_order": 2,
+    "due_week": 13,
+    "presented_at": "Workshop 2: model options"
+   },
+   {
+    "id": "D6",
+    "name": "Option assessment against settlement time and satisfaction",
+    "kind": "analysis",
+    "workstream_id": "W5",
+    "phase_order": 2,
+    "due_week": 16,
+    "presented_at": "Design sign-off"
+   },
+   {
+    "id": "D7",
+    "name": "Transition roadmap for the chosen claims operating model",
+    "kind": "design",
+    "workstream_id": "W6",
+    "phase_order": 2,
+    "due_week": 17,
+    "presented_at": "Design sign-off"
+   },
+   {
+    "id": "D8",
+    "name": "Recommendation on the claims operating model",
+    "kind": "decision_pack",
+    "workstream_id": "W6",
+    "phase_order": 2,
+    "due_week": 18,
+    "presented_at": "Design sign-off"
+   },
+   {
+    "id": "D9",
+    "name": "Written report on property and health claims",
+    "kind": "decision_pack",
+    "workstream_id": "W7",
+    "phase_order": 3,
+    "due_week": 20,
+    "presented_at": "Final readout"
+   },
+   {
+    "id": "D10",
+    "name": "Board presentation of the recommendations",
+    "kind": "decision_pack",
+    "workstream_id": "W7",
+    "phase_order": 3,
+    "due_week": 21,
+    "presented_at": "Final readout"
+   }
+  ],
+  "governance": {
+   "status_cadence_weeks": 2,
+   "status_weeks": [
+    3,
+    7,
+    9,
+    11,
+    13,
+    15,
+    17,
+    19
+   ],
+   "events": [
+    {
+     "id": "G1",
+     "type": "kickoff",
+     "phase_order": 1,
+     "week": 1,
+     "label": "Kick-off",
+     "purpose": "Align scope, plan and access to data",
+     "presents": [],
+     "decision": "Does the steering group confirm the scope and the plan of work?",
+     "agenda": [
+      "Present the plan, phases and steering meetings",
+      "Align on access to claims data and interviewees",
+      "Confirm that replacing the claims IT system is out of scope"
+     ]
+    },
+    {
+     "id": "G2",
+     "type": "workshop",
+     "phase_order": 1,
+     "week": 5,
+     "label": "Workshop 1: first findings",
+     "purpose": "Review baseline and pain points",
+     "presents": [
+      "D1",
+      "D2"
+     ],
+     "decision": "Which causes of delay should the remaining diagnostic weeks test?",
+     "agenda": [
+      "Present the settlement-time baseline and pain points",
+      "Discuss early views on where claims lose time",
+      "Confirm the causes to test in the remaining weeks"
+     ]
+    },
+    {
+     "id": "G3",
+     "type": "gate",
+     "phase_order": 1,
+     "week": 8,
+     "label": "Findings sign-off",
+     "purpose": "Close the diagnostic",
+     "presents": [
+      "D3",
+      "D4"
+     ],
+     "decision": "Do the findings correctly locate where property and health claims lose time?",
+     "agenda": [
+      "Present the ranked causes of delay",
+      "Review the improvement areas by claim type",
+      "Decide whether the diagnostic is signed off"
+     ]
+    },
+    {
+     "id": "G4",
+     "type": "workshop",
+     "phase_order": 2,
+     "week": 14,
+     "label": "Workshop 2: model options",
+     "purpose": "Choose options to assess in depth",
+     "presents": [
+      "D5"
+     ],
+     "decision": "Which operating model options go forward to full assessment?",
+     "agenda": [
+      "Present the claims operating model options",
+      "Discuss the options against the assessment criteria",
+      "Decide which options to assess in depth"
+     ]
+    },
+    {
+     "id": "G5",
+     "type": "gate",
+     "phase_order": 2,
+     "week": 18,
+     "label": "Design sign-off",
+     "purpose": "Close the design",
+     "presents": [
+      "D6",
+      "D7",
+      "D8"
+     ],
+     "decision": "Does the steering group endorse the recommendation to take to the Board?",
+     "agenda": [
+      "Present the option assessment and the recommendation",
+      "Review the transition roadmap",
+      "Decide whether the recommendation goes to the Board"
+     ]
+    },
+    {
+     "id": "G6",
+     "type": "gate",
+     "phase_order": 3,
+     "week": 21,
+     "label": "Final readout",
+     "purpose": "Release the report and presentation",
+     "presents": [
+      "D9",
+      "D10"
+     ],
+     "decision": "Are the report and presentation ready to go to the Board of Directors?",
+     "agenda": [
+      "Present the written report",
+      "Review the Board presentation",
+      "Confirm the handover to the Board of Directors"
+     ]
+    }
+   ]
+  },
+  "architect_notes": [
+   "Engagement length is not given; phase lengths are estimates from the archetype's typical weeks (Diagnostic 4-8, Design 6-10) plus 2-3 weeks for Handover.",
+   "Only the Board date, March 15, 2027, is given and no start date, so the plan cannot be checked against it.",
+   "Not covered by the phases: ASF, supervisor guidance on claims-handling response times. Confirm whether it is in scope.",
+   "Handover is added to the archetype's Diagnostic and Design because the final answer goes to the Board; confirm it is wanted.",
+   "The brief asks for no implementation; tracking settlement time and satisfaction after the move is not in these phases."
+  ],
+  "sequencing": "sequential",
+  "timeline_slide": {
+   "unit": "weeks",
+   "bars": [
+    {
+     "phase": "Diagnostic",
+     "start": 1,
+     "end": 8
+    },
+    {
+     "phase": "Design",
+     "start": 9,
+     "end": 18
+    },
+    {
+     "phase": "Handover",
+     "start": 19,
+     "end": 21
+    }
+   ]
+  }
+ },
+ "violations": [],
+ "repairs": []
+}

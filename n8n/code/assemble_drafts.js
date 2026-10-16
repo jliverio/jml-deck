@@ -1,4 +1,5 @@
-// Assemble drafts (Code, run once for each item). Input: Assemble market.
+// Assemble drafts (Code, run once for each item). Input: Plan valid? (true branch: a compiled phase plan);
+// the market findings are read from Assemble market.
 // Maps every agent output to its template variable, using `fills_from` in the
 // template_variables table. Produces:
 //   values   final text that needs no copywriter (fixed text, source list)
@@ -10,7 +11,9 @@
 const rules = $('Template rules').first().json._rules || [];
 const prof = ($('checkProfiler').first().json.output) || {};
 const bo = ($('Brief Organizer').first().json.output) || {};
-const market = $json || {};
+const market = $('Assemble market').first().json || {};
+const planIn = ($json && $json.output) || {};
+const plan = Array.isArray(planIn.phases) && planIn.phases.length ? planIn : null;
 
 const sv = f => (f && f.value != null ? f.value : null);
 const hf = bo.hard_fields || {};
@@ -24,6 +27,10 @@ rules.forEach(r => { byVar[r.variable] = r; });
 const values = {};
 const drafts = {};
 const warnings = [];
+// Template 1.3 (= 1.2 + Approach section) names section_04 Approach, shown third on the agenda,
+// and holds the work-plan slides. Payloads without `template` render on the default (1.2).
+const TEMPLATE_VERSION = '1.3';
+if (TEMPLATE_VERSION === '1.3') values.section_04 = 'Approach';
 
 // 1. Fixed text.
 for (const r of rules) {
@@ -100,7 +107,69 @@ if (srcRule && sourceList.length) {
   values[srcRule.variable] = txt;
 }
 
-// 5. The Copywriter's work list.
+// 5. Context slide, Solution and Outcomes columns, drafted in code from the phase plan.
+//    Only rows whose fills_from is phase_architect:* are filled. Rows still marked
+//    pending:phase_architect are skipped: template 1.1 has no variables on that slide yet.
+//    The Copywriter only shortens them; every name, week and decision comes from the plan.
+const fromPlan = r => /^phase_architect:/.test(fills(r));
+if (plan) {
+  const slotsOf = prefix => rules.filter(r => fromPlan(r) && new RegExp('^' + prefix + '_\\d+$').test(r.variable))
+    .map(r => r.variable).sort();
+  const wk = d => (d.min === d.max ? `${d.max} weeks` : `${d.min}-${d.max} weeks`);
+  const words = ['zero', 'one', 'two', 'three', 'four', 'five', 'six'];
+  const lc = t => String(t || '').replace(/^([A-Z])(?=[a-z])/, c => c.toLowerCase()).replace(/\.$/, '');
+  const list = a => (a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]);
+  const tot = plan.total_duration_weeks || {};
+  const totTxt = tot.min === tot.max ? `${tot.max}-week` : `${tot.min}- to ${tot.max}-week`;
+  const n = plan.phases.length;
+  const events = (plan.governance || {}).events || [];
+  const steering = events.filter(e => e.type !== 'kickoff');
+  const lastGate = steering.filter(e => e.type === 'gate').slice(-1)[0] || {};
+
+  const sol = [];
+  sol.push(`We will run a ${totTxt} project in ${words[n] || n} phase${n > 1 ? 's' : ''}: ${list(plan.phases.map(p => p.name))}.`);
+  plan.phases.forEach(p => sol.push(`${p.name} (${wk(p.duration_weeks)}): ${lc(p.objective_one_line)}.`));
+  const who = (lastGate.attendees || []).filter(a => a && !/^\[/.test(a));
+  sol.push(`${steering.length} steering meetings${who.length ? ' with ' + list(who) : ''}, each phase closing on a decision.`);
+  if (n === 1) {
+    const ws = (plan.workstreams || []).map(w => w.name);
+    if (ws.length) sol.push(`${words[ws.length] ? words[ws.length][0].toUpperCase() + words[ws.length].slice(1) : ws.length} workstreams: ${list(ws)}.`);
+  }
+  const cad = (plan.governance || {}).status_cadence_weeks;
+  if (cad) sol.push(`Status meetings ${cad === 1 ? 'every week' : 'every ' + cad + ' weeks'} between steering meetings.`);
+  const solSlots = slotsOf('solution');
+  sol.slice(0, solSlots.length).forEach((t, i) => { drafts[solSlots[i]] = { draft: t, refs: [] }; });
+
+  const RANK = { decision_pack: 0, build: 1, design: 2, analysis: 3, enablement: 4 };
+  const outSlots = slotsOf('outcome');
+  const dels = (plan.deliverables || []).slice()
+    .sort((a, b) => (RANK[a.kind] ?? 9) - (RANK[b.kind] ?? 9) || b.due_week - a.due_week)
+    .slice(0, outSlots.length)
+    .sort((a, b) => a.due_week - b.due_week);
+  const evByLabel = Object.fromEntries(events.map(e => [e.label, e]));
+  const usedDecision = new Set();
+  dels.forEach((d, i) => {
+    const e = evByLabel[d.presented_at] || {};
+    // a decision is quoted once; later outcomes for the same meeting just name it
+    const why = e.decision && !usedDecision.has(e.decision) ? `, for the decision: ${e.decision}`
+      : (d.presented_at ? `, reviewed at the ${d.presented_at}` : '');
+    if (e.decision) usedDecision.add(e.decision);
+    drafts[outSlots[i]] = { draft: `${d.name}${why}`, refs: [] };
+  });
+  // Rows owned by another writer (e.g. summary_writer:*) are not this node's business: no warning.
+  const pending = rules.filter(r => /^pending:phase_architect/.test(fills(r))).length;
+  if ((!solSlots.length || !outSlots.length) && pending) {
+    warnings.push(`Context slide approach rows are still marked pending:phase_architect in template_variables (${pending} rows); the plan reaches the work-plan slides only.`);
+  }
+  if ($json && Array.isArray($json.violations) && $json.violations.length) {
+    warnings.push(`Phase plan kept with ${$json.violations.length} unresolved check(s): ${$json.violations.slice(0, 5).join('; ')}`);
+  }
+} else {
+  const why = ($json && $json.agent_error) ? ` Phase Architect error: ${$json.agent_error}` : '';
+  warnings.push('No phase plan reached the deck: the work-plan slides say [Firm to complete].' + why);
+}
+
+// 6. The Copywriter's work list.
 const suffix = refs => (refs.length ? ' [' + refs.join(', ') + ']' : '');
 const items = Object.entries(drafts).map(([variable, d]) => {
   const r = byVar[variable] || {};
@@ -116,6 +185,8 @@ return {
     values,
     refs: Object.fromEntries(Object.entries(drafts).map(([k, d]) => [k, d.refs])),
     sources: sourceList.map((s, i) => ({ ref: i + 1, source_name: s.source_name, source_title: s.source_title, source_url: s.source_url, source_date: s.source_date })),
+    workplan: plan ? { ...plan, client: clientName } : null,
+    template: TEMPLATE_VERSION,
     warnings,
   },
 };

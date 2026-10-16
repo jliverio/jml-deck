@@ -1,0 +1,75 @@
+{
+ "hard_fields": {
+  "client": {
+   "value": "Atl\u00e2ntico Seguros, a mid-size Portuguese insurer",
+   "source": "stated",
+   "quote": "Atl\u00e2ntico Seguros, a mid-size Portuguese insurer",
+   "assumption_text": null
+  },
+  "problem_statement": {
+   "value": "Atl\u00e2ntico Seguros wants to understand why property and health claims take too long to settle and what claims operating model it should move to. Motor claims were improved in 2024; property and health were not.",
+   "source": "stated",
+   "quote": "why property and health claims take too long to settle and what claims operating model it should move to",
+   "assumption_text": null
+  }
+ },
+ "required": {
+  "engagement_type": {
+   "value": "assessment",
+   "source": "stated",
+   "quote": "they want a diagnostic and a recommendation, not implementation support",
+   "assumption_text": null
+  },
+  "engagement_length": {
+   "value": null,
+   "source": "assumed",
+   "quote": null,
+   "assumption_text": "Not given; the Phase Architect estimates the duration.",
+   "weeks_min": null,
+   "weeks_max": null,
+   "duration_derived": false
+  },
+  "stakeholders": {
+   "value": [
+    "COO",
+    "Head of Claims",
+    "Board of Directors"
+   ],
+   "source": "stated",
+   "quote": "the COO and the Head of Claims, and the final answer goes to the Board",
+   "assumption_text": null
+  }
+ },
+ "soft_fields": {
+  "deliverable_format": {
+   "value": "A written report and a board presentation",
+   "source": "stated",
+   "quote": "a written report and a board presentation",
+   "assumption_text": null
+  },
+  "timeline": {
+   "value": "Recommendations presented to the Board on March 15, 2027",
+   "source": "stated",
+   "quote": "the Board meets on 15 March 2027",
+   "assumption_text": null
+  },
+  "prior_attempts": {
+   "value": "An internal lean program in 2024 cut handling time for motor claims only",
+   "source": "stated",
+   "quote": "an internal lean program in 2024 that cut handling time for motor claims only",
+   "assumption_text": null
+  },
+  "success_criteria": {
+   "value": "Reduce average settlement time for property and health claims; keep customer satisfaction at least at current levels",
+   "source": "stated",
+   "quote": "reduce average settlement time without customer satisfaction dropping",
+   "assumption_text": null
+  },
+  "out_of_scope": {
+   "value": "Replacing the claims IT system",
+   "source": "stated",
+   "quote": "replacing the claims IT system is out of scope",
+   "assumption_text": null
+  }
+ }
+}

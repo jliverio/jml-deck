@@ -13,6 +13,10 @@ and tested here first.
 | code/check_retry.js | Check retry (= _checker.js + its own tail) |
 | code/build_render_payload.js | Build render payload |
 | code/validate_brief.js | Validate brief |
+| code/architect_input.js | Architect input |
+| code/validate_plan.js | Validate plan (generated from phase_architect/validate_plan_v2.js) |
+| ../phase_architect/prompt_v2.md | Phase Architect (system message) |
+| ../phase_architect/schema_v2.json | Phases schema |
 | prompts/02b_offering_researcher.txt | Offering researcher (system message) |
 | prompts/02c_topic_researcher.txt | Topic researcher (system message) |
 | prompts/04_copywriter_variables.txt | Copywriter and Copywriter retry (system message) |
@@ -30,7 +34,8 @@ The variable rules live in the n8n data table `template_variables`
 (id oEGx7TvhjZ2X6HeB). `variables/` at the repo root is its seed.
 
 Flow: Gmail → Config → Brief Organizer → Client Profiler → Read template
-variables → Template rules → researchers (rules injected) → Assemble drafts →
+variables → Template rules → researchers (rules injected) → Architect input → Phase
+Architect → Validate plan → Plan valid? [once back to Phase Architect with the violations] → Assemble drafts →
 Copywriter (one call, whole deck) → Check copy → [Copywriter retry → Check
 retry] → Prepare summary → Summary Writer → Check summary → Summary OK? →
 [Summary Writer retry → Check summary] → Final summary → Build render payload → Build deck (Render) → reply.
@@ -39,3 +44,17 @@ Tests: `node n8n/tests/harness.js` runs these files with mocked n8n lookups.
 Test entry point: the "Test brief (no email)" webhook, which only runs with the
 X-JML-Test header secret; the reply nodes fail on its fake message id, so no
 email is sent.
+
+## Phase Architect wiring tests (in n8n, agents pinned)
+
+`node n8n/tests/make_pins.js valid|invalid|error` writes pin data that pins
+every agent and external node, so the Code, IF and loop nodes run for real in
+n8n without Gateway credits. Run with the n8n `test_workflow` tool, trigger
+"Test brief (no email)". The run ends at Flag deck failure by design (Build
+deck is pinned without a file). Results on 16 Oct 2026:
+
+- valid (execution 11): Plan valid? true on the first pass; payload carries the
+  work plan; `payload_n8n_exec11.json` renders to 12 slides via app.py.
+- error (execution 12): Phase Architect and Validate plan ran twice, the second
+  pass continued ($runIndex guard), the deck assembled without a work plan and
+  the run log names the agent error.

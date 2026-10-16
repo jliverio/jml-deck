@@ -37,6 +37,13 @@ from pptx.enum.shapes import MSO_SHAPE_TYPE
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE = os.path.join(HERE, "template_v1_2.potx")
+# Template chosen by the payload's "template" field. No field = TEMPLATE (1.2), so
+# callers that send no version (the published workflow) are unchanged.
+TEMPLATES = {
+    "1.1": os.path.join(HERE, "template_v1_1.potx"),
+    "1.2": TEMPLATE,                                     # 1.1 + slide 4 summary variables
+    "1.3": os.path.join(HERE, "template_v1_3.potx"),     # 1.2 + Approach section and work-plan slides
+}
 FIRM_TODO = "[Firm to complete]"
 TOKEN = re.compile(r"(?<![A-Za-z0-9_])[a-z0-9]+(?:_[a-z0-9]+)+(?![A-Za-z0-9_])")
 POLICIES = {"remove_row", "hide_line", "clear", "firm_todo"}
@@ -212,8 +219,12 @@ def _default_rule(name):
 
 
 # --------------------------------------------------------------- builder
-def build_deck(values, rules=None, template=TEMPLATE):
+def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=None):
     values = dict(values or {})
+    if version:
+        if str(version) not in TEMPLATES:
+            raise TemplateRulesError(f"Unknown template version {version!r}; known: {', '.join(TEMPLATES)}")
+        template = TEMPLATES[str(version)]
     warnings = []
     prs = _load_template(template)
     slides = list(prs.slides)
@@ -221,12 +232,16 @@ def build_deck(values, rules=None, template=TEMPLATE):
 
     # 0. normalise split variables, collect what the template holds
     present = set()
+    market_idx = None
     for si, sl in enumerate(slides, 1):
         for sh in _text_shapes(sl):
             for p in sh.text_frame.paragraphs:
                 _join_split_tokens(p, f"slide {si} / {sh.name}")
                 for r in p.runs:
-                    present.update(TOKEN.findall(r.text))
+                    found = TOKEN.findall(r.text)
+                    present.update(found)
+                    if market_idx is None and "finding_01_headline" in found:
+                        market_idx = si - 1
 
     # 1. template and table must agree
     if table is not None:
@@ -320,6 +335,32 @@ def build_deck(values, rules=None, template=TEMPLATE):
                     if any(m.group() in present for m in TOKEN.finditer(r.text)):
                         r.text = TOKEN.sub(lambda m: FIRM_TODO if m.group() in present else m.group(), r.text)
                         warnings.append("a variable survived filling and was replaced")
+
+    # 5. work plan slides (Phase Architect v2): timeline, deliverables, steering
+    #    meetings. Template 1.2 holds marked slides (shape named workplan:<kind>)
+    #    that are drawn on; older templates get the slides added after market research.
+    import workplan as wp
+    plan = workplan if workplan is not None else values.get("workplan")
+    has_plan = isinstance(plan, dict) and bool(plan.get("phases"))
+    marked = wp.marked_slides(prs)
+    if marked:
+        wp.fill_template_slides(prs, plan if has_plan else None, marked,
+                                client=str((plan or {}).get("client") or "[Client]"))
+        if not has_plan:
+            warnings.append("no work plan in the payload: the work-plan slides say [Firm to complete]")
+    elif has_plan:
+        added = wp.add_workplan_slides(
+            prs, plan,
+            section=str(plan.get("section") or values.get("workplan_section") or "Approach"),
+            client=str(plan.get("client") or values.get("workplan_client") or "[Client]"))
+        lst = prs.slides._sldIdLst
+        ids = list(lst)
+        new_ids = ids[len(ids) - len(added):]
+        anchor = market_idx if market_idx is not None else max(len(ids) - len(added) - 3, 0)
+        for el in new_ids:
+            lst.remove(el)
+        for k, el in enumerate(new_ids):
+            lst.insert(anchor + 1 + k, el)
 
     out = io.BytesIO()
     prs.save(out)

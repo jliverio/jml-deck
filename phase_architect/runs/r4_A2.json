@@ -1,0 +1,289 @@
+{
+  "basis": {
+    "governing_question": "How can MetalCo sell directly to small and mid-size contractors in Portugal and Spain through an online marketplace without losing its regional distributors?",
+    "archetype_id": "new_venture_build"
+  },
+  "phases": [
+    {
+      "name": "Design",
+      "order": 1,
+      "duration_weeks": {"min": 8, "max": 8},
+      "duration_derived": false,
+      "objective_one_line": "Define and test the marketplace blueprint and the plan for a pilot in one region.",
+      "gate": {
+        "label": "Go/no-go on pilot",
+        "decision": "Do we approve the blueprint and move to a pilot in one region?"
+      },
+      "depends_on_assumptions": []
+    },
+    {
+      "name": "Pilot",
+      "order": 2,
+      "duration_weeks": {"min": 12, "max": 12},
+      "duration_derived": false,
+      "objective_one_line": "Launch a first marketplace version in one region and test it against the repeat-order and distributor criteria.",
+      "gate": {
+        "label": "Scale-up decision",
+        "decision": "Do we take the scale-up business case into the 2027 budget round?"
+      },
+      "depends_on_assumptions": ["deliverable_format", "out_of_scope"]
+    }
+  ],
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Marketplace hypotheses",
+      "answers": "Which assumptions about contractors, distributors and the portal must hold for the marketplace to work?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 2,
+      "follows": [],
+      "activities": [
+        "Frame hypotheses on each marketplace blueprint component",
+        "Review documents on the existing B2B ordering portal",
+        "Hold working sessions with the CEO and Head of Sales"
+      ],
+      "deliverables": [
+        {"id": "D1", "name": "Hypotheses on each marketplace blueprint component", "kind": "analysis", "due_week_in_phase": 2}
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Contractor demand",
+      "answers": "What do small and mid-size contractors need, and what would make them order from MetalCo online?",
+      "traces_to": ["problem_statement", "success_criteria:1"],
+      "start_offset": 1,
+      "duration": 5,
+      "follows": ["W1"],
+      "activities": [
+        "Interview small and mid-size contractors",
+        "Analyze ordering data from the B2B portal and warehouses",
+        "Test the hypotheses with contractors in both countries"
+      ],
+      "deliverables": [
+        {"id": "D2", "name": "Contractor needs and demand evidence", "kind": "analysis", "due_week_in_phase": 5}
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Distributor relationships",
+      "answers": "How would direct online sales affect the regional distributors, and what keeps them selling with MetalCo?",
+      "traces_to": ["problem_statement", "success_criteria:2"],
+      "start_offset": 1,
+      "duration": 5,
+      "follows": ["W1"],
+      "activities": [
+        "Interview regional distributors and council members",
+        "Review distributor contracts and sales documents",
+        "Map where marketplace and distributor sales could overlap"
+      ],
+      "deliverables": [
+        {"id": "D3", "name": "Distributor impact assessment", "kind": "analysis", "due_week_in_phase": 5}
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 1,
+      "name": "Blueprint and pilot plan",
+      "answers": "What does the marketplace blueprint look like, and what will the pilot in one region test?",
+      "traces_to": ["success_criteria:1", "success_criteria:2", "gate:1"],
+      "start_offset": 5,
+      "duration": 3,
+      "follows": ["W2", "W3"],
+      "activities": [
+        "Draft the marketplace blueprint with tested hypotheses",
+        "Define the pilot scope in one region",
+        "Prepare the pilot go/no-go pack with the steering group"
+      ],
+      "deliverables": [
+        {"id": "D4", "name": "Marketplace blueprint with tested hypotheses", "kind": "design", "due_week_in_phase": 7},
+        {"id": "D5", "name": "Pilot plan and go/no-go decision pack", "kind": "decision_pack", "due_week_in_phase": 8}
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 2,
+      "name": "Pilot KPIs and results",
+      "answers": "Which KPIs define pilot success, and how do the pilot results compare with them?",
+      "traces_to": ["success_criteria:1", "success_criteria:2"],
+      "start_offset": 0,
+      "duration": 10,
+      "follows": [],
+      "activities": [
+        "Agree pilot KPIs with the CEO, Head of Sales and council",
+        "Track repeat orders and distributor contracts against KPIs",
+        "Meet the distributors council to review pilot progress"
+      ],
+      "deliverables": [
+        {"id": "D6", "name": "Pilot KPIs agreed with key stakeholders", "kind": "enablement", "due_week_in_phase": 2},
+        {"id": "D7", "name": "Pilot results against the agreed KPIs", "kind": "analysis", "due_week_in_phase": 10}
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 2,
+      "name": "Pilot target contractors",
+      "answers": "Which contractors in the pilot region should be the first to use the marketplace?",
+      "traces_to": ["problem_statement", "success_criteria:1"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "activities": [
+        "Analyze contractor accounts in the pilot region",
+        "Interview contractors about how they buy materials today"
+      ],
+      "deliverables": [
+        {"id": "D8", "name": "First contractor target group in the pilot region", "kind": "analysis", "due_week_in_phase": 3}
+      ]
+    },
+    {
+      "id": "W7",
+      "phase_order": 2,
+      "name": "Pilot marketplace build",
+      "answers": "Is the first marketplace version ready to launch, and how does it perform with pilot contractors?",
+      "traces_to": ["problem_statement", "success_criteria:1"],
+      "start_offset": 1,
+      "duration": 9,
+      "follows": ["W6"],
+      "activities": [
+        "Build the marketplace first version for the pilot region",
+        "Prepare launch readiness with the Head of Sales",
+        "Launch to a small group of contractors"
+      ],
+      "deliverables": [
+        {"id": "D9", "name": "Launch readiness plan for the pilot marketplace", "kind": "design", "due_week_in_phase": 4},
+        {"id": "D10", "name": "First marketplace version launched to a small group", "kind": "build", "due_week_in_phase": 6}
+      ]
+    },
+    {
+      "id": "W8",
+      "phase_order": 2,
+      "name": "Scale-up business case",
+      "answers": "Does the pilot support scaling the marketplace, and what would the plan and roadmap be?",
+      "traces_to": ["gate:2", "success_criteria:1", "success_criteria:2"],
+      "start_offset": 8,
+      "duration": 4,
+      "follows": ["W5", "W7"],
+      "activities": [
+        "Analyze pilot results against the agreed KPIs",
+        "Draft the scale-up business case",
+        "Draft the implementation plan and roadmap"
+      ],
+      "deliverables": [
+        {"id": "D11", "name": "Outline of the scale-up business case", "kind": "design", "due_week_in_phase": 9},
+        {"id": "D12", "name": "Business case with implementation plan and roadmap", "kind": "decision_pack", "due_week_in_phase": 12}
+      ]
+    }
+  ],
+  "governance": {
+    "status_cadence_weeks": 2,
+    "events": [
+      {
+        "id": "G1",
+        "type": "kickoff",
+        "phase_order": 1,
+        "week_in_phase": 1,
+        "label": "Kick-off",
+        "purpose": "Align scope, plan and ways of working",
+        "presents": [],
+        "decision": "Confirm the scope and the question the engagement answers?",
+        "agenda": [
+          "Present the plan of work and the steering meetings",
+          "Align on the governing question and the success criteria",
+          "Confirm access to people and data for interviews"
+        ],
+        "attendees": ["CEO", "Head of Sales", "Regional distributors council"]
+      },
+      {
+        "id": "G2",
+        "type": "workshop",
+        "phase_order": 1,
+        "week_in_phase": 5,
+        "label": "Workshop: first findings",
+        "purpose": "Review contractor and distributor findings",
+        "presents": ["D1", "D2", "D3"],
+        "decision": "Confirm the direction for the blueprint and the pilot plan?",
+        "agenda": [
+          "Present contractor demand and distributor impact findings",
+          "Discuss risks to the regional distributor relationships",
+          "Decide the direction for the blueprint and the pilot plan"
+        ],
+        "attendees": ["CEO", "Head of Sales", "Regional distributors council"]
+      },
+      {
+        "id": "G3",
+        "type": "gate",
+        "phase_order": 1,
+        "week_in_phase": 8,
+        "label": "Go/no-go on pilot",
+        "purpose": "Decide whether the pilot goes ahead",
+        "presents": ["D4", "D5"],
+        "decision": "Do we approve the blueprint and move to a pilot in one region?",
+        "agenda": [
+          "Present the marketplace blueprint and the pilot plan",
+          "Review open risks for distributors and the pilot region",
+          "Decide on the go/no-go for the pilot"
+        ],
+        "attendees": ["CEO", "Head of Sales", "Regional distributors council"]
+      },
+      {
+        "id": "G4",
+        "type": "workshop",
+        "phase_order": 2,
+        "week_in_phase": 4,
+        "label": "Workshop 1: launch readiness",
+        "purpose": "Review readiness before anything goes live",
+        "presents": ["D6", "D8", "D9"],
+        "decision": "Is the pilot ready to launch to the first group of contractors?",
+        "agenda": [
+          "Present the pilot KPIs, target contractors and launch readiness",
+          "Discuss how distributors are kept informed before launch",
+          "Confirm that the launch can go ahead"
+        ],
+        "attendees": ["CEO", "Head of Sales", "Regional distributors council"]
+      },
+      {
+        "id": "G5",
+        "type": "workshop",
+        "phase_order": 2,
+        "week_in_phase": 9,
+        "label": "Workshop 2: pilot signals",
+        "purpose": "Review pilot signals and scale-up outline",
+        "presents": ["D10", "D11"],
+        "decision": "Do we agree the scope of the scale-up business case?",
+        "agenda": [
+          "Present the launched version and the first pilot signals",
+          "Review the outline of the scale-up business case",
+          "Discuss distributor feedback and open risks"
+        ],
+        "attendees": ["CEO", "Head of Sales", "Regional distributors council"]
+      },
+      {
+        "id": "G6",
+        "type": "gate",
+        "phase_order": 2,
+        "week_in_phase": 12,
+        "label": "Scale-up decision",
+        "purpose": "Decide on the scale-up of the marketplace",
+        "presents": ["D7", "D12"],
+        "decision": "Do we take the scale-up business case into the 2027 budget round?",
+        "agenda": [
+          "Present the pilot results against the KPIs",
+          "Review the business case, implementation plan and roadmap",
+          "Decide whether to take the scale-up forward"
+        ],
+        "attendees": ["CEO", "Head of Sales", "Regional distributors council"]
+      }
+    ]
+  },
+  "architect_notes": [
+    "The 20-week length is stated; the split into 8 weeks of Design and 12 of Pilot is my estimate, to be confirmed before quoting.",
+    "Not covered by the phases: European Commission, digital product passports under the Construction Products Regulation. Confirm whether it is in scope.",
+    "The rollout after the pilot is not in these phases; the plan ends with a scale-up business case and a scale-up decision.",
+    "Contractors in Portugal and Spain are studied in Design, but the pilot tests one region only; confirm whether the rest needs its own test.",
+    "I dropped the archetype's hires deliverable because the brief mentions no hiring; confirm whether the pilot needs staffing."
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "basis": {
+    "governing_question": "Why did Vinhos do Douro's export margins fall in 2025, across pricing by export market and distributor terms?",
+    "archetype_id": "performance_improvement"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": {"min": 4, "max": 4},
+      "duration_derived": false,
+      "objective_one_line": "Identify why export margins fell in 2025 through pricing by export market and distributor terms.",
+      "gate": {
+        "label": "Findings sign-off",
+        "decision": "Do the CEO and Export Director accept the findings on the 2025 export margin decline?"
+      },
+      "depends_on_assumptions": ["deliverable_format", "timeline", "prior_attempts", "out_of_scope"]
+    }
+  ],
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Pricing by export market",
+      "answers": "How do realized export prices and price-to-cost gaps differ by export market?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "activities": [
+        "Collect 2025 price and cost data by export market",
+        "Compare realized prices across export markets",
+        "Isolate price effects on margin by market"
+      ],
+      "deliverables": [
+        {"id": "D1", "name": "Price realization by export market", "kind": "analysis"}
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Distributor terms",
+      "answers": "Which distributor terms and discounts reduced export margin, and in which markets?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "activities": [
+        "Collect distributor agreements and terms by market",
+        "Quantify the margin cost of each term"
+      ],
+      "deliverables": [
+        {"id": "D2", "name": "Distributor terms and margin cost by market", "kind": "analysis"}
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Margin bridge and findings",
+      "answers": "Which combination of price and distributor-term effects explains the 2025 export margin fall?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 2,
+      "duration": 2,
+      "follows": ["W1", "W2"],
+      "activities": [
+        "Combine price and terms effects into a margin bridge",
+        "Test findings with the CEO and Export Director",
+        "Prepare the findings readout for the steering group"
+      ],
+      "deliverables": [
+        {"id": "D3", "name": "Export margin bridge for 2025", "kind": "analysis"},
+        {"id": "D4", "name": "Findings readout on the 2025 margin decline", "kind": "decision_pack"}
+      ]
+    }
+  ],
+  "governance": {
+    "status_cadence_weeks": 1,
+    "events": [
+      {
+        "id": "G1",
+        "type": "kickoff",
+        "phase_order": 1,
+        "week_in_phase": 1,
+        "label": "Kick-off",
+        "purpose": "Align scope, data access and timing",
+        "presents": [],
+        "decision": "Does the steering group confirm scope and data access for the four weeks?",
+        "agenda": [
+          "Present the plan of work and the three workstreams",
+          "Align on data access and interview slots",
+          "Confirm steering group members and meeting dates"
+        ]
+      },
+      {
+        "id": "G2",
+        "type": "gate",
+        "phase_order": 1,
+        "week_in_phase": 4,
+        "label": "Findings sign-off",
+        "purpose": "Decide on acceptance of the findings",
+        "presents": ["D1", "D2", "D3", "D4"],
+        "decision": "Do the CEO and Export Director accept the findings on the 2025 export margin decline?",
+        "agenda": [
+          "Present the margin bridge and the findings readout",
+          "Review price and distributor-term evidence by market",
+          "Decide whether the findings are accepted"
+        ]
+      }
+    ]
+  },
+  "architect_notes": [
+    "The plan keeps only the Diagnostic phase of the performance improvement archetype; Implementation is dropped because the engagement type is assessment."
+  ]
+}

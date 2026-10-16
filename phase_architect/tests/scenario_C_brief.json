@@ -1,0 +1,74 @@
+{
+ "hard_fields": {
+  "client": {
+   "value": "Vinhos do Douro Lda, a wine producer",
+   "source": "stated",
+   "quote": "Vinhos do Douro Lda, a wine producer",
+   "assumption_text": null
+  },
+  "problem_statement": {
+   "value": "Vinhos do Douro wants to know why export margins fell in 2025. The work should run as two parallel workstreams: pricing by export market and distributor terms.",
+   "source": "stated",
+   "quote": "why export margins fell in 2025",
+   "assumption_text": null
+  }
+ },
+ "required": {
+  "engagement_type": {
+   "value": "assessment",
+   "source": "stated",
+   "quote": "a quick diagnostic",
+   "assumption_text": null
+  },
+  "engagement_length": {
+   "value": "4 weeks",
+   "source": "stated",
+   "quote": "four weeks",
+   "assumption_text": null,
+   "weeks_min": 4,
+   "weeks_max": 4,
+   "duration_derived": false
+  },
+  "stakeholders": {
+   "value": [
+    "CEO",
+    "Export Director"
+   ],
+   "source": "stated",
+   "quote": "the CEO and the Export Director",
+   "assumption_text": null
+  }
+ },
+ "soft_fields": {
+  "deliverable_format": {
+   "value": null,
+   "source": "assumed",
+   "quote": null,
+   "assumption_text": null
+  },
+  "timeline": {
+   "value": null,
+   "source": "assumed",
+   "quote": null,
+   "assumption_text": null
+  },
+  "prior_attempts": {
+   "value": null,
+   "source": "assumed",
+   "quote": null,
+   "assumption_text": null
+  },
+  "success_criteria": {
+   "value": null,
+   "source": "assumed",
+   "quote": null,
+   "assumption_text": null
+  },
+  "out_of_scope": {
+   "value": null,
+   "source": "assumed",
+   "quote": null,
+   "assumption_text": null
+  }
+ }
+}

@@ -2,8 +2,10 @@
 JML AI Analyst - deck render service.
 
 POST /render   header X-API-Key: <secret>
-  Variable payload (template 1.2):
-    {"values": {variable: text}, "rules": [table rows], "meta": {"filename": "..."}}
+  Variable payload (template 1.2 by default):
+    {"values": {variable: text}, "rules": [table rows], "meta": {"filename": "..."},
+     "workplan": compiled Phase Architect plan (optional; draws the timeline, deliverables, steering slides),
+     "template": "1.1", "1.2" (default) or "1.3" (1.2 + Approach section and work-plan slides)}
     -> 200 .pptx, header X-Render-Warnings (JSON list, may be empty)
     -> 422 {"error": ...} when the template, the table and the values disagree
   Legacy payload ({"cover": ..., "context": ...}) -> previous renderer.
@@ -53,7 +55,9 @@ def render():
     warnings = []
     try:
         if "values" in data:
-            pptx, warnings = varfill.build_deck(data.get("values") or {}, data.get("rules"))
+            pptx, warnings = varfill.build_deck(data.get("values") or {}, data.get("rules"),
+                                                workplan=data.get("workplan"),
+                                                version=data.get("template"))
         else:
             pptx = legacy_build(data)
     except (varfill.TemplateCapacityError, varfill.TemplateRulesError,

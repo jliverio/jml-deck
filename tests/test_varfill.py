@@ -170,6 +170,41 @@ t, o, so, oc = slide4(METALCO)
 check("slide 4, nothing sent: one [Firm to complete] per column",
       o == ["[Firm to complete]"] and so == ["[Firm to complete]"] and oc == ["[Firm to complete]"] and t == "[Firm to complete]", (t, o, so, oc))
 
+# 13. template 1.3: 1.2 + Approach section, work-plan slides drawn in place
+PLAN = json.load(open(os.path.join(ROOT, "phase_architect", "runs", "final_B.json")))["plan"]
+PLAN["client"] = "Atl\u00e2ntico Seguros"
+RULES13 = RULES if any(r["variable"] == "summary_title_01" for r in RULES) else RULES + [{"variable": "summary_title_01", "max_chars": 90, "if_empty": "firm_todo"}]
+v = dict(METALCO, section_04="Approach", summary_title_01="We will diagnose the claims delays in 12 to 16 weeks",
+         objective_01="Understand why claims take too long.", solution_01="The work will run 12 to 16 weeks.",
+         outcome_01="Prioritized causes of settlement delay")
+b13, w13 = varfill.build_deck(v, RULES13, workplan=PLAN, version="1.3")
+prs13, tx13 = texts(b13)
+check("1.3: 13 slides", len(prs13.slides) == 13, len(prs13.slides))
+check("1.3: no variable survives", not any(VAR_RE.search(t[2]) for t in tx13), [t for t in tx13 if VAR_RE.search(t[2])][:3])
+agenda = [t[2] for t in tx13 if t[0] == 2]
+check("1.3: agenda reads Context, Market Research, Approach, Next Steps",
+      [a for a in agenda if a in ("Context", "Market Research", "Approach", "Next Steps")] == ["Context", "Market Research", "Approach", "Next Steps"], agenda)
+check("1.3: Context slide title and columns filled",
+      any(t[0] == 4 and t[2].startswith("We will diagnose") for t in tx13) and any(t[0] == 4 and "Prioritized causes" in t[2] for t in tx13))
+check("1.3: empty Context lines hidden, not marked", not any(t[0] == 4 and "[Firm to complete]" in t[2] for t in tx13),
+      [t[2] for t in tx13 if t[0] == 4])
+check("1.3: Approach divider is 3, Next Steps divider is 4",
+      any(t[0] == 7 and t[2] == "Approach" for t in tx13) and any(t[0] == 7 and t[2] == "3" for t in tx13)
+      and any(t[0] == 11 and t[2] == "4" for t in tx13), [t[2] for t in tx13 if t[0] in (7, 11)])
+check("1.3: work-plan slides drawn in place with titles from the plan",
+      any(t[0] == 8 and t[2].startswith("The work runs") for t in tx13) and any(t[0] == 9 and "deliverables" in t[2] for t in tx13)
+      and any(t[0] == 10 and "steering meetings" in t[2] for t in tx13))
+check("1.3: work-plan slides carry the Approach tracker", sum(1 for t in tx13 if t[0] in (8, 9, 10) and t[2] == "Approach") == 3)
+_, tx13n = texts(varfill.build_deck(v, RULES13, version="1.3")[0])
+check("1.3 without a plan: slides kept and marked [Firm to complete]",
+      sum(1 for t in tx13n if t[0] in (8, 9, 10) and t[2].startswith("[Firm to complete]")) == 3)
+try:
+    varfill.build_deck(v, RULES13, version="9.9"); bad = False
+except varfill.TemplateRulesError:
+    bad = True
+check("unknown template version is refused", bad)
+check("1.2 stays the default (9 slides, no Approach)", len(texts(varfill.build_deck(METALCO, RULES)[0])[0].slides) == 9)
+
 failed = [r for r in results if not r[1]]
 for name, ok, detail in results:
     print(("PASS " if ok else "FAIL ") + name + ("" if ok else f"  -> {detail}"))

@@ -19,6 +19,7 @@ return {
     rules: rules.map(r => ({ variable: r.variable, max_chars: r.max_chars, if_empty: r.if_empty })),
     meta: { filename: `${slug}_proposal_draft.pptx` },
     workplan: A.workplan || null,
+    template: A.template || null,
     warnings: [...(A.warnings || []), ...($json.warnings || [])],
   },
 };
