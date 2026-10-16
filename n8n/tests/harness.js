@@ -194,6 +194,16 @@ const VB = run("validate_plan.js", { nodes: nodesV, json: { output: jl("runs/r5_
 check("validate: tested plan B passes", VB.valid && VB.retry_input === null, VB.violations);
 const VBad = run("validate_plan.js", { nodes: nodesV, json: { output: jl("runs/r2_B2.json") } }).json;
 check("validate: plan over the deadline fails and carries a retry input", !VBad.valid && VBad.violations.some(v => /weeks_available/.test(v)) && VBad.retry_input.previous_output && VBad.retry_input.violations.length === VBad.violations.length, VBad.violations);
+// Oct 16 token work: never_presented is repaired by code; long partner notes warn instead of forcing a retry.
+{
+  const raw = jl("runs/r5_B.json");
+  const drop = JSON.parse(JSON.stringify(raw));
+  (drop.governance.events || []).forEach(e => { if (e.type === "gate" || e.type === "workshop") e.presents = (e.presents || []).slice(0, 1); });
+  drop.architect_notes = [...(drop.architect_notes || []).slice(0, 5), "This note is deliberately written to run well past the twenty-five word limit so that the validator reports it as a warning and does not ask for a retry at all."];
+  const VR = run("validate_plan.js", { nodes: nodesV, json: { output: drop } }).json;
+  check("plan: unpresented deliverables are placed at their phase gate by code", !VR.violations.some(x => /never_presented/.test(x)) && VR.repairs.some(x => /presented at/.test(x)), [VR.violations, VR.repairs.filter(x => /presented/.test(x))]);
+  check("plan: an over-long partner note is a warning, not a retry", VR.warnings.some(x => /^note_\d+:over_25_words$/.test(x)) && !VR.violations.some(x => /^note_/.test(x)), [VR.violations, VR.warnings]);
+}
 const VErr = run("validate_plan.js", { nodes: nodesV, json: { error: { message: "Payment required" } } }).json;
 check("validate: agent error -> invalid, named, no phases", !VErr.valid && /Payment required/.test(VErr.agent_error) && VErr.output.phases.length === 0, VErr.violations.slice(0, 2));
 const trPending = { ...tr, _rules: tr._rules.map(r => /^summary_writer:(solution|outcomes)/.test(r.fills_from || "") ? { ...r, fills_from: "pending:phase_architect" } : r) };

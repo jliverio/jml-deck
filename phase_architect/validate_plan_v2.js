@@ -197,6 +197,16 @@ function validatePlan(arch, ctx) {
       else if (d.due_week > e.week) v.push(`gov:${e.id}:presents_${id}_before_due_wk${d.due_week}`);
     });
   }
+  // Repair: a deliverable that no gate or workshop presents goes to its own phase's gate, which sits at the
+  // phase end and so always at or after the due week. Every live first pass (runs 26, 50, 75, Oct 16) broke
+  // this rule and cost a second Phase Architect call; placing a deliverable at its gate needs no judgment.
+  for (const d of dels) {
+    const shownAt = e => (e.type === 'gate' || e.type === 'workshop') && (e.presents || []).includes(d.id) && e.week >= d.due_week;
+    if (events.some(shownAt)) continue;
+    const g = events.find(e => e.type === 'gate' && e.phase_order === d.phase_order && e.week >= d.due_week)
+      || events.filter(e => (e.type === 'gate' || e.type === 'workshop') && e.week >= d.due_week).sort((a, b) => a.week - b.week)[0];
+    if (g) { g.presents = [...(g.presents || []), d.id]; repairs.push(`del ${d.id}: presented at ${g.id} (its phase gate)`); }
+  }
   // attendees come from stated stakeholders, or the placeholder
   const sh = (brief.required || {}).stakeholders || {};
   const stated = sh.source === 'stated' && Array.isArray(sh.value) ? sh.value : null;
