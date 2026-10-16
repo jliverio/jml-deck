@@ -45,6 +45,8 @@ function checkSummary(out, input) {
   const L = input.limits, B = input.brief, P = input.plan, H = input.house_style;
   const neverUse = (H.never_use || []).map(t => t.replace(/ \(.*\)$/, ''));
   const protectedText = (H.protected_terms || []).join(' \n ');
+  // Shorthand the plan itself uses ("go/no-go" in a deliverable) may be copied; only new shorthand is flagged.
+  const planText = P ? P.phases.map(p => [p.name, p.objective_one_line, ...(p.macro_deliverables || [])].join(' \n ')).join(' \n ') : '';
   const clientWords = new Set(content(B.client_name));
 
   if (!out || typeof out !== 'object') return { ok: false, violations: [{ where: 'output', rule: 'not_an_object', detail: '' }], warnings: [] };
@@ -76,7 +78,7 @@ function checkSummary(out, input) {
     if (CAVEAT.test(s)) v(where, 'caveat_or_question', s.match(CAVEAT)[0]);
     if (/\d+\s?-\s?\d+\s*(weeks|months)/i.test(s)) v(where, 'range_needs_en_dash', s.match(/\d+\s?-\s?\d+/)[0]);
     for (const m of s.replace(/Change & Training/g, '').matchAll(/\s&\s|\b[A-Za-z]{2,}(?:\/[A-Za-z]{2,})+\b/g))
-      if (!protectedText.includes(m[0].trim())) v(where, 'shorthand', m[0].trim());
+      if (!protectedText.includes(m[0].trim()) && !planText.includes(m[0].trim())) v(where, 'shorthand', m[0].trim());
     if (/\byou(r|rs)?\b/i.test(s)) v(where, 'you_on_slide', '');
     if (UK.test(s) && !hasWord(protectedText, s.match(UK)[0])) w(where, 'non_us_spelling', s.match(UK)[0]);
     for (const m of s.matchAll(new RegExp(FIRM_CLAIM.source, 'ig')))

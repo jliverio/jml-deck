@@ -284,6 +284,17 @@ const scIdx = lose.objectives.findIndex(o => o.source === "success_criteria");
 lose.objectives[scIdx].text = lose.objectives[scIdx].text.replace(/\.$/, '') + " without losing speed.";
 const CSlose = run("check_summary.js", { nodes: { "Prepare summary": PS1 }, json: { output: lose } }).json;
 check("summary check: 'losing' matches the client's 'losing'/'loss' (no false not_in_source)", !CSlose.violations.some(v => v.rule === "not_in_source"), CSlose.violations);
+// Live run 75 (Oct 16): "go/no-go" copied from a deliverable was flagged as shorthand.
+const PSgo = JSON.parse(JSON.stringify(PS1));
+PSgo.summary_input.plan.phases[1].macro_deliverables[0] = "Pilot plan with go/no-go criteria";
+const goOut = JSON.parse(JSON.stringify(good));
+goOut.outcomes[0] = { text: "Pilot plan with go/no-go criteria", from: [{ phase_order: 2, deliverable: 1 }] };
+const CSgo = run("check_summary.js", { nodes: { "Prepare summary": PSgo }, json: { output: goOut } }).json;
+check("summary check: shorthand copied from the plan is allowed", !CSgo.violations.some(v => v.rule === "shorthand"), CSgo.violations);
+const goNew = JSON.parse(JSON.stringify(good));
+goNew.outcomes[0].text = goNew.outcomes[0].text + " and KPI/target sheet";
+const CSgo2 = run("check_summary.js", { nodes: { "Prepare summary": PS1 }, json: { output: goNew } }).json;
+check("summary check: new shorthand still caught", CSgo2.violations.some(v => v.rule === "shorthand"), CSgo2.violations);
 const CS4 = run("check_summary.js", { nodes: { "Prepare summary": PS0 }, json: { error: { message: "credits" } }, runIndex: 1 }).json;
 const FS4 = run("final_summary.js", { nodes: { "Prepare summary": PS0 }, json: CS4 }).json;
 check("summary final: model down, no plan -> placeholders in Solution and Outcomes", FS4.summary_values.solution_01.startsWith("[Firm to complete]") && FS4.summary_values.outcome_01.startsWith("[Firm to complete]") && FS4.summary_values.solution_02 === "" && FS4.warnings.some(w => /unavailable/.test(w)));
