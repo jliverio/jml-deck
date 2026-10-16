@@ -121,7 +121,7 @@
   "workstreams": {
    "type": "array",
    "minItems": 1,
-   "maxItems": 8,
+   "maxItems": 16,
    "items": {
     "type": "object",
     "additionalProperties": false,

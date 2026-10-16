@@ -331,9 +331,10 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
 
     # rows
     del_due = {dd["id"]: dd["due_week"] for dd in plan["deliverables"]}
-    lsize = 10 if row_h >= Inches(0.4) else 9
-    two_lines = row_h >= Inches(0.4)
-    chars_line = int((label_w - Inches(0.12)) / Inches(0.074 if lsize == 10 else 0.066))
+    # stream labels always get two lines: 10pt in tall rows, 8pt in the tightest ones
+    lsize = 10 if row_h >= Inches(0.4) else 8
+    two_lines = True
+    chars_line = int((label_w - Inches(0.12)) / Inches(0.083 if lsize == 10 else 0.067))
     for i, w in enumerate(wss):
         y = yr + i * row_h
         c = _phase_color(w["phase_order"])

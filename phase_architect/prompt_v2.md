@@ -41,7 +41,7 @@ Each phase has:
 
 STEP 3 - WORKSTREAMS
 A workstream is a stream of work inside one phase that answers one part of the governing question. Together, the workstreams of a phase answer what the phase must deliver; no two answer the same thing.
-- 2 to 4 workstreams per phase (1 only for a phase of 3 weeks or less), at most 8 in total. `id`: W1, W2, ... in phase order, then start order.
+- 2 to 4 workstreams per phase (1 only for a phase of 3 weeks or less), at most 12 in total; use more than 8 only when the engagement runs longer than 16 weeks. `id`: W1, W2, ... in phase order, then start order.
 - `name`: at most 28 characters, a noun phrase in the client's subject matter ('Supplier economics', not 'Analysis').
 - `answers`: at most 20 words: the sub-question this workstream answers.
 - `traces_to`: why it exists, one or more of: 'problem_statement'; 'success_criteria:k' for item k of `success_criteria_list`; 'gate:p' when it produces what the gate of phase p decides on. Every item of `success_criteria_list` must be traced by at least one workstream, and by one in the last phase, where the answer is tested against it.
@@ -54,7 +54,7 @@ A workstream is a stream of work inside one phase that answers one part of the g
 - `activities`: 2 or 3, each at most 60 characters, starting with a verb: what the team does. Evidence work names its sources by type (interviews with the people who do the work, operational data, documents, customers), not only the sponsors' views, and never by a name the brief does not give.
 
 STEP 4 - DELIVERABLES
-Each workstream hands over 1 or 2 deliverables, 3 to 12 in the whole plan.
+Each workstream hands over 1 or 2 deliverables, 3 to 16 in the whole plan.
 - `due_week_in_phase`: the week of the phase (1 = first week) in which the client receives it, inside its workstream's weeks. By default the workstream's last week. Earlier when other work or a meeting needs it: KPIs, a target group or a plan that later work runs against are due early; interim findings are due before the workshop that reviews them. A plan whose KPIs arrive at the end cannot measure anything.
 - `id`: D1, D2, ... in workstream order. `name`: at most 60 characters, a noun phrase for a tangible thing the client receives ('Supplier cost baseline by category'), never an activity ('Analyze suppliers').
 - `kind`: analysis (evidence or findings), design (a model, blueprint, option set, plan), build (something working: a prototype, a first version, a tool), decision_pack (what a gate decides on: a business case, a recommendation), enablement (people, hires, training, KPIs agreed).

@@ -83,7 +83,7 @@ function validatePlan(arch, ctx) {
   const wss = (arch.workstreams || []).map(w => ({ ...w }));
   const wsById = {};
   wss.forEach(w => { if (wsById[w.id]) v.push(`ws:${w.id}:duplicate_id`); wsById[w.id] = w; });
-  if (wss.length > 8) v.push(`ws:count_${wss.length}_over_8`);
+  if (wss.length > 12) v.push(`ws:count_${wss.length}_over_12`);  // the deck pages the timeline at 8 rows
   for (const w of wss) {
     const p = byOrder[w.phase_order];
     if (!p) { v.push(`ws:${w.id}:unknown_phase_${w.phase_order}`); continue; }
@@ -158,7 +158,7 @@ function validatePlan(arch, ctx) {
     if (!d.name || d.name.length > LIM.deliverable) v.push(`del:${d.id}:name_over_${LIM.deliverable}`);
     if (/^(analy[sz]e|assess|review|conduct|perform|map|build|define|develop)\b/i.test(d.name || '')) v.push(`del:${d.id}:activity_not_noun`);
   }
-  if (dels.length < 3 || dels.length > 12) v.push(`del:count_${dels.length}`);
+  if (dels.length < 3 || dels.length > 16) v.push(`del:count_${dels.length}`);
 
   // ---------- governance ----------
   const gov = arch.governance || {};
