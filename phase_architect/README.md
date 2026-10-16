@@ -74,6 +74,18 @@ Assemble market → Architect input → Phase Architect → Validate plan → Pl
 - **Context slide.** `Assemble drafts` drafts `solution_*` and `outcome_*` from the plan once their table rows read `phase_architect:plan`. Today they read `pending:phase_architect` and template 1.1 has no variables on that slide, so they are skipped. That slide still prints the hard-coded 24-week sample text until the template is changed.
 - **Renderer.** The render service ignores `workplan` until this branch is merged and deployed.
 
+## Template 1.2 (16 Oct 2026)
+
+`template_v1_2.potx` is built from 1.1 by `variables/build_template_v1_2.py`. It is used only when the render payload says `"template": "1.2"`. Payloads without that field still render on 1.1, so the published workflow is unaffected.
+
+- **Context slide.** The title is `summary_title_01`. The three columns are `objective_01-04`, `solution_01-05` and `outcome_01-04`, one line each. The table's `if_empty` hides empty lines. The Summary Writer fills these 14 variables.
+- **Approach section.** It uses `section_04`. The agenda shows it third and Next Steps (`section_03`) fourth, so the live table needs no change. Assemble drafts sets `section_04 = Approach`.
+- **Work-plan slides.** Three Default-layout slides follow the Approach divider. Their title shapes are named `workplan:timeline`, `workplan:deliverables` and `workplan:steering`.
+  - The renderer draws the plan onto them. Steering meetings beyond four add a "continued" slide.
+  - Without a plan, the slides stay and their titles start with "[Firm to complete]".
+  - You can restyle these slides in PowerPoint, but keep the shape names.
+- **Slide order.** Cover, agenda, 1 Context, Context, 2 Market Research, Market Research, 3 Approach, timeline, deliverables, steering meetings, 4 Next Steps, Next Steps, back cover.
+
 ## Files
 
 ```
@@ -87,5 +99,6 @@ run_validate.js, make_run_prompt.py, show.py   test harness
 tests/                         scenario briefs and inputs, reference fixture
 runs/                          every test run, compiled plans, final_{A,B,C}.json
 ../workplan.py                 slide drawing
-../varfill.py                  template renderer, now inserts the work plan after Market Research
+../varfill.py                  template renderer; picks 1.1 or 1.2 from the payload, draws the work plan
+../template_v1_2.potx           template 1.2 (built by ../variables/build_template_v1_2.py)
 ```
