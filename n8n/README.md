@@ -74,3 +74,15 @@ deck is pinned without a file). Results on 16 Oct 2026:
 - error (execution 12): Phase Architect and Validate plan ran twice, the second
   pass continued ($runIndex guard), the deck assembled without a work plan and
   the run log names the agent error.
+
+## October 16 changes (live)
+
+- Trigger `New proposal request`: unread mail sent to `jose.liverio+proposals@jml-ops.com`, or labelled
+  `proposal-requests` (query `{to:jose.liverio+proposals@jml-ops.com label:proposal-requests}`). The label did not
+  exist before, so no email had ever started a run. The Gmail account behind the credential is jose.liverio@jml-ops.com.
+- `Profiler schema`, `Offering schema`, `Topic schema`: auto-fix on, each with its own fixer model
+  (`Model: Profiler fixer`, `Model: Offering fixer`, `Model: Topic fixer`). A format failure on the final answer is
+  repaired by one small call instead of rerunning the whole search loop. The fix prompt forbids new content and
+  answers EMPTY when there is no JSON, so an empty answer still fails into the node's retry.
+- `Assemble market` (code/assemble_market.js): a finding reaches the deck only when its context and its action
+  cite a listed source.
