@@ -8,12 +8,16 @@ const notes = [];
 let out = null, source = c.attempt === 2 ? 'retry' : 'first';
 if (c.ok && c.out) {
   out = c.out;
-} else {
-  notes.push(c.model_error
-    ? `Summary slide: the Summary Writer was unavailable (${c.model_error}); built by code instead.`
-    : `Summary slide: the Summary Writer failed twice (${(c.violations || []).slice(0, 5).map(x => x.where + ' ' + x.rule).join('; ')}); built by code instead.`);
+} else if (c.model_error || !c.out) {
+  notes.push(`Summary slide: the Summary Writer was unavailable (${c.model_error || 'no output'}); built by code instead.`);
   out = buildFallback(input);
   source = 'fallback';
+} else {
+  // Failed twice: keep the parts of the last answer that passed; build only the failing parts by code.
+  const s = salvage(c.out, c.violations, input);
+  out = s.out;
+  source = s.from_code.length === 4 ? 'fallback' : 'partial';
+  notes.push(`Summary slide: the Summary Writer failed twice (${(c.violations || []).slice(0, 5).map(x => x.where + ' ' + x.rule).join('; ')}); built by code: ${s.from_code.join(', ')}.`);
 }
 const pass = P.pass || {};
 return { json: { ...pass, summary_values: toValues(out, input), summary_source: source,

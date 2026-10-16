@@ -10,4 +10,6 @@ try { planNode = $('Assemble drafts').first().json.workplan || null; } catch (e)
 if (!planNode) {
   try { const v = $('Validate plan').first().json; planNode = v && v.output ? v.output : null; } catch (e) { planNode = null; }
 }
-return { json: { summary_input: buildSummaryInput(b, planNode, cfg, rules), pass: $json } };
+const summary_input = buildSummaryInput(b, planNode, cfg, rules);
+// summary_input (real limits) is what Check summary holds the answer to; model_input is what the Summary Writer reads.
+return { json: { summary_input, model_input: modelInput(summary_input), pass: $json } };

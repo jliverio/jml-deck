@@ -22,6 +22,19 @@ function buildFallback(input) {
   return { title: t.length <= L.title_max_chars ? t : `Summary of our proposal for ${client}`, objectives, solution: cap(solution, 'solution'), outcomes };
 }
 
+function salvage(out, violations, input) {
+  const fb = buildFallback(input);
+  const parts = ['title', 'objectives', 'solution', 'outcomes'];
+  if (!out || typeof out !== 'object') return { out: fb, from_code: parts };
+  const bad = new Set((violations || []).map(v => String(v.where || '').split('[')[0]));
+  if ([...bad].some(p => !parts.includes(p))) return { out: fb, from_code: parts };
+  const merged = {}, from_code = [];
+  for (const p of parts) {
+    if (bad.has(p)) { merged[p] = fb[p]; from_code.push(p); } else merged[p] = out[p];
+  }
+  return { out: merged, from_code };
+}
+
 function toValues(out, input) {
   const L = input.limits, values = { summary_title_01: out.title || '' };
   const PH = { solution: '[Firm to complete] The proposed approach and phases.', outcomes: '[Firm to complete] The expected results and deliverables.' };

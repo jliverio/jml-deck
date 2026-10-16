@@ -265,11 +265,25 @@ const FS2 = run("final_summary.js", { nodes: { "Prepare summary": PS1 }, json: C
 check("summary final: a good retry is used", FS2.summary_source === "retry");
 const CS2c = run("check_summary.js", { nodes: { "Prepare summary": PS1 }, json: { output: bad }, runIndex: 1 }).json;
 const FS3 = run("final_summary.js", { nodes: { "Prepare summary": PS1 }, json: CS2c }).json;
-check("summary final: failed twice -> code fallback, with a warning", FS3.summary_source === "fallback" && FS3.warnings.some(w => /failed twice/.test(w)), FS3.warnings);
+check("summary final: failed twice -> failing parts built by code, with a warning", FS3.summary_source === "partial" && FS3.warnings.some(w => /failed twice.*built by code: objectives, solution, outcomes/.test(w)), [FS3.summary_source, FS3.warnings]);
+check("summary final: a part that passed is kept (title)", FS3.summary_values.summary_title_01 === bad.title, FS3.summary_values.summary_title_01);
 check("summary final: fallback objectives are the client's conditions", /^Develop and scale the marketplace/.test(FS3.summary_values.objective_01), FS3.summary_values.objective_01);
 check("summary final: fallback solution names the phases with weeks", FS3.summary_values.solution_02 === "Design (6 weeks)" && FS3.summary_values.solution_03 === "Pilot (18 weeks)", [FS3.summary_values.solution_02, FS3.summary_values.solution_03]);
 const fbLines = Object.entries(FS3.summary_values).filter(([k, v]) => v && v.length > (/^solution/.test(k) ? 95 : /^summary/.test(k) ? 90 : 127));
 check("summary final: every fallback line fits its box", !fbLines.length, fbLines);
+// Live run 26 (Oct 16): the retry failed only because one Solution line was 96 characters (limit 95).
+const long = JSON.parse(JSON.stringify(good));
+long.solution[1].text = long.solution[1].text.replace(/\.$/, '') + ' ' + 'x'.repeat(Math.max(1, 96 - long.solution[1].text.length));
+long.solution[1].text = long.solution[1].text.slice(0, 95) + '.';
+const CS26 = run("check_summary.js", { nodes: { "Prepare summary": PS1 }, json: { output: long }, runIndex: 1 }).json;
+const FS26 = run("final_summary.js", { nodes: { "Prepare summary": PS1 }, json: CS26 }).json;
+check("summary final: only Solution over its limit -> only Solution built by code", !CS26.ok && FS26.summary_source === "partial" && FS26.summary_values.objective_01 === good.objectives[0].text && FS26.summary_values.outcome_01 === good.outcomes[0].text && FS26.summary_values.solution_02 === "Design (6 weeks)", [CS26.violations, FS26.summary_values]);
+check("summary prep: the model sees limits 4 characters under the boxes", PS1.model_input.limits.solution.item_max_chars === 91 && PS1.model_input.limits.title_max_chars === 86 && PS1.summary_input.limits.solution.item_max_chars === 95, PS1.model_input.limits);
+const lose = JSON.parse(JSON.stringify(good));
+const scIdx = lose.objectives.findIndex(o => o.source === "success_criteria");
+lose.objectives[scIdx].text = lose.objectives[scIdx].text.replace(/\.$/, '') + " without losing speed.";
+const CSlose = run("check_summary.js", { nodes: { "Prepare summary": PS1 }, json: { output: lose } }).json;
+check("summary check: 'losing' matches the client's 'losing'/'loss' (no false not_in_source)", !CSlose.violations.some(v => v.rule === "not_in_source"), CSlose.violations);
 const CS4 = run("check_summary.js", { nodes: { "Prepare summary": PS0 }, json: { error: { message: "credits" } }, runIndex: 1 }).json;
 const FS4 = run("final_summary.js", { nodes: { "Prepare summary": PS0 }, json: CS4 }).json;
 check("summary final: model down, no plan -> placeholders in Solution and Outcomes", FS4.summary_values.solution_01.startsWith("[Firm to complete]") && FS4.summary_values.outcome_01.startsWith("[Firm to complete]") && FS4.summary_values.solution_02 === "" && FS4.warnings.some(w => /unavailable/.test(w)));

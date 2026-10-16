@@ -3,7 +3,7 @@
   n8n/code/prepare_summary.js = _summary_input.js   + prepare_summary_tail.js
   n8n/code/check_summary.js   = _summary_checker.js + check_summary_tail.js
   n8n/code/final_summary.js   = _summary_values.js  + final_summary_tail.js
-  _summary_values.js is extracted from _summary_checker.js (fmtWeeks, buildFallback, toValues).
+  _summary_values.js is extracted from _summary_checker.js (fmtWeeks, buildFallback, salvage, toValues).
 """
 import os
 import re
@@ -21,7 +21,7 @@ def grab(name):
 
 open(os.path.join(R, "_summary_values.js"), "w").write(
     "// Code-only slide and slide-4 values (extracted from _summary_checker.js by tools/build_n8n_code.py).\n"
-    + grab("fmtWeeks") + "\n\n" + grab("buildFallback") + "\n" + grab("toValues"))
+    + grab("fmtWeeks") + "\n\n" + grab("buildFallback") + "\n" + grab("salvage") + "\n" + grab("toValues"))
 for node, part in [("prepare_summary", "_summary_input.js"), ("check_summary", "_summary_checker.js"),
                    ("final_summary", "_summary_values.js")]:
     body = (f"// --- {part} (shared; edit there, then run tools/build_n8n_code.py) ---\n"

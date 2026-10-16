@@ -24,6 +24,17 @@ function summaryLimits(rules) {
   };
 }
 
+// What the model sees: the same input with every length limit a few characters tighter than the box.
+// The check holds the real limits, so a model that overshoots its target by a few characters still fits
+// (live run 26 failed twice, the second time by one character: 96 > 95).
+function modelInput(input, margin) {
+  const m = margin == null ? 4 : margin;
+  const L = JSON.parse(JSON.stringify(input.limits));
+  L.title_max_chars -= m;
+  for (const c of ['objectives', 'solution', 'outcomes']) L[c].item_max_chars -= m;
+  return { ...input, limits: L };
+}
+
 function buildSummaryInput(b, planNode, cfg, rules) {
   const stated = f => (f && f.source === 'stated' && f.value !== '' ? f.value : null);
   const client_name = String((b.hard_fields.client || {}).value || '').split(',')[0].trim();
@@ -83,4 +94,6 @@ try { planNode = $('Assemble drafts').first().json.workplan || null; } catch (e)
 if (!planNode) {
   try { const v = $('Validate plan').first().json; planNode = v && v.output ? v.output : null; } catch (e) { planNode = null; }
 }
-return { json: { summary_input: buildSummaryInput(b, planNode, cfg, rules), pass: $json } };
+const summary_input = buildSummaryInput(b, planNode, cfg, rules);
+// summary_input (real limits) is what Check summary holds the answer to; model_input is what the Summary Writer reads.
+return { json: { summary_input, model_input: modelInput(summary_input), pass: $json } };

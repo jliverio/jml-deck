@@ -23,6 +23,19 @@ function buildFallback(input) {
   return { title: t.length <= L.title_max_chars ? t : `Summary of our proposal for ${client}`, objectives, solution: cap(solution, 'solution'), outcomes };
 }
 
+function salvage(out, violations, input) {
+  const fb = buildFallback(input);
+  const parts = ['title', 'objectives', 'solution', 'outcomes'];
+  if (!out || typeof out !== 'object') return { out: fb, from_code: parts };
+  const bad = new Set((violations || []).map(v => String(v.where || '').split('[')[0]));
+  if ([...bad].some(p => !parts.includes(p))) return { out: fb, from_code: parts };
+  const merged = {}, from_code = [];
+  for (const p of parts) {
+    if (bad.has(p)) { merged[p] = fb[p]; from_code.push(p); } else merged[p] = out[p];
+  }
+  return { out: merged, from_code };
+}
+
 function toValues(out, input) {
   const L = input.limits, values = { summary_title_01: out.title || '' };
   const PH = { solution: '[Firm to complete] The proposed approach and phases.', outcomes: '[Firm to complete] The expected results and deliverables.' };
@@ -44,12 +57,16 @@ const notes = [];
 let out = null, source = c.attempt === 2 ? 'retry' : 'first';
 if (c.ok && c.out) {
   out = c.out;
-} else {
-  notes.push(c.model_error
-    ? `Summary slide: the Summary Writer was unavailable (${c.model_error}); built by code instead.`
-    : `Summary slide: the Summary Writer failed twice (${(c.violations || []).slice(0, 5).map(x => x.where + ' ' + x.rule).join('; ')}); built by code instead.`);
+} else if (c.model_error || !c.out) {
+  notes.push(`Summary slide: the Summary Writer was unavailable (${c.model_error || 'no output'}); built by code instead.`);
   out = buildFallback(input);
   source = 'fallback';
+} else {
+  // Failed twice: keep the parts of the last answer that passed; build only the failing parts by code.
+  const s = salvage(c.out, c.violations, input);
+  out = s.out;
+  source = s.from_code.length === 4 ? 'fallback' : 'partial';
+  notes.push(`Summary slide: the Summary Writer failed twice (${(c.violations || []).slice(0, 5).map(x => x.where + ' ' + x.rule).join('; ')}); built by code: ${s.from_code.join(', ')}.`);
 }
 const pass = P.pass || {};
 return { json: { ...pass, summary_values: toValues(out, input), summary_source: source,

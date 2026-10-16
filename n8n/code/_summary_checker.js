@@ -22,7 +22,8 @@ const FORMAT = /(\n|\r|\*\*|^\s*[-•·▪]\s|https?:\/\/|www\.)/;
 const UK = /\b(organisation|organisations|programme|programmes|analyse|analysed|centre|centres|modelling|behaviour|colour|favour|labour|prioritise|optimise|utilise|recognise|realise|cognisant)\b/i;
 
 const norm = s => String(s || '').replace(/[’‘]/g, "'").replace(/[“”]/g, '"').toLowerCase();
-const stem = w => w.length > 5 ? w.replace(/(ings|ing|ed|es|s)$/, '') : w.replace(/s$/, '');
+// Crude stemmer. The final 'e' goes too, so lose/losing/loss and use/using/used meet (live run 26: "lose" vs "loss").
+const stem = w => (w.length > 5 ? w.replace(/(ings|ing|ed|es|s)$/, '') : w.replace(/s$/, '')).replace(/(.{3,})e$/, '$1');
 const tokens = s => (norm(s).match(/[a-z0-9]+/g) || []);
 const content = s => tokens(s).filter(w => !STOP.has(w) && !/^\d+$/.test(w));
 const numbers = s => (String(s || '').match(/\d+(?:[.,]\d+)?/g) || []);
@@ -245,6 +246,22 @@ function buildFallback(input) {
   const outcomes = cap(last.macro_deliverables.map(plain), 'outcomes');
   const t = `We propose ${word} phases over ${fmtWeeks(P.total_duration_weeks)} for ${client}`;
   return { title: t.length <= L.title_max_chars ? t : `Summary of our proposal for ${client}`, objectives, solution: cap(solution, 'solution'), outcomes };
+}
+
+// When the second answer still fails: keep every part of it that passed and build only the failing parts
+// by code. A violation's `where` names its part (title, objectives[2], solution, ...); anything else, or no
+// answer at all, means the whole slide comes from code. Returns { out, from_code: [parts] }.
+function salvage(out, violations, input) {
+  const fb = buildFallback(input);
+  const parts = ['title', 'objectives', 'solution', 'outcomes'];
+  if (!out || typeof out !== 'object') return { out: fb, from_code: parts };
+  const bad = new Set((violations || []).map(v => String(v.where || '').split('[')[0]));
+  if ([...bad].some(p => !parts.includes(p))) return { out: fb, from_code: parts };
+  const merged = {}, from_code = [];
+  for (const p of parts) {
+    if (bad.has(p)) { merged[p] = fb[p]; from_code.push(p); } else merged[p] = out[p];
+  }
+  return { out: merged, from_code };
 }
 
 // The template variables for slide 4 (template 1.2): summary_title_01, objective_NN, solution_NN, outcome_NN.
