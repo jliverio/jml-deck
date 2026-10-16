@@ -378,7 +378,10 @@ def governance_slides(prs, plan, section, client, per_slide=4, slide=None):
             y = TOP
             head = f"Week {e['week']}"
             lab_w = cw - Inches(0.7)
-            _text(s, _clip(e["label"], int(lab_w / Inches(0.088))), size=11, bold=True, x=x, y=y, w=lab_w, h=Inches(0.3))
+            fit11 = int(lab_w / Inches(0.088))
+            lsize = 11 if len(e["label"]) <= fit11 else 9
+            _text(s, _clip(e["label"], int(lab_w / Inches(0.072)) if lsize == 9 else fit11), size=lsize, bold=True,
+                  x=x, y=y, w=lab_w, h=Inches(0.3))
             _text(s, head, size=10, color=GREY, align=PP_ALIGN.RIGHT, x=x + cw - Inches(0.68), y=y, w=Inches(0.68), h=Inches(0.3))
             _line(s, x, y + Inches(0.34), x + cw, y + Inches(0.34), color=BLACK, width=1.0)
             fill = YELLOW if e["type"] == "gate" else (ELECTRIC if e["type"] == "workshop" else NAVY)
