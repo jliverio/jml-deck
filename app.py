@@ -2,10 +2,10 @@
 JML AI Analyst - deck render service.
 
 POST /render   header X-API-Key: <secret>
-  Variable payload (template 1.1):
+  Variable payload (template 1.2 by default):
     {"values": {variable: text}, "rules": [table rows], "meta": {"filename": "..."},
-     "workplan": compiled Phase Architect plan (optional; adds timeline, deliverables, steering slides),
-     "template": "1.1" (default) or "1.2" (Context variables + Approach section)}
+     "workplan": compiled Phase Architect plan (optional; draws the timeline, deliverables, steering slides),
+     "template": "1.1", "1.2" (default) or "1.3" (1.2 + Approach section and work-plan slides)}
     -> 200 .pptx, header X-Render-Warnings (JSON list, may be empty)
     -> 422 {"error": ...} when the template, the table and the values disagree
   Legacy payload ({"cover": ..., "context": ...}) -> previous renderer.
@@ -35,7 +35,7 @@ PPTX = "application/vnd.openxmlformats-officedocument.presentationml.presentatio
 @app.get("/health")
 def health():
     return jsonify(ok=True, service="jml-deck", auth=bool(API_KEY),
-                   renderer="variables-1.1", legacy=LEGACY,
+                   renderer="variables-1.2", legacy=LEGACY,
                    template=os.path.exists(varfill.TEMPLATE))
 
 

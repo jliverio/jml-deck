@@ -1,5 +1,5 @@
 """
-varfill.py - JML AI Analyst deck renderer (variable-based, template 1.1).
+varfill.py - JML AI Analyst deck renderer (variable-based, template 1.2: 1.1 plus the slide 4 summary variables).
 
 The template marks every editable text with a lowercase variable name
 (section_01, finding_02_headline, ...). Everything else ships as written.
@@ -36,12 +36,13 @@ from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-TEMPLATE = os.path.join(HERE, "template_v1_1.potx")
-# Template chosen by the payload's "template" field; 1.1 stays the default so
+TEMPLATE = os.path.join(HERE, "template_v1_2.potx")
+# Template chosen by the payload's "template" field. No field = TEMPLATE (1.2), so
 # callers that send no version (the published workflow) are unchanged.
 TEMPLATES = {
-    "1.1": TEMPLATE,
-    "1.2": os.path.join(HERE, "template_v1_2.potx"),  # Context variables + Approach section
+    "1.1": os.path.join(HERE, "template_v1_1.potx"),
+    "1.2": TEMPLATE,                                     # 1.1 + slide 4 summary variables
+    "1.3": os.path.join(HERE, "template_v1_3.potx"),     # 1.2 + Approach section and work-plan slides
 }
 FIRM_TODO = "[Firm to complete]"
 TOKEN = re.compile(r"(?<![A-Za-z0-9_])[a-z0-9]+(?:_[a-z0-9]+)+(?![A-Za-z0-9_])")
@@ -52,9 +53,12 @@ DEFAULT_RULES = [
     (r"cover_title_\d+", 21, "firm_todo"),
     (r"cover_subtitle_\d+", 100, "firm_todo"),
     (r"section_\d+", 20, "remove_row"),
-    (r"objective_\d+", 127, "firm_todo"),
-    (r"solution_\d+", 95, "firm_todo"),
-    (r"outcome_\d+", 127, "firm_todo"),
+    (r"summary_title_\d+", 90, "firm_todo"),
+    (r"(objective|outcome)_01", 127, "firm_todo"),
+    (r"solution_01", 95, "firm_todo"),
+    (r"objective_\d+", 127, "hide_line"),
+    (r"solution_\d+", 95, "hide_line"),
+    (r"outcome_\d+", 127, "hide_line"),
     (r"finding_\d+_headline", 80, "remove_row"),
     (r"finding_\d+_action_taken", 90, "remove_row"),
     (r"finding_\d+_(context|result_achieved)", 90, "hide_line"),

@@ -1,5 +1,5 @@
 """
-Seed for the n8n data table `template_variables` (template 1.1).
+Seed for the n8n data table `template_variables` (template 1.2).
 
 The live copy is the n8n data table; this file is the version-controlled
 starting point and the input for the renderer's offline tests.
@@ -13,6 +13,8 @@ Columns
                   fixed:<text>          literal text; {client_name} is filled in
                   researcher:<field>    market researchers: summary, context,
                                         action, result, sources
+                  summary_writer:<part> the Summary Writer agent: title,
+                                        objectives, solution, outcomes
                   pending:<agent>       not built yet; treated as empty
                   none                  slot not used
   writing_rule  instruction given to the agent that writes or shortens it
@@ -63,34 +65,39 @@ for n in range(1, 8):
         "slide header. No numbers (the template prints them).",
         "remove_row", sections.get(n, ""))
 
-# Slide 4 (not variables in the template yet)
-obj = ["MetalCo wants to launch a digital marketplace for construction materials.",
+# Slide 4: Summary of our proposal (template 1.2). Written by the Summary Writer agent
+# (06_proposal_summary.md); limits estimated from a test render (substitute font, 14 pt, box 277 x 296 pt).
+add("summary_title_01", 90, "estimated", "summary_writer:title",
+    "One full sentence naming the client, no final period. With a plan: what the work as a whole "
+    "will do, with the total duration and the number of phases. Without a plan: what the client wants.",
+    "firm_todo", "We will design and pilot MetalCo's marketplace in two phases over 16 weeks")
+obj = ["Launch a digital marketplace for construction materials.",
        "Reach smaller contractors directly without losing distributor margins.",
        "Grow digital revenue to 10% of sales within two years.",
        "Launch in Iberia first, then expand to other markets."]
 for n in range(1, 5):
-    add(f"objective_{n:02d}", 127, "estimated", "pending:brief_organizer",
-        "One client goal per line, in the client's own terms. Client or goal as the subject, "
-        "present tense. Use the brief's own figures. No solution or firm language.",
-        "firm_todo", obj[n - 1])
-sol = ["[Firm] will run a 16-week project in two phases: Blueprint and Pilot.",
-       "Blueprint (6 weeks): define the marketplace model, pricing and channel rules.",
-       "Pilot (10 weeks): launch with 50 contractors in Madrid and measure uptake.",
-       "Weekly steering with MetalCo's commercial and IT leads.", ""]
+    add(f"objective_{n:02d}", 127, "estimated", "summary_writer:objectives",
+        "One client goal per line, verb first, no subject, in the client's own words. Every "
+        "condition the client stated appears. No solution or firm language.",
+        "firm_todo" if n == 1 else "hide_line", obj[n - 1])
+sol = ["The work will run 16 weeks in two phases, one after the other.",
+       "Design (6 weeks): Define the marketplace model, pricing and channel rules.",
+       "Pilot (10 weeks): Launch with a first group of contractors and measure uptake.",
+       "The rollout after the pilot will not be part of these phases.", ""]
 for n in range(1, 6):
-    add(f"solution_{n:02d}", 95, "estimated", "pending:phase_architect",
-        "The firm as subject, future tense (\"will\"). One phase or workstream per line. Phase "
-        "names and lengths only as the Phase Architect sets them.",
-        "firm_todo", sol[n - 1])
-out = ["Marketplace blueprint: operating model, pricing and channel-conflict rules.",
-       "Live pilot with uptake and margin data from real contractors.",
-       "Business case for Iberian roll-out, with risks and phasing.",
-       "Go/no-go recommendation on scale-up."]
+    add(f"solution_{n:02d}", 95, "estimated", "summary_writer:solution",
+        "Line 1: total duration, number of phases and how they run. Then one line per phase, "
+        "\"Name (N weeks): objective\". Last, what stays outside the phases, only when the brief or "
+        "the plan says so. Future tense. Names and weeks exactly as the Phase Architect set them.",
+        "firm_todo" if n == 1 else "hide_line", sol[n - 1])
+out = ["Marketplace business model blueprint",
+       "Roadmap and feature backlog for a first version",
+       "Business case including implementation plan and roadmap", ""]
 for n in range(1, 5):
-    add(f"outcome_{n:02d}", 127, "estimated", "pending:phase_architect",
-        "Lead with the deliverable as a noun phrase, then what it gives the client. Do not "
-        "promise results the firm cannot control.",
-        "firm_todo", out[n - 1])
+    add(f"outcome_{n:02d}", 127, "estimated", "summary_writer:outcomes",
+        "A deliverable the client receives, as a noun phrase in the plan's own words. No promised "
+        "results and no adjective the deliverable does not carry.",
+        "firm_todo" if n == 1 else "hide_line", out[n - 1])
 
 # Slide 6: market findings (CAR)
 ex = {

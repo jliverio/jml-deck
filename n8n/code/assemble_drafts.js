@@ -27,10 +27,10 @@ rules.forEach(r => { byVar[r.variable] = r; });
 const values = {};
 const drafts = {};
 const warnings = [];
-// Template 1.2 adds the Approach section (section_04, shown third on the agenda) and
-// holds the work-plan slides. The renderer keeps 1.1 for payloads without `template`.
-const TEMPLATE_VERSION = '1.2';
-if (TEMPLATE_VERSION === '1.2') values.section_04 = 'Approach';
+// Template 1.3 (= 1.2 + Approach section) names section_04 Approach, shown third on the agenda,
+// and holds the work-plan slides. Payloads without `template` render on the default (1.2).
+const TEMPLATE_VERSION = '1.3';
+if (TEMPLATE_VERSION === '1.3') values.section_04 = 'Approach';
 
 // 1. Fixed text.
 for (const r of rules) {

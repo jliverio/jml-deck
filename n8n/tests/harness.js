@@ -10,15 +10,15 @@ const OUT = path.join(__dirname, "out");
 fs.mkdirSync(OUT, { recursive: true });
 
 // Run a Code-node body. nodes: {name: json} for $(), json: $json, input: $input.all() items
-function run(file, { nodes = {}, json = {}, input = [] } = {}) {
+function run(file, { nodes = {}, json = {}, input = [], runIndex = 0 } = {}) {
   const $ = name => {
     if (!(name in nodes)) throw new Error(`mock: node "${name}" not provided`);
     const j = nodes[name];
     return { first: () => ({ json: j }), item: { json: j }, all: () => [{ json: j }] };
   };
   const $input = { all: () => input.map(j => ({ json: j })), item: { json } };
-  const fn = new Function("$", "$json", "$input", code(file));
-  return fn($, json, $input);
+  const fn = new Function("$", "$json", "$input", "$runIndex", code(file));
+  return fn($, json, $input, runIndex);
 }
 
 const results = [];
@@ -76,7 +76,7 @@ const topic = {
 
 // ---------- 1. Template rules ----------
 const tr = run("template_rules.js", { nodes: { checkProfiler }, input: RULES })[0].json;
-check("rules: all 49 rows kept", tr._rules.length === 49, tr._rules.length);
+check("rules: all 50 rows kept", tr._rules.length === RULES.length && RULES.length === 50, tr._rules.length);
 check("rules: 5 finding slots", tr._research.finding_slots === 5, tr._research.finding_slots);
 check("rules: both researchers -> 3 rows each", tr._research.max_rows === 3, tr._research.max_rows);
 check("rules: field_rules carry draft_chars 2x", tr._research.field_rules.find(f => f.field === "context").draft_chars === 180, tr._research.field_rules);
@@ -175,6 +175,7 @@ fs.writeFileSync(path.join(OUT, "payload_clean.json"), JSON.stringify(Pc, null, 
 const Pe = run("build_render_payload.js", { nodes: { "Assemble drafts": Aempty, "Template rules": tr }, json: { final: {} } }).json;
 fs.writeFileSync(path.join(OUT, "payload_empty.json"), JSON.stringify(Pe, null, 1));
 
+{ // Phase Architect block (scoped so its names do not clash with the Summary Writer block)
 // ---------- 5. Phase Architect v2: input, validation, Context slide, payload ----------
 const PA = path.join(ROOT, "phase_architect");
 const jl = f => JSON.parse(fs.readFileSync(path.join(PA, f), "utf8"));
@@ -195,11 +196,12 @@ const VBad = run("validate_plan.js", { nodes: nodesV, json: { output: jl("runs/r
 check("validate: plan over the deadline fails and carries a retry input", !VBad.valid && VBad.violations.some(v => /weeks_available/.test(v)) && VBad.retry_input.previous_output && VBad.retry_input.violations.length === VBad.violations.length, VBad.violations);
 const VErr = run("validate_plan.js", { nodes: nodesV, json: { error: { message: "Payment required" } } }).json;
 check("validate: agent error -> invalid, named, no phases", !VErr.valid && /Payment required/.test(VErr.agent_error) && VErr.output.phases.length === 0, VErr.violations.slice(0, 2));
-const APpending = run("assemble_drafts.js", { nodes: nodesA, json: VB }).json;
+const trPending = { ...tr, _rules: tr._rules.map(r => /^summary_writer:(solution|outcomes)/.test(r.fills_from || "") ? { ...r, fills_from: "pending:phase_architect" } : r) };
+const APpending = run("assemble_drafts.js", { nodes: { ...nodesA, "Template rules": trPending }, json: VB }).json;
 check("context slide: rows still pending in the table are not drafted", !APpending.items.some(i => /^(solution|outcome)_/.test(i.variable)) && APpending.workplan);
 check("context slide: pending rows named in the run log", APpending.warnings.some(w => /still marked pending:phase_architect/.test(w)), APpending.warnings);
 // Same run with the table rows switched on (fills_from phase_architect:plan), as after the template gets the variables.
-const trOn = { ...tr, _rules: tr._rules.map(r => /^pending:phase_architect/.test(r.fills_from || "") ? { ...r, fills_from: "phase_architect:plan" } : r) };
+const trOn = { ...tr, _rules: tr._rules.map(r => /^summary_writer:(solution|outcomes)/.test(r.fills_from || "") ? { ...r, fills_from: "phase_architect:plan" } : r) };
 const AP = run("assemble_drafts.js", { nodes: { ...nodesA, "Template rules": trOn }, json: VB }).json;
 const sol = AP.items.filter(i => /^solution_/.test(i.variable));
 const out = AP.items.filter(i => /^outcome_/.test(i.variable));
@@ -207,7 +209,7 @@ check("context slide: 5 solution lines and 4 outcome lines drafted", sol.length 
 check("context slide: phase names and weeks come from the plan", VB.output.phases.every(p => sol.some(i => i.draft.startsWith(p.name + " ("))), sol.map(i => i.draft));
 check("context slide: outcomes are plan deliverables", out.every(i => VB.output.deliverables.some(d => i.draft.startsWith(d.name))), out.map(i => i.draft));
 check("assemble: workplan carried with the client name", AP.workplan && AP.workplan.client === "MetalCo" && AP.workplan.phases.length === 2);
-const trSW = { ...tr, _rules: tr._rules.map(r => /^pending:phase_architect/.test(r.fills_from || "") ? { ...r, fills_from: "summary_writer:solution" } : r) };
+const trSW = tr; // the seed table gives slide 4 to the Summary Writer
 const APsw = run("assemble_drafts.js", { nodes: { ...nodesA, "Template rules": trSW }, json: VB }).json;
 check("context slide owned by the Summary Writer: no approach drafts, no warning", !APsw.items.some(i => /^(solution|outcome)_/.test(i.variable)) && !APsw.warnings.some(w => /solution\/outcome|pending/.test(w)), APsw.warnings);
 const APx = run("assemble_drafts.js", { nodes: nodesA, json: VErr }).json;
@@ -217,7 +219,70 @@ const CP = run("check_copy.js", { nodes: { "Assemble drafts": AP }, json: cleanP
 const PP = run("build_render_payload.js", { nodes: { "Assemble drafts": AP, "Template rules": trOn }, json: CP }).json;
 fs.writeFileSync(path.join(OUT, "payload_workplan.json"), JSON.stringify(PP, null, 1));
 check("payload: workplan sent to the renderer", PP.workplan && PP.workplan.deliverables.length > 0);
-check("payload: template 1.2 requested and Approach section named", PP.template === "1.2" && PP.values.section_04 === "Approach", [PP.template, PP.values.section_04]);
+check("payload: template 1.3 requested and Approach section named", PP.template === "1.3" && PP.values.section_04 === "Approach", [PP.template, PP.values.section_04]);
+}
+// ---------- Summary Writer chain (slide 4) ----------
+const FX = f => JSON.parse(fs.readFileSync(path.join(__dirname, "fixtures", f), "utf8"));
+const brief06 = FX("doc06_brief.json"), plan06 = FX("doc06_plan.json");
+const good = FX("summary_out_doc06.json"), goodNoPlan = FX("summary_out_noplan.json");
+const cfgS = { jargon_never: ["leverage", "learnings", "MVP", "proven", "scalable"] };
+const passIn = { final: { finding_01_headline: "x" }, failed: [], attempt: 1, warnings: ["copy note"] };
+const baseNodes = { "Brief Organizer": { output: brief06 }, "Config": cfgS, "Template rules": tr };
+
+const PS0 = run("prepare_summary.js", { nodes: baseNodes, json: passIn }).json;
+check("summary prep: no plan while the Architect does not run", PS0.summary_input.plan === null);
+check("summary prep: limits from the table", JSON.stringify(PS0.summary_input.limits) === JSON.stringify({ title_max_chars: 90,
+  objectives: { min: 2, max: 4, item_max_chars: 127 }, solution: { min: 2, max: 5, item_max_chars: 95 }, outcomes: { min: 2, max: 4, item_max_chars: 127 } }), PS0.summary_input.limits);
+check("summary prep: copy results carried through", PS0.pass.final.finding_01_headline === "x");
+const PS1 = run("prepare_summary.js", { nodes: { ...baseNodes, "Validate plan": { output: plan06 } }, json: passIn }).json;
+check("summary prep: plan read from Validate plan", PS1.summary_input.plan && PS1.summary_input.plan.phases.length === 2);
+check("summary prep: only the scope note reaches the slide", JSON.stringify(PS1.summary_input.plan.scope_notes) === JSON.stringify(["The rollout after the pilot is not in these phases."]), PS1.summary_input.plan.scope_notes);
+
+const planV2 = FX("doc06_plan_v2.json");
+const PSv2 = run("prepare_summary.js", { nodes: { ...baseNodes, "Assemble drafts": { workplan: planV2 } }, json: passIn }).json;
+check("summary prep: Phase Architect v2 plan read from Assemble drafts.workplan", PSv2.summary_input.plan && PSv2.summary_input.plan.phases.length === planV2.phases.length);
+check("summary prep: v2 deliverables grouped under their phase", PSv2.summary_input.plan.phases[0].macro_deliverables[0] === planV2.deliverables.filter(d => d.phase_order === 1).sort((a, b) => a.due_week - b.due_week)[0].name, PSv2.summary_input.plan.phases[0].macro_deliverables);
+const CS1 = run("check_summary.js", { nodes: { "Prepare summary": PS1 }, json: { output: good } }).json;
+check("summary check: real model output passes", CS1.ok && CS1.attempt === 1, CS1.violations);
+const bad = JSON.parse(JSON.stringify(good));
+bad.solution[0].text = "We will run a 24-week project using our proven methodology and experienced team.";
+bad.objectives[0].text = "[Client] wants a new business model centered on a digital marketplace.";
+bad.outcomes[0].text = "A de-risked marketplace ready for wider roll-out";
+const CS2 = run("check_summary.js", { nodes: { "Prepare summary": PS1 }, json: { output: bad } }).json;
+check("summary check: firm claim, subject and promise caught", !CS2.ok && ["firm_claim", "objective_frame", "promise"].every(r => CS2.violations.some(v => v.rule === r)), CS2.violations.map(v => v.rule));
+check("summary check: retry message in plain words", /claim about the firm/.test(CS2.retry_message), CS2.retry_message);
+const CS3 = run("check_summary.js", { nodes: { "Prepare summary": PS1 }, json: { error: { message: "Your Gateway credits have been depleted" } } }).json;
+check("summary check: model error goes to the retry path", !CS3.ok && /credits/.test(CS3.model_error));
+const CS2b = run("check_summary.js", { nodes: { "Prepare summary": PS1 }, json: { output: good }, runIndex: 1 }).json;
+check("summary check: second run is marked attempt 2", CS2b.ok && CS2b.attempt === 2, CS2b.attempt);
+
+const FS1 = run("final_summary.js", { nodes: { "Prepare summary": PS1 }, json: CS1 }).json;
+check("summary final: first answer used", FS1.summary_source === "first" && FS1.summary_values.summary_title_01 === good.title);
+check("summary final: copy results and warnings kept", FS1.final.finding_01_headline === "x" && FS1.warnings[0] === "copy note");
+check("summary final: 14 slide-4 variables", Object.keys(FS1.summary_values).length === 14, Object.keys(FS1.summary_values));
+check("summary final: unused lines sent empty", FS1.summary_values.solution_05 === "", FS1.summary_values.solution_05);
+const FS2 = run("final_summary.js", { nodes: { "Prepare summary": PS1 }, json: CS2b }).json;
+check("summary final: a good retry is used", FS2.summary_source === "retry");
+const CS2c = run("check_summary.js", { nodes: { "Prepare summary": PS1 }, json: { output: bad }, runIndex: 1 }).json;
+const FS3 = run("final_summary.js", { nodes: { "Prepare summary": PS1 }, json: CS2c }).json;
+check("summary final: failed twice -> code fallback, with a warning", FS3.summary_source === "fallback" && FS3.warnings.some(w => /failed twice/.test(w)), FS3.warnings);
+check("summary final: fallback objectives are the client's conditions", /^Develop and scale the marketplace/.test(FS3.summary_values.objective_01), FS3.summary_values.objective_01);
+check("summary final: fallback solution names the phases with weeks", FS3.summary_values.solution_02 === "Design (6 weeks)" && FS3.summary_values.solution_03 === "Pilot (18 weeks)", [FS3.summary_values.solution_02, FS3.summary_values.solution_03]);
+const fbLines = Object.entries(FS3.summary_values).filter(([k, v]) => v && v.length > (/^solution/.test(k) ? 95 : /^summary/.test(k) ? 90 : 127));
+check("summary final: every fallback line fits its box", !fbLines.length, fbLines);
+const CS4 = run("check_summary.js", { nodes: { "Prepare summary": PS0 }, json: { error: { message: "credits" } }, runIndex: 1 }).json;
+const FS4 = run("final_summary.js", { nodes: { "Prepare summary": PS0 }, json: CS4 }).json;
+check("summary final: model down, no plan -> placeholders in Solution and Outcomes", FS4.summary_values.solution_01.startsWith("[Firm to complete]") && FS4.summary_values.outcome_01.startsWith("[Firm to complete]") && FS4.summary_values.solution_02 === "" && FS4.warnings.some(w => /unavailable/.test(w)));
+const PS5 = run("prepare_summary.js", { nodes: baseNodes, json: passIn }).json;
+const CS5 = run("check_summary.js", { nodes: { "Prepare summary": PS5 }, json: { output: goodNoPlan } }).json;
+check("summary check: no-plan model output passes", CS5.ok, CS5.violations);
+const FS5 = run("final_summary.js", { nodes: { "Prepare summary": PS5 }, json: CS5 }).json;
+const PP = run("build_render_payload.js", { nodes: { "Assemble drafts": A, "Template rules": tr }, json: FS1 }).json;
+check("payload: slide 4 values merged", PP.values.summary_title_01 === good.title && PP.values.objective_04 === good.objectives[3].text && PP.values.finding_01_headline !== undefined);
+check("payload: slide 4 values carry no citation", !/\[\d/.test(PP.values.objective_01));
+const PP5 = run("build_render_payload.js", { nodes: { "Assemble drafts": A, "Template rules": tr }, json: FS5 }).json;
+fs.writeFileSync(path.join(OUT, "payload_summary_doc06.json"), JSON.stringify(PP, null, 1));
+fs.writeFileSync(path.join(OUT, "payload_summary_noplan.json"), JSON.stringify(PP5, null, 1));
 
 const failed = results.filter(r => !r.ok);
 results.forEach(r => console.log((r.ok ? "PASS " : "FAIL ") + r.name + (r.ok ? "" : "  -> " + JSON.stringify(r.detail))));

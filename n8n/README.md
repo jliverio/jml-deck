@@ -21,6 +21,14 @@ and tested here first.
 | prompts/02c_topic_researcher.txt | Topic researcher (system message) |
 | prompts/04_copywriter_variables.txt | Copywriter and Copywriter retry (system message) |
 | prompts/04_copywriter_schema.json | Copy schema, Copy retry schema |
+| code/prepare_summary.js | Prepare summary (slide 4: Summary of our proposal) |
+| code/check_summary.js | Check summary (runs on both attempts) |
+| code/final_summary.js | Final summary |
+| prompts/06_summary_writer.txt | Summary Writer and Summary Writer retry (system message) |
+| prompts/06_summary_writer_schema.json | Summary schema, Summary retry schema |
+
+The three summary node files are built from shared parts (`_summary_input.js`, `_summary_checker.js`,
+`*_tail.js`) by `python3 tools/build_n8n_code.py`; edit the parts, rebuild, then paste.
 
 The variable rules live in the n8n data table `template_variables`
 (id oEGx7TvhjZ2X6HeB). `variables/` at the repo root is its seed.
@@ -29,7 +37,8 @@ Flow: Gmail → Config → Brief Organizer → Client Profiler → Read template
 variables → Template rules → researchers (rules injected) → Architect input → Phase
 Architect → Validate plan → Plan valid? [once back to Phase Architect with the violations] → Assemble drafts →
 Copywriter (one call, whole deck) → Check copy → [Copywriter retry → Check
-retry] → Build render payload → Build deck (Render) → reply.
+retry] → Prepare summary → Summary Writer → Check summary → Summary OK? →
+[Summary Writer retry → Check summary] → Final summary → Build render payload → Build deck (Render) → reply.
 
 Tests: `node n8n/tests/harness.js` runs these files with mocked n8n lookups.
 Test entry point: the "Test brief (no email)" webhook, which only runs with the

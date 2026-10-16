@@ -11,7 +11,7 @@ for (const [v, t] of Object.entries(final)) {
 }
 // Slide 4 (summary): final text from the Summary Writer chain, never through the Copywriter.
 Object.assign(values, $json.summary_values || {});
-const slug = String(A.client_name || 'client').normalize('NFKD').replace(/[̀-ͯ]/g, '')
+const slug = String(A.client_name || 'client').normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
   .replace(/[^A-Za-z0-9]+/g, '_').replace(/^_+|_+$/g, '') || 'client';
 return {
   json: {

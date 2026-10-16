@@ -1,0 +1,81 @@
+{
+ "phases": [
+  {
+   "name": "Design",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 6,
+   "duration_weeks": {
+    "min": 6,
+    "max": 6
+   },
+   "duration_derived": false,
+   "objective_one_line": "Get answers to key questions to create blueprint.",
+   "macro_deliverables": [
+    "Blueprint with filled-out hypotheses on each component",
+    "Wireframe prototype built",
+    "Product roadmap and feature backlog developed",
+    "Detailed project plan for Pilot/MVP phase"
+   ],
+   "depends_on_assumptions": [
+    "engagement_type",
+    "engagement_length",
+    "stakeholders",
+    "timeline",
+    "prior_attempts"
+   ]
+  },
+  {
+   "name": "Pilot",
+   "order": 2,
+   "start_week": 7,
+   "end_week": 24,
+   "duration_weeks": {
+    "min": 18,
+    "max": 18
+   },
+   "duration_derived": false,
+   "objective_one_line": "Build MVP and launch with small group of users. Test and iterate.",
+   "macro_deliverables": [
+    "Strategic KPIs and rationale decided and aligned with key stakeholders",
+    "Key internal hires identified and onboarded",
+    "Identification of first customer target group (‘archetype’)",
+    "Full business case including detailed implementation plan and roadmap"
+   ],
+   "depends_on_assumptions": [
+    "engagement_type",
+    "engagement_length",
+    "stakeholders",
+    "deliverable_format",
+    "timeline",
+    "out_of_scope"
+   ]
+  }
+ ],
+ "sequencing": "sequential",
+ "total_duration_weeks": {
+  "min": 24,
+  "max": 24
+ },
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Design",
+    "start": 1,
+    "end": 6
+   },
+   {
+    "phase": "Pilot",
+    "start": 7,
+    "end": 24
+   }
+  ]
+ },
+ "architect_notes": [
+  "Engagement type and the 24-week length are the firm's own proposal; every phase and week count rests on them.",
+  "The split into 6 and 18 weeks is an estimate; the brief gives only the 24-week total.",
+  "The rollout after the pilot is not in these phases.",
+  "Not covered by the phases: European Commission, EU plan includes digital product passport acts for construction products. Confirm whether it is in scope."
+ ]
+}

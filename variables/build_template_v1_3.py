@@ -1,29 +1,24 @@
 """
-Builds template_v1_2.potx from template_v1_1.potx. Run from the repo root:
+Builds template_v1_3.potx from template_v1_2.potx (1.2 = 1.1 + the slide 4
+summary variables, built by tools/make_template_1_2.py). Run from the repo root:
 
-    python3 variables/build_template_v1_2.py
+    python3 variables/build_template_v1_3.py
 
-What changes against 1.1 (nothing else is touched):
+What 1.3 adds to 1.2 (nothing else is touched):
 
-1. Context slide (4): the hard-coded sample text becomes variables.
-     title             summary_title_01   (the slide's action title)
-     Objectives box    objective_01..04
-     Solution box      solution_01..05
-     Outcomes box      outcome_01..04
-   One paragraph per variable; empty ones are hidden by the table's if_empty.
-2. Approach section: a new divider "3" and three work-plan slides after
+1. Approach section: a new divider "3" and three work-plan slides after
    Market Research. The section name is section_04; the agenda shows it third
-   and Next Steps (section_03) fourth, so the live 1.1 table keeps working
-   unchanged. The Next Steps divider now prints "4".
-3. The three work-plan slides are named, not filled: their title placeholder is
+   and Next Steps (section_03) fourth, so the live table needs no change.
+   The Next Steps divider now prints "4".
+2. The three work-plan slides are named, not filled: their title placeholder is
    called workplan:timeline, workplan:deliverables and workplan:steering. The
    renderer draws the plan onto them (workplan.py); without a plan it marks
    them [Firm to complete]. Restyle their chrome in PowerPoint freely; keep the
    shape names.
 
-Slide order in 1.2: cover, agenda, 1 Context, Context, 2 Market Research,
-Market Research, 3 Approach, timeline, deliverables, steering meetings,
-4 Next Steps, Next Steps, back cover.
+Slide order in 1.3: cover, agenda, 1 Context, summary (slide 4), 2 Market
+Research, Market Research, 3 Approach, timeline, deliverables, steering
+meetings, 4 Next Steps, Next Steps, back cover.
 """
 import copy
 import io
@@ -36,8 +31,8 @@ ROOT = os.path.dirname(HERE)
 sys.path.insert(0, ROOT)
 import varfill  # noqa: E402
 
-SRC = os.path.join(ROOT, "template_v1_1.potx")
-DST = os.path.join(ROOT, "template_v1_2.potx")
+SRC = os.path.join(ROOT, "template_v1_2.potx")
+DST = os.path.join(ROOT, "template_v1_3.potx")
 R_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
 
 
@@ -115,14 +110,11 @@ def main():
     slides = list(prs.slides)
     agenda, context, next_div, next_steps = slides[1], slides[3], slides[6], slides[7]
 
-    # 1. Context slide
-    for sh in context.shapes:
-        if sh.is_placeholder and sh.placeholder_format.idx == 0:
-            sh.text_frame.paragraphs[0].runs[0].text = "summary_title_01"
-    boxes = {sh.name: sh for sh in context.shapes}
-    set_paragraphs(boxes["Google Shape;881;p247"], [f"objective_0{i}" for i in range(1, 5)])
-    set_paragraphs(boxes["Google Shape;882;p247"], [f"solution_0{i}" for i in range(1, 6)])
-    set_paragraphs(boxes["Google Shape;883;p247"], [f"outcome_0{i}" for i in range(1, 5)])
+    # 1. Slide 4 already holds the summary variables in 1.2; refuse a wrong source.
+    have = {r.text for sh in context.shapes if sh.has_text_frame for p in sh.text_frame.paragraphs for r in p.runs}
+    missing = {"summary_title_01", "objective_01", "solution_01", "outcome_01"} - have
+    if missing:
+        raise SystemExit(f"{SRC} is not template 1.2 (slide 4 lacks {sorted(missing)})")
 
     # 2. Agenda: Approach (section_04) third, Next Steps (section_03) fourth
     for grp in agenda.shapes:
