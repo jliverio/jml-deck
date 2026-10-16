@@ -1,0 +1,214 @@
+{
+ "type": "object",
+ "additionalProperties": true,
+ "required": [
+  "problem_focus",
+  "focus_unclear",
+  "topic",
+  "client_name",
+  "client_verified",
+  "client_url",
+  "business_unit",
+  "product",
+  "current_state",
+  "geography",
+  "market",
+  "market_size",
+  "client_size",
+  "competitors",
+  "summary"
+ ],
+ "properties": {
+  "problem_focus": {
+   "type": "string",
+   "enum": [
+    "offering",
+    "topic",
+    "both"
+   ]
+  },
+  "focus_unclear": {
+   "type": "boolean"
+  },
+  "topic": {
+   "type": [
+    "string",
+    "null"
+   ]
+  },
+  "client_name": {
+   "type": [
+    "string",
+    "null"
+   ]
+  },
+  "client_verified": {
+   "type": "boolean"
+  },
+  "client_url": {
+   "type": [
+    "string",
+    "null"
+   ]
+  },
+  "business_unit": {
+   "type": [
+    "string",
+    "null"
+   ]
+  },
+  "product": {
+   "type": [
+    "string",
+    "null"
+   ]
+  },
+  "current_state": {
+   "type": [
+    "string",
+    "null"
+   ]
+  },
+  "geography": {
+   "type": "string"
+  },
+  "market": {
+   "type": [
+    "string",
+    "null"
+   ]
+  },
+  "market_size": {
+   "type": [
+    "object",
+    "null"
+   ],
+   "additionalProperties": false,
+   "required": [
+    "metric",
+    "value",
+    "unit",
+    "year",
+    "scope",
+    "source_name",
+    "source_title",
+    "source_url",
+    "source_date"
+   ],
+   "properties": {
+    "metric": {
+     "type": "string",
+     "enum": [
+      "market_size",
+      "revenue",
+      "customers",
+      "employees"
+     ]
+    },
+    "value": {
+     "type": "number"
+    },
+    "unit": {
+     "type": "string"
+    },
+    "year": {
+     "type": "string"
+    },
+    "scope": {
+     "type": "string"
+    },
+    "source_name": {
+     "type": "string"
+    },
+    "source_title": {
+     "type": "string"
+    },
+    "source_url": {
+     "type": "string"
+    },
+    "source_date": {
+     "type": "string"
+    }
+   }
+  },
+  "client_size": {
+   "type": [
+    "object",
+    "null"
+   ],
+   "additionalProperties": false,
+   "required": [
+    "metric",
+    "value",
+    "unit",
+    "year",
+    "scope",
+    "source_name",
+    "source_title",
+    "source_url",
+    "source_date"
+   ],
+   "properties": {
+    "metric": {
+     "type": "string",
+     "enum": [
+      "market_size",
+      "revenue",
+      "customers",
+      "employees"
+     ]
+    },
+    "value": {
+     "type": "number"
+    },
+    "unit": {
+     "type": "string"
+    },
+    "year": {
+     "type": "string"
+    },
+    "scope": {
+     "type": "string"
+    },
+    "source_name": {
+     "type": "string"
+    },
+    "source_title": {
+     "type": "string"
+    },
+    "source_url": {
+     "type": "string"
+    },
+    "source_date": {
+     "type": "string"
+    }
+   }
+  },
+  "competitors": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "name",
+     "source_name",
+     "source_url"
+    ],
+    "properties": {
+     "name": {
+      "type": "string"
+     },
+     "source_name": {
+      "type": "string"
+     },
+     "source_url": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "summary": {
+   "type": "string"
+  }
+ }
+}

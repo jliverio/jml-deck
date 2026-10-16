@@ -29,6 +29,8 @@ and tested here first.
 | workflows/search_slim.sdk.js | Separate workflow "JML tool: web search (slim)" (bK1o2w8TdT4WUeUL), called by Search: Offering, Search: Topic and Search: Profiler |
 | workflows/read_page.sdk.js | Separate workflow "JML tool: read page" (4Iq16peRkEXybs11), called by Read page: Offering, Read page: Topic and Read page: Profiler |
 | prompts/02a_client_profiler.txt | Client Profiler (system message) |
+| prompts/02a_profiler_schema.json | Profiler schema (extra top-level keys allowed) |
+| code/check_profiler.js | checkProfiler |
 
 The three summary node files are built from shared parts (`_summary_input.js`, `_summary_checker.js`,
 `*_tail.js`) by `python3 tools/build_n8n_code.py`; edit the parts, rebuild, then paste.
@@ -52,6 +54,12 @@ as success. (The no-deck and missing-info replies still fail on test runs.)
 Model settings: researchers and copywriter use claude-sonnet-5-5 with a 16,384
 output cap. The copywriter runs adaptive thinking at low effort: with the model
 default it spent the whole cap thinking and returned nothing (execution 25).
+
+Failure handling: Client Profiler, Offering researcher and Topic researcher
+continue on error. A failed profile leaves problem_focus empty, both IFs take
+their stubs, and the deck is built without market research (checkProfiler logs
+`profiler_failed`). Copywriter, Phase Architect and Summary Writer already
+continued on error with code fallbacks.
 
 ## Phase Architect wiring tests (in n8n, agents pinned)
 
