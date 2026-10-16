@@ -26,6 +26,7 @@ and tested here first.
 | code/final_summary.js | Final summary |
 | prompts/06_summary_writer.txt | Summary Writer and Summary Writer retry (system message) |
 | prompts/06_summary_writer_schema.json | Summary schema, Summary retry schema |
+| workflows/search_slim.sdk.js | Separate workflow "JML tool: web search (slim)" (bK1o2w8TdT4WUeUL), called by Search: Offering and Search: Topic |
 
 The three summary node files are built from shared parts (`_summary_input.js`, `_summary_checker.js`,
 `*_tail.js`) by `python3 tools/build_n8n_code.py`; edit the parts, rebuild, then paste.
@@ -42,8 +43,13 @@ retry] → Prepare summary → Summary Writer → Check summary → Summary OK? 
 
 Tests: `node n8n/tests/harness.js` runs these files with mocked n8n lookups.
 Test entry point: the "Test brief (no email)" webhook, which only runs with the
-X-JML-Test header secret; the reply nodes fail on its fake message id, so no
-email is sent.
+X-JML-Test header secret. Its message ids start with `test-`; "Real email?"
+stops those runs after Name attachment, so no email is sent and a good run ends
+as success. (The no-deck and missing-info replies still fail on test runs.)
+
+Model settings: researchers and copywriter use claude-sonnet-5-5 with a 16,384
+output cap. The copywriter runs adaptive thinking at low effort: with the model
+default it spent the whole cap thinking and returned nothing (execution 25).
 
 ## Phase Architect wiring tests (in n8n, agents pinned)
 
