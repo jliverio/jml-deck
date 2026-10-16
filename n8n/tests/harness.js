@@ -214,6 +214,7 @@ const CP = run("check_copy.js", { nodes: { "Assemble drafts": AP }, json: cleanP
 const PP = run("build_render_payload.js", { nodes: { "Assemble drafts": AP, "Template rules": trOn }, json: CP }).json;
 fs.writeFileSync(path.join(OUT, "payload_workplan.json"), JSON.stringify(PP, null, 1));
 check("payload: workplan sent to the renderer", PP.workplan && PP.workplan.deliverables.length > 0);
+check("payload: template 1.2 requested and Approach section named", PP.template === "1.2" && PP.values.section_04 === "Approach", [PP.template, PP.values.section_04]);
 
 const failed = results.filter(r => !r.ok);
 results.forEach(r => console.log((r.ok ? "PASS " : "FAIL ") + r.name + (r.ok ? "" : "  -> " + JSON.stringify(r.detail))));

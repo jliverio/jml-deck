@@ -27,6 +27,10 @@ rules.forEach(r => { byVar[r.variable] = r; });
 const values = {};
 const drafts = {};
 const warnings = [];
+// Template 1.2 adds the Approach section (section_04, shown third on the agenda) and
+// holds the work-plan slides. The renderer keeps 1.1 for payloads without `template`.
+const TEMPLATE_VERSION = '1.2';
+if (TEMPLATE_VERSION === '1.2') values.section_04 = 'Approach';
 
 // 1. Fixed text.
 for (const r of rules) {
@@ -163,7 +167,7 @@ if (plan) {
   }
 } else {
   const why = ($json && $json.agent_error) ? ` Phase Architect error: ${$json.agent_error}` : '';
-  warnings.push('No phase plan reached the deck: the work-plan slides are left out.' + why);
+  warnings.push('No phase plan reached the deck: the work-plan slides say [Firm to complete].' + why);
 }
 
 // 6. The Copywriter's work list.
@@ -183,6 +187,7 @@ return {
     refs: Object.fromEntries(Object.entries(drafts).map(([k, d]) => [k, d.refs])),
     sources: sourceList.map((s, i) => ({ ref: i + 1, source_name: s.source_name, source_title: s.source_title, source_url: s.source_url, source_date: s.source_date })),
     workplan: plan ? { ...plan, client: clientName } : null,
+    template: TEMPLATE_VERSION,
     warnings,
   },
 };
