@@ -1,3 +1,4 @@
 tests/*.pptx
 __pycache__/
 n8n/tests/out/
+out/
