@@ -102,10 +102,16 @@ into the **Run log** and **Agent log** tabs of `JML_Financial_Model`, writing da
 (Run log A–M and S–X, Agent log A–J and L); the sheet's formula columns price the rows.
 Source: `workflows/run_logger.sdk.js`; parsing logic: `code/log_runs.js` (testable with node against saved executions).
 
-- **Purpose** (Run log X): `Live` for email briefs from outside senders; `Debug` for manual runs, webhook runs
-  without tags, and emails from jml-ops.com / example.com; `Measurement` for webhook runs with
-  `log_purpose: "Measurement"`, `log_sample: "T2"`, `log_round: 1` in the body, or emails whose subject carries `[B0]` / `[T2]`.
-  An email subject with `[DEBUG]` is always Debug.
+- **Purpose** (Run log X): `Live` only for email briefs whose sender domain is on Inputs `Firm_Domains` (B68:B77);
+  any other outside sender is `Measurement` with Sample `Unlisted sender`; `Debug` for manual runs, untagged
+  webhook runs and emails from jml-ops.com / example.com; `Measurement` with Sample = tag for webhook runs with
+  `log_purpose: "Measurement"`, `log_sample`, `log_round` in the body, or emails tagged `[B0]`, `[T1]` … `[T99]`
+  (optional suffix, e.g. `[T2-PDF]`). An email subject with `[DEBUG]` is always Debug.
+- **Confidentiality**: for Live and unlisted-sender runs, Run log C holds the Gmail thread ID, never the subject,
+  and error text is left out of the notes.
+- **No double logging**: executions already in Run log column A are skipped and counted (`skippedAlreadyLogged`).
+- A questions-only reply is never a failure: deck failures are detected only on the deck-failure branch
+  (`Reply without deck`, `Flag deck failure`), which the questions route never reaches.
 - **Category** (Run log D): `Live run`, `Live questions`, `Test round N` or `Debug` — never "Full build (current pipeline)".
 - **Page-read credits** come from `credits_used`, which the read-page tool returns since 17 Oct (version 1f0d1def).
 - **Phase Architect tokens** under streaming are rebuilt as 11,553 input per call and model time × 156.2 output tokens/s.

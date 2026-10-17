@@ -2,18 +2,23 @@
 // Turns finished executions of "Proposal request → scoping deck reply" into rows for the
 // JML_Financial_Model sheet: one Run log row per execution, and one Agent log row per agent
 // for full builds (Brief Organizer only for questions-only runs).
-// Inputs: $('Read sheet').first().json  (values:batchGet of Run log!A6:A, Agent log!A6:A, Prices!A24:F28)
+// Inputs: $('Read sheet').first().json  (values:batchGet of Run log!A6:A, Agent log!A6:A, Prices!A24:F28, Inputs!B68:B77)
 //         $input.all()                   (one item per execution, from GET /api/v1/executions/{id}?includeData=true)
-// Output: one item { body, runRows, agentRows } for spreadsheets.values:batchUpdate, or nothing.
+// Output: one item { body, runs, agentRows, skippedAlreadyLogged } for spreadsheets.values:batchUpdate (body null when nothing is new).
 //
 // Rules agreed with the CFO (claude/CFO_to_IT_Tab_Ownership_Oct17.md):
 // - write data columns only: Run log A–M and S–X, Agent log A–J and L (never the formula columns);
 // - Category: "Live run", "Live questions", "Test round N", "Debug"; never "Full build (current pipeline)";
-// - Purpose: Live, Measurement or Debug.
+// - Purpose: Live (sender domain on Inputs Firm_Domains), Measurement (test tags; any other outside sender, Sample
+//   "Unlisted sender") or Debug (manual runs, untagged webhooks, internal senders, [DEBUG]);
+// - confidentiality: for Live and unlisted-sender runs the Brief column holds the Gmail thread ID, never the subject,
+//   and error text (which can quote the subject) is left out of the notes;
+// - an execution already in Run log column A is skipped, so running twice never logs twice.
 
 const PA_SPEED = 156.2;   // tokens/s, measured on 28 Phase Architect calls with reported usage (IT workbook v1)
 const PA_INPUT = 11553;   // input tokens per Phase Architect call, same sample
 const INTERNAL_DOMAINS = ['jml-ops.com', 'example.com'];   // senders treated as Debug unless the subject is tagged
+const TEST_TAG = /\[(B0|T[1-9]\d?)(-[A-Za-z0-9]+)?\]/;     // [B0], [T1] … [T99], optional suffix such as [T2-PDF]
 
 const AGENTS = [
   ['Brief Organizer', ['Model: Brief Organizer']],
@@ -36,7 +41,9 @@ function logRows(sheet, executions) {
   const modelByGateway = {};
   for (const p of prices) if (p[0] && p[5]) modelByGateway[String(p[5]).trim()] = String(p[0]).trim();
   const known = new Set(Object.values(modelByGateway));
+  const firmDomains = new Set(col(3).map((d) => d.toLowerCase().replace(/^@/, '')).filter(Boolean));
   const done = new Set(loggedRuns);
+  let skipped = 0;
 
   const g = (o, ...ks) => { for (const k of ks) { if (o == null || typeof o !== 'object') return undefined; o = o[k]; } return o; };
   const first = (data, key) => { try { return data[key][0][0].json; } catch (e) { return undefined; } };
@@ -49,7 +56,7 @@ function logRows(sheet, executions) {
     const ex = raw.execution || raw;
     const data = raw.data || ex.data || {};
     const id = String(ex.id);
-    if (done.has(id)) continue;
+    if (done.has(id)) { skipped += 1; continue; }
     if (!['success', 'error', 'crashed', 'canceled'].includes(ex.status)) continue;   // still running or waiting
     const res = data.resultData || {};
     const rd = res.runData || {};
@@ -64,7 +71,9 @@ function logRows(sheet, executions) {
     const threadId = String(source === 'email' ? trig.threadId || '' : body.log_brief_id || body.threadId || body.id || '').trim();
     const fromText = JSON.stringify(source === 'email' ? trig.from || '' : body.from || '');
     const internal = INTERNAL_DOMAINS.some((d) => fromText.toLowerCase().includes('@' + d));
-    const tag = subject.match(/\[(B0|T\d+)(-[A-Za-z0-9]+)?\]/);
+    const senderDomains = (fromText.toLowerCase().match(/@([a-z0-9.-]+\.[a-z]{2,})/g) || []).map((x) => x.slice(1));
+    const listedFirm = senderDomains.some((d) => firmDomains.has(d));
+    const tag = subject.match(TEST_TAG);
     let purpose, sample = 'n/a', round_ = 1;
     if (ex.mode === 'manual') purpose = 'Debug';
     else if (source === 'webhook') {
@@ -72,7 +81,10 @@ function logRows(sheet, executions) {
       if (purpose === 'Measurement') { sample = String(body.log_sample || 'n/a'); round_ = Number(body.log_round) || 1; }
     } else if (/\[DEBUG\]/i.test(subject)) purpose = 'Debug';
     else if (tag) { purpose = 'Measurement'; sample = tag[1] + (tag[2] || ''); }
-    else purpose = internal ? 'Debug' : 'Live';
+    else if (internal) purpose = 'Debug';
+    else if (listedFirm) purpose = 'Live';
+    else { purpose = 'Measurement'; sample = 'Unlisted sender'; }
+    const confidential = purpose === 'Live' || sample === 'Unlisted sender';
 
     const questionsOnly = has('Reply with missing info') && !has('Client Profiler');
     const fullBuild = has('Client Profiler') || has('Phase Architect');
@@ -140,11 +152,11 @@ function logRows(sheet, executions) {
     const t0 = Date.parse(ex.startedAt), t1 = Date.parse(ex.stoppedAt);
     const notes = [questionsOnly ? 'Questions reply' : fullBuild ? (status === 'success' ? 'Deck sent' : 'No deck') : 'No build',
       unknownModel ? 'model of ' + unknownModel + ' not in Prices: priced as Sonnet 5.5' : '',
-      errMsg ? 'Error: ' + errMsg.replace(/\s+/g, ' ').slice(0, 120) : ''].filter(Boolean).join('; ');
+      errMsg && !confidential ? 'Error: ' + errMsg.replace(/\s+/g, ' ').slice(0, 120) : ''].filter(Boolean).join('; ');
     const tokenSource = rebuilt ? 'Rebuilt: Phase Architect thinking from model time' : calls ? 'Reported by n8n' : 'No model calls';
     const version = String(ex.workflowVersionId || g(raw, 'workflowData', 'versionId') || g(ex, 'workflowData', 'versionId') || '');
     runRows.push({
-      am: [Number(id), String(ex.startedAt || '').replace('T', ' ').slice(0, 16), subject.slice(0, 120), category, status, cause,
+      am: [Number(id), String(ex.startedAt || '').replace('T', ' ').slice(0, 16), confidential ? threadId : subject.slice(0, 120), category, status, cause,
         isFinite(t1 - t0) ? round((t1 - t0) / 1000) : '', calls, round(inp), round(outp), searches, credits, sample],
       sx: [threadId, version || 'unknown', '', notes, tokenSource, purpose],
     });
@@ -158,7 +170,7 @@ function logRows(sheet, executions) {
       });
     }
   }
-  if (!runRows.length) return [];
+  if (!runRows.length) return [{ json: { body: null, runs: 0, agentRows: 0, skippedAlreadyLogged: skipped } }];
 
   const runStart = 6 + runCol.length;
   const agentStart = 6 + agentRowsUsed;
@@ -174,11 +186,13 @@ function logRows(sheet, executions) {
     dataRanges.push({ range: `'Agent log'!L${row}`, values: [r.l] });
   });
   return [{ json: { body: { valueInputOption: 'RAW', data: dataRanges }, runs: runRows.length, agentRows: agentRows.length,
-    firstRunRow: runStart, firstAgentRow: agentStart } }];
+    skippedAlreadyLogged: skipped, firstRunRow: runStart, firstAgentRow: agentStart } }];
 }
 
 // n8n entry point (Code node, run once for all items). Not executed when this file is required by a test.
 if (typeof $input !== 'undefined') {
-  return logRows($('Read sheet').first().json, $input.all().map((i) => i.json));
+  const out = logRows($('Read sheet').first().json, $input.all().map((i) => i.json));
+  out[0].json.skippedAlreadyLogged += Number($('Pick new runs').first().json.skippedAlreadyLogged) || 0;
+  return out;
 }
 if (typeof module !== 'undefined') module.exports = { logRows };
