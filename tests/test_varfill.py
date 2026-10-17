@@ -72,7 +72,9 @@ check("empty result line hidden (finding 2 has 2 lines)",
 src = [t for t in tx if t[0] == 6 and t[2].startswith("Sources:")]
 check("sources footer filled", src and "[1] Hierros" in src[0][2], src)
 check("no cut warnings on realistic input", not [w for w in warns if " cut to " in w], warns)
-check("every table row has a variable in the template", not any("table rows have no variable" in w for w in warns), warns)
+# the table also holds template 1.4's 11 rows (situation, key question), absent from 1.2
+check("table rows beyond 1.2 are only 1.4's", not any("table rows have no variable" in w for w in warns)
+      or any(w.startswith("11 table rows have no variable") for w in warns), warns)
 
 # 3. empty action removes the whole finding row (remove_row)
 v = dict(METALCO)
@@ -204,6 +206,44 @@ except varfill.TemplateRulesError:
     bad = True
 check("unknown template version is refused", bad)
 check("1.2 stays the default (9 slides, no Approach)", len(texts(varfill.build_deck(METALCO, RULES)[0])[0].slides) == 9)
+
+# 7. template 1.4 (Scenario 1): situation, key question, approach overview; drop_slide
+NAV = json.load(open(os.path.join(HERE, "metalco_1_4.json")))
+tv14 = varfill.template_variables(varfill.TEMPLATES["1.4"])
+check("1.4: every template variable has a table row", tv14 <= table_names, sorted(tv14 - table_names))
+check("1.4: every table row has a variable in 1.4", table_names <= tv14, sorted(table_names - tv14))
+pptx, warns = varfill.build_deck(NAV["values"], NAV["rules"], workplan=NAV["workplan"], version="1.4")
+prs, tx = texts(pptx)
+left = [t for t in tx if re.search(r"(?<![A-Za-z0-9_])(situation|belief|key_question|criteria_basis|criterion)_[0-9a-z_]+", t[2])]
+n14 = len(prs.slides)  # 16, plus a steering continuation slide when a plan has more than 4 meetings
+check("1.4: 16 slides + steering continuation, no warnings", n14 == 17 and not warns, (n14, warns))
+check("1.4: no variable survives", not left, left[:3])
+check("1.4: situation slide 6 filled", any(t[0] == 6 and t[2].startswith("Spanish contractors moved") for t in tx))
+check("1.4: belief filled", any(t[0] == 6 and t[2].startswith("We believe") for t in tx))
+check("1.4: key question on slide 8", any(t[0] == 8 and t[2].startswith("How can MetalCo") for t in tx))
+check("1.4: criteria basis printed", any(t[0] == 8 and t[2].startswith("Our reading of your request") for t in tx))
+check("1.4: approach overview drawn from the plan",
+      any(t[0] == 10 and t[2].startswith("Two phases over 24 weeks") for t in tx)
+      and any(t[0] == 10 and t[2].startswith("Decision: ") for t in tx))
+check("1.4: market slide keeps its own title", any(t[0] == 7 and t[2] == "Market research findings" for t in tx))
+check("1.4: section trackers read Context on slides 6-8",
+      all(any(t[0] == n and t[2] == "Context" for t in tx) for n in (6, 7, 8)))
+v = dict(NAV["values"]); v["situation_title_01"] = ""
+prs2, tx2 = texts(varfill.build_deck(v, NAV["rules"], workplan=NAV["workplan"], version="1.4")[0])
+check("1.4: no situation title -> slide dropped",
+      len(prs2.slides) == n14 - 1 and not any(t[2].startswith("Where things stand") for t in tx2), len(prs2.slides))
+v = dict(NAV["values"]); v["key_question_01"] = ""
+pptx3, w3 = varfill.build_deck(v, NAV["rules"], workplan=NAV["workplan"], version="1.4")
+prs3, tx3 = texts(pptx3)
+check("1.4: no key question -> slide dropped with a warning",
+      len(prs3.slides) == n14 - 1 and any("key_question_01" in w for w in w3), (len(prs3.slides), w3))
+v = dict(NAV["values"]); v["criterion_02"] = ""
+_, tx4 = texts(varfill.build_deck(v, NAV["rules"], workplan=NAV["workplan"], version="1.4")[0])
+crit = [t for t in tx4 if t[0] == 8 and t[2].startswith("Our reading")]
+check("1.4: an empty criterion line is hidden", crit and "[Firm" not in crit[0][2] and crit[0][2].count("\n") == 2, crit)
+prs5, tx5 = texts(varfill.build_deck(NAV["values"], NAV["rules"], workplan=None, version="1.4")[0])
+check("1.4 without a plan: overview marked [Firm to complete]",
+      any(t[0] == 10 and t[2].startswith("[Firm to complete] Approach overview") for t in tx5))
 
 failed = [r for r in results if not r[1]]
 for name, ok, detail in results:

@@ -498,5 +498,115 @@
   "writing_rule": "Verb first, one action per step. Add who and when if known.",
   "if_empty": "remove_row",
   "example": ""
+ },
+ {
+  "variable": "situation_title_01",
+  "draft_chars": null,
+  "max_chars": 90,
+  "limit_basis": "estimated",
+  "fills_from": "context_writer:situation_title",
+  "writing_rule": "One sentence, present tense: what the market findings mean for the client's request. Figures only as the findings give them.",
+  "if_empty": "drop_slide",
+  "example": "Online selling is established in Iberia, opening a direct route to small paper buyers"
+ },
+ {
+  "variable": "situation_01",
+  "draft_chars": null,
+  "max_chars": 150,
+  "limit_basis": "estimated",
+  "fills_from": "context_writer:situation",
+  "writing_rule": "Where the market stands today, from the cited findings. Figures only as the findings give them, with unit and year. No reference numbers.",
+  "if_empty": "hide_line",
+  "example": ""
+ },
+ {
+  "variable": "situation_02",
+  "draft_chars": null,
+  "max_chars": 150,
+  "limit_basis": "estimated",
+  "fills_from": "context_writer:situation",
+  "writing_rule": "What is changing, from the cited findings. Figures only as the findings give them, with unit and year. No reference numbers.",
+  "if_empty": "hide_line",
+  "example": ""
+ },
+ {
+  "variable": "situation_03",
+  "draft_chars": null,
+  "max_chars": 150,
+  "limit_basis": "estimated",
+  "fills_from": "context_writer:situation",
+  "writing_rule": "What that means for the client's request; may say \"likely\"; adds no fact. Figures only as the findings give them, with unit and year. No reference numbers.",
+  "if_empty": "hide_line",
+  "example": ""
+ },
+ {
+  "variable": "belief_01",
+  "draft_chars": null,
+  "max_chars": 140,
+  "limit_basis": "estimated",
+  "fills_from": "context_writer:belief",
+  "writing_rule": "One sentence starting \"We believe\": the point of view the proposal acts on. No figures.",
+  "if_empty": "clear",
+  "example": "We believe a direct channel can win small buyers if it is designed with distributors, not against them."
+ },
+ {
+  "variable": "key_question_01",
+  "draft_chars": null,
+  "max_chars": 200,
+  "limit_basis": "estimated",
+  "fills_from": "phase_architect:governing_question",
+  "writing_rule": "The Phase Architect's governing question, kept as one question ending in a question mark.",
+  "if_empty": "drop_slide",
+  "example": ""
+ },
+ {
+  "variable": "criteria_basis_01",
+  "draft_chars": null,
+  "max_chars": 70,
+  "limit_basis": "fixed",
+  "fills_from": "code:criteria_basis",
+  "writing_rule": "Set by code: \"As stated in your request\" or \"Our reading of your request, to confirm at kick-off\".",
+  "if_empty": "clear",
+  "example": ""
+ },
+ {
+  "variable": "criterion_01",
+  "draft_chars": null,
+  "max_chars": 110,
+  "limit_basis": "estimated",
+  "fills_from": "context_writer:criteria",
+  "writing_rule": "Verb first, about the client: one thing a good answer must achieve. Stated criteria keep every figure; criteria we read from the request hold no figure.",
+  "if_empty": "hide_line",
+  "example": ""
+ },
+ {
+  "variable": "criterion_02",
+  "draft_chars": null,
+  "max_chars": 110,
+  "limit_basis": "estimated",
+  "fills_from": "context_writer:criteria",
+  "writing_rule": "Verb first, about the client: one thing a good answer must achieve. Stated criteria keep every figure; criteria we read from the request hold no figure.",
+  "if_empty": "hide_line",
+  "example": ""
+ },
+ {
+  "variable": "criterion_03",
+  "draft_chars": null,
+  "max_chars": 110,
+  "limit_basis": "estimated",
+  "fills_from": "context_writer:criteria",
+  "writing_rule": "Verb first, about the client: one thing a good answer must achieve. Stated criteria keep every figure; criteria we read from the request hold no figure.",
+  "if_empty": "hide_line",
+  "example": ""
+ },
+ {
+  "variable": "criterion_04",
+  "draft_chars": null,
+  "max_chars": 110,
+  "limit_basis": "estimated",
+  "fills_from": "context_writer:criteria",
+  "writing_rule": "Verb first, about the client: one thing a good answer must achieve. Stated criteria keep every figure; criteria we read from the request hold no figure.",
+  "if_empty": "hide_line",
+  "example": ""
  }
 ]

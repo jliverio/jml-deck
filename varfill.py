@@ -43,10 +43,13 @@ TEMPLATES = {
     "1.1": os.path.join(HERE, "template_v1_1.potx"),
     "1.2": TEMPLATE,                                     # 1.1 + slide 4 summary variables
     "1.3": os.path.join(HERE, "template_v1_3.potx"),     # 1.2 + Approach section and work-plan slides
+    "1.4": os.path.join(HERE, "template_v1_4.potx"),     # 1.3 + situation, key question, approach overview
 }
 FIRM_TODO = "[Firm to complete]"
 TOKEN = re.compile(r"(?<![A-Za-z0-9_])[a-z0-9]+(?:_[a-z0-9]+)+(?![A-Za-z0-9_])")
-POLICIES = {"remove_row", "hide_line", "clear", "firm_todo"}
+# drop_slide: when the variable is empty, the whole slide it sits on is removed
+# (template 1.4: the situation slide without enough cited findings, the key-question slide without a plan).
+POLICIES = {"remove_row", "hide_line", "clear", "firm_todo", "drop_slide"}
 
 # Offline defaults (the live values come from the n8n table).
 DEFAULT_RULES = [
@@ -64,6 +67,12 @@ DEFAULT_RULES = [
     (r"finding_\d+_(context|result_achieved)", 90, "hide_line"),
     (r"sources_market_\d+", 204, "clear"),
     (r"next_step_\d+", 115, "remove_row"),
+    (r"situation_title_\d+", 90, "drop_slide"),
+    (r"situation_\d+", 150, "hide_line"),
+    (r"belief_\d+", 140, "clear"),
+    (r"key_question_\d+", 200, "drop_slide"),
+    (r"criteria_basis_\d+", 70, "clear"),
+    (r"criterion_\d+", 110, "hide_line"),
 ]
 
 
@@ -285,6 +294,21 @@ def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=Non
             cache[name] = val(name)
         return cache[name]
 
+    # 2b. slides whose drop_slide variable is empty: noted here, removed just before saving
+    #     (removing them now would let a later added slide reuse a slide part name)
+    to_drop, dropped = [], []
+    for sl in slides:
+        names = set()
+        for sh in _text_shapes(sl):
+            names.update(TOKEN.findall(sh.text_frame.text))
+        names &= present
+        empty = sorted(n for n in names if rule(n)[1] == "drop_slide" and not value(n))
+        if empty:
+            to_drop.append(sl.slide_id)
+            dropped.append(empty[0])
+    if dropped:
+        warnings.append("slide(s) left out because their text was empty: " + ", ".join(dropped))
+
     # 3. remove grouped rows: any empty remove_row variable, or all empty
     def prune(shapes):
         for sh in list(shapes):
@@ -361,6 +385,13 @@ def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=Non
             lst.remove(el)
         for k, el in enumerate(new_ids):
             lst.insert(anchor + 1 + k, el)
+
+    if to_drop:
+        lst = prs.slides._sldIdLst
+        for el in list(lst):
+            if int(el.get("id")) in to_drop:
+                prs.part.drop_rel(el.rId)
+                lst.remove(el)
 
     out = io.BytesIO()
     prs.save(out)

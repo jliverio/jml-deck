@@ -1,4 +1,4 @@
-// Usage: node n8n/tests/make_pins.js valid|invalid|error  -> n8n/tests/out/pins_<mode>.json
+// Usage: node n8n/tests/make_pins.js valid|invalid|error|s1  -> n8n/tests/out/pins_<mode>.json
 // Pass the file as pinData to the n8n test_workflow tool (trigger: "Test brief (no email)").
 // Builds pin data for an in-n8n wiring test: agents pinned, every Code/IF node runs for real.
 const fs = require('fs'), path = require('path');
@@ -57,6 +57,16 @@ topic.slide.rows.forEach((r, i) => {
   items.push({ variable: `finding_${nn}_action_taken`, text: r.action.text });
   if (r.result.text !== 'Not yet reported') items.push({ variable: `finding_${nn}_result_achieved`, text: r.result.text });
 });
+// Template 1.4 (mode s1): the Context Writer is pinned too, and the Copywriter returns its texts as written.
+const ctxWriter = jl('n8n/tests/fixtures/context_writer_atlantico.json');
+if (mode === 's1') {
+  const o = ctxWriter.output;
+  items.push({ variable: 'situation_title_01', text: o.situation_title });
+  o.situation.forEach((t, i) => items.push({ variable: `situation_0${i + 1}`, text: t }));
+  items.push({ variable: 'belief_01', text: o.belief });
+  o.criteria.forEach((t, i) => items.push({ variable: `criterion_0${i + 1}`, text: t }));
+  items.push({ variable: 'key_question_01', text: plan.basis.governing_question });
+}
 const w = j => [{ json: j }];
 const pins = {
   'Test brief (no email)': w({ headers: { 'x-jml-test': 'pinned' }, params: {}, query: {}, body: { id: 'test-pa-v2-pinned', threadId: 'test-thread', subject: 'Proposal: claims operating model for Atlântico Seguros', text: email, from: { value: [{ address: 'test@example.com', name: 'Test' }], text: 'Test <test@example.com>' } } }),
@@ -64,6 +74,7 @@ const pins = {
   'Client Profiler': w({ output: profile }),
   'Topic researcher': w({ output: topic }),
   'Phase Architect': w(mode === 'invalid' ? { output: jl('phase_architect/runs/r2_B2.json') } : (mode === 'error' ? { error: 'Payment required - perhaps check your payment details?' } : { output: plan })),
+  ...(mode === 's1' ? { 'Context Writer': w(ctxWriter) } : {}),
   'Copywriter': w({ output: { items } }),
   'Copywriter retry': w({ output: { items } }),
   'Build deck': w({ pinned: 'render skipped in the wiring test' }),

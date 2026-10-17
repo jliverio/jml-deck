@@ -39,7 +39,8 @@ The variable rules live in the n8n data table `template_variables`
 (id oEGx7TvhjZ2X6HeB). `variables/` at the repo root is its seed.
 
 Flow: Gmail → Config → Brief Organizer → Client Profiler → Read template
-variables → Template rules → researchers (rules injected) → Architect input → Phase
+variables → Template rules → researchers (rules injected) → Assemble market → Prepare context →
+Context Writer → Check context (template 1.4) → Architect input → Phase
 Architect → Validate plan → Plan valid? [once back to Phase Architect with the violations] → Assemble drafts →
 Copywriter (one call, whole deck) → Check copy → [Copywriter retry → Check
 retry] → Prepare summary → Summary Writer → Check summary → Summary OK? →
@@ -94,3 +95,29 @@ deck is pinned without a file). Results on 16 Oct 2026:
   answers EMPTY when there is no JSON, so an empty answer still fails into the node's retry.
 - `Assemble market` (code/assemble_market.js): a finding reaches the deck only when its context and its action
   cite a listed source.
+
+## Template 1.4 (Scenario 1, October 17, 2026): in the workflow draft, not published
+
+Three slides added to the 13 of template 1.3 (16 in all):
+
+- Situation (after the Context divider): written by the Context Writer from the cited
+  market findings only, and only when at least three passed Assemble market's citation
+  gate. Check context drops any line whose figure the findings do not hold, and the
+  "We believe" line if it holds a figure. Empty title -> the renderer drops the slide
+  (`if_empty: drop_slide`).
+- The question this proposal answers (after the findings): the Phase Architect's
+  governing question, plus up to four success criteria. Stated in the email -> "As stated
+  in your request" and every figure kept; not stated -> "Our reading of your request, to
+  confirm at kick-off" and no figures allowed.
+- Approach overview (first Approach slide): drawn by workplan.py from the plan (phases,
+  what each answers, the decision that closes each, a governance strip). No model writes it.
+
+Sections become Executive Summary, Context, Approach, Next Steps (set in Assemble drafts,
+not in the shared table, so the published 1.3 workflow is unchanged). The 11 new rows are
+in the `template_variables` data table; 1.3 renders only warn that they are unused.
+
+Tests: `python3 tests/test_varfill.py` (54 checks, 1.4 included);
+`node n8n/tests/context_test.js <nodes.json> <plan.json> <writer.json> <name>` replays a
+Context Writer answer through Prepare context, Check context and Assemble drafts;
+`node n8n/tests/make_pins.js s1` builds the pin data for the in-n8n wiring test
+(execution 623: all new nodes ran, payload rendered locally to 16 slides).

@@ -1,0 +1,770 @@
+{
+ "values": {
+  "cover_title_01": "Consulting Proposal",
+  "cover_subtitle_01": "A proposal for MetalCo",
+  "section_01": "Executive Summary",
+  "section_02": "Context",
+  "section_03": "Next Steps",
+  "finding_01_headline": "A competitor already sells in MetalCo's target channel.",
+  "finding_01_context": "Spanish contractors moved more of their purchasing online in 2024. [1]",
+  "finding_01_action_taken": "Hierros García launched an online steel marketplace in Spain in March 2025. [1]",
+  "finding_01_result_achieved": "Hierros García reported 1,200 registered contractors by June 2025. [1]",
+  "finding_02_headline": "The online shift in wholesale is large enough to matter.",
+  "finding_02_context": "EU wholesale firms have digitised ordering since 2020. [2]",
+  "finding_02_action_taken": "Eurostat reported online B2B sales at 23% of wholesale turnover in 2024. [2]",
+  "finding_02_result_achieved": "",
+  "finding_03_headline": "Distributor channel conflict is the main launch risk.",
+  "finding_03_context": "Portuguese distributors depend on exclusive regional agreements. [3]",
+  "finding_03_action_taken": "Ferro Norte paused its online pilot after two distributors objected in 2024. [3]",
+  "finding_03_result_achieved": "Ferro Norte relaunched the pilot as a distributor-led portal in 2025. [3]",
+  "sources_market_01": "[1] Hierros García, press release, 2025; [2] Eurostat, B2B e-commerce, 2024; [3] Jornal de Negócios, 2025",
+  "next_step_01": "Confirm engagement scope, length and the stakeholders on both sides.",
+  "next_step_02": "Develop the detailed phase plan and deliverables.",
+  "next_step_03": "Agree commercial terms and the project team before kickoff.",
+  "section_04": "Approach",
+  "situation_title_01": "Iberian steel buyers are moving online, but distributors can still block a direct channel",
+  "situation_01": "Spanish contractors moved more of their steel purchasing online in 2024, and Hierros García opened a marketplace in March 2025.",
+  "situation_02": "Hierros García reported 1,200 registered contractors by June 2025, while Ferro Norte paused its pilot after distributors objected.",
+  "situation_03": "For MetalCo, the window to enter is open, but a channel that bypasses distributors would likely meet the same resistance.",
+  "belief_01": "We believe MetalCo can win online if it moves early and gives distributors a role in the marketplace.",
+  "key_question_01": "How can MetalCo create a foothold in the digital space through a marketplace without major cannibalization or short-term loss?",
+  "criteria_basis_01": "Our reading of your request, to confirm at kick-off",
+  "criterion_01": "Launch a marketplace that contractors use to buy construction materials",
+  "criterion_02": "Keep distributor margins intact while the online channel grows",
+  "criterion_03": "Decide on the pilot with evidence from real users"
+ },
+ "rules": [
+  {
+   "variable": "cover_title_01",
+   "max_chars": 21,
+   "if_empty": "firm_todo"
+  },
+  {
+   "variable": "cover_subtitle_01",
+   "max_chars": 100,
+   "if_empty": "firm_todo"
+  },
+  {
+   "variable": "section_01",
+   "max_chars": 20,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "section_02",
+   "max_chars": 20,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "section_03",
+   "max_chars": 20,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "section_04",
+   "max_chars": 20,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "section_05",
+   "max_chars": 20,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "section_06",
+   "max_chars": 20,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "section_07",
+   "max_chars": 20,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "summary_title_01",
+   "max_chars": 90,
+   "if_empty": "firm_todo"
+  },
+  {
+   "variable": "objective_01",
+   "max_chars": 127,
+   "if_empty": "firm_todo"
+  },
+  {
+   "variable": "objective_02",
+   "max_chars": 127,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "objective_03",
+   "max_chars": 127,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "objective_04",
+   "max_chars": 127,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "solution_01",
+   "max_chars": 95,
+   "if_empty": "firm_todo"
+  },
+  {
+   "variable": "solution_02",
+   "max_chars": 95,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "solution_03",
+   "max_chars": 95,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "solution_04",
+   "max_chars": 95,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "solution_05",
+   "max_chars": 95,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "outcome_01",
+   "max_chars": 127,
+   "if_empty": "firm_todo"
+  },
+  {
+   "variable": "outcome_02",
+   "max_chars": 127,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "outcome_03",
+   "max_chars": 127,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "outcome_04",
+   "max_chars": 127,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "finding_01_headline",
+   "max_chars": 80,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "finding_01_context",
+   "max_chars": 90,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "finding_01_action_taken",
+   "max_chars": 90,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "finding_01_result_achieved",
+   "max_chars": 90,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "finding_02_headline",
+   "max_chars": 80,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "finding_02_context",
+   "max_chars": 90,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "finding_02_action_taken",
+   "max_chars": 90,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "finding_02_result_achieved",
+   "max_chars": 90,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "finding_03_headline",
+   "max_chars": 80,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "finding_03_context",
+   "max_chars": 90,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "finding_03_action_taken",
+   "max_chars": 90,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "finding_03_result_achieved",
+   "max_chars": 90,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "finding_04_headline",
+   "max_chars": 80,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "finding_04_context",
+   "max_chars": 90,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "finding_04_action_taken",
+   "max_chars": 90,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "finding_04_result_achieved",
+   "max_chars": 90,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "finding_05_headline",
+   "max_chars": 80,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "finding_05_context",
+   "max_chars": 90,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "finding_05_action_taken",
+   "max_chars": 90,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "finding_05_result_achieved",
+   "max_chars": 90,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "sources_market_01",
+   "max_chars": 204,
+   "if_empty": "clear"
+  },
+  {
+   "variable": "next_step_01",
+   "max_chars": 115,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "next_step_02",
+   "max_chars": 115,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "next_step_03",
+   "max_chars": 115,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "next_step_04",
+   "max_chars": 115,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "next_step_05",
+   "max_chars": 115,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "next_step_06",
+   "max_chars": 115,
+   "if_empty": "remove_row"
+  },
+  {
+   "variable": "situation_title_01",
+   "max_chars": 90,
+   "if_empty": "drop_slide"
+  },
+  {
+   "variable": "situation_01",
+   "max_chars": 150,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "situation_02",
+   "max_chars": 150,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "situation_03",
+   "max_chars": 150,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "belief_01",
+   "max_chars": 140,
+   "if_empty": "clear"
+  },
+  {
+   "variable": "key_question_01",
+   "max_chars": 200,
+   "if_empty": "drop_slide"
+  },
+  {
+   "variable": "criteria_basis_01",
+   "max_chars": 70,
+   "if_empty": "clear"
+  },
+  {
+   "variable": "criterion_01",
+   "max_chars": 110,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "criterion_02",
+   "max_chars": 110,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "criterion_03",
+   "max_chars": 110,
+   "if_empty": "hide_line"
+  },
+  {
+   "variable": "criterion_04",
+   "max_chars": 110,
+   "if_empty": "hide_line"
+  }
+ ],
+ "workplan": {
+  "basis": {
+   "governing_question": "How can MetalCo create a foothold in the digital space through a marketplace without major cannibalization or short-term loss?",
+   "archetype_id": "new_venture_build"
+  },
+  "total_duration_weeks": {
+   "min": 24,
+   "max": 24
+  },
+  "phases": [
+   {
+    "name": "Design",
+    "order": 1,
+    "start_week": 1,
+    "end_week": 6,
+    "duration_weeks": {
+     "min": 6,
+     "max": 6
+    },
+    "duration_derived": false,
+    "objective_one_line": "Answer the key questions on the marketplace and agree a blueprint for the pilot",
+    "gate": {
+     "label": "Go/no-go on pilot",
+     "decision": "Do we launch the pilot on this blueprint?"
+    },
+    "depends_on_assumptions": [
+     "engagement_type",
+     "engagement_length",
+     "stakeholders",
+     "timeline",
+     "prior_attempts"
+    ],
+    "workstream_ids": [
+     "W1",
+     "W2",
+     "W3"
+    ]
+   },
+   {
+    "name": "Pilot",
+    "order": 2,
+    "start_week": 7,
+    "end_week": 24,
+    "duration_weeks": {
+     "min": 18,
+     "max": 18
+    },
+    "duration_derived": false,
+    "objective_one_line": "Build a first version and launch it with a small group of users, then test and iterate",
+    "gate": {
+     "label": "Go/no-go on beta",
+     "decision": "Do we launch the local beta phase on this business case?"
+    },
+    "depends_on_assumptions": [
+     "engagement_type",
+     "engagement_length",
+     "stakeholders",
+     "success_criteria",
+     "timeline",
+     "out_of_scope"
+    ],
+    "workstream_ids": [
+     "W4",
+     "W5",
+     "W6",
+     "W7"
+    ]
+   }
+  ],
+  "workstreams": [
+   {
+    "id": "W1",
+    "phase_order": 1,
+    "name": "Scope & hypotheses",
+    "answers": "Which questions must the blueprint answer?",
+    "traces_to": [
+     "problem_statement"
+    ],
+    "start_week": 1,
+    "end_week": 1,
+    "follows": [],
+    "activities": [
+     "Set hypotheses on each blueprint component",
+     "Agree interview and data plan"
+    ],
+    "deliverable_ids": [
+     "D1"
+    ]
+   },
+   {
+    "id": "W2",
+    "phase_order": 1,
+    "name": "Analyze",
+    "answers": "Which hypotheses hold for customers and the market?",
+    "traces_to": [
+     "problem_statement",
+     "success_criteria:1"
+    ],
+    "start_week": 2,
+    "end_week": 5,
+    "follows": [
+     "W1"
+    ],
+    "activities": [
+     "Interview target customers",
+     "Test hypotheses with a wireframe prototype"
+    ],
+    "deliverable_ids": [
+     "D2"
+    ]
+   },
+   {
+    "id": "W3",
+    "phase_order": 1,
+    "name": "Plan",
+    "answers": "What does the pilot need to start?",
+    "traces_to": [
+     "gate:1"
+    ],
+    "start_week": 6,
+    "end_week": 6,
+    "follows": [
+     "W2"
+    ],
+    "activities": [
+     "Write the blueprint",
+     "Plan the pilot phase in detail"
+    ],
+    "deliverable_ids": [
+     "D3",
+     "D4"
+    ]
+   },
+   {
+    "id": "W4",
+    "phase_order": 2,
+    "name": "Enable",
+    "answers": "Who and what does the venture need inside the parent?",
+    "traces_to": [
+     "success_criteria:3",
+     "success_criteria:4"
+    ],
+    "start_week": 7,
+    "end_week": 21,
+    "follows": [],
+    "activities": [
+     "Agree KPIs with key stakeholders",
+     "Identify and onboard key internal hires"
+    ],
+    "deliverable_ids": [
+     "D5"
+    ]
+   },
+   {
+    "id": "W5",
+    "phase_order": 2,
+    "name": "Validate",
+    "answers": "Which customers do we launch with?",
+    "traces_to": [
+     "problem_statement"
+    ],
+    "start_week": 7,
+    "end_week": 9,
+    "follows": [],
+    "activities": [
+     "Identify the first customer target group",
+     "Validate demand with that group"
+    ],
+    "deliverable_ids": [
+     "D6"
+    ]
+   },
+   {
+    "id": "W6",
+    "phase_order": 2,
+    "name": "Build",
+    "answers": "Does a first version work with real users?",
+    "traces_to": [
+     "success_criteria:1",
+     "success_criteria:2"
+    ],
+    "start_week": 9,
+    "end_week": 21,
+    "follows": [
+     "W5"
+    ],
+    "activities": [
+     "Build the first version",
+     "Launch to a small group of users and iterate"
+    ],
+    "deliverable_ids": [
+     "D7"
+    ]
+   },
+   {
+    "id": "W7",
+    "phase_order": 2,
+    "name": "Plan scale-up",
+    "answers": "What would launching the local beta take?",
+    "traces_to": [
+     "gate:2"
+    ],
+    "start_week": 19,
+    "end_week": 24,
+    "follows": [
+     "W6"
+    ],
+    "activities": [
+     "Build the business case",
+     "Draft the implementation plan and roadmap"
+    ],
+    "deliverable_ids": [
+     "D8"
+    ]
+   }
+  ],
+  "deliverables": [
+   {
+    "id": "D1",
+    "name": "Hypotheses on each blueprint component",
+    "kind": "design",
+    "workstream_id": "W1",
+    "phase_order": 1,
+    "due_week": 1,
+    "presented_at": "Go/no-go on pilot"
+   },
+   {
+    "id": "D2",
+    "name": "Wireframe prototype",
+    "kind": "build",
+    "workstream_id": "W2",
+    "phase_order": 1,
+    "due_week": 5,
+    "presented_at": "Go/no-go on pilot"
+   },
+   {
+    "id": "D3",
+    "name": "Blueprint with tested hypotheses",
+    "kind": "decision_pack",
+    "workstream_id": "W3",
+    "phase_order": 1,
+    "due_week": 6,
+    "presented_at": "Go/no-go on pilot"
+   },
+   {
+    "id": "D4",
+    "name": "Detailed plan for the pilot phase",
+    "kind": "design",
+    "workstream_id": "W3",
+    "phase_order": 1,
+    "due_week": 6,
+    "presented_at": "Go/no-go on pilot"
+   },
+   {
+    "id": "D5",
+    "name": "Strategic KPIs agreed with key stakeholders",
+    "kind": "enablement",
+    "workstream_id": "W4",
+    "phase_order": 2,
+    "due_week": 21,
+    "presented_at": "Go/no-go on beta"
+   },
+   {
+    "id": "D6",
+    "name": "First customer target group",
+    "kind": "analysis",
+    "workstream_id": "W5",
+    "phase_order": 2,
+    "due_week": 9,
+    "presented_at": "Workshop 1: first findings"
+   },
+   {
+    "id": "D7",
+    "name": "First version launched to a small user group",
+    "kind": "build",
+    "workstream_id": "W6",
+    "phase_order": 2,
+    "due_week": 21,
+    "presented_at": "Go/no-go on beta"
+   },
+   {
+    "id": "D8",
+    "name": "Business case with implementation plan and roadmap",
+    "kind": "decision_pack",
+    "workstream_id": "W7",
+    "phase_order": 2,
+    "due_week": 24,
+    "presented_at": "Go/no-go on beta"
+   }
+  ],
+  "governance": {
+   "status_cadence_weeks": 2,
+   "status_weeks": [
+    3,
+    5,
+    7,
+    9,
+    13,
+    15,
+    17,
+    21,
+    23
+   ],
+   "events": [
+    {
+     "id": "G1",
+     "type": "kickoff",
+     "phase_order": 1,
+     "week": 1,
+     "label": "Kick-off",
+     "purpose": "Align on scope, plan and team",
+     "presents": [],
+     "decision": null,
+     "agenda": [
+      "Align on the governing question and scope",
+      "Confirm the plan and interview list"
+     ]
+    },
+    {
+     "id": "G2",
+     "type": "checkin",
+     "phase_order": 1,
+     "week": 4,
+     "label": "Mid-phase check-in",
+     "purpose": "Review early evidence",
+     "presents": [
+      "D1"
+     ],
+     "decision": "Are the hypotheses the right ones to test?",
+     "agenda": [
+      "Review the hypotheses",
+      "Discuss early customer evidence"
+     ]
+    },
+    {
+     "id": "G3",
+     "type": "gate",
+     "phase_order": 1,
+     "week": 6,
+     "label": "Go/no-go on pilot",
+     "purpose": "Decide whether to start the pilot",
+     "presents": [
+      "D1",
+      "D2",
+      "D3",
+      "D4"
+     ],
+     "decision": "Do we launch the pilot on this blueprint?",
+     "agenda": [
+      "Present the blueprint and prototype",
+      "Decide on the pilot"
+     ]
+    },
+    {
+     "id": "G4",
+     "type": "workshop",
+     "phase_order": 2,
+     "week": 11,
+     "label": "Workshop 1: first findings",
+     "purpose": "First findings and broad direction",
+     "presents": [
+      "D6"
+     ],
+     "decision": "Are we aligned on the solution hypotheses and direction?",
+     "agenda": [
+      "Present first findings from both phases",
+      "Align on where the big questions remain"
+     ]
+    },
+    {
+     "id": "G5",
+     "type": "workshop",
+     "phase_order": 2,
+     "week": 19,
+     "label": "Workshop 2: key questions",
+     "purpose": "Detailed findings and key questions",
+     "presents": [
+      "D6"
+     ],
+     "decision": "Do we confirm the solution, positioning and business model view?",
+     "agenda": [
+      "Present detailed solution components",
+      "Discuss the enablement plan and incentives"
+     ]
+    },
+    {
+     "id": "G6",
+     "type": "gate",
+     "phase_order": 2,
+     "week": 24,
+     "label": "Go/no-go on beta",
+     "purpose": "Decide on the local beta phase",
+     "presents": [
+      "D5",
+      "D7",
+      "D8"
+     ],
+     "decision": "Do we launch the local beta phase on this business case?",
+     "agenda": [
+      "Present the implementation plan and investment case",
+      "Decide on next steps"
+     ]
+    }
+   ]
+  },
+  "architect_notes": [
+   "Engagement type and the 24-week length are the firm's own proposal; every phase and week count rests on them."
+  ],
+  "sequencing": "sequential",
+  "timeline_slide": {
+   "unit": "weeks",
+   "bars": [
+    {
+     "phase": "Design",
+     "start": 1,
+     "end": 6
+    },
+    {
+     "phase": "Pilot",
+     "start": 7,
+     "end": 24
+    }
+   ]
+  },
+  "client": "MetalCo"
+ },
+ "template": "1.4"
+}
