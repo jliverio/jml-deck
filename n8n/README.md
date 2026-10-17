@@ -94,3 +94,19 @@ deck is pinned without a file). Results on 16 Oct 2026:
   answers EMPTY when there is no JSON, so an empty answer still fails into the node's retry.
 - `Assemble market` (code/assemble_market.js): a finding reaches the deck only when its context and its action
   cite a listed source.
+
+## Run logger (workflow "JML run logger", id mqEGPCkfgZ8anFwQ)
+
+Every morning at 07:17 Lisbon it copies each finished run of the proposal workflow (executions from 762 on)
+into the **Run log** and **Agent log** tabs of `JML_Financial_Model`, writing data columns only
+(Run log A–M and S–X, Agent log A–J and L); the sheet's formula columns price the rows.
+Source: `workflows/run_logger.sdk.js`; parsing logic: `code/log_runs.js` (testable with node against saved executions).
+
+- **Purpose** (Run log X): `Live` for email briefs from outside senders; `Debug` for manual runs, webhook runs
+  without tags, and emails from jml-ops.com / example.com; `Measurement` for webhook runs with
+  `log_purpose: "Measurement"`, `log_sample: "T2"`, `log_round: 1` in the body, or emails whose subject carries `[B0]` / `[T2]`.
+  An email subject with `[DEBUG]` is always Debug.
+- **Category** (Run log D): `Live run`, `Live questions`, `Test round N` or `Debug` — never "Full build (current pipeline)".
+- **Page-read credits** come from `credits_used`, which the read-page tool returns since 17 Oct (version 1f0d1def).
+- **Phase Architect tokens** under streaming are rebuilt as 11,553 input per call and model time × 156.2 output tokens/s.
+- Needs two credentials: an **n8n API** key (Settings → n8n API) and **Google Sheets OAuth2** for the sheet owner.
