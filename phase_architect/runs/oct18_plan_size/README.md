@@ -15,3 +15,7 @@ Scripts: `make_arch.py` (brief -> Phase Architect input, same shape as `n8n/code
 | e4 | Atlas Logistics, six months, design and pilot, no streams | 26 weeks; none | 0 violations. Design 8 + Pilot 18 weeks, 7 streams (default rule), workshops every 6 weeks |
 | e5 | Vinhos do Douro, eight weeks, "we propose two workstreams" | 8 weeks; 2 named, firm's proposal (assumed) | 0 violations. One 8-week phase with the two proposed streams |
 | a_regression | Scenario A brief, 20 weeks, no streams | 20 weeks; none | 0 violations. Design 6 + Pilot 14 weeks, 7 streams, same shape as round 4 |
+| e6 | Banco Atlântico, rollout in "one 24-week rollout phase", three named streams (hand-written brief) | 24 weeks; 3 named, stated | 0 violations. One 24-week Implementation phase; workshops weeks 7 and 19 and a gap check-in at week 13 (the old checker rejected any phase of 20+ weeks) |
+
+All six model plans passed on the first try and render without layout problems (`render_llm.py`). Under the old checker,
+e1 fails on the stream count (12 in one phase) and e6 on the check-in rule; the other four pass both.
