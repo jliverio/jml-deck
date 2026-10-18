@@ -17,6 +17,132 @@ const NOTE_WORDS = 25;
 
 function words(s) { return String(s || '').split(/\s+/).filter(Boolean).length; }
 
+// ---------- sizing: the lead's scoping step (sub-questions, drivers, work per phase) ----------
+// A phase's estimate = fixed weeks + sum over pieces of ceil(count / at_once) x weeks_each (min and max apart).
+function workEstimate(pw) {
+  let mn = Number((pw || {}).fixed_weeks) || 0, mx = mn;
+  for (const w of ((pw || {}).work || [])) {
+    const k = Math.ceil((Number(w.count) || 1) / Math.max(1, Number(w.at_once) || 1));
+    mn += k * (Number((w.weeks_each || {}).min) || 0);
+    mx += k * (Number((w.weeks_each || {}).max) || 0);
+  }
+  return { min: mn, max: mx };
+}
+const norm = t => String(t || '').toLowerCase().replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/\s+/g, ' ').trim();
+// the text a driver's evidence may be copied from: stated brief fields only, the profile, the findings
+function sourceText(inp, source) {
+  const out = [];
+  const walk = o => { if (o == null) return; if (typeof o === 'string' || typeof o === 'number') out.push(String(o)); else if (Array.isArray(o)) o.forEach(walk); else if (typeof o === 'object') Object.values(o).forEach(walk); };
+  if (source === 'brief') {
+    const b = inp.brief || {};
+    for (const grp of ['hard_fields', 'required', 'soft_fields']) for (const f of Object.values(b[grp] || {})) if (f && f.source === 'stated') { walk(f.value); walk(f.quote); }
+    walk(inp.success_criteria_list);
+  } else if (source === 'profile') walk(inp.profile);
+  else if (source === 'findings') walk(inp.market_findings);
+  return norm(out.join(' \n '));
+}
+function libraryUnits(inp, archetypeId) {
+  const a = (inp.method_library || []).find(x => x.id === archetypeId);
+  return [...((a && a.sizing_units) || []), ...(((inp.sizing_common || {}).units) || [])];
+}
+function expectedBasis(inp) {
+  const el = (((inp.brief || {}).required || {}).engagement_length) || {};
+  if (el.source === 'stated' && el.weeks_max != null) return 'stated';
+  if (inp.weeks_available != null) return 'deadline';
+  return 'estimated';
+}
+function checkSizing(state, ctx) {
+  const inp = state.input, L = state.lead || {}, sz = L.sizing;
+  if (!sz) return ['sizing:missing'];
+  const v = [];
+  const n = (L.phases || []).length;
+  const sq = sz.sub_questions || [];
+  if (sq.length < 3 || sq.length > 6) v.push(`sizing:sub_questions_${sq.length}_not_3_to_6`);
+  sq.forEach((q, i) => {
+    if (q.id !== 'Q' + (i + 1)) v.push(`sizing:sub_question_${i + 1}_id_${q.id}_should_be_Q${i + 1}`);
+    if (!(q.phase_order >= 1 && q.phase_order <= n)) v.push(`sizing:${q.id}:unknown_phase_${q.phase_order}`);
+    if (words(q.question) > 20) v.push(`sizing:${q.id}:over_20_words`);
+    // sub-questions travel into workstream text, so the firm's banned words are checked here too
+    const toks = String(q.question || '').toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+    for (const t of ((ctx || {}).jargon_never || []).map(x => String(x).replace(/\s*\(.*\)\s*/, '').trim().toLowerCase()).filter(Boolean))
+      if (t.includes(' ') ? String(q.question || '').toLowerCase().includes(t) : toks.includes(t)) v.push(`sizing:${q.id}:never_use_${t.replace(/\s+/g, '_')}`);
+  });
+  for (let o = 1; o <= n; o++) if (!sq.some(q => q.phase_order === o)) v.push(`sizing:phase_${o}_answers_no_sub_question`);
+  const drv = {};
+  for (const d of (sz.drivers || [])) {
+    if (drv[d.key]) v.push(`sizing:driver_${d.key}_listed_twice`);
+    drv[d.key] = d;
+    if (!(Number(d.value) > 0)) v.push(`sizing:driver_${d.key}_value_${d.value}_not_positive`);
+    const ev = String(d.evidence || '').trim();
+    if (d.source === 'assumed') { if (ev) v.push(`sizing:driver_${d.key}_assumed_so_evidence_must_be_empty`); continue; }
+    if (!ev) { v.push(`sizing:driver_${d.key}_no_evidence_from_${d.source}`); continue; }
+    if (words(ev) > 15) v.push(`sizing:driver_${d.key}_evidence_over_15_words`);
+    if (!sourceText(inp, d.source).includes(norm(ev))) v.push(`sizing:driver_${d.key}_evidence_not_found_word_for_word_in_${d.source === 'brief' ? 'stated_brief_fields' : d.source}`);
+  }
+  const lib = Object.fromEntries(libraryUnits(inp, (L.basis || {}).archetype_id).map(u => [norm(u.unit), u]));
+  const pw = sz.phase_work || [];
+  if (pw.length !== n) v.push(`sizing:phase_work_has_${pw.length}_entries_for_${n}_phases`);
+  const planned = phaseWeeks(L.phases);
+  pw.forEach((e, i) => {
+    const tag = `sizing:phase_${e.phase_order}`;
+    if (e.phase_order !== i + 1) v.push(`sizing:phase_work_${i + 1}_has_phase_order_${e.phase_order}`);
+    (e.work || []).forEach((w, j) => {
+      const t = `${tag}:work_${j + 1}`;
+      const c = Number(w.count), a = Number(w.at_once), we = w.weeks_each || {};
+      if (!(Number.isInteger(c) && c >= 1)) v.push(`${t}_count_${w.count}_not_a_whole_number`);
+      if (!(Number.isInteger(a) && a >= 1 && a <= c)) v.push(`${t}_at_once_${w.at_once}_not_1_to_count_${w.count}`);
+      if (!(we.min >= 1 && we.max >= we.min)) v.push(`${t}_weeks_each_${we.min}-${we.max}_invalid`);
+      if (w.driver != null) {
+        if (!drv[w.driver]) v.push(`${t}_driver_${w.driver}_not_in_drivers`);
+        else if (c > Number(drv[w.driver].value)) v.push(`${t}_count_${c}_over_${w.driver}_${drv[w.driver].value}`);
+      }
+      if (w.from_library) {
+        const u = lib[norm(w.unit)];
+        if (!u) v.push(`${t}_marked_from_library_but_no_library_unit_reads_${JSON.stringify(String(w.unit).slice(0, 40))}`);
+        else if (u.weeks_each[0] !== we.min || u.weeks_each[1] !== we.max || Math.min(u.at_once, c) !== a) v.push(`${t}_library_unit_is_${u.weeks_each[0]}-${u.weeks_each[1]}_weeks_${Math.min(u.at_once, c)}_at_once`);
+      } else if (words(w.unit) > 12) v.push(`${t}_unit_over_12_words`);
+    });
+    if (!(Number.isInteger(Number(e.fixed_weeks)) && e.fixed_weeks >= 0)) v.push(`${tag}:fixed_weeks_${e.fixed_weeks}_invalid`);
+    const est = workEstimate(e), ge = e.estimate || {};
+    if (ge.min !== est.min || ge.max !== est.max) v.push(`${tag}:estimate_${ge.min}-${ge.max}_but_its_work_adds_to_${est.min}-${est.max}`);
+    if (!String(e.why || '').trim()) v.push(`${tag}:no_why`);
+    else if (words(e.why) > 25) v.push(`${tag}:why_over_25_words`);
+    const ph = planned[e.phase_order - 1];
+    if (ph && sz.length_basis === 'estimated' && (ph.duration_weeks.min < est.min || ph.duration_weeks.max > est.max))
+      v.push(`${tag}:weeks_${ph.duration_weeks.min}-${ph.duration_weeks.max}_outside_its_estimate_${est.min}-${est.max}`);
+  });
+  const want = expectedBasis(inp);
+  if (sz.length_basis !== want && sz.length_basis !== 'stage_lengths') v.push(`sizing:length_basis_${sz.length_basis}_should_be_${want}`);
+  if (!String(sz.levers || '').trim()) v.push('sizing:no_levers');
+  else if (words(sz.levers) > 25) v.push('sizing:levers_over_25_words');
+  return v;
+}
+// What the partner and the reviewer see: per phase the work, the estimate, the archetype's reference and the plan.
+function sizingSummary(state) {
+  const inp = state.input, L = state.lead || {}, sz = L.sizing;
+  if (!sz) return null;
+  const arche = (inp.method_library || []).find(a => a.id === (L.basis || {}).archetype_id);
+  const planned = phaseWeeks(L.phases);
+  const phases = planned.map((p, i) => {
+    const e = (sz.phase_work || [])[i] || {};
+    const ref = arche && (arche.phases || []).find(x => x.name === p.name);
+    return { order: p.order, name: p.name, planned_weeks: p.duration_weeks, estimate: workEstimate(e), archetype_weeks: ref ? { min: ref.typical_weeks[0], max: ref.typical_weeks[1] } : null,
+      fixed_weeks: e.fixed_weeks, work: (e.work || []).map(w => ({ unit: w.unit, from_library: !!w.from_library, driver: w.driver, count: w.count, at_once: w.at_once, weeks_each: w.weeks_each })), why: e.why };
+  });
+  const sum = k => phases.reduce((a, p) => a + (p.estimate[k] || 0), 0);
+  return { length_basis: sz.length_basis, sub_questions: sz.sub_questions || [], drivers: sz.drivers || [], phases,
+    estimate_total: { min: sum('min'), max: sum('max') }, planned_total: { min: planned.reduce((a, p) => a + p.duration_weeks.min, 0), max: planned.reduce((a, p) => a + p.duration_weeks.max, 0) }, levers: sz.levers };
+}
+// Written by code, not the lead: when a stated length or deadline is shorter than the work counted.
+function fitNote(state) {
+  const s = sizingSummary(state);
+  if (!s || !['stated', 'deadline', 'stage_lengths'].includes(s.length_basis)) return null;
+  const have = s.planned_total.max, need = s.estimate_total;
+  if (need.min > have) return `The work counted needs ${need.min}-${need.max} weeks, more than the ${have} planned: cut scope, run more at once, or extend.`;
+  if (need.max > have) return `The ${have} weeks planned leave no slack: the work counted needs ${need.min}-${need.max} weeks.`;
+  return null;
+}
+
 // Phases with absolute weeks. Phases run one after the other; a phase lasts its `max` weeks on the slides.
 function phaseWeeks(phases) {
   let cursor = 1;
@@ -98,7 +224,7 @@ function wsView(state) {
   return ((state.ws || {}).workstreams || []).map(w => {
     const p = ph[w.phase_order] || { start_week: 1 };
     const so = Number(w.start_offset) || 0, du = Math.max(1, Number(w.duration) || 1);
-    return { ...pick(w, ['id', 'phase_order', 'name', 'answers', 'traces_to', 'start_offset', 'duration', 'follows', 'activities']), weeks_in_phase: `${so + 1}-${so + du}`, start_week: p.start_week + so, end_week: p.start_week + so + du - 1 };
+    return { ...pick(w, ['id', 'phase_order', 'name', 'question_id', 'answers', 'traces_to', 'start_offset', 'duration', 'follows', 'activities']), weeks_in_phase: `${so + 1}-${so + du}`, start_week: p.start_week + so, end_week: p.start_week + so + du - 1 };
   });
 }
 function stageInput(stage, state) {
@@ -111,11 +237,15 @@ function stageInput(stage, state) {
     brief: briefSubset(brief, ['client', 'problem_statement'], ['engagement_type', 'stakeholders'], ['workstreams', 'success_criteria', 'out_of_scope', 'prior_attempts']),
     success_criteria_list: inp.success_criteria_list || [],
     basis: state.lead.basis, archetype: arche, phases: phasesView(state.lead), meetings,
+    sub_questions: ((state.lead.sizing || {}).sub_questions) || [],
+    work_plan: (((state.lead.sizing || {}).phase_work) || []).map(e => ({ phase_order: e.phase_order, work: (e.work || []).map(w => pick(w, ['unit', 'count', 'at_once', 'weeks_each'])), why: e.why })),
+    ...(state.review_feedback && state.review_feedback.ws ? { review_feedback: state.review_feedback.ws } : {}),
   };
   if (stage === 'del') return {
     brief: briefSubset(brief, ['client', 'problem_statement'], ['engagement_type'], ['deliverable_format', 'success_criteria', 'out_of_scope']),
     success_criteria_list: inp.success_criteria_list || [],
     basis: state.lead.basis, archetype: arche, phases: phasesView(state.lead), workstreams: wsView(state), meetings,
+    ...(state.review_feedback && state.review_feedback.del ? { review_feedback: state.review_feedback.del } : {}),
   };
   if (stage === 'gov') {
     const ph = Object.fromEntries(phaseWeeks(state.lead.phases).map(p => [p.order, p]));
@@ -127,6 +257,7 @@ function stageInput(stage, state) {
       workstreams: wsv.map(w => pick(w, ['id', 'phase_order', 'name', 'start_week', 'end_week'])),
       deliverables: ((state.del || {}).deliverables || []).map(d => ({ ...pick(d, ['id', 'workstream_id', 'name', 'kind', 'due_week_in_phase']), due_week: ((ph[(wsById[d.workstream_id] || {}).phase_order] || {}).start_week || 1) + (Number(d.due_week_in_phase) || 1) - 1 })),
       meetings: meetings.map(m => m.type === 'gate' ? { ...m, label: ((ph[m.phase_order] || {}).gate || {}).label, decision: ((ph[m.phase_order] || {}).gate || {}).decision } : m),
+      ...(state.review_feedback && state.review_feedback.gov ? { review_feedback: state.review_feedback.gov } : {}),
     };
   }
   throw new Error('unknown stage ' + stage);
@@ -156,7 +287,7 @@ function buildArch(state) {
   const phases = (lead.phases || []).map((p, i) => gateWord[i + 1] ? { ...p, gate: { ...(p.gate || {}), decision: gateWord[i + 1] } } : p);
   const delOut = ((state.del || {}).deliverables) || [];
   const workstreams = (((state.ws || {}).workstreams) || []).map(w => ({
-    ...pick(w, ['id', 'phase_order', 'name', 'answers', 'traces_to', 'start_offset', 'duration', 'follows', 'activities']),
+    ...pick(w, ['id', 'phase_order', 'name', 'question_id', 'answers', 'traces_to', 'start_offset', 'duration', 'follows', 'activities']),
     deliverables: delOut.filter(d => d.workstream_id === w.id).map(d => pick(d, ['id', 'name', 'kind', 'due_week_in_phase'])),
   }));
   const content = Object.fromEntries((((state.gov || {}).events) || []).map(e => [e.id, e]));
@@ -169,9 +300,10 @@ function buildArch(state) {
       decision: gate ? gate.decision : (g.decision === undefined ? null : g.decision), agenda: g.agenda || [],
     };
   });
-  const notes = [...(lead.architect_notes || []), ...(((state.ws || {}).notes) || []), ...(((state.del || {}).notes) || []), ...(((state.gov || {}).notes) || [])];
+  const fit = fitNote(state);
+  const notes = [...(fit ? [fit] : []), ...(lead.architect_notes || []), ...(((state.ws || {}).notes) || []), ...(((state.del || {}).notes) || []), ...(((state.gov || {}).notes) || [])];
   const total = phaseWeeks(phases).reduce((a, p) => a + p.duration_weeks.max, 0);
-  return { basis: lead.basis || {}, phases, workstreams, governance: { status_cadence_weeks: total <= 8 ? 1 : 2, events }, architect_notes: notes.slice(0, 6) };
+  return { basis: lead.basis || {}, phases, workstreams, governance: { status_cadence_weeks: total <= 8 ? 1 : 2, events }, architect_notes: notes.slice(0, 6), sizing: sizingSummary(state) };
 }
 
 function vctx(state, ctx) {
@@ -181,7 +313,7 @@ function vctx(state, ctx) {
 
 const CALENDAR = /^gov:(gap_|kickoff_count|[^:]+:(gates_|workshops_|checkins_|workshop_outside|checkin_outside|workshops_under))/;
 const STAGE = {
-  lead: v => /^(plan:|basis:|note_|notes:|gate:)/.test(v) || (/^phase:/.test(v) && !/:(no_workstreams|workstreams_\d+|idle_weeks_|nothing_runs_into_gate_week)/.test(v)),
+  lead: v => /^(plan:|basis:|note_|notes:|gate:|sizing:)/.test(v) || (/^phase:/.test(v) && !/:(no_workstreams|workstreams_\d+|idle_weeks_|nothing_runs_into_gate_week)/.test(v)),
   ws: v => (/^ws:/.test(v) && !/:deliverables_count_/.test(v)) || /^trace:/.test(v) || /^phase:[^:]+:(no_workstreams|workstreams_\d+|idle_weeks_|nothing_runs_into_gate_week)/.test(v),
   del: v => (/^del:/.test(v) && !/:never_presented$/.test(v)) || /^ws:[^:]+:deliverables_count_/.test(v),
   gov: v => (/^gov:/.test(v) && !CALENDAR.test(v)) || /^del:[^:]+:never_presented$/.test(v),
@@ -205,10 +337,16 @@ function checkStage(stage, state, ctx) {
   if (stage === 'lead') {
     const n = (state.lead.phases || []).length;
     if (n > MAX_PHASES) v.push(`phase:count_${n}_over_${MAX_PHASES}`);
+    v.push(...checkSizing(state, ctx));
   }
   if (stage === 'ws') {
     const orders = new Set((state.lead.phases || []).map((_, i) => i + 1));
     (state.ws.workstreams || []).forEach(w => { if (!orders.has(w.phase_order)) v.push(`ws:${w.id}:unknown_phase_${w.phase_order}`); });
+    // every sub-question of the lead gets at least one workstream in the phase that answers it
+    const sq = ((state.lead.sizing || {}).sub_questions) || [];
+    const qids = new Set(sq.map(q => q.id));
+    (state.ws.workstreams || []).forEach(w => { if (w.question_id != null && !qids.has(w.question_id)) v.push(`ws:${w.id}:question_id_${w.question_id}_unknown`); });
+    sq.forEach(q => { if (!(state.ws.workstreams || []).some(w => w.question_id === q.id && w.phase_order === q.phase_order)) v.push(`ws:no_workstream_answers_${q.id}_in_phase_${q.phase_order}`); });
     // a stream that follows another but overlaps it must leave room for an interim handover (at least 2 weeks in)
     const pw = Object.fromEntries(phaseWeeks(state.lead.phases).map(p => [p.order, p]));
     const abs = w => { const so = Number(w.start_offset) || 0, du = Math.max(1, Number(w.duration) || 1), st = ((pw[w.phase_order] || {}).start_week || 1) + so; return { st, en: st + du - 1 }; };
@@ -280,7 +418,55 @@ function checkStage(stage, state, ctx) {
 function compile(state, ctx) {
   const arch = buildArch(state);
   const r = validatePlan(arch, vctx(state, ctx || {}));
+  if (r.plan && arch.sizing) r.plan.sizing = arch.sizing;
   return { arch, plan: r.plan, violations: r.violations, repairs: r.repairs };
 }
 
-if (typeof module !== 'undefined') module.exports = { meetingCalendar, phaseWeeks, stageInput, renumberDeliverables, buildArch, checkStage, compile, MAX_PHASES, MAX_DEL_PER_WS };
+// ---------- the Plan Reviewer (fifth agent) ----------
+const REVIEW_OWNER = { lead: 'lead', workstreams: 'ws', deliverables: 'del', governance: 'gov' };
+function reviewInput(state) {
+  const inp = state.input, brief = inp.brief || {};
+  const c = compile(state);
+  const p = c.plan;
+  const qid = Object.fromEntries((((state.ws || {}).workstreams) || []).map(w => [w.id, w.question_id == null ? null : w.question_id]));
+  const sz = sizingSummary(state);
+  return {
+    brief: briefSubset(brief, ['client', 'problem_statement'], ['engagement_type', 'engagement_length', 'stakeholders'], ['timeline', 'success_criteria', 'out_of_scope', 'deliverable_format', 'workstreams']),
+    success_criteria_list: inp.success_criteria_list || [],
+    profile_current_state: (inp.profile || {}).current_state || null,
+    sizing: sz && { governing_question: ((state.lead || {}).basis || {}).governing_question, archetype_id: ((state.lead || {}).basis || {}).archetype_id, ...sz },
+    plan: {
+      phases: p.phases.map(x => ({ order: x.order, name: x.name, weeks: `${x.start_week}-${x.end_week}`, objective: x.objective_one_line, gate: x.gate })),
+      workstreams: p.workstreams.map(w => ({ id: w.id, phase: w.phase_order, name: w.name, question_id: qid[w.id] === undefined ? null : qid[w.id], answers: w.answers, weeks: `${w.start_week}-${w.end_week}`, follows: w.follows, activities: w.activities })),
+      deliverables: p.deliverables.map(d => ({ id: d.id, workstream: d.workstream_id, name: d.name, due_week: d.due_week })),
+      meetings: p.governance.events.map(e => ({ id: e.id, type: e.type, week: e.week, label: e.label, purpose: e.purpose, attendees: e.attendees, presents: e.presents, decision: e.decision, agenda: e.agenda })),
+      notes: [].concat(p.architect_notes || []),
+    },
+  };
+}
+function checkReview(review) {
+  const v = [];
+  const is = (review || {}).issues || [];
+  if (is.length > 5) v.push(`review:issues_${is.length}_over_5`);
+  if (review.verdict === 'send' && is.length) v.push('review:verdict_send_but_issues_listed');
+  if (review.verdict === 'revise' && !is.length) v.push('review:verdict_revise_but_no_issues');
+  is.forEach((x, i) => {
+    if (!REVIEW_OWNER[x.owner]) v.push(`review:issue_${i + 1}_owner_${x.owner}_invalid`);
+    if (words(x.problem) > 30) v.push(`review:issue_${i + 1}_problem_over_30_words`);
+    if (words(x.fix) > 30) v.push(`review:issue_${i + 1}_fix_over_30_words`);
+  });
+  return v;
+}
+// One revision round: the earliest owner reruns with its issues as violations (keeping its previous answer);
+// every later agent reruns fresh, with its own issues as review_feedback.
+function routeReview(review) {
+  const is = ((review || {}).issues) || [];
+  if ((review || {}).verdict !== 'revise' || !is.length) return null;
+  const order = ['lead', 'ws', 'del', 'gov'];
+  const feedback = {};
+  for (const x of is) { const st = REVIEW_OWNER[x.owner]; if (!st) continue; (feedback[st] = feedback[st] || []).push(`review: ${x.target}: ${x.problem} Fix: ${x.fix}`); }
+  const from = order.find(st => feedback[st]);
+  return from ? { from, feedback } : null;
+}
+
+if (typeof module !== 'undefined') module.exports = { meetingCalendar, phaseWeeks, stageInput, renumberDeliverables, buildArch, checkStage, compile, workEstimate, checkSizing, sizingSummary, fitNote, reviewInput, checkReview, routeReview, MAX_PHASES, MAX_DEL_PER_WS };

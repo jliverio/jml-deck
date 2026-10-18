@@ -3,6 +3,7 @@
  "additionalProperties": false,
  "required": [
   "basis",
+  "sizing",
   "phases",
   "architect_notes"
  ],
@@ -23,6 +24,181 @@
       "string",
       "null"
      ]
+    }
+   }
+  },
+  "sizing": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "length_basis",
+    "sub_questions",
+    "drivers",
+    "phase_work",
+    "levers"
+   ],
+   "properties": {
+    "length_basis": {
+     "type": "string",
+     "enum": [
+      "stated",
+      "stage_lengths",
+      "deadline",
+      "estimated"
+     ]
+    },
+    "sub_questions": {
+     "type": "array",
+     "minItems": 3,
+     "maxItems": 6,
+     "items": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "id",
+       "question",
+       "phase_order"
+      ],
+      "properties": {
+       "id": {
+        "type": "string"
+       },
+       "question": {
+        "type": "string"
+       },
+       "phase_order": {
+        "type": "integer"
+       }
+      }
+     }
+    },
+    "drivers": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "key",
+       "value",
+       "source",
+       "evidence"
+      ],
+      "properties": {
+       "key": {
+        "type": "string"
+       },
+       "value": {
+        "type": "number"
+       },
+       "source": {
+        "type": "string",
+        "enum": [
+         "brief",
+         "profile",
+         "findings",
+         "assumed"
+        ]
+       },
+       "evidence": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "phase_work": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "phase_order",
+       "work",
+       "fixed_weeks",
+       "estimate",
+       "why"
+      ],
+      "properties": {
+       "phase_order": {
+        "type": "integer"
+       },
+       "work": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "additionalProperties": false,
+         "required": [
+          "unit",
+          "from_library",
+          "driver",
+          "count",
+          "weeks_each",
+          "at_once"
+         ],
+         "properties": {
+          "unit": {
+           "type": "string"
+          },
+          "from_library": {
+           "type": "boolean"
+          },
+          "driver": {
+           "type": [
+            "string",
+            "null"
+           ]
+          },
+          "count": {
+           "type": "integer"
+          },
+          "weeks_each": {
+           "type": "object",
+           "additionalProperties": false,
+           "required": [
+            "min",
+            "max"
+           ],
+           "properties": {
+            "min": {
+             "type": "integer"
+            },
+            "max": {
+             "type": "integer"
+            }
+           }
+          },
+          "at_once": {
+           "type": "integer"
+          }
+         }
+        }
+       },
+       "fixed_weeks": {
+        "type": "integer"
+       },
+       "estimate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+         "min",
+         "max"
+        ],
+        "properties": {
+         "min": {
+          "type": "integer"
+         },
+         "max": {
+          "type": "integer"
+         }
+        }
+       },
+       "why": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "levers": {
+     "type": "string"
     }
    }
   },

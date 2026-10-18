@@ -17,6 +17,7 @@
      "id",
      "phase_order",
      "name",
+     "question_id",
      "answers",
      "traces_to",
      "start_offset",
@@ -33,6 +34,12 @@
      },
      "name": {
       "type": "string"
+     },
+     "question_id": {
+      "type": [
+       "string",
+       "null"
+      ]
      },
      "answers": {
       "type": "string"
