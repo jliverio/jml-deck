@@ -1,0 +1,35 @@
+{
+  "verdict": "revise",
+  "issues": [
+    {
+      "owner": "lead",
+      "target": "P3",
+      "problem": "Implementation gets 3 weeks against 13-20 sized: migration rehearsal, testing and training in week 10, three cutovers plus stabilization in weeks 11-12. Criterion 2 cannot be shown.",
+      "fix": "Size Implementation on its counted 13-20 weeks and note the week criterion 2 can first show, for the partner to confirm against the 29 January board date."
+    },
+    {
+      "owner": "lead",
+      "target": "P3",
+      "problem": "Implementation moves the first company onto Grupo Vale's systems in weeks 10-12, before the board approves the plan. Gate G5 approves after cutover, leaving nothing to decide.",
+      "fix": "Sequence the board's approval of the plan before first-company cutover; set the final gate's decision on what the cutover result means for moving the other two companies."
+    },
+    {
+      "owner": "lead",
+      "target": "P2",
+      "problem": "Design gets 3 weeks against 5-9 sized: three company designs, then the board plan with sequence, risks and stakeholder review in one week (W5).",
+      "fix": "Size Design at no less than its 5-week minimum and give the plan review its own sign-off week; recover the weeks from Implementation, not from the board plan."
+    },
+    {
+      "owner": "governance",
+      "target": "G4",
+      "problem": "G4 decides go/no-go on cutover in week 9 from D4 and D5 only; the readiness record D6 arrives in week 10 and is reviewed at G5, after cutover.",
+      "fix": "Add a go-live meeting after D6 and before W7 starts, presenting D6 for the cutover decision; keep G5 to reviewing the cutover result and what it means for the plan."
+    },
+    {
+      "owner": "workstreams",
+      "target": "W8",
+      "problem": "W8 updates the integration plan \"with cutover results\" in weeks 11-12 but follows nothing, running alongside W7, whose results arrive only at its end; its plan review repeats W5's.",
+      "fix": "Set W8 to follow W7 so cutover results exist before the plan update, or drop it and fold the cutover findings into W7's confirmation."
+    }
+  ]
+}

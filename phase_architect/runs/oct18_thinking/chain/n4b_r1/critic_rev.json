@@ -1,0 +1,40 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 4,
+      "governance": 3,
+      "coherence": 3,
+      "sizing": 4
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "The week 30 check-in decides to start the first rollout wave without the CEO and before the pilot close-out (D12, due week 32), and D12 is only reviewed at the week 35 check-in, after W9 has already started in week 33.",
+      "No workstream or activity trains staff at the 40 pharmacies and 2 warehouses, even though W8 and W9 take them live.",
+      "W7 data migration is marked 'after W6' but starts in week 19 while W6 runs to week 22, and it fits mapping, cleansing and a single rehearsal into 4 weeks.",
+      "Nothing between the week 12 vendor selection gate and W6 configuration starting in week 13 covers vendor contracting or solution design for the chosen ERP.",
+      "Workshop 2 (week 41) reviews D10, D11 and D12 again and asks go/no-go on the 'remaining waves' while W9 runs without a break from week 33, so the decision cannot change the plan."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 4,
+      "coherence": 4,
+      "sizing": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W10 rolls out about 40 pharmacies and a warehouse, including training, in 12 weeks with no run-in after the last wave, and D15 (the final acceptance pack) is due in week 41, before the rollout ends in week 42, so nothing can show the ERP 'running in all sites'.",
+      "W9 pilots a single unnamed 'pilot site', so warehouse operations are first tested live in a rollout wave rather than in the pilot.",
+      "W8 data migration starts only after configuration ends (weeks 21-24), which leaves 4 weeks for mapping, cleansing and one rehearsal right before go-live.",
+      "Nothing between the week 12 vendor selection gate and W7 configuration starting in week 13 covers vendor contracting or solution design for the chosen ERP.",
+      "W10 has only two deliverables (the first-wave go-live record and the acceptance pack), so no deliverable records waves 2 onward for the steering committee."
+    ]
+  },
+  "better": "X",
+  "why": "X is more defensible on price and on the success criterion: its length is realistic, its pilot covers both a pharmacy and a warehouse, and it runs a month-end close with all sites live before acceptance, and its defects (meeting order, missing training) can be fixed without changing the quote. Y has cleaner governance and includes training, but it fits the rollout of about 41 sites into 12 weeks with no stabilization period, so it would underquote the engagement and put final acceptance at risk."
+}

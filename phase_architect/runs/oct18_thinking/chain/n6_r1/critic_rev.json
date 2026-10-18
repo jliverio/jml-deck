@@ -1,0 +1,40 @@
+{
+  "X": {
+    "scores": {
+      "structure": 3,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 4,
+      "coherence": 3,
+      "sizing": 2
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "Phase 3 gives five weeks to move the first company's sales, purchasing and finance onto Grupo Vale's processes and systems, yet W6 and W7 name no data migration, testing or user training, and the partner notes size the work at 19-28 weeks.",
+      "D10 'First-company results and updated integration plan' (week 11) and D11 'Open-issues log and closure record' (week 12) come before or in the same week that W7 takes the third area live, so neither covers the whole first company.",
+      "No steering meeting decides which company goes first, yet W1 and W3 already assume 'the first company' from week 1 and the week 7 gate approves its cutover.",
+      "W2 squeezes the third company's interviews and data collection plus the three-company gap ranking into week 3 alone, and D2 is due in the same week as the design go/no-go that reviews it.",
+      "The final readout is in week 12, the week of the 29 January 2027 board meeting, which leaves no time for board papers, and the header's 'Total: 10-12 weeks' contradicts phases that run to week 12."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 2,
+      "workstreams": 2,
+      "deliverables": 3,
+      "governance": 2,
+      "coherence": 2,
+      "sizing": 1
+    },
+    "verdict": "No",
+    "defects": [
+      "The phase lengths get the brief's priorities backwards: Diagnostic takes weeks 1-6 while Implementation gets only weeks 10-12, and the plan's own partner notes say the first-company cutover cannot finish by the board meeting, so it knowingly misses a stated success criterion.",
+      "W6 crams data-migration rehearsal, integrated testing, user acceptance and training for the first company into week 10 alone, and W7 cuts over in weeks 11-12 with no stabilization before the week 12 readout.",
+      "The week 9 go/no-go on cutover happens before D6, the cutover readiness record due week 10, exists, and no steering meeting is held while the cutover runs between week 9 and the week 12 readout.",
+      "W4 designs the moves for all three companies in two weeks under one stream and one deliverable (D4), and W5 builds the integration plan in a single week with D5 due in the same week as its gate.",
+      "D3 claims 'agreed priorities' by week 5 while W3 agrees them with the CEO, CFO and company heads through week 6, and no meeting decides which company goes first even though the week 9 gate depends on it."
+    ]
+  },
+  "better": "X",
+  "why": "X puts its weeks where the binding constraint is: five weeks of implementation, a check-in during the cutover, and readiness reviewed before go-live. Y spends half the engagement on diagnosis and its own notes admit the first-company cutover cannot finish before the board, so X needs edits while Y needs its phases rebuilt."
+}
