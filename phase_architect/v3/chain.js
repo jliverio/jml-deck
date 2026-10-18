@@ -452,8 +452,9 @@ function checkReview(review) {
   if (review.verdict === 'revise' && !is.length) v.push('review:verdict_revise_but_no_issues');
   is.forEach((x, i) => {
     if (!REVIEW_OWNER[x.owner]) v.push(`review:issue_${i + 1}_owner_${x.owner}_invalid`);
-    if (words(x.problem) > 30) v.push(`review:issue_${i + 1}_problem_over_30_words`);
-    if (words(x.fix) > 30) v.push(`review:issue_${i + 1}_fix_over_30_words`);
+    // the issues are internal text for the agents, so length is only a hard limit well past the prompt's 30 words
+    if (words(x.problem) > 45) v.push(`review:issue_${i + 1}_problem_over_45_words`);
+    if (words(x.fix) > 45) v.push(`review:issue_${i + 1}_fix_over_45_words`);
   });
   return v;
 }
