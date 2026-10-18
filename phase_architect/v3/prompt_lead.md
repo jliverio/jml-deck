@@ -37,7 +37,7 @@ Rules:
 4. When the client wants something new built (a venture, product, platform or business model), implementation means Pilot: plan up to the pilot and say in a note that the rollout after it is not in these phases. Use Implementation when an existing or newly designed answer is to be executed or rolled out.
 5. Add Handover only when the result leaves the firm's hands at the end: several client organizations or stakeholder groups receive it, it is published, or a client team takes it over. A board or steering group receiving the final report is not Handover: the last phase's gate covers it. Never after Pilot.
 6. Use a name once, unless the brief itself describes two separate stages that fit it.
-7. Phases always follow each other; never overlap them. Work that runs side by side belongs inside one phase.
+7. Phases always follow each other; never overlap them. Work that runs side by side belongs inside one phase. Two stages the client would not decide between (assessing its own organization and researching the market, for example) are one phase, named after the stage whose decision closes it, with workstreams for both; in its sizing, list the longer line of work and name the other in `why` as running alongside.
 8. Leave out what `out_of_scope` excludes. `market_findings` never add or remove a phase; they change a phase's length only as a sizing driver (STEP 4).
 Each phase has:
 - `duration_weeks` {min, max}, whole weeks, from STEP 5. `duration_derived` is true only when two dates in the brief bound the stage.
