@@ -1,0 +1,133 @@
+{
+  "hard_fields": {
+    "client": {
+      "value": "Norte Hospitals Group",
+      "source": "stated",
+      "quote": "Norte Hospitals Group",
+      "assumption_text": null
+    },
+    "problem_statement": {
+      "value": "Norte Hospitals Group wants a diagnostic of patient waiting times at its three hospitals.",
+      "source": "stated",
+      "quote": "Norte Hospitals Group wants a six-week diagnostic of patient waiting times at its three hospitals",
+      "assumption_text": null
+    }
+  },
+  "required": {
+    "engagement_type": {
+      "value": "assessment",
+      "source": "stated",
+      "quote": "Assessment only",
+      "assumption_text": null
+    },
+    "engagement_length": {
+      "value": "six-week",
+      "weeks_min": 6,
+      "weeks_max": 6,
+      "duration_derived": false,
+      "source": "stated",
+      "quote": "six-week",
+      "assumption_text": null
+    },
+    "stakeholders": {
+      "value": [
+        "Board's medical director (sponsor)"
+      ],
+      "source": "stated",
+      "quote": "The Board's medical director is the sponsor",
+      "assumption_text": null
+    }
+  },
+  "soft_fields": {
+    "deliverable_format": {
+      "value": null,
+      "source": "assumed",
+      "quote": null,
+      "assumption_text": null
+    },
+    "timeline": {
+      "value": null,
+      "source": "assumed",
+      "quote": null,
+      "assumption_text": null
+    },
+    "prior_attempts": {
+      "value": null,
+      "source": "assumed",
+      "quote": null,
+      "assumption_text": null
+    },
+    "success_criteria": {
+      "value": null,
+      "source": "assumed",
+      "quote": null,
+      "assumption_text": null
+    },
+    "out_of_scope": {
+      "value": null,
+      "source": "assumed",
+      "quote": null,
+      "assumption_text": null
+    },
+    "workstreams": {
+      "value": "four",
+      "count": 4,
+      "source": "stated",
+      "quote": "The client asked for four workstreams",
+      "assumption_text": null
+    },
+    "budget_range": {
+      "value": null,
+      "source": "assumed",
+      "quote": null,
+      "assumption_text": null
+    }
+  },
+  "contracting_parties": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+  },
+  "client_url": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+  },
+  "relationship_stage": {
+    "value": "cold",
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": "No existing relationship mentioned."
+  },
+  "brief_narrative": "Norte Hospitals Group wants a six-week diagnostic. It is assessment only, and the client asked for four workstreams.\n\nThe problem is patient waiting times at its three hospitals.\n\nThe Board's medical director is the sponsor.",
+  "questions": [
+    {
+      "field": "deliverable_format",
+      "text": "Did Norte Hospitals Group ask for a specific deliverable format for the diagnostic?"
+    },
+    {
+      "field": "timeline",
+      "text": "Has Norte Hospitals Group set any dates or deadlines for the diagnostic?"
+    },
+    {
+      "field": "prior_attempts",
+      "text": "What has Norte Hospitals Group already tried to address patient waiting times at its three hospitals?"
+    },
+    {
+      "field": "success_criteria",
+      "text": "What outcome did Norte Hospitals Group name as success for the diagnostic of patient waiting times?"
+    },
+    {
+      "field": "out_of_scope",
+      "text": "Did Norte Hospitals Group state anything that is out of scope for the diagnostic?"
+    },
+    {
+      "field": "client_url",
+      "text": "What is the client's website?"
+    }
+  ],
+  "routing": "build",
+  "opt_in_offered": false
+}

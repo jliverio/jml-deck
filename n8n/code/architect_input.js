@@ -32,7 +32,7 @@ if (tl.source === 'stated' && tl.value) {
 
 const architect_input = {
   brief: { hard_fields: bo.hard_fields, required: bo.required,
-    soft_fields: { deliverable_format: sf.deliverable_format, timeline: sf.timeline, prior_attempts: sf.prior_attempts, success_criteria: sf.success_criteria, out_of_scope: sf.out_of_scope } },
+    soft_fields: { deliverable_format: sf.deliverable_format, timeline: sf.timeline, prior_attempts: sf.prior_attempts, success_criteria: sf.success_criteria, out_of_scope: sf.out_of_scope, workstreams: sf.workstreams || null } },
   success_criteria_list,
   profile: { problem_focus: prof.problem_focus || null, topic: prof.topic || null, current_state: prof.current_state || null, market: prof.market || null },
   market_findings: ($json.market_findings || []).map(f => ({ actor: f.actor, summary: f.summary, scope_risk: f.scope_risk })),

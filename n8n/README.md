@@ -12,9 +12,11 @@ and tested here first.
 | code/check_copy.js | Check copy (= _checker.js + its own tail) |
 | code/check_retry.js | Check retry (= _checker.js + its own tail) |
 | code/build_render_payload.js | Build render payload |
+| prompts/01_brief_organizer.txt | Brief Organizer (system message) |
+| prompts/01_brief_schema.json | Brief schema |
 | code/validate_brief.js | Validate brief |
 | code/architect_input.js | Architect input |
-| code/validate_plan.js | Validate plan (generated from phase_architect/validate_plan_v2.js) |
+| code/validate_plan.js | Validate plan (generated from phase_architect/validate_plan_v2.js by `python3 phase_architect/build_n8n_validator.py`) |
 | ../phase_architect/prompt_v2.md | Phase Architect (system message) |
 | ../phase_architect/schema_v2.json | Phases schema |
 | prompts/02b_offering_researcher.txt | Offering researcher (system message) |
@@ -66,9 +68,20 @@ Phase Architect model: claude-sonnet-5-5, output cap 32,000 with streaming on
 (the Anthropic SDK refuses non-streaming calls above ~21k tokens). Long
 engagements need it: a 40-week plan with 10 workstreams retried once and used
 the room (execution 555). Streaming hides the token count in the run log.
-Plan size limits (prompt + validator): up to 12 workstreams (more than 8 only
-past 16 weeks) and 16 deliverables; the schema tolerates 16 workstreams so an
-oversized plan reaches the validator and gets a retry instead of a parser error.
+Plan size limits (prompt + validator): up to 12 workstreams and 16 deliverables;
+the schema tolerates 16 workstreams so an oversized plan reaches the validator
+and gets a retry instead of a parser error. When the partner's email names or
+counts the workstreams, the Brief Organizer records them in
+`soft_fields.workstreams` (`value`, `count`) and the Phase Architect plans
+exactly those streams at any length, with any number per phase; a stream that
+runs in several phases repeats its name in each, and fewer phases are planned
+when streams times phases would pass 12 (Oct 18). Without stated streams the
+default stays 2 to 4 per phase, more than 8 only past 16 weeks. Phases of 16
+weeks or more may add check-ins so no 6-week gap is left; before Oct 18 a phase
+of 20 weeks or more could never pass the checker.
+Tests: `node phase_architect/tests/plan_size_test.js` (84 rule-following plans,
+2 to 52 weeks, 1 to 12 workstreams) and `python3 tests/workplan_render_size.py`
+(renders each and checks the layout).
 
 ## Phase Architect wiring tests (in n8n, agents pinned)
 

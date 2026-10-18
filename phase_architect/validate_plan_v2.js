@@ -40,6 +40,10 @@ function validatePlan(arch, ctx) {
   const brief = ctx.brief || {};
   const scList = ctx.success_criteria_list || [];
   const never = (ctx.jargon_never || []).map(x => String(x).replace(/\s*\(.*\)\s*/, '').trim().toLowerCase()).filter(Boolean);
+  // The partner's own split of the work (Brief Organizer soft_fields.workstreams), when the email gives one.
+  // It replaces the 2-4 per phase default: any length, any number per phase, at most 12 rows (José, Oct 18).
+  const wsf = ((brief.soft_fields || {}).workstreams) || {};
+  const statedStreams = (wsf.value != null && Number.isInteger(wsf.count) && wsf.count > 0) ? wsf.count : null;
 
   // ---------- phases: order and absolute weeks (repair) ----------
   const phases = (arch.phases || []).map((p, i) => ({ ...p }));
@@ -84,6 +88,12 @@ function validatePlan(arch, ctx) {
   const wsById = {};
   wss.forEach(w => { if (wsById[w.id]) v.push(`ws:${w.id}:duplicate_id`); wsById[w.id] = w; });
   if (wss.length > 12) v.push(`ws:count_${wss.length}_over_12`);  // the deck pages the timeline at 8 rows
+  if (statedStreams) {
+    // one name per stream: a stream that runs in several phases repeats its name in each
+    const distinct = new Set(wss.map(w => String(w.name || '').trim().toLowerCase())).size;
+    const want = Math.min(statedStreams, 12);
+    if (distinct !== want) v.push(`ws:streams_${distinct}_vs_stated_${want}`);
+  }
   for (const w of wss) {
     const p = byOrder[w.phase_order];
     if (!p) { v.push(`ws:${w.id}:unknown_phase_${w.phase_order}`); continue; }
@@ -128,8 +138,9 @@ function validatePlan(arch, ctx) {
     const mine = wss.filter(w => w.phase_order === p.order && w.start_week != null);
     p.workstream_ids = mine.map(w => w.id);
     if (!mine.length) { v.push(`phase:${p.name}:no_workstreams`); continue; }
-    const minCount = p.duration_weeks.max <= 3 ? 1 : 2;
-    if (mine.length < minCount || mine.length > 4) v.push(`phase:${p.name}:workstreams_${mine.length}`);
+    const minCount = (statedStreams || p.duration_weeks.max <= 3) ? 1 : 2;
+    const maxCount = statedStreams ? 12 : 4;
+    if (mine.length < minCount || mine.length > maxCount) v.push(`phase:${p.name}:workstreams_${mine.length}`);
     const idle = [];
     for (let wk = p.start_week; wk <= p.end_week; wk++) if (!mine.some(w => w.start_week <= wk && w.end_week >= wk)) idle.push(wk - p.start_week + 1);
     if (idle.length) v.push(`phase:${p.name}:idle_weeks_${idle.join('_')}`);
@@ -231,8 +242,11 @@ function validatePlan(arch, ctx) {
     const cks = mine.filter(e => e.type === 'checkin');
     const wantW = L >= 12 ? 2 : (L >= 8 ? 1 : 0);
     const wantC = (L >= 5 && L <= 7) ? 1 : 0;
+    // From 16 weeks, check-ins may fill the gaps the 6-week rule leaves: with only two workshops in their
+    // windows, a phase of 20 weeks or more (19 after another phase) can never pass that rule.
+    const maxC = L >= 16 ? Math.ceil(L / 6) : wantC;
     if (ws.length !== wantW) v.push(`gov:${p.name}:workshops_${ws.length}_want_${wantW}`);
-    if (cks.length !== wantC) v.push(`gov:${p.name}:checkins_${cks.length}_want_${wantC}`);
+    if (cks.length < wantC || cks.length > maxC) v.push(`gov:${p.name}:checkins_${cks.length}_want_${maxC > wantC ? wantC + '_to_' + maxC : wantC}`);
     const inWin = (e, lo, hi) => { const r = e.week_in_phase / L; return r >= lo - 1e-9 && r <= hi + 1e-9 && e.week_in_phase < L; };
     if (wantW === 1 && ws[0] && !inWin(ws[0], 0.5, 0.75)) v.push(`gov:${ws[0].id}:workshop_outside_50_75pct`);
     if (wantW === 2 && ws.length === 2) {

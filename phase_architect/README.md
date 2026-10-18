@@ -11,7 +11,7 @@ Turns the brief into the three work-plan slides a partner expects in a proposal:
 | Step | Who | What |
 |---|---|---|
 | Architect input | Code (`n8n/code/architect_input.js`) | Brief fields, numbered success criteria, profiler focus, market findings, **weeks available to the deadline** (date parsed from `timeline`, minus 2 weeks to contract), **method library** |
-| Phase Architect | LLM (`prompt_v2.md`, `schema_v2.json`) | Governing question; nearest firm archetype, adapted; phases; 2–4 workstreams per phase, each answering one sub-question and traced to the problem, a success criterion or a gate; 1–2 deliverables per workstream with a due week; steering events with attendees, deliverables presented, one decision and an agenda |
+| Phase Architect | LLM (`prompt_v2.md`, `schema_v2.json`) | Governing question; nearest firm archetype, adapted; phases; the partner's own workstreams when the email gives them (any number per phase, at most 12 rows), otherwise 2–4 per phase, each answering one sub-question and traced to the problem, a success criterion or a gate; 1–2 deliverables per workstream with a due week; steering events with attendees, deliverables presented, one decision and an agenda |
 | Validate plan | Code (`n8n/code/validate_plan.js`, generated from `validate_plan_v2.js`) | Computes every week; repairs arithmetic; returns content **violations** (see below) |
 | Retry once | LLM, same prompt | Input + `previous_output` + `violations`; tested: it changes only what was flagged |
 | Render | `workplan.py`, called from `varfill.build_deck(..., workplan=)`; `app.py` passes the payload's `workplan` | Draws the slides in template v1.1 style; **titles are composed from the numbers**, so a title can never disagree with its chart |
@@ -26,17 +26,18 @@ Turns the brief into the three work-plan slides a partner expects in a proposal:
   - Something runs into every gate week.
 - **Dependencies.** A workstream that follows another starts after it starts and ends no earlier.
 - **Deliverables.**
-  - There are 3–12 of them, each a noun phrase, never an activity.
+  - There are 3–16 of them, each a noun phrase, never an activity.
   - Each is due inside its workstream's weeks.
   - Each is presented at a meeting on or after its due week.
 - **Governance.**
   - One kick-off.
   - One gate per phase, in its last week.
   - Workshops by phase length: one for 8–11 weeks, two from 12 weeks.
-  - One check-in for phases of 5–7 weeks.
+  - One check-in for phases of 5–7 weeks; from 16 weeks, check-ins may fill gaps (at most one per 6 weeks).
   - At most 6 weeks between steering moments.
   - Each meeting brings material that is new since the previous one.
   - Attendees come only from stated stakeholders.
+- **Size.** At most 12 workstreams. With the partner's streams (`soft_fields.workstreams.count`), one name per stream and any number per phase; otherwise 2–4 per phase.
 - **Traceability.** Every stated success criterion is traced by a workstream, including one in the last phase.
 - **Language.** Character and word limits, and the firm's banned-jargon list.
 

@@ -160,7 +160,8 @@ def titles(plan):
     t = plan["total_duration_weeks"]
     total = f"{t['max']} weeks" if t["min"] == t["max"] else f"{t['min']} to {t['max']} weeks"
     n = len(plan["phases"])
-    nws = len(plan["workstreams"])
+    # a stream that runs in several phases repeats its name in each (the partner's own streams): count it once
+    nws = len({str(w.get("name", "")).strip().lower() for w in plan["workstreams"]}) or len(plan["workstreams"])
     nd = len(plan["deliverables"])
     ev = [e for e in plan["governance"]["events"] if e["type"] != "kickoff"]
     gates = sum(1 for e in ev if e["type"] == "gate")
@@ -496,6 +497,8 @@ def governance_slides(prs, plan, section, client, per_slide=4, slide=None):
         mine = [e for e in evs if e["phase_order"] == p["order"]]
         if cur and len(cur) + len(mine) > per_slide:
             chunks.append(cur); cur = []
+        while len(mine) > per_slide:  # a long phase with gap check-ins fills slides on its own
+            chunks.append(mine[:per_slide]); mine = mine[per_slide:]
         cur += mine
     if cur:
         chunks.append(cur)
@@ -534,7 +537,7 @@ def governance_slides(prs, plan, section, client, per_slide=4, slide=None):
             _text(band, e["purpose"], size=12, bold=True, color=NAVY if e["type"] == "gate" else WHITE)
             att = e.get("attendees") or []
             if att:
-                _text(s, _clip("With: " + ", ".join(att), int(cw / Inches(0.062))), size=9, italic=True, color=GREY,
+                _text(s, _clip("With: " + ", ".join(att), int((cw - Inches(0.2)) / Inches(0.066))), size=9, italic=True, color=GREY,
                       anchor=MSO_ANCHOR.TOP, x=x, y=y + Inches(1.06), w=cw, h=Inches(0.2))
             body = _box(s, x, y + Inches(1.3), cw, Inches(1.55))
             _bullets(body, e["agenda"], size=11)
@@ -542,7 +545,7 @@ def governance_slides(prs, plan, section, client, per_slide=4, slide=None):
             ordered = sorted([d for d in e["presents"] if d in dels], key=lambda d: (kind_rank.get(dels[d]["kind"], 9), -dels[d]["due_week"]))
             pres = [f"{d}  {dels[d]['name']}" for d in ordered]
             if pres:
-                maxc = int(cw / Inches(0.062))
+                maxc = int((cw - Inches(0.2)) / Inches(0.066))  # one 9 pt line inside the box margins (Oct 18 stress test)
                 shown = pres[:3] if len(pres) <= 3 else pres[:2]
                 lines = [_clip(p, maxc) for p in shown] + ([f"+{len(pres) - len(shown)} more (see deliverables page)"] if len(pres) > len(shown) else [])
                 _text(s, "Reviews", size=9, bold=True, color=GREY, anchor=MSO_ANCHOR.TOP, x=x, y=y + Inches(2.9), w=cw, h=Inches(0.2))
