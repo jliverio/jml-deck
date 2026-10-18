@@ -139,7 +139,7 @@ function fitNote(state) {
   if (!s || !['stated', 'deadline', 'stage_lengths'].includes(s.length_basis)) return null;
   const have = s.planned_total.max, need = s.estimate_total;
   if (need.min > have) return `The work counted needs ${need.min}-${need.max} weeks, more than the ${have} planned: cut scope, run more at once, or extend.`;
-  if (need.max > have) return `The ${have} weeks planned leave no slack: the work counted needs ${need.min}-${need.max} weeks.`;
+  if (have < (need.min + need.max) / 2) return `The ${have} weeks planned sit in the lower half of what the work counted needs (${need.min}-${need.max} weeks): little slack.`;
   return null;
 }
 
