@@ -1,0 +1,140 @@
+{
+  "basis": {
+    "governing_question": "How can Metalúrgica Norte cut conversion cost per part at its Braga plant and put the improvements in place?",
+    "archetype_id": "performance_improvement"
+  },
+  "sizing": {
+    "length_basis": "estimated",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "What is the conversion cost per part today, and where does it arise across the plant's production lines?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "Which improvements can reduce conversion cost per part, and by how much each?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q3",
+        "question": "How are the chosen improvements put in place at the plant and kept running in daily operations?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q4",
+        "question": "What conversion cost per part do the implemented improvements show in the plant's cost data?",
+        "phase_order": 2
+      }
+    ],
+    "drivers": [
+      {
+        "key": "sites",
+        "value": 1,
+        "source": "profile",
+        "evidence": "One plant in Braga"
+      },
+      {
+        "key": "production_lines",
+        "value": 3,
+        "source": "profile",
+        "evidence": "three production lines"
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Site diagnosed on the floor (cost baseline, line observation, loss analysis)",
+            "from_library": true,
+            "driver": "sites",
+            "count": 1,
+            "weeks_each": {
+              "min": 2,
+              "max": 3
+            },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": {
+          "min": 4,
+          "max": 5
+        },
+        "why": "One plant is diagnosed on the floor, with COO and Plant Director interviews alongside; the estimate is within the archetype's 3-6 weeks."
+      },
+      {
+        "phase_order": 2,
+        "work": [
+          {
+            "unit": "Pilot site: changes made and savings shown in the cost data",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": {
+              "min": 8,
+              "max": 12
+            },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 0,
+        "estimate": {
+          "min": 8,
+          "max": 12
+        },
+        "why": "One plant is the pilot site, changed across its three lines; the estimate is within the archetype's 8-16 weeks."
+      }
+    ],
+    "levers": "Limiting Implementation to the changes on one production line instead of all three would shorten the engagement most."
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": {
+        "min": 4,
+        "max": 5
+      },
+      "duration_derived": false,
+      "objective_one_line": "Establish the conversion cost per part at the Braga plant and size the improvements that would reduce it.",
+      "gate": {
+        "label": "Initiatives go/no-go",
+        "decision": "Which sized improvements go into implementation at the Braga plant?"
+      },
+      "depends_on_assumptions": [
+        "engagement_length",
+        "timeline",
+        "prior_attempts"
+      ]
+    },
+    {
+      "name": "Implementation",
+      "order": 2,
+      "duration_weeks": {
+        "min": 9,
+        "max": 11
+      },
+      "duration_derived": false,
+      "objective_one_line": "Put the approved improvements in place at the Braga plant and show the reduction in conversion cost per part.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the final results: cost per part down and improvements running at the plant?"
+      },
+      "depends_on_assumptions": [
+        "engagement_length",
+        "deliverable_format",
+        "timeline",
+        "out_of_scope"
+      ]
+    }
+  ],
+  "architect_notes": [
+    "Engagement length is not given; the 13-16 weeks are an estimate from one plant, to be confirmed before this becomes a quote.",
+    "Plant and line counts (one plant, three production lines) come from public research and need the client's confirmation.",
+    "Implementation uses the middle of an 8-12 week estimate; changes needed on all three lines in sequence would push it to the top.",
+    "Implementation holds one pilot-site unit and no rollout waves, since the profile shows a single plant; confirm there is no second site.",
+    "No Measurement phase: results tracking against the baseline runs inside Implementation, so there is no separate tracking period after launch."
+  ]
+}

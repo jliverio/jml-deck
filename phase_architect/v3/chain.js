@@ -77,7 +77,10 @@ function checkSizing(state, ctx) {
     if (d.source === 'assumed') { if (ev) v.push(`sizing:driver_${d.key}_assumed_so_evidence_must_be_empty`); continue; }
     if (!ev) { v.push(`sizing:driver_${d.key}_no_evidence_from_${d.source}`); continue; }
     if (words(ev) > 15) v.push(`sizing:driver_${d.key}_evidence_over_15_words`);
-    if (!sourceText(inp, d.source).includes(norm(ev))) v.push(`sizing:driver_${d.key}_evidence_not_found_word_for_word_in_${d.source === 'brief' ? 'stated_brief_fields' : d.source}`);
+    // a list field (stakeholders) may be quoted as 'A and B' or 'A, B': each part must be there
+    const src = sourceText(inp, d.source);
+    const parts = norm(ev).replace(/[\[\]"]/g, '').split(/,| and /).map(x => x.trim()).filter(Boolean);
+    if (!src.includes(norm(ev)) && !(parts.length > 1 && parts.every(x => src.includes(x)))) v.push(`sizing:driver_${d.key}_evidence_not_found_word_for_word_in_${d.source === 'brief' ? 'stated_brief_fields' : d.source}`);
   }
   const lib = Object.fromEntries(libraryUnits(inp, (L.basis || {}).archetype_id).map(u => [norm(u.unit), u]));
   const pw = sz.phase_work || [];

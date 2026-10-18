@@ -1,0 +1,161 @@
+{
+  "basis": {
+    "governing_question": "What strategy should Banco Horizonte follow for its digital channels?",
+    "archetype_id": null
+  },
+  "sizing": {
+    "length_basis": "estimated",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "How well do Banco Horizonte's digital channels perform today, and what do its leaders expect of them?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "What do customers expect and competitors offer in digital retail banking?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q3",
+        "question": "Which strategic options for its digital channels could Banco Horizonte pursue, and how do they compare?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q4",
+        "question": "What roadmap carries the chosen digital channel strategy into action?",
+        "phase_order": 2
+      }
+    ],
+    "drivers": [
+      {
+        "key": "stakeholder_groups",
+        "value": 2,
+        "source": "brief",
+        "evidence": "[\"CEO\",\"Head of Digital\"]"
+      },
+      {
+        "key": "digital_channels",
+        "value": 3,
+        "source": "assumed",
+        "evidence": ""
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Interview round with one stakeholder group",
+            "from_library": true,
+            "driver": "stakeholder_groups",
+            "count": 2,
+            "weeks_each": {
+              "min": 1,
+              "max": 2
+            },
+            "at_once": 2
+          },
+          {
+            "unit": "Digital channel assessed: usage data, customer journeys, capabilities",
+            "from_library": false,
+            "driver": "digital_channels",
+            "count": 3,
+            "weeks_each": {
+              "min": 2,
+              "max": 3
+            },
+            "at_once": 3
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": {
+          "min": 5,
+          "max": 7
+        },
+        "why": "Leaders interviewed first, then the three channels assessed side by side; market, competitor and customer research runs alongside the channel assessment."
+      },
+      {
+        "phase_order": 2,
+        "work": [
+          {
+            "unit": "Strategic options for digital channels defined and compared",
+            "from_library": false,
+            "driver": null,
+            "count": 1,
+            "weeks_each": {
+              "min": 2,
+              "max": 3
+            },
+            "at_once": 1
+          },
+          {
+            "unit": "Digital channel strategy and roadmap for the chosen option",
+            "from_library": false,
+            "driver": null,
+            "count": 1,
+            "weeks_each": {
+              "min": 2,
+              "max": 3
+            },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 1,
+        "estimate": {
+          "min": 5,
+          "max": 7
+        },
+        "why": "Options compared first, then strategy and roadmap built for the chosen option; sign-off sits in the synthesis week."
+      }
+    ],
+    "levers": "Running leadership interviews alongside the channel assessment would shorten the Diagnostic most; comparing fewer strategic options would shorten Design."
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": {
+        "min": 5,
+        "max": 7
+      },
+      "duration_derived": false,
+      "objective_one_line": "Assess how Banco Horizonte's digital channels perform today and what customers and competitors do in digital retail banking.",
+      "gate": {
+        "label": "Priorities for design",
+        "decision": "Which digital channel priorities does the steering group take into strategy design?"
+      },
+      "depends_on_assumptions": [
+        "engagement_length",
+        "timeline",
+        "prior_attempts"
+      ]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": {
+        "min": 5,
+        "max": 7
+      },
+      "duration_derived": false,
+      "objective_one_line": "Define Banco Horizonte's digital channel strategy and roadmap, with options compared on agreed criteria.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Does the steering group approve the digital channel strategy and roadmap as final?"
+      },
+      "depends_on_assumptions": [
+        "engagement_length",
+        "deliverable_format",
+        "timeline",
+        "success_criteria",
+        "out_of_scope"
+      ]
+    }
+  ],
+  "architect_notes": [
+    "Engagement length is not stated; the 10 to 14 weeks is a sizing estimate, to be confirmed with the client before quoting.",
+    "No archetype fits a digital channel strategy, so only the interview round comes from the firm's library; other work lengths are Architect estimates.",
+    "Market, competitor and customer research runs inside the Diagnostic rather than as a separate Research phase, because the client would not decide between them."
+  ]
+}
