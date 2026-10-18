@@ -1,0 +1,85 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Conversion cost baseline",
+      "question_id": "Q1",
+      "answers": "What is conversion cost per part at the Braga plant today, and where does it build up?",
+      "traces_to": ["problem_statement", "success_criteria:1"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "activities": [
+        "Calculate conversion cost per part from operational data",
+        "Observe lines on the floor and record where losses occur",
+        "Interview the people who run the lines about cost drivers"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Cost improvement sizing",
+      "question_id": "Q2",
+      "answers": "Which improvements can lower conversion cost per part by a measurable amount, and what is each worth?",
+      "traces_to": ["problem_statement", "success_criteria:1", "gate:1"],
+      "start_offset": 2,
+      "duration": 3,
+      "follows": ["W1"],
+      "activities": [
+        "Identify candidate improvements from the losses found",
+        "Size each improvement's effect on cost per part from data",
+        "Prepare the sized improvement list for the go/no-go decision"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 2,
+      "name": "Improvement implementation",
+      "question_id": "Q3",
+      "answers": "How are the chosen improvements put in place at the Braga plant, and in what order?",
+      "traces_to": ["problem_statement", "success_criteria:2", "gate:2"],
+      "start_offset": 0,
+      "duration": 11,
+      "follows": [],
+      "activities": [
+        "Detail each chosen improvement and set the order of changes",
+        "Prepare the changes with the people who run the lines",
+        "Put the changes into operation after the steering workshop"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 2,
+      "name": "Cost per part tracking",
+      "question_id": "Q4",
+      "answers": "Do the improvements keep running, and does cost per part fall against the baseline?",
+      "traces_to": ["success_criteria:1", "success_criteria:2", "gate:2"],
+      "start_offset": 2,
+      "duration": 9,
+      "follows": [],
+      "activities": [
+        "Set up a tracker of cost per part against the baseline",
+        "Check that each improvement keeps running on the floor",
+        "Compare operational data on cost per part with the baseline"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 2,
+      "name": "Plant team capability",
+      "question_id": null,
+      "answers": "Can the Braga plant team run the improvements and keep them going after handover?",
+      "traces_to": ["success_criteria:2", "gate:2"],
+      "start_offset": 5,
+      "duration": 6,
+      "follows": ["W3"],
+      "activities": [
+        "Train the plant team on the changed ways of working",
+        "Coach the plant team as they run the changes themselves",
+        "Document who owns each improvement for the handover"
+      ]
+    }
+  ],
+  "notes": []
+}

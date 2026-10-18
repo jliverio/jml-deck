@@ -1,0 +1,68 @@
+{
+  "deliverables": [
+    {
+      "id": "D1",
+      "workstream_id": "W1",
+      "name": "Claims and underwriting current-state baseline",
+      "kind": "analysis",
+      "due_week_in_phase": 3
+    },
+    {
+      "id": "D2",
+      "workstream_id": "W2",
+      "name": "Sales and customer service current-state baseline",
+      "kind": "analysis",
+      "due_week_in_phase": 6
+    },
+    {
+      "id": "D3",
+      "workstream_id": "W3",
+      "name": "Finance unit current-state baseline",
+      "kind": "analysis",
+      "due_week_in_phase": 9
+    },
+    {
+      "id": "D4",
+      "workstream_id": "W4",
+      "name": "Cost, workload and performance gaps across units",
+      "kind": "analysis",
+      "due_week_in_phase": 9
+    },
+    {
+      "id": "D5",
+      "workstream_id": "W4",
+      "name": "Diagnostic findings and prioritized areas to redesign",
+      "kind": "decision_pack",
+      "due_week_in_phase": 10
+    },
+    {
+      "id": "D6",
+      "workstream_id": "W5",
+      "name": "Target operating model options for the five units",
+      "kind": "design",
+      "due_week_in_phase": 4
+    },
+    {
+      "id": "D7",
+      "workstream_id": "W6",
+      "name": "Detailed design by unit: structure, roles and governance",
+      "kind": "design",
+      "due_week_in_phase": 9
+    },
+    {
+      "id": "D8",
+      "workstream_id": "W7",
+      "name": "Transition plan by unit with staff change needs",
+      "kind": "design",
+      "due_week_in_phase": 13
+    },
+    {
+      "id": "D9",
+      "workstream_id": "W8",
+      "name": "Final readout: target model and transition plan by unit",
+      "kind": "decision_pack",
+      "due_week_in_phase": 14
+    }
+  ],
+  "notes": []
+}

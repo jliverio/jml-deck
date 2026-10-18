@@ -1,0 +1,40 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3,
+      "sizing": 4
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W6 gets a single week (weeks 10-10) to sequence and draft the entry plan, and D8 and D9 are due in week 10, the same week as the final readout, so there is no time for a pre-read before the go or no-go decision.",
+      "D5 (the findings pack for sign-off) is due in week 4, but W2 and W3 run to week 5, so the pack is closed before the competitor, buyer and capability streams it summarises have finished.",
+      "W3 starts in week 3 and its gap assessment D4 is due in week 4, the same week as the buyer needs findings D3, so it cannot test Quinta Azul's assets against what Spanish buyers need.",
+      "W5 starts in week 8 and builds the business case for 'the preferred entry option' in the same week as the check-in that chooses it, and that check-in's decision names the roadmap and pack rather than the option the business case should model.",
+      "No meeting defines what 'attractive enough' means before the week-5 gate, and W4's activity of agreeing comparison criteria with leaders has no steering meeting in weeks 6-7 where that agreement can happen."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 3,
+      "workstreams": 3,
+      "deliverables": 4,
+      "governance": 4,
+      "coherence": 3,
+      "sizing": 2
+    },
+    "verdict": "No",
+    "defects": [
+      "Research takes 10 weeks for one market with 3 channels, 6 buyer interviews and 2 shopper segments (the partner note's own counts), which pads the total to 15 weeks for a single-country go or no-go assessment.",
+      "W5 builds the go or no-go business case (D8, due week 13) before the week-13 check-in decides which entry option to detail, so the business case has no chosen option to model.",
+      "W4 is marked 'after W2, W3' but starts in week 7 while W3 runs to week 9, and the gap assessment D5 (week 8) is due before the buyer and shopper needs D4 (week 9).",
+      "W5 merges two separate questions (which entry options exist and whether the business case supports a go) into one three-week stream, and no meeting agrees the 'agreed criteria' used to compare the options.",
+      "The final readout reviews D7 and D8 again after the week-13 check-in already covered them, and there is no consolidated go or no-go decision pack, so the only new item at the decision meeting is the roadmap D9."
+    ]
+  },
+  "better": "X",
+  "why": "X sizes a single-market go or no-go at a realistic 10 weeks, and its Design phase runs options, then business case, then roadmap in a sound order, so its defects can be fixed by moving dates. Y has the stronger governance (success tests set at kickoff, a workshop that sets the gap-assessment criteria), which X should borrow, but it pads Research to 10 weeks and builds the business case before the option is chosen, so it needs re-planning before it can be sent."
+}

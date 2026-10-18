@@ -1,0 +1,36 @@
+{
+  "basis": {
+    "governing_question": "How should Seguros Atlântida redesign the operating model of its five business units, and how does it transition to it?",
+    "archetype_id": "operating_model_redesign"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 6, "max": 8 },
+      "duration_derived": false,
+      "objective_one_line": "Baseline how claims, underwriting, sales, customer service and finance are organized and work today, and identify improvement areas.",
+      "gate": {
+        "label": "Go/no-go on design",
+        "decision": "Go or no-go on moving to design with the agreed improvement areas?"
+      },
+      "depends_on_assumptions": ["engagement_length", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 8, "max": 10 },
+      "duration_derived": false,
+      "objective_one_line": "Define a target operating model for the five units and a transition plan by unit for executive committee approval.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the target model and transition plan by unit to take to the executive committee?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format", "timeline", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Length is an estimate of 14 to 18 weeks, built from the archetype's phase lengths and lengthened for five business units; confirm before quoting.",
+    "No Implementation phase: the type is assessment and the brief asks for a transition plan by unit, not its execution."
+  ]
+}

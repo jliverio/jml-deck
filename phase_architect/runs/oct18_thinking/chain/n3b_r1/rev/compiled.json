@@ -1,0 +1,640 @@
+{
+ "client": "Seguros Atlântida",
+ "basis": {
+  "governing_question": "How should Seguros Atlântida redesign the operating model of its five business units and plan the transition to it?",
+  "archetype_id": "operating_model_redesign"
+ },
+ "total_duration_weeks": {
+  "min": 25,
+  "max": 29
+ },
+ "phases": [
+  {
+   "name": "Diagnostic",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 11,
+   "duration_weeks": {
+    "min": 9,
+    "max": 11
+   },
+   "duration_derived": false,
+   "objective_one_line": "Establish the current organization, process and cost baseline of the five business units and prioritize the areas to redesign.",
+   "gate": {
+    "label": "Go/no-go on design",
+    "decision": "Go or no-go on designing the target model for the areas prioritized in the diagnostic?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length",
+    "timeline",
+    "prior_attempts"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2",
+    "W3",
+    "W4"
+   ]
+  },
+  {
+   "name": "Design",
+   "order": 2,
+   "start_week": 12,
+   "end_week": 29,
+   "duration_weeks": {
+    "min": 16,
+    "max": 18
+   },
+   "duration_derived": false,
+   "objective_one_line": "Define the target operating model for the five business units and a transition plan for each unit.",
+   "gate": {
+    "label": "Final readout",
+    "decision": "Approve the final target model and transition plan by unit?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length",
+    "deliverable_format",
+    "timeline",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W5",
+    "W6",
+    "W7",
+    "W8"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Claims and underwriting",
+   "answers": "How do claims and underwriting organize their work, processes and costs today?",
+   "traces_to": [
+    "problem_statement"
+   ],
+   "start_week": 1,
+   "end_week": 3,
+   "follows": [],
+   "activities": [
+    "Interview the people who do the work in each unit",
+    "Walk through each unit's processes with its staff",
+    "Measure workload and cost from operational data"
+   ],
+   "deliverable_ids": [
+    "D1"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Sales and customer service",
+   "answers": "How do sales and customer service organize their work, processes and costs today?",
+   "traces_to": [
+    "problem_statement"
+   ],
+   "start_week": 4,
+   "end_week": 6,
+   "follows": [],
+   "activities": [
+    "Interview staff and walk through each unit's processes",
+    "Gather customer input on sales and service contacts",
+    "Measure workload and cost from operational data"
+   ],
+   "deliverable_ids": [
+    "D2"
+   ]
+  },
+  {
+   "id": "W3",
+   "phase_order": 1,
+   "name": "Finance",
+   "answers": "How does finance organize its work, processes and costs today?",
+   "traces_to": [
+    "problem_statement"
+   ],
+   "start_week": 7,
+   "end_week": 8,
+   "follows": [],
+   "activities": [
+    "Interview the people who do the work in finance",
+    "Review finance process documents and cost records",
+    "Measure workload and cost from operational data"
+   ],
+   "deliverable_ids": [
+    "D3"
+   ]
+  },
+  {
+   "id": "W4",
+   "phase_order": 1,
+   "name": "Gaps and priority areas",
+   "answers": "Where do cost, workload and performance gaps across the five units matter most for the new model?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 9,
+   "end_week": 11,
+   "follows": [
+    "W1",
+    "W2",
+    "W3"
+   ],
+   "activities": [
+    "Compare cost, workload and performance across the units",
+    "Rank the gaps by how much they matter for the new model",
+    "Test the ranking with unit heads and their teams"
+   ],
+   "deliverable_ids": [
+    "D4"
+   ]
+  },
+  {
+   "id": "W5",
+   "phase_order": 2,
+   "name": "Target operating model",
+   "answers": "Which target operating model for the five units can the executive committee approve?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1",
+    "gate:2"
+   ],
+   "start_week": 12,
+   "end_week": 17,
+   "follows": [],
+   "activities": [
+    "Draft model options for structure, roles and governance",
+    "Test the options against the diagnostic findings",
+    "Prepare the options for the design workshop"
+   ],
+   "deliverable_ids": [
+    "D5"
+   ]
+  },
+  {
+   "id": "W6",
+   "phase_order": 2,
+   "name": "Unit-level design",
+   "answers": "How are structure, roles and governance of the chosen model detailed for each of the five units?",
+   "traces_to": [
+    "success_criteria:1",
+    "gate:2"
+   ],
+   "start_week": 18,
+   "end_week": 23,
+   "follows": [
+    "W5"
+   ],
+   "activities": [
+    "Detail structure, roles and governance with unit leaders",
+    "Run unit design rounds, two units at a time",
+    "Check each unit design with the people who do the work"
+   ],
+   "deliverable_ids": [
+    "D6"
+   ]
+  },
+  {
+   "id": "W7",
+   "phase_order": 2,
+   "name": "Transition plan by unit",
+   "answers": "What transition plan, by unit, moves each unit from today's operating model to the target?",
+   "traces_to": [
+    "success_criteria:2",
+    "gate:2"
+   ],
+   "start_week": 24,
+   "end_week": 27,
+   "follows": [
+    "W6"
+   ],
+   "activities": [
+    "Sequence each unit's move from today's model to the target",
+    "Plan each unit's change two at a time with its leaders",
+    "Align the unit plans on timing and dependencies"
+   ],
+   "deliverable_ids": [
+    "D7"
+   ]
+  },
+  {
+   "id": "W8",
+   "phase_order": 2,
+   "name": "Executive committee sign-off",
+   "answers": "What do the executive committee and unit heads need to see to approve the model and transition plans?",
+   "traces_to": [
+    "success_criteria:1",
+    "success_criteria:2",
+    "gate:2"
+   ],
+   "start_week": 28,
+   "end_week": 29,
+   "follows": [
+    "W5",
+    "W6",
+    "W7"
+   ],
+   "activities": [
+    "Review the model and plans with the executive committee",
+    "Collect comments from unit heads and resolve them",
+    "Finalize the model and plans for the final readout"
+   ],
+   "deliverable_ids": [
+    "D8"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "Claims and underwriting work, process and cost baseline",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 3,
+   "presented_at": "Workshop 1: first baselines"
+  },
+  {
+   "id": "D2",
+   "name": "Sales and customer service work, process and cost baseline",
+   "kind": "analysis",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 6,
+   "presented_at": "Workshop 1: first baselines"
+  },
+  {
+   "id": "D3",
+   "name": "Finance work, process and cost baseline",
+   "kind": "analysis",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 8,
+   "presented_at": "Go/no-go on design"
+  },
+  {
+   "id": "D4",
+   "name": "Diagnostic readout with prioritized redesign areas",
+   "kind": "decision_pack",
+   "workstream_id": "W4",
+   "phase_order": 1,
+   "due_week": 10,
+   "presented_at": "Go/no-go on design"
+  },
+  {
+   "id": "D5",
+   "name": "Target operating model options for the five units",
+   "kind": "design",
+   "workstream_id": "W5",
+   "phase_order": 2,
+   "due_week": 16,
+   "presented_at": "Workshop 2: model options"
+  },
+  {
+   "id": "D6",
+   "name": "Unit-level design of structure, roles and governance",
+   "kind": "design",
+   "workstream_id": "W6",
+   "phase_order": 2,
+   "due_week": 22,
+   "presented_at": "Workshop 3: unit designs"
+  },
+  {
+   "id": "D7",
+   "name": "Transition plan by unit",
+   "kind": "design",
+   "workstream_id": "W7",
+   "phase_order": 2,
+   "due_week": 27,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D8",
+   "name": "Approval pack: target operating model and transition plans",
+   "kind": "decision_pack",
+   "workstream_id": "W8",
+   "phase_order": 2,
+   "due_week": 28,
+   "presented_at": "Final readout"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 2,
+  "status_weeks": [
+   3,
+   5,
+   9,
+   13,
+   15,
+   19,
+   21,
+   25,
+   27
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Start the diagnostic and secure data access",
+    "attendees": [
+     "Chief Executive Officer",
+     "Chief Operating Officer",
+     "Heads of the five business units"
+    ],
+    "presents": [],
+    "decision": "Do the unit heads give access to the data and people the baselines need?",
+    "agenda": [
+     "Present the diagnostic approach and the unit baselines",
+     "Align on the data and people each baseline needs",
+     "Confirm data and people access for the claims and underwriting baseline"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "workshop",
+    "phase_order": 1,
+    "week": 7,
+    "label": "Workshop 1: first baselines",
+    "purpose": "Review first baselines and set gap focus",
+    "attendees": [
+     "Chief Executive Officer",
+     "Chief Operating Officer",
+     "Heads of the five business units"
+    ],
+    "presents": [
+     "D1",
+     "D2"
+    ],
+    "decision": "Which gaps in the first two baselines should the prioritization cover first?",
+    "agenda": [
+     "Present the claims, underwriting, sales and customer service baselines",
+     "Discuss the gaps visible so far across the two baselines",
+     "Decide which gaps the prioritization covers first"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 11,
+    "label": "Go/no-go on design",
+    "purpose": "Decide whether to move into design",
+    "attendees": [
+     "Chief Executive Officer",
+     "Chief Operating Officer",
+     "Heads of the five business units"
+    ],
+    "presents": [
+     "D3",
+     "D4"
+    ],
+    "decision": "Go or no-go on designing the target model for the areas prioritized in the diagnostic?",
+    "agenda": [
+     "Review the finance work, process and cost baseline",
+     "Present the diagnostic readout and prioritized redesign areas",
+     "Decide whether to design the target model for the prioritized areas"
+    ]
+   },
+   {
+    "id": "G4",
+    "type": "workshop",
+    "phase_order": 2,
+    "week": 17,
+    "label": "Workshop 2: model options",
+    "purpose": "Review model options for the five units",
+    "attendees": [
+     "Chief Executive Officer",
+     "Chief Operating Officer",
+     "Heads of the five business units"
+    ],
+    "presents": [
+     "D5"
+    ],
+    "decision": "Which target operating model option goes forward into unit-level design?",
+    "agenda": [
+     "Present the target operating model options for the five units",
+     "Discuss how the options differ across the five units",
+     "Decide which option goes forward into unit-level design"
+    ]
+   },
+   {
+    "id": "G5",
+    "type": "workshop",
+    "phase_order": 2,
+    "week": 23,
+    "label": "Workshop 3: unit designs",
+    "purpose": "Review unit designs before the final gate",
+    "attendees": [
+     "Chief Executive Officer",
+     "Chief Operating Officer",
+     "Heads of the five business units"
+    ],
+    "presents": [
+     "D6"
+    ],
+    "decision": "Go or no-go on building the transition plan by unit on these unit-level designs?",
+    "agenda": [
+     "Present the unit-level design of structure, roles and governance",
+     "Review how the designs fit together across the five units",
+     "Decide whether to build the transition plan by unit on these designs"
+    ]
+   },
+   {
+    "id": "G6",
+    "type": "gate",
+    "phase_order": 2,
+    "week": 29,
+    "label": "Final readout",
+    "purpose": "Approve the model and transition plans",
+    "attendees": [
+     "Chief Executive Officer",
+     "Chief Operating Officer",
+     "Heads of the five business units"
+    ],
+    "presents": [
+     "D7",
+     "D8"
+    ],
+    "decision": "Approve the final target model and transition plan by unit?",
+    "agenda": [
+     "Present the approval pack: target model and transition plans",
+     "Review the transition plan by unit and the open points",
+     "Decide on approval of the target model and transition plans"
+    ]
+   }
+  ]
+ },
+ "deadline": null,
+ "architect_notes": [
+  "Engagement length is estimated at 25 to 29 weeks; slower unit rounds, target-model design and unit transition plans would push it toward 32.",
+  "Public research lists Lisbon, Porto and 12 regional offices; confirm whether offices are in the Diagnostic, which would add a site driver and weeks.",
+  "No Implementation phase: the engagement type is assessment, so the transition is planned inside Design, not executed.",
+  "No Handover phase: the executive committee receives the result at the Design gate; add one if each unit head must receive a plan separately.",
+  "The executive committee's approval is a success criterion, but it is not among the stakeholders; confirm its seat at the final readout."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Diagnostic",
+    "start": 1,
+    "end": 11
+   },
+   {
+    "phase": "Design",
+    "start": 12,
+    "end": 29
+   }
+  ]
+ },
+ "sizing": {
+  "length_basis": "estimated",
+  "sub_questions": [
+   {
+    "id": "Q1",
+    "question": "How do the five business units organize their work, processes and costs today?",
+    "phase_order": 1
+   },
+   {
+    "id": "Q2",
+    "question": "Where do cost, workload and performance gaps in the five units matter most for the new model?",
+    "phase_order": 1
+   },
+   {
+    "id": "Q3",
+    "question": "Which target operating model for the five units can the executive committee approve?",
+    "phase_order": 2
+   },
+   {
+    "id": "Q4",
+    "question": "How are structure, roles and governance of the chosen model detailed for each of the five units?",
+    "phase_order": 2
+   },
+   {
+    "id": "Q5",
+    "question": "What transition plan, by unit, moves each unit from today's operating model to the target?",
+    "phase_order": 2
+   }
+  ],
+  "drivers": [
+   {
+    "key": "business_units",
+    "value": 5,
+    "source": "brief",
+    "evidence": "all five business units (claims, underwriting, sales, customer service and finance)"
+   }
+  ],
+  "phases": [
+   {
+    "order": 1,
+    "name": "Diagnostic",
+    "planned_weeks": {
+     "min": 9,
+     "max": 11
+    },
+    "estimate": {
+     "min": 8,
+     "max": 11
+    },
+    "archetype_weeks": {
+     "min": 4,
+     "max": 8
+    },
+    "fixed_weeks": 2,
+    "work": [
+     {
+      "unit": "Unit diagnosed (interviews, process walk-throughs, workload and cost baseline)",
+      "from_library": true,
+      "driver": "business_units",
+      "count": 5,
+      "at_once": 2,
+      "weeks_each": {
+       "min": 2,
+       "max": 3
+      }
+     }
+    ],
+    "why": "Five units diagnosed two at a time in three rounds; above the typical 4 to 8 weeks because all five units are covered."
+   },
+   {
+    "order": 2,
+    "name": "Design",
+    "planned_weeks": {
+     "min": 16,
+     "max": 18
+    },
+    "estimate": {
+     "min": 12,
+     "max": 21
+    },
+    "archetype_weeks": {
+     "min": 6,
+     "max": 10
+    },
+    "fixed_weeks": 1,
+    "work": [
+     {
+      "unit": "Target model for the whole organization (structure, roles, governance)",
+      "from_library": true,
+      "driver": null,
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 4,
+       "max": 6
+      }
+     },
+     {
+      "unit": "Unit-level design detailed with the unit's leaders",
+      "from_library": true,
+      "driver": "business_units",
+      "count": 5,
+      "at_once": 2,
+      "weeks_each": {
+       "min": 1,
+       "max": 2
+      }
+     },
+     {
+      "unit": "Transition plan for one business unit, sequenced with the others",
+      "from_library": false,
+      "driver": "business_units",
+      "count": 5,
+      "at_once": 2,
+      "weeks_each": {
+       "min": 1,
+       "max": 2
+      }
+     },
+     {
+      "unit": "Client review and sign-off cycle",
+      "from_library": true,
+      "driver": null,
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 1,
+       "max": 2
+      }
+     }
+    ],
+    "why": "Whole-model design, then unit designs and unit transition plans, each two at a time, and one sign-off cycle; above typical 6 to 10 weeks."
+   }
+  ],
+  "estimate_total": {
+   "min": 20,
+   "max": 32
+  },
+  "planned_total": {
+   "min": 25,
+   "max": 29
+  },
+  "levers": "Run three units at once instead of two, or diagnose three representative units and extend to the other two from data."
+ }
+}

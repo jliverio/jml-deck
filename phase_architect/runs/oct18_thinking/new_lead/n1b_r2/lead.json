@@ -1,0 +1,121 @@
+{
+  "basis": {
+    "governing_question": "Should Quinta Azul enter the retail markets of Spain, France, Germany and Poland, and in which order?",
+    "archetype_id": "market_entry_assessment"
+  },
+  "sizing": {
+    "length_basis": "estimated",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "How attractive is the retail market in each of Spain, France, Germany and Poland?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "What does Quinta Azul need to compete in each, given competitors, buyers and regulation?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q3",
+        "question": "Is entry a go or no-go in each of the four countries, and through which entry option?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q4",
+        "question": "In what order, and with what plan, should Quinta Azul enter the countries that are a go?",
+        "phase_order": 2
+      }
+    ],
+    "drivers": [
+      {
+        "key": "markets",
+        "value": 4,
+        "source": "brief",
+        "evidence": "retail markets of Spain, France, Germany and Poland"
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Market screened on desk data",
+            "from_library": true,
+            "driver": "markets",
+            "count": 4,
+            "weeks_each": { "min": 1, "max": 2 },
+            "at_once": 4
+          },
+          {
+            "unit": "Market assessed in full (demand, channels, competitors, regulation, buyer interviews)",
+            "from_library": true,
+            "driver": "markets",
+            "count": 3,
+            "weeks_each": { "min": 2, "max": 3 },
+            "at_once": 2
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": { "min": 7, "max": 10 },
+        "why": "Four markets screened at once on desk data, three assessed in full two at a time; the second round pushes the max past 8 weeks."
+      },
+      {
+        "phase_order": 2,
+        "work": [
+          {
+            "unit": "Entry option and business case for one market",
+            "from_library": true,
+            "driver": "markets",
+            "count": 3,
+            "weeks_each": { "min": 1, "max": 2 },
+            "at_once": 2
+          },
+          {
+            "unit": "Entry sequence and roadmap across markets",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 1, "max": 2 },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 1,
+        "estimate": { "min": 4, "max": 7 },
+        "why": "Business cases for three markets two at a time, then one sequence and roadmap; the second round pushes the max past 6 weeks."
+      }
+    ],
+    "levers": "Dropping to a two-country shortlist after the desk screen, or running all shortlisted assessments side by side, would each cut about 3 to 5 weeks."
+  },
+  "phases": [
+    {
+      "name": "Research",
+      "order": 1,
+      "duration_weeks": { "min": 8, "max": 9 },
+      "duration_derived": false,
+      "objective_one_line": "Establish how attractive each of the four retail markets is and what Quinta Azul would need to compete there.",
+      "gate": {
+        "label": "Shortlist decision",
+        "decision": "Which countries move forward to entry options and business cases?"
+      },
+      "depends_on_assumptions": ["engagement_length", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 5, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Define go or no-go for each country, plus the entry sequence and plan for those that are a go.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the go or no-go per country and the entry sequence and plan?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format", "timeline", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Engagement length is not given, so the 13 to 15 weeks are an estimate from the work and must be confirmed before quoting.",
+    "Research and Design take the middle of 7 to 10 and 4 to 7 weeks; slow buyer access would push them to the top.",
+    "The plan assumes the desk screen shortlists three of four countries; a shortlist of two would cut about 3 to 5 weeks."
+  ]
+}

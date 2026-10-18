@@ -1,0 +1,160 @@
+{
+  "basis": {
+    "governing_question": "How should Seguros Atlântida's claims department be organized, roles and handoffs included?",
+    "archetype_id": "operating_model_redesign"
+  },
+  "sizing": {
+    "length_basis": "estimated",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "How is the claims department organized today, with which roles and handoffs?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "Where do the current structure, roles and handoffs hold claims work back?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q3",
+        "question": "Which target organization options for claims are worth comparing?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q4",
+        "question": "What roles and handoffs does the chosen target organization need in detail?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q5",
+        "question": "Which target organization for claims will the executive committee approve?",
+        "phase_order": 2
+      }
+    ],
+    "drivers": [
+      {
+        "key": "business_units",
+        "value": 1,
+        "source": "profile",
+        "evidence": "One claims department of about 140 people in Lisbon."
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Unit diagnosed (interviews, process walk-throughs, workload and cost baseline)",
+            "from_library": true,
+            "driver": "business_units",
+            "count": 1,
+            "weeks_each": {
+              "min": 2,
+              "max": 3
+            },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": {
+          "min": 4,
+          "max": 5
+        },
+        "why": "One department diagnosed in a single pass of interviews, walk-throughs and baseline; start-up and synthesis weeks added."
+      },
+      {
+        "phase_order": 2,
+        "work": [
+          {
+            "unit": "Target model for the whole organization (structure, roles, governance)",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": {
+              "min": 4,
+              "max": 6
+            },
+            "at_once": 1
+          },
+          {
+            "unit": "Unit-level design detailed with the unit's leaders",
+            "from_library": true,
+            "driver": "business_units",
+            "count": 1,
+            "weeks_each": {
+              "min": 1,
+              "max": 2
+            },
+            "at_once": 1
+          },
+          {
+            "unit": "Client review and sign-off cycle",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": {
+              "min": 1,
+              "max": 2
+            },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 1,
+        "estimate": {
+          "min": 7,
+          "max": 11
+        },
+        "why": "Target model, then roles and handoffs detailed with unit leaders, then one sign-off cycle, which puts the max 1 week above typical."
+      }
+    ],
+    "levers": "Running roles-and-handoffs design alongside the target model, and agreeing the executive committee review date upfront, would shorten Design most."
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": {
+        "min": 4,
+        "max": 5
+      },
+      "duration_derived": false,
+      "objective_one_line": "Map how the claims department is organized today, including roles and handoffs, and find where the work breaks down.",
+      "gate": {
+        "label": "Priorities for design",
+        "decision": "Which diagnosed issues must the target organization solve first?"
+      },
+      "depends_on_assumptions": [
+        "engagement_length",
+        "timeline",
+        "prior_attempts"
+      ]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": {
+        "min": 8,
+        "max": 10
+      },
+      "duration_derived": false,
+      "objective_one_line": "Define the target claims organization, with roles and handoffs, in a form the executive committee can approve.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the target claims organization to take to the executive committee?"
+      },
+      "depends_on_assumptions": [
+        "engagement_length",
+        "deliverable_format",
+        "timeline",
+        "out_of_scope"
+      ]
+    }
+  ],
+  "architect_notes": [
+    "Length is an estimate; Design takes the middle of 7-11 weeks and reaches the top if the target model and sign-off run long.",
+    "The single claims department (about 140 people, Lisbon) comes from public research; the client must confirm it, as more units would add weeks.",
+    "The brief makes the executive committee the approver but lists only the COO and Head of Claims; confirm who sits at the final gate.",
+    "Departure from the archetype: Design carries no transition-plan unit, because the brief asks only for an approved target organization."
+  ]
+}

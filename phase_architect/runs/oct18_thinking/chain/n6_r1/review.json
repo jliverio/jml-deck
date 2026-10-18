@@ -1,0 +1,23 @@
+{
+  "verdict": "revise",
+  "issues": [
+    {
+      "owner": "lead",
+      "target": "P3",
+      "problem": "P3 counts 8-11 weeks but has 4-5; the third area goes live in week 12, after D10 results are due in week 11, so the second criterion cannot show.",
+      "fix": "Size P3 so all three areas are live and stabilized before results are tested; state any shortfall against the 12-week deadline in the notes for the partner."
+    },
+    {
+      "owner": "lead",
+      "target": "P3",
+      "problem": "Moving three areas onto Grupo Vale's systems needs data migration, testing and user training, yet P3 sizes only cutover and stabilization; no phase sizes that work.",
+      "fix": "Add sized work for data migration, testing and training before the first cutover, from an assumed count of the first company's systems, flagged in the notes for confirmation."
+    },
+    {
+      "owner": "lead",
+      "target": "P1",
+      "problem": "The third company gets 1 week (W2) against 2-3 weeks sized per unit, yet D2 ranks gaps across all three the same week as the design go/no-go.",
+      "fix": "Give the third company its sized 2-3 weeks before gaps are ranked and the design gate; if the deadline blocks it, note the shortfall for the partner."
+    }
+  ]
+}

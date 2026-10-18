@@ -1,0 +1,23 @@
+{
+  "verdict": "revise",
+  "issues": [
+    {
+      "owner": "lead",
+      "target": "P2",
+      "problem": "Pilot savings (D8, week 20) rest on about 4 weeks of data after the week 17 readiness workshop; wave 2 plants get about 4 weeks before D11 (week 32).",
+      "fix": "Give the pilot a savings window after go-live and run 6 weeks of data after wave 2 before D11; lengthen P2 and note the new length for partner confirmation."
+    },
+    {
+      "owner": "governance",
+      "target": "G6",
+      "problem": "Wave 1 starts week 21, right after the pilot record D8 (week 20), but D8 is first judged at G6 in week 23, and G6 gates only wave 2.",
+      "fix": "Move G6 to week 21 as the go/no-go on starting wave 1 from pilot savings (D8), and set the wave plants there. Make G5's decision the pilot go-live."
+    },
+    {
+      "owner": "governance",
+      "target": "G1",
+      "problem": "Cost per part measurement is first aligned at G5 (week 17) and again at G7 (week 28), after baselines (week 4) and sizing exist; 'measurable amount' is never defined.",
+      "fix": "Have G1 agree how conversion cost per part is calculated across the six plants and what counts as a measurable cut; G5 and G7 then confirm it."
+    }
+  ]
+}

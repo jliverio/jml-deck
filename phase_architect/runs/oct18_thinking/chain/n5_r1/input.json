@@ -1,0 +1,92 @@
+{
+ "brief": {
+  "hard_fields": {
+   "client": {
+    "value": "Banco Horizonte, a Portuguese retail bank",
+    "source": "stated",
+    "quote": "Banco Horizonte, a Portuguese retail bank",
+    "assumption_text": null
+   },
+   "problem_statement": {
+    "value": "Banco Horizonte wants a strategy for its digital channels.",
+    "source": "stated",
+    "quote": "Banco Horizonte wants a strategy for its digital channels.",
+    "assumption_text": null
+   }
+  },
+  "required": {
+   "engagement_type": {
+    "value": "assessment",
+    "source": "stated",
+    "quote": "assessment",
+    "assumption_text": null
+   },
+   "engagement_length": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": "Not given; the Phase Architect estimates the duration.",
+    "weeks_min": null,
+    "weeks_max": null,
+    "duration_derived": false
+   },
+   "stakeholders": {
+    "value": [
+     "CEO",
+     "Head of Digital"
+    ],
+    "source": "stated",
+    "quote": null,
+    "assumption_text": null
+   }
+  },
+  "soft_fields": {
+   "deliverable_format": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "timeline": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "prior_attempts": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "success_criteria": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "out_of_scope": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "workstreams": {
+    "value": null,
+    "count": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   }
+  }
+ },
+ "success_criteria_list": [],
+ "profile": {
+  "problem_focus": "topic",
+  "topic": "Digital channels in retail banking",
+  "current_state": null,
+  "market": null
+ },
+ "market_findings": [],
+ "weeks_available": null
+}

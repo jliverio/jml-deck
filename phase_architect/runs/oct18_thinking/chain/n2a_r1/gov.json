@@ -1,0 +1,70 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Agree access to plant data and people",
+      "attendees": ["COO", "Plant Director"],
+      "presents": [],
+      "decision": "Will the plant give the team its cost data and access to line staff from week 1?",
+      "agenda": [
+        "Present the Diagnostic objective and the weeks 1 to 5 steps",
+        "Discuss the plant data and line access the evidence work needs",
+        "Confirm who gives the team access to data and people at the plant"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Check-in: baseline findings",
+      "purpose": "Review line losses and the cost baseline",
+      "attendees": ["COO", "Plant Director"],
+      "presents": ["D1", "D2"],
+      "decision": "Which cost drivers from the findings should the sizing cover in weeks 4 and 5?",
+      "agenda": [
+        "Review line loss observations and cost driver findings",
+        "Review the conversion cost per part baseline for the Braga plant",
+        "Discuss which cost drivers the sizing should cover next"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Initiatives go/no-go",
+      "purpose": "Decide which sized initiatives proceed",
+      "attendees": ["COO", "Plant Director"],
+      "presents": ["D1", "D2", "D3"],
+      "decision": "Which sized initiatives go into implementation at the plant, and which stop here?",
+      "agenda": [
+        "Present the sized improvement list with baseline for go/no-go",
+        "Review the line loss findings and the cost per part baseline",
+        "Decide which initiatives go into implementation and which stop"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Workshop: go-live readiness",
+      "purpose": "Review readiness before go-live",
+      "attendees": ["COO", "Plant Director"],
+      "presents": ["D4", "D6"],
+      "decision": "Which improvements are ready to go live at the plant, and which wait?",
+      "agenda": [
+        "Review the improvement detail and change sequence for each improvement",
+        "Review the cost per part tracker and how results will be read",
+        "Decide which improvements are ready to go live and which wait"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Final readout",
+      "purpose": "Close out results and plant handover",
+      "attendees": ["COO", "Plant Director"],
+      "presents": ["D5", "D6", "D7", "D8", "D9"],
+      "decision": "Approve the results against the baseline and the handover to the plant team?",
+      "agenda": [
+        "Present the results and handover pack against the baseline",
+        "Review the go-live record, training materials and ownership register",
+        "Decide on approval of the results and the handover to the plant team"
+      ]
+    }
+  ],
+  "notes": []
+}

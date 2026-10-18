@@ -1,0 +1,133 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Claims and underwriting",
+      "question_id": "Q1",
+      "answers": "How do claims and underwriting organize their work, processes and costs today?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "activities": [
+        "Interview the people who do the work in each unit",
+        "Walk through each unit's processes with its staff",
+        "Measure workload and cost from operational data"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Sales and customer service",
+      "question_id": "Q1",
+      "answers": "How do sales and customer service organize their work, processes and costs today?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 3,
+      "duration": 3,
+      "follows": [],
+      "activities": [
+        "Interview staff and walk through each unit's processes",
+        "Gather customer input on sales and service contacts",
+        "Measure workload and cost from operational data"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Finance",
+      "question_id": "Q1",
+      "answers": "How does finance organize its work, processes and costs today?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 6,
+      "duration": 2,
+      "follows": [],
+      "activities": [
+        "Interview the people who do the work in finance",
+        "Review finance process documents and cost records",
+        "Measure workload and cost from operational data"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 1,
+      "name": "Gaps and priority areas",
+      "question_id": "Q2",
+      "answers": "Where do cost, workload and performance gaps across the five units matter most for the new model?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 8,
+      "duration": 3,
+      "follows": ["W1", "W2", "W3"],
+      "activities": [
+        "Compare cost, workload and performance across the units",
+        "Rank the gaps by how much they matter for the new model",
+        "Test the ranking with unit heads and their teams"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 2,
+      "name": "Target operating model",
+      "question_id": "Q3",
+      "answers": "Which target operating model for the five units can the executive committee approve?",
+      "traces_to": ["problem_statement", "success_criteria:1", "gate:2"],
+      "start_offset": 0,
+      "duration": 6,
+      "follows": [],
+      "activities": [
+        "Draft model options for structure, roles and governance",
+        "Test the options against the diagnostic findings",
+        "Prepare the options for the design workshop"
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 2,
+      "name": "Unit-level design",
+      "question_id": "Q4",
+      "answers": "How are structure, roles and governance of the chosen model detailed for each of the five units?",
+      "traces_to": ["success_criteria:1", "gate:2"],
+      "start_offset": 6,
+      "duration": 6,
+      "follows": ["W5"],
+      "activities": [
+        "Detail structure, roles and governance with unit leaders",
+        "Run unit design rounds, two units at a time",
+        "Check each unit design with the people who do the work"
+      ]
+    },
+    {
+      "id": "W7",
+      "phase_order": 2,
+      "name": "Transition plan by unit",
+      "question_id": "Q5",
+      "answers": "What transition plan, by unit, moves each unit from today's operating model to the target?",
+      "traces_to": ["success_criteria:2", "gate:2"],
+      "start_offset": 12,
+      "duration": 4,
+      "follows": ["W6"],
+      "activities": [
+        "Sequence each unit's move from today's model to the target",
+        "Plan each unit's change two at a time with its leaders",
+        "Align the unit plans on timing and dependencies"
+      ]
+    },
+    {
+      "id": "W8",
+      "phase_order": 2,
+      "name": "Executive committee sign-off",
+      "question_id": null,
+      "answers": "What do the executive committee and unit heads need to see to approve the model and transition plans?",
+      "traces_to": ["success_criteria:1", "success_criteria:2", "gate:2"],
+      "start_offset": 16,
+      "duration": 2,
+      "follows": ["W5", "W6", "W7"],
+      "activities": [
+        "Review the model and plans with the executive committee",
+        "Collect comments from unit heads and resolve them",
+        "Finalize the model and plans for the final readout"
+      ]
+    }
+  ],
+  "notes": []
+}

@@ -1,0 +1,49 @@
+{
+  "basis": {
+    "governing_question": "Which new point-of-sale system should Farmácias Lusas choose, and how can it roll the system out to its 40 pharmacies?",
+    "archetype_id": "technology_selection_implementation"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 3, "max": 5 },
+      "duration_derived": false,
+      "objective_one_line": "Define the business requirements and process fit-gaps across the 40 pharmacies that a new point-of-sale system must meet.",
+      "gate": {
+        "label": "Requirements sign-off",
+        "decision": "Go or no-go on vendor selection against the agreed requirements?"
+      },
+      "depends_on_assumptions": ["engagement_length", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 4, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Select the point-of-sale vendor by scoring shortlisted options against the requirements and plan the rollout across the pharmacies.",
+      "gate": {
+        "label": "Vendor selection",
+        "decision": "Which point-of-sale vendor and rollout plan go forward to Implementation?"
+      },
+      "depends_on_assumptions": ["engagement_length"]
+    },
+    {
+      "name": "Implementation",
+      "order": 3,
+      "duration_weeks": { "min": 14, "max": 16 },
+      "duration_derived": false,
+      "objective_one_line": "Roll out the selected point-of-sale system to all 40 pharmacies with the client's operations and IT teams.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the rollout as complete in all 40 pharmacies?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format", "timeline", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Engagement length is not given; 21-27 weeks is an estimate resting on the archetype's phase lengths and a rollout across 40 pharmacies.",
+    "Archetype technology_selection_implementation ends at vendor selection; Implementation was added because the brief asks to roll the chosen system out to all 40 pharmacies.",
+    "No Change & Training phase: training and adoption can be planned inside Implementation; confirm whether the client wants them as a separate stage."
+  ]
+}

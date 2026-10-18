@@ -1,0 +1,133 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Current state, two companies",
+      "question_id": "Q1",
+      "answers": "How do sales, purchasing and finance run today at two acquired companies, and how do they differ from Grupo Vale?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "activities": [
+        "Interview the people who run sales, purchasing and finance",
+        "Review operational data and documents for each process",
+        "Compare each process with Grupo Vale's own way of working"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Current state, third company",
+      "question_id": "Q1",
+      "answers": "How do sales, purchasing and finance run today at the third acquired company, compared with Grupo Vale?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 3,
+      "duration": 2,
+      "follows": [],
+      "activities": [
+        "Interview the people who run sales, purchasing and finance",
+        "Review operational data and documents for each process",
+        "Compare each process with Grupo Vale and the first two"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Gap ranking and alignment",
+      "question_id": null,
+      "answers": "Which gaps between the acquired companies and Grupo Vale come first, and do the stakeholders agree?",
+      "traces_to": ["gate:1"],
+      "start_offset": 4,
+      "duration": 2,
+      "follows": ["W1", "W2"],
+      "activities": [
+        "Rank the differences from Grupo Vale by effect and effort",
+        "Agree the priority gaps with the CEO, CFO and company heads"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 2,
+      "name": "Move design by company",
+      "question_id": "Q2",
+      "answers": "How should each acquired company's sales, purchasing and finance move onto Grupo Vale's processes and systems?",
+      "traces_to": ["success_criteria:2", "gate:2"],
+      "start_offset": 0,
+      "duration": 2,
+      "follows": [],
+      "activities": [
+        "Detail each company's move with its leaders, two at a time",
+        "Map each process and system gap to the change it needs",
+        "Check each design with the people who will run it"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 2,
+      "name": "Integration plan and risks",
+      "question_id": "Q3",
+      "answers": "What integration plan for the three companies, with sequence and risks, can the board approve?",
+      "traces_to": ["success_criteria:1", "gate:2"],
+      "start_offset": 1,
+      "duration": 2,
+      "follows": ["W4"],
+      "activities": [
+        "Set the sequence for moving the three companies",
+        "Log the integration risks with owners and actions",
+        "Review the plan with the CEO, CFO and company heads"
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 3,
+      "name": "Cutover readiness",
+      "question_id": null,
+      "answers": "Are the first company's data, test results and trained users ready for cutover?",
+      "traces_to": ["success_criteria:2"],
+      "start_offset": 0,
+      "duration": 1,
+      "follows": [],
+      "activities": [
+        "Rehearse and reconcile the data migration for each system",
+        "Run integrated test and user acceptance by process area",
+        "Train each process area team on Grupo Vale's processes"
+      ]
+    },
+    {
+      "id": "W7",
+      "phase_order": 3,
+      "name": "First-company cutover",
+      "question_id": "Q4",
+      "answers": "Do the first company's sales, purchasing and finance run on Grupo Vale's processes and systems after cutover?",
+      "traces_to": ["success_criteria:2", "gate:3"],
+      "start_offset": 1,
+      "duration": 2,
+      "follows": ["W6"],
+      "activities": [
+        "Cut over the first company's process areas, two at a time",
+        "Train and coach area teams; close issues after cutover",
+        "Confirm each area runs on Grupo Vale's systems"
+      ]
+    },
+    {
+      "id": "W8",
+      "phase_order": 3,
+      "name": "Integration plan check",
+      "question_id": null,
+      "answers": "What does the first company's cutover change in the integration plan the board will be asked to approve?",
+      "traces_to": ["success_criteria:1", "gate:3"],
+      "start_offset": 2,
+      "duration": 1,
+      "follows": ["W7"],
+      "activities": [
+        "Update the plan's sequence and risks with cutover results",
+        "Review the updated plan with the CEO, CFO and company heads"
+      ]
+    }
+  ],
+  "notes": [
+    "Phase 3 runs three weeks, so migration, test, training and cutover are compressed and live running gets about two weeks before the gate."
+  ]
+}

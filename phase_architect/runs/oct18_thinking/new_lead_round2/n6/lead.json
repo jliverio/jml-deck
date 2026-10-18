@@ -1,0 +1,149 @@
+{
+  "basis": {
+    "governing_question": "How can Grupo Vale integrate the sales, purchasing and finance of the three regional food distributors it bought into its own?",
+    "archetype_id": "operating_model_redesign"
+  },
+  "sizing": {
+    "length_basis": "deadline",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "Where do the three companies' sales, purchasing and finance differ from Grupo Vale's processes and systems?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "What integration plan for the three companies can the board approve?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q3",
+        "question": "In what order should the three companies move onto Grupo Vale's processes and systems?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q4",
+        "question": "What gets the first company's sales, purchasing and finance running on Grupo Vale's processes and systems?",
+        "phase_order": 3
+      }
+    ],
+    "drivers": [
+      {
+        "key": "business_units",
+        "value": 3,
+        "source": "brief",
+        "evidence": "Grupo Vale has bought three regional food distributors"
+      },
+      {
+        "key": "process_areas",
+        "value": 3,
+        "source": "brief",
+        "evidence": "sales, purchasing and finance integrated into its own"
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Unit diagnosed (interviews, process walk-throughs, workload and cost baseline)",
+            "from_library": true,
+            "driver": "business_units",
+            "count": 3,
+            "weeks_each": { "min": 2, "max": 3 },
+            "at_once": 2
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": { "min": 6, "max": 8 },
+        "why": "Three companies diagnosed two at a time, then the third; interviews sit inside each diagnosis. Within the archetype's 4-8 typical weeks."
+      },
+      {
+        "phase_order": 2,
+        "work": [
+          {
+            "unit": "Unit-level design detailed with the unit's leaders",
+            "from_library": true,
+            "driver": "business_units",
+            "count": 3,
+            "weeks_each": { "min": 1, "max": 2 },
+            "at_once": 2
+          }
+        ],
+        "fixed_weeks": 1,
+        "estimate": { "min": 3, "max": 5 },
+        "why": "Three designs two at a time, plan alongside; no whole-organization target model because Grupo Vale's own processes are the target, so below typical 6-10."
+      },
+      {
+        "phase_order": 3,
+        "work": [
+          {
+            "unit": "Process area moved onto Grupo Vale's processes and systems and tested",
+            "from_library": false,
+            "driver": "process_areas",
+            "count": 3,
+            "weeks_each": { "min": 3, "max": 4 },
+            "at_once": 2
+          },
+          {
+            "unit": "First company live and stable on Grupo Vale's processes and systems",
+            "from_library": false,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 2, "max": 3 },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 0,
+        "estimate": { "min": 8, "max": 11 },
+        "why": "Three process areas moved two at a time, then a live-and-stable period; archetype has no Implementation phase, so these pieces are estimated."
+      }
+    ],
+    "levers": "Diagnose two companies in depth and extend to the third from data, and run all three process areas at once in Implementation."
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 3, "max": 4 },
+      "duration_derived": false,
+      "objective_one_line": "Compare each acquired company's sales, purchasing and finance with Grupo Vale's processes and systems to find the gaps.",
+      "gate": {
+        "label": "Gap priorities",
+        "decision": "Which gaps in sales, purchasing and finance does the design take forward?"
+      },
+      "depends_on_assumptions": ["engagement_length", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 3, "max": 3 },
+      "duration_derived": false,
+      "objective_one_line": "Define how each company moves onto Grupo Vale's processes and systems and set the integration plan for the board.",
+      "gate": {
+        "label": "Go/no-go on cutover",
+        "decision": "Go or no-go on moving the first company onto Grupo Vale's processes and systems?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format"]
+    },
+    {
+      "name": "Implementation",
+      "order": 3,
+      "duration_weeks": { "min": 4, "max": 5 },
+      "duration_derived": false,
+      "objective_one_line": "Move the first company's sales, purchasing and finance onto Grupo Vale's processes and systems and confirm they run.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the plan and first-company results for the 29 January 2027 board meeting?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Engagement length is open: phases are cut to the 12 weeks available, but the work adds up to 17-24 weeks.",
+    "Implementation runs before the board approves the plan on 29 January 2027; confirm whether the first company must be live before that meeting.",
+    "Departure from operating_model_redesign: Implementation added, since the type is assessment_and_implementation and the first company must run on Grupo Vale's systems.",
+    "Departure: whole-organization target model dropped from Design, as the brief makes Grupo Vale's own processes the target.",
+    "Implementation weeks are estimated, not taken from the library, and the brief does not say which company goes first."
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "X": {
+    "scores": {
+      "structure": 3,
+      "workstreams": 4,
+      "deliverables": 4,
+      "governance": 2,
+      "coherence": 3,
+      "sizing": 2
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "The week 20 gate asks whether the executive committee approves the target organization, but only the COO and Head of Claims attend, so nobody in the room can take that decision.",
+      "A total of 17-20 weeks is padded for one claims department of about 140 people: W4 and W5 run 5 weeks each, and W7 spends 3 weeks on review and approval logistics.",
+      "The partner note says delays would push Design to a '17-week top', which contradicts the stated Design estimate of 13-15 weeks and the weeks 6-20 schedule.",
+      "D6, the transition roadmap due in week 17, gets no steering review before it goes into the D7 pre-read due in week 19; the steering group first sees it at the week 20 gate.",
+      "W7 asks what the committee must see, but W2 already answered that in weeks 1-3 (D2 committee approval requirements), so W7 is an approval activity rather than a stream with its own question."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 4,
+      "governance": 3,
+      "coherence": 3,
+      "sizing": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "The plan ends at the week 17 steering approval for submission and has no step or date for the executive committee meeting, so the stated success criterion (committee approval) is never reached inside the plan.",
+      "No stream finds out how the executive committee decides or what evidence it needs until W7 in weeks 16-17, so the D7 pack is built without approval requirements gathered earlier.",
+      "The partner notes contradict the plan: they say Design could stretch to a '13-week top' against a 10-12-week estimate and a weeks 6-17 schedule, they name 'slow executive committee sign-off' as a cause of delay although sign-off falls outside the plan, and they ask who represents the committee at a final gate that is only the steering group's approval for submission.",
+      "D7 is due in week 16, but W7 is still resolving review comments on the design and plan through week 17, so the pack is due before the comments it should reflect are closed.",
+      "The week 3 check-in decision ('Is the evidence enough to start framing problem areas?') is not a real steering decision, and W2's interviews with claims staff repeat W1's walk-throughs with the people who do the work."
+    ]
+  },
+  "better": "Y",
+  "why": "Y is tighter (14-17 weeks against 17-20 for one department of about 140 people), and its final gate asks for a decision the COO and Head of Claims can actually take, while X's week 20 gate asks them for an executive committee approval they cannot give. Y should still borrow X's W2 capture of the committee's approval requirements and add a dated committee step, because neither plan secures the stated success criterion within its own governance."
+}

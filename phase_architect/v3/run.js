@@ -107,8 +107,9 @@ function compile(dir) {
 // After the review: set up one revision round in <dir>/rev (null when the verdict is send).
 function revise(dir) {
   const rv = answer(dir, 'review');
-  const route = C.routeReview(rv);
-  if (!route) { console.log(`${path.basename(dir)}: send`); return null; }
+  const route = C.routeReview(rv, process.env.REVIEW_MODE || 'local');
+  if (route && route.for_partner.length) fs.writeFileSync(path.join(dir, 'for_partner.json'), JSON.stringify(route.for_partner, null, 1));
+  if (!route || !route.from) { console.log(`${path.basename(dir)}: ${route ? 'lead issues to the partner only' : 'send'}`); return null; }
   const rdir = path.join(dir, 'rev');
   fs.mkdirSync(rdir, { recursive: true });
   fs.copyFileSync(path.join(dir, 'input.json'), path.join(rdir, 'input.json'));

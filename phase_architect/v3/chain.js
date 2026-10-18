@@ -460,14 +460,22 @@ function checkReview(review) {
 }
 // One revision round: the earliest owner reruns with its issues as violations (keeping its previous answer);
 // every later agent reruns fresh, with its own issues as review_feedback.
-function routeReview(review) {
+// mode 'local' (default, after the Oct 18 test): issues owned by the lead (sizing, phases, gates) are not sent back;
+// they go to the partner as `for_partner`, because rerunning the lead reruns every agent after it and the blind
+// reviewer preferred the unrevised plan in most of those cases. mode 'full' sends every issue back (as tested).
+function routeReview(review, mode) {
+  mode = mode || 'local';
   const is = ((review || {}).issues) || [];
   if ((review || {}).verdict !== 'revise' || !is.length) return null;
   const order = ['lead', 'ws', 'del', 'gov'];
-  const feedback = {};
-  for (const x of is) { const st = REVIEW_OWNER[x.owner]; if (!st) continue; (feedback[st] = feedback[st] || []).push(`review: ${x.target}: ${x.problem} Fix: ${x.fix}`); }
+  const feedback = {}, forPartner = [];
+  for (const x of is) {
+    const st = REVIEW_OWNER[x.owner]; if (!st) continue;
+    if (mode === 'local' && st === 'lead') { forPartner.push(`${x.target}: ${x.problem} Suggested: ${x.fix}`); continue; }
+    (feedback[st] = feedback[st] || []).push(`review: ${x.target}: ${x.problem} Fix: ${x.fix}`);
+  }
   const from = order.find(st => feedback[st]);
-  return from ? { from, feedback } : null;
+  return { from: from || null, feedback, for_partner: forPartner };
 }
 
 if (typeof module !== 'undefined') module.exports = { meetingCalendar, phaseWeeks, stageInput, renumberDeliverables, buildArch, checkStage, compile, workEstimate, checkSizing, sizingSummary, fitNote, reviewInput, checkReview, routeReview, MAX_PHASES, MAX_DEL_PER_WS };

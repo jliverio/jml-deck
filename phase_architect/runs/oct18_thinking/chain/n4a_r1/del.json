@@ -1,0 +1,82 @@
+{
+  "deliverables": [
+    {
+      "id": "D1",
+      "workstream_id": "W1",
+      "name": "Interim requirements for first process areas",
+      "kind": "analysis",
+      "due_week_in_phase": 3
+    },
+    {
+      "id": "D2",
+      "workstream_id": "W1",
+      "name": "Business requirements by process area",
+      "kind": "analysis",
+      "due_week_in_phase": 5
+    },
+    {
+      "id": "D3",
+      "workstream_id": "W2",
+      "name": "Requirements and gap findings for sign-off",
+      "kind": "decision_pack",
+      "due_week_in_phase": 5
+    },
+    {
+      "id": "D4",
+      "workstream_id": "W3",
+      "name": "Vendor shortlist against signed-off requirements",
+      "kind": "analysis",
+      "due_week_in_phase": 3
+    },
+    {
+      "id": "D5",
+      "workstream_id": "W3",
+      "name": "Vendor scoring against signed-off requirements",
+      "kind": "analysis",
+      "due_week_in_phase": 4
+    },
+    {
+      "id": "D6",
+      "workstream_id": "W4",
+      "name": "Business case for the vendor selection decision",
+      "kind": "decision_pack",
+      "due_week_in_phase": 5
+    },
+    {
+      "id": "D7",
+      "workstream_id": "W5",
+      "name": "First configured process areas with test record",
+      "kind": "build",
+      "due_week_in_phase": 5
+    },
+    {
+      "id": "D8",
+      "workstream_id": "W5",
+      "name": "Readiness report with data load rehearsal results",
+      "kind": "analysis",
+      "due_week_in_phase": 8
+    },
+    {
+      "id": "D9",
+      "workstream_id": "W6",
+      "name": "Pilot pharmacy go-live record and stability report",
+      "kind": "build",
+      "due_week_in_phase": 13
+    },
+    {
+      "id": "D10",
+      "workstream_id": "W7",
+      "name": "Go-live record for waves 1 and 2",
+      "kind": "build",
+      "due_week_in_phase": 20
+    },
+    {
+      "id": "D11",
+      "workstream_id": "W8",
+      "name": "Final readout with go-live record for all 40 pharmacies",
+      "kind": "decision_pack",
+      "due_week_in_phase": 26
+    }
+  ],
+  "notes": []
+}

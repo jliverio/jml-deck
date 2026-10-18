@@ -1,0 +1,40 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 4,
+      "coherence": 3,
+      "sizing": 4
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W1 must collect, build and test the full conversion-cost baseline in week 1 (D1 due week 1), the same week the kickoff is only agreeing which plant data and staff the team can access.",
+      "The partner note says Implementation 'takes the middle of its 9 to 13 week estimate', but the Phase 2 header says 10-12 and the plan schedules 12 weeks (weeks 8-19), so the 19-week schedule actually sits at the top of the stated 15-19 range.",
+      "W3 is declared 'after W1, W2' but starts in week 4 while W2 runs to week 5 and its full loss analysis (D3) lands in week 5, so sizing starts before the analysis it builds on is finished.",
+      "D9 'cost per part results after the first go-lives' is due week 14, one week after the first-wave go-live record (D6, week 13), which is too little cost data for Workshop 2 to judge results or decide corrective action.",
+      "D12 (training record and tracker handover) is due in week 19, the same week as the Final readout that must approve that handover, leaving no time for the COO and Plant Director to review it beforehand."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3,
+      "sizing": 2
+    },
+    "verdict": "No",
+    "defects": [
+      "Go-lives can only start after the week-11 readiness workshop and must all be done by week 14 (D5), yet the results pack D7 is due week 15, so the week-16 Final readout judges 'cost per part down by a measurable amount' on one to four weeks of cost data.",
+      "No steering meeting falls between the week-11 readiness workshop and the week-16 Final readout, so the go-lives and early results are never reviewed and no corrective-action decision is taken before close.",
+      "The partner note says Implementation 'takes the middle of its 8 to 12 week estimate', but the Phase 2 header says 9-11 and the plan schedules 11 weeks (weeks 6-16), so the 16-week schedule actually sits at the top of the stated 13-16 range.",
+      "W1 combines the cost baseline and the loss analysis into one stream answering two questions, and its loss findings (D1, week 2) arrive before the baseline (D2, week 3) they should be read against.",
+      "W5 is declared 'after W3' but starts in week 11 while W3 runs to week 16, so the dependency contradicts the timing."
+    ]
+  },
+  "better": "X",
+  "why": "X leaves five weeks of cost data after the last go-live and adds a week-15 early-results checkpoint, so it can actually show the success criterion, while Y measures results one to four weeks after go-live with no steering meeting in between. X's defects (one-week baseline, misstated estimate note, W2/W3 overlap) are local edits, whereas Y needs its implementation timeline and governance reworked."
+}

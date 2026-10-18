@@ -1,0 +1,36 @@
+{
+  "basis": {
+    "governing_question": "How can Metalúrgica Norte cut conversion cost per part at its Braga plant and put the improvements in place?",
+    "archetype_id": "performance_improvement"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 4, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Establish the conversion cost per part baseline at the Braga plant and size the improvement opportunities.",
+      "gate": {
+        "label": "Initiative go/no-go",
+        "decision": "Go or no-go on implementing the sized initiatives at the plant?"
+      },
+      "depends_on_assumptions": ["engagement_length", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Implementation",
+      "order": 2,
+      "duration_weeks": { "min": 12, "max": 14 },
+      "duration_derived": false,
+      "objective_one_line": "Put the approved initiatives in place at the plant in waves and track results against the baseline.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the final results and confirm the improvements are running at the plant?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format", "timeline", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Engagement length is not given; 16-20 weeks is an estimate resting on the archetype's typical weeks and time for savings to show.",
+    "No Measurement phase: the archetype tracks results inside Implementation; confirm whether the client wants a separate post-launch measurement period."
+  ]
+}

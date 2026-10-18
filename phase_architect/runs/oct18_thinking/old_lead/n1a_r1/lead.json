@@ -1,0 +1,36 @@
+{
+  "basis": {
+    "governing_question": "Should Quinta Azul enter the Spanish retail market and, if so, how?",
+    "archetype_id": "market_entry_assessment"
+  },
+  "phases": [
+    {
+      "name": "Research",
+      "order": 1,
+      "duration_weeks": { "min": 5, "max": 7 },
+      "duration_derived": false,
+      "objective_one_line": "Assess the Spanish grocery retail market, its competitors and whether Quinta Azul has what it takes to win there.",
+      "gate": {
+        "label": "Go/no-go on design",
+        "decision": "Is the research evidence strong enough to design a Spanish entry, or stop here?"
+      },
+      "depends_on_assumptions": ["engagement_length", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 3, "max": 5 },
+      "duration_derived": false,
+      "objective_one_line": "Compare Spanish entry options and build the business case and roadmap behind the go or no-go decision on Spain.",
+      "gate": {
+        "label": "Final decision",
+        "decision": "Approve the go or no-go on Spain and, if go, the entry plan?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format", "timeline", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Engagement length is not stated; 8-12 weeks is an estimate for one market and two decision-makers, so confirm it before quoting.",
+    "The Design weeks assume a go on Spain; a no-go at the Research gate would end the engagement after Research."
+  ]
+}

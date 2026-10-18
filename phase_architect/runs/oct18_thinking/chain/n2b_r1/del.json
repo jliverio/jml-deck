@@ -1,0 +1,19 @@
+{
+  "deliverables": [
+    {"id": "D1", "workstream_id": "W1", "name": "Conversion cost per part baseline: first two plants", "kind": "analysis", "due_week_in_phase": 3},
+    {"id": "D2", "workstream_id": "W2", "name": "Conversion cost per part baseline: third plant", "kind": "analysis", "due_week_in_phase": 5},
+    {"id": "D3", "workstream_id": "W3", "name": "Conversion cost per part estimate: other three plants", "kind": "analysis", "due_week_in_phase": 5},
+    {"id": "D4", "workstream_id": "W4", "name": "Sized improvement list by plant", "kind": "analysis", "due_week_in_phase": 6},
+    {"id": "D5", "workstream_id": "W4", "name": "Go/no-go pack: baselines, sizing and pilot plant options", "kind": "decision_pack", "due_week_in_phase": 7},
+    {"id": "D6", "workstream_id": "W5", "name": "Pilot plant change plan and readiness checklist", "kind": "design", "due_week_in_phase": 5},
+    {"id": "D7", "workstream_id": "W5", "name": "Go-live record for the pilot plant", "kind": "build", "due_week_in_phase": 8},
+    {"id": "D8", "workstream_id": "W5", "name": "Pilot plant savings report against baseline", "kind": "analysis", "due_week_in_phase": 10},
+    {"id": "D9", "workstream_id": "W6", "name": "Conversion cost per part tracker against baselines", "kind": "build", "due_week_in_phase": 7},
+    {"id": "D10", "workstream_id": "W6", "name": "Final readout pack: results and running improvements", "kind": "decision_pack", "due_week_in_phase": 20},
+    {"id": "D11", "workstream_id": "W7", "name": "Wave 1 training and go-live record for each plant", "kind": "build", "due_week_in_phase": 12},
+    {"id": "D12", "workstream_id": "W7", "name": "Wave 1 results against baseline by plant", "kind": "analysis", "due_week_in_phase": 14},
+    {"id": "D13", "workstream_id": "W8", "name": "Wave 2 training and go-live record for each plant", "kind": "build", "due_week_in_phase": 18},
+    {"id": "D14", "workstream_id": "W8", "name": "Record of improvements running in all six plants", "kind": "analysis", "due_week_in_phase": 19}
+  ],
+  "notes": []
+}

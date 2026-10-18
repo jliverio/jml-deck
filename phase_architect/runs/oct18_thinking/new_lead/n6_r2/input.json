@@ -1,0 +1,96 @@
+{
+ "brief": {
+  "hard_fields": {
+   "client": {
+    "value": "Grupo Vale, a Portuguese food distributor",
+    "source": "stated",
+    "quote": "Grupo Vale, a Portuguese food distributor",
+    "assumption_text": null
+   },
+   "problem_statement": {
+    "value": "Grupo Vale has bought three regional food distributors and wants their sales, purchasing and finance integrated into its own.",
+    "source": "stated",
+    "quote": "Grupo Vale has bought three regional food distributors and wants their sales, purchasing and finance integrated into its own.",
+    "assumption_text": null
+   }
+  },
+  "required": {
+   "engagement_type": {
+    "value": "assessment_and_implementation",
+    "source": "stated",
+    "quote": "assessment_and_implementation",
+    "assumption_text": null
+   },
+   "engagement_length": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": "Not given; the Phase Architect estimates the duration.",
+    "weeks_min": null,
+    "weeks_max": null,
+    "duration_derived": false
+   },
+   "stakeholders": {
+    "value": [
+     "CEO",
+     "CFO",
+     "Heads of the three acquired companies"
+    ],
+    "source": "stated",
+    "quote": null,
+    "assumption_text": null
+   }
+  },
+  "soft_fields": {
+   "deliverable_format": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "timeline": {
+    "value": "Before the board meeting on 29 January 2027",
+    "source": "stated",
+    "quote": "Before the board meeting on 29 January 2027",
+    "assumption_text": null
+   },
+   "prior_attempts": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "success_criteria": {
+    "value": "An integration plan for the three companies that the board approves; the first company's sales, purchasing and finance running on Grupo Vale's processes and systems",
+    "source": "stated",
+    "quote": "An integration plan for the three companies that the board approves; the first company's sales, purchasing and finance running on Grupo Vale's processes and systems",
+    "assumption_text": null
+   },
+   "out_of_scope": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "workstreams": {
+    "value": null,
+    "count": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   }
+  }
+ },
+ "success_criteria_list": [
+  "An integration plan for the three companies that the board approves",
+  "the first company's sales, purchasing and finance running on Grupo Vale's processes and systems"
+ ],
+ "profile": {
+  "problem_focus": "topic",
+  "topic": "Post-acquisition integration in food distribution",
+  "current_state": "Three acquired distributors with about 600 employees and 9 warehouses.",
+  "market": null
+ },
+ "market_findings": [],
+ "weeks_available": 12
+}

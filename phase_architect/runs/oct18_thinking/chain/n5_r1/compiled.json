@@ -1,0 +1,829 @@
+{
+ "client": "Banco Horizonte",
+ "basis": {
+  "governing_question": "What strategy should Banco Horizonte follow for its digital channels?",
+  "archetype_id": null
+ },
+ "total_duration_weeks": {
+  "min": 16,
+  "max": 22
+ },
+ "phases": [
+  {
+   "name": "Diagnostic",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 7,
+   "duration_weeks": {
+    "min": 5,
+    "max": 7
+   },
+   "duration_derived": false,
+   "objective_one_line": "Assess how Banco Horizonte's digital channels perform today and what the CEO and Head of Digital expect from them.",
+   "gate": {
+    "label": "Research focus",
+    "decision": "Which channel gaps should the customer and competitor research take forward?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length",
+    "timeline",
+    "prior_attempts"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2",
+    "W3"
+   ]
+  },
+  {
+   "name": "Research",
+   "order": 2,
+   "start_week": 8,
+   "end_week": 14,
+   "duration_weeks": {
+    "min": 5,
+    "max": 7
+   },
+   "duration_derived": false,
+   "objective_one_line": "Establish what customers need from digital channels and how peer banks run theirs, as evidence for the strategy.",
+   "gate": {
+    "label": "Design focus",
+    "decision": "Which customer needs and peer practices should the strategy options build on?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length"
+   ],
+   "workstream_ids": [
+    "W4",
+    "W5",
+    "W6",
+    "W7"
+   ]
+  },
+  {
+   "name": "Design",
+   "order": 3,
+   "start_week": 15,
+   "end_week": 22,
+   "duration_weeks": {
+    "min": 6,
+    "max": 8
+   },
+   "duration_derived": false,
+   "objective_one_line": "Define the digital channels strategy and roadmap for Banco Horizonte, ready for approval by the CEO and Head of Digital.",
+   "gate": {
+    "label": "Final readout",
+    "decision": "Approve the digital channels strategy and roadmap as the final result?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length",
+    "deliverable_format",
+    "timeline",
+    "success_criteria",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W8",
+    "W9",
+    "W10",
+    "W11"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Leadership expectations",
+   "answers": "What role do the CEO and Head of Digital expect the digital channels to play for the bank?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 2,
+   "follows": [],
+   "activities": [
+    "Interview the CEO and the Head of Digital in two rounds",
+    "Review the bank's strategy and planning documents",
+    "Compare the two sets of expectations and note differences"
+   ],
+   "deliverable_ids": [
+    "D1"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Channel performance today",
+   "answers": "How are the bank's digital channels used today, and how well do the customer journeys work?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 3,
+   "end_week": 5,
+   "follows": [
+    "W1"
+   ],
+   "activities": [
+    "Analyze usage and performance data for each channel",
+    "Map the customer journeys in each channel",
+    "Interview the staff who run and support each channel"
+   ],
+   "deliverable_ids": [
+    "D2"
+   ]
+  },
+  {
+   "id": "W3",
+   "phase_order": 1,
+   "name": "Channel gap synthesis",
+   "answers": "Where do the digital channels fall short of what the CEO and Head of Digital expect?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 6,
+   "end_week": 7,
+   "follows": [
+    "W1",
+    "W2"
+   ],
+   "activities": [
+    "Set channel findings against leadership expectations",
+    "Rank the gaps by effect on customers and on the bank",
+    "Prepare the gap list for the Research focus decision"
+   ],
+   "deliverable_ids": [
+    "D3"
+   ]
+  },
+  {
+   "id": "W4",
+   "phase_order": 2,
+   "name": "Customer needs: segments 1-2",
+   "answers": "What do customers in the first two retail segments need and expect from the bank's digital channels?",
+   "traces_to": [
+    "problem_statement",
+    "gate:2"
+   ],
+   "start_week": 8,
+   "end_week": 9,
+   "follows": [],
+   "activities": [
+    "Interview customers in two segments about digital use",
+    "Analyze digital behavior data for the same segments",
+    "Summarize needs and pain points for each segment"
+   ],
+   "deliverable_ids": [
+    "D4"
+   ]
+  },
+  {
+   "id": "W5",
+   "phase_order": 2,
+   "name": "Customer needs: segment 3",
+   "answers": "What do customers in the remaining retail segment need and expect from the bank's digital channels?",
+   "traces_to": [
+    "problem_statement",
+    "gate:2"
+   ],
+   "start_week": 10,
+   "end_week": 11,
+   "follows": [],
+   "activities": [
+    "Interview customers in the third segment about digital use",
+    "Analyze digital behavior data for the third segment",
+    "Summarize needs and pain points for the segment"
+   ],
+   "deliverable_ids": [
+    "D5"
+   ]
+  },
+  {
+   "id": "W6",
+   "phase_order": 2,
+   "name": "Peer bank digital benchmark",
+   "answers": "How do peer banks position and run their digital channels?",
+   "traces_to": [
+    "problem_statement",
+    "gate:2"
+   ],
+   "start_week": 12,
+   "end_week": 13,
+   "follows": [],
+   "activities": [
+    "Select the peer banks to compare with Banco Horizonte",
+    "Collect public information on peer banks' digital channels",
+    "Compare peer positioning and operation with the bank's"
+   ],
+   "deliverable_ids": [
+    "D6"
+   ]
+  },
+  {
+   "id": "W7",
+   "phase_order": 2,
+   "name": "Customer and peer synthesis",
+   "answers": "Which customer needs and peer practices should the strategy options build on?",
+   "traces_to": [
+    "gate:2"
+   ],
+   "start_week": 14,
+   "end_week": 14,
+   "follows": [
+    "W4",
+    "W5",
+    "W6"
+   ],
+   "activities": [
+    "Combine customer and peer findings into one evidence base",
+    "Rank needs and peer practices for the gate decision",
+    "Note what the evidence does not yet show"
+   ],
+   "deliverable_ids": [
+    "D7"
+   ]
+  },
+  {
+   "id": "W8",
+   "phase_order": 3,
+   "name": "Strategic option set",
+   "answers": "Which strategic options for its digital channels could Banco Horizonte take, given the research findings?",
+   "traces_to": [
+    "problem_statement",
+    "gate:3"
+   ],
+   "start_week": 15,
+   "end_week": 17,
+   "follows": [],
+   "activities": [
+    "Derive candidate options from customer and peer evidence",
+    "Describe what each option means for the bank's channels",
+    "Agree comparison criteria with the CEO and Head of Digital"
+   ],
+   "deliverable_ids": [
+    "D8"
+   ]
+  },
+  {
+   "id": "W9",
+   "phase_order": 3,
+   "name": "Option comparison",
+   "answers": "How do the options compare on fit with customer needs and the leadership's expectations?",
+   "traces_to": [
+    "problem_statement",
+    "gate:3"
+   ],
+   "start_week": 18,
+   "end_week": 19,
+   "follows": [
+    "W8"
+   ],
+   "activities": [
+    "Score each option against the agreed criteria",
+    "Test the options with the staff who run the channels",
+    "Prepare the comparison for the options workshop"
+   ],
+   "deliverable_ids": [
+    "D9"
+   ]
+  },
+  {
+   "id": "W10",
+   "phase_order": 3,
+   "name": "Strategy and roadmap",
+   "answers": "What roadmap turns the chosen digital channels strategy into sequenced steps for the bank?",
+   "traces_to": [
+    "problem_statement",
+    "gate:3"
+   ],
+   "start_week": 20,
+   "end_week": 21,
+   "follows": [
+    "W9"
+   ],
+   "activities": [
+    "Write the target strategy for the chosen option",
+    "Sequence the roadmap steps and their dependencies",
+    "Check the roadmap steps with the staff who would run them"
+   ],
+   "deliverable_ids": [
+    "D10"
+   ]
+  },
+  {
+   "id": "W11",
+   "phase_order": 3,
+   "name": "Client review and sign-off",
+   "answers": "What changes do the CEO and Head of Digital need before they can approve the strategy and roadmap?",
+   "traces_to": [
+    "problem_statement",
+    "gate:3"
+   ],
+   "start_week": 22,
+   "end_week": 22,
+   "follows": [
+    "W10"
+   ],
+   "activities": [
+    "Walk the CEO and Head of Digital through the draft",
+    "Collect their comments and revise the strategy and roadmap",
+    "Prepare the final readout for approval"
+   ],
+   "deliverable_ids": [
+    "D11"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "Summary of CEO and Head of Digital expectations",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 2,
+   "presented_at": "Check-in: expectations"
+  },
+  {
+   "id": "D2",
+   "name": "Digital channel performance baseline and journey maps",
+   "kind": "analysis",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 5,
+   "presented_at": "Research focus"
+  },
+  {
+   "id": "D3",
+   "name": "Ranked digital channel gap list",
+   "kind": "decision_pack",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 6,
+   "presented_at": "Research focus"
+  },
+  {
+   "id": "D4",
+   "name": "Customer needs and pain points: segments 1-2",
+   "kind": "analysis",
+   "workstream_id": "W4",
+   "phase_order": 2,
+   "due_week": 9,
+   "presented_at": "Check-in: customer needs"
+  },
+  {
+   "id": "D5",
+   "name": "Customer needs and pain points: segment 3",
+   "kind": "analysis",
+   "workstream_id": "W5",
+   "phase_order": 2,
+   "due_week": 11,
+   "presented_at": "Check-in: customer needs"
+  },
+  {
+   "id": "D6",
+   "name": "Peer bank digital channel benchmark",
+   "kind": "analysis",
+   "workstream_id": "W6",
+   "phase_order": 2,
+   "due_week": 13,
+   "presented_at": "Design focus"
+  },
+  {
+   "id": "D7",
+   "name": "Ranked customer needs and peer practices",
+   "kind": "decision_pack",
+   "workstream_id": "W7",
+   "phase_order": 2,
+   "due_week": 14,
+   "presented_at": "Design focus"
+  },
+  {
+   "id": "D8",
+   "name": "Strategic option set and comparison criteria",
+   "kind": "design",
+   "workstream_id": "W8",
+   "phase_order": 3,
+   "due_week": 17,
+   "presented_at": "Workshop: option comparison"
+  },
+  {
+   "id": "D9",
+   "name": "Option comparison against agreed criteria",
+   "kind": "analysis",
+   "workstream_id": "W9",
+   "phase_order": 3,
+   "due_week": 18,
+   "presented_at": "Workshop: option comparison"
+  },
+  {
+   "id": "D10",
+   "name": "Digital channels strategy and roadmap, draft",
+   "kind": "design",
+   "workstream_id": "W10",
+   "phase_order": 3,
+   "due_week": 21,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D11",
+   "name": "Final readout: digital channels strategy and roadmap",
+   "kind": "decision_pack",
+   "workstream_id": "W11",
+   "phase_order": 3,
+   "due_week": 22,
+   "presented_at": "Final readout"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 2,
+  "status_weeks": [
+   3,
+   5,
+   9,
+   13,
+   15,
+   17,
+   21
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Start the diagnostic and agree access",
+    "attendees": [
+     "CEO",
+     "Head of Digital"
+    ],
+    "presents": [],
+    "decision": "Will the team have access to channel data and leadership interviews from week 1?",
+    "agenda": [
+     "Present the diagnostic objective and the 22-week plan",
+     "Discuss the data and people the first weeks need",
+     "Confirm access to channel data and leadership time"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "checkin",
+    "phase_order": 1,
+    "week": 4,
+    "label": "Check-in: expectations",
+    "purpose": "Review leadership expectations",
+    "attendees": [
+     "CEO",
+     "Head of Digital"
+    ],
+    "presents": [
+     "D1"
+    ],
+    "decision": "Which leadership expectations should guide how the channel gaps are ranked?",
+    "agenda": [
+     "Present the summary of CEO and Head of Digital expectations",
+     "Review progress on the channel performance baseline",
+     "Decide which expectations guide the gap ranking"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 7,
+    "label": "Research focus",
+    "purpose": "Choose the gaps the research takes forward",
+    "attendees": [
+     "CEO",
+     "Head of Digital"
+    ],
+    "presents": [
+     "D1",
+     "D2",
+     "D3"
+    ],
+    "decision": "Which channel gaps should the customer and competitor research take forward?",
+    "agenda": [
+     "Present the performance baseline and the ranked gap list",
+     "Review leadership expectations against the gaps",
+     "Decide which gaps the research takes forward"
+    ]
+   },
+   {
+    "id": "G4",
+    "type": "checkin",
+    "phase_order": 2,
+    "week": 11,
+    "label": "Check-in: customer needs",
+    "purpose": "Review customer needs, steer benchmark",
+    "attendees": [
+     "CEO",
+     "Head of Digital"
+    ],
+    "presents": [
+     "D4",
+     "D5"
+    ],
+    "decision": "Which customer pain points should the peer bank benchmark focus on?",
+    "agenda": [
+     "Present customer needs and pain points for all segments",
+     "Review the findings for segments 1-2 and segment 3",
+     "Decide which pain points the benchmark covers"
+    ]
+   },
+   {
+    "id": "G5",
+    "type": "gate",
+    "phase_order": 2,
+    "week": 14,
+    "label": "Design focus",
+    "purpose": "Choose the evidence the options build on",
+    "attendees": [
+     "CEO",
+     "Head of Digital"
+    ],
+    "presents": [
+     "D4",
+     "D5",
+     "D6",
+     "D7"
+    ],
+    "decision": "Which customer needs and peer practices should the strategy options build on?",
+    "agenda": [
+     "Present the peer benchmark and the ranked needs and practices",
+     "Review customer needs for all three segments",
+     "Decide which needs and practices the options build on"
+    ]
+   },
+   {
+    "id": "G6",
+    "type": "workshop",
+    "phase_order": 3,
+    "week": 19,
+    "label": "Workshop: option comparison",
+    "purpose": "Compare options before roadmap is drafted",
+    "attendees": [
+     "CEO",
+     "Head of Digital"
+    ],
+    "presents": [
+     "D8",
+     "D9"
+    ],
+    "decision": "Which strategic option should be detailed in the strategy and roadmap?",
+    "agenda": [
+     "Present the strategic option set and its criteria",
+     "Review each option against the agreed criteria",
+     "Decide which option the strategy and roadmap detail"
+    ]
+   },
+   {
+    "id": "G7",
+    "type": "gate",
+    "phase_order": 3,
+    "week": 22,
+    "label": "Final readout",
+    "purpose": "Approve the strategy and roadmap",
+    "attendees": [
+     "CEO",
+     "Head of Digital"
+    ],
+    "presents": [
+     "D10",
+     "D11"
+    ],
+    "decision": "Approve the digital channels strategy and roadmap as the final result?",
+    "agenda": [
+     "Present the final readout of the strategy and roadmap",
+     "Review the draft roadmap against the option taken forward",
+     "Decide whether to approve the strategy and roadmap"
+    ]
+   }
+  ]
+ },
+ "deadline": null,
+ "architect_notes": [
+  "No engagement length was given, so the 16 to 22 weeks in total is an estimate from the sized work; confirm it before quoting.",
+  "The counts of 3 digital channels and 3 customer segments are assumed and drive the Diagnostic and Research lengths; confirm both with the client.",
+  "No firm archetype fits a digital channels strategy for an existing bank, so phases and work pieces are planned from the brief and common units."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Diagnostic",
+    "start": 1,
+    "end": 7
+   },
+   {
+    "phase": "Research",
+    "start": 8,
+    "end": 14
+   },
+   {
+    "phase": "Design",
+    "start": 15,
+    "end": 22
+   }
+  ]
+ },
+ "sizing": {
+  "length_basis": "estimated",
+  "sub_questions": [
+   {
+    "id": "Q1",
+    "question": "How do Banco Horizonte's digital channels perform today, and where do they fall short?",
+    "phase_order": 1
+   },
+   {
+    "id": "Q2",
+    "question": "What role do the CEO and Head of Digital expect digital channels to play for the bank?",
+    "phase_order": 1
+   },
+   {
+    "id": "Q3",
+    "question": "What do retail customers need and expect from the bank's digital channels?",
+    "phase_order": 2
+   },
+   {
+    "id": "Q4",
+    "question": "How do peer banks position and run their digital channels?",
+    "phase_order": 2
+   },
+   {
+    "id": "Q5",
+    "question": "Which strategic options for the digital channels fit the bank, and which one should be taken forward?",
+    "phase_order": 3
+   },
+   {
+    "id": "Q6",
+    "question": "What roadmap turns the chosen strategy into sequenced steps for the bank?",
+    "phase_order": 3
+   }
+  ],
+  "drivers": [
+   {
+    "key": "stakeholder_groups",
+    "value": 2,
+    "source": "assumed",
+    "evidence": ""
+   },
+   {
+    "key": "digital_channels",
+    "value": 3,
+    "source": "assumed",
+    "evidence": ""
+   },
+   {
+    "key": "customer_segments",
+    "value": 3,
+    "source": "assumed",
+    "evidence": ""
+   }
+  ],
+  "phases": [
+   {
+    "order": 1,
+    "name": "Diagnostic",
+    "planned_weeks": {
+     "min": 5,
+     "max": 7
+    },
+    "estimate": {
+     "min": 5,
+     "max": 7
+    },
+    "archetype_weeks": null,
+    "fixed_weeks": 2,
+    "work": [
+     {
+      "unit": "Interview round with one stakeholder group",
+      "from_library": true,
+      "driver": "stakeholder_groups",
+      "count": 2,
+      "at_once": 2,
+      "weeks_each": {
+       "min": 1,
+       "max": 2
+      }
+     },
+     {
+      "unit": "Digital channel assessed (usage, customer journeys, performance)",
+      "from_library": false,
+      "driver": "digital_channels",
+      "count": 3,
+      "at_once": 3,
+      "weeks_each": {
+       "min": 2,
+       "max": 3
+      }
+     }
+    ],
+    "why": "Both interview rounds run together, then the three channels are assessed side by side; fixed weeks cover start-up and synthesis."
+   },
+   {
+    "order": 2,
+    "name": "Research",
+    "planned_weeks": {
+     "min": 5,
+     "max": 7
+    },
+    "estimate": {
+     "min": 5,
+     "max": 7
+    },
+    "archetype_weeks": null,
+    "fixed_weeks": 1,
+    "work": [
+     {
+      "unit": "Customer segment researched (needs, digital behavior, interviews)",
+      "from_library": false,
+      "driver": "customer_segments",
+      "count": 3,
+      "at_once": 2,
+      "weeks_each": {
+       "min": 1,
+       "max": 2
+      }
+     },
+     {
+      "unit": "Peer banks' digital channels benchmarked",
+      "from_library": false,
+      "driver": null,
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 2,
+       "max": 2
+      }
+     }
+    ],
+    "why": "Segments are researched two at a time, then the peer benchmark; one week synthesizes for the gate."
+   },
+   {
+    "order": 3,
+    "name": "Design",
+    "planned_weeks": {
+     "min": 6,
+     "max": 8
+    },
+    "estimate": {
+     "min": 6,
+     "max": 8
+    },
+    "archetype_weeks": null,
+    "fixed_weeks": 1,
+    "work": [
+     {
+      "unit": "Strategic options for the digital channels compared",
+      "from_library": false,
+      "driver": null,
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 2,
+       "max": 2
+      }
+     },
+     {
+      "unit": "Target strategy and roadmap written",
+      "from_library": false,
+      "driver": null,
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 2,
+       "max": 3
+      }
+     },
+     {
+      "unit": "Client review and sign-off cycle",
+      "from_library": true,
+      "driver": null,
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 1,
+       "max": 2
+      }
+     }
+    ],
+    "why": "Options are compared first, then the target strategy and roadmap are written; one review cycle with the client precedes the final readout."
+   }
+  ],
+  "estimate_total": {
+   "min": 16,
+   "max": 22
+  },
+  "planned_total": {
+   "min": 16,
+   "max": 22
+  },
+  "levers": "Researching fewer customer segments, benchmarking peers from desk data only, or assessing fewer channels would shorten the engagement most."
+ }
+}

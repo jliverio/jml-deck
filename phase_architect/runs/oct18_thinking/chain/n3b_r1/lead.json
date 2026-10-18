@@ -1,0 +1,134 @@
+{
+  "basis": {
+    "governing_question": "How should Seguros Atlântida redesign the operating model of its five business units and plan the transition to it?",
+    "archetype_id": "operating_model_redesign"
+  },
+  "sizing": {
+    "length_basis": "estimated",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "How do the five business units organize their work, processes and costs today?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "Where do cost, workload and performance gaps in the five units matter most for the new model?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q3",
+        "question": "Which target operating model for the five units can the executive committee approve?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q4",
+        "question": "How are structure, roles and governance of the chosen model detailed for each of the five units?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q5",
+        "question": "What transition plan, by unit, moves each unit from today's operating model to the target?",
+        "phase_order": 2
+      }
+    ],
+    "drivers": [
+      {
+        "key": "business_units",
+        "value": 5,
+        "source": "brief",
+        "evidence": "all five business units (claims, underwriting, sales, customer service and finance)"
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Unit diagnosed (interviews, process walk-throughs, workload and cost baseline)",
+            "from_library": true,
+            "driver": "business_units",
+            "count": 5,
+            "weeks_each": { "min": 2, "max": 3 },
+            "at_once": 2
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": { "min": 8, "max": 11 },
+        "why": "Five units diagnosed two at a time in three rounds; above the typical 4 to 8 weeks because all five units are covered."
+      },
+      {
+        "phase_order": 2,
+        "work": [
+          {
+            "unit": "Target model for the whole organization (structure, roles, governance)",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 4, "max": 6 },
+            "at_once": 1
+          },
+          {
+            "unit": "Unit-level design detailed with the unit's leaders",
+            "from_library": true,
+            "driver": "business_units",
+            "count": 5,
+            "weeks_each": { "min": 1, "max": 2 },
+            "at_once": 2
+          },
+          {
+            "unit": "Transition plan",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 1, "max": 2 },
+            "at_once": 1
+          },
+          {
+            "unit": "Client review and sign-off cycle",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 1, "max": 2 },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 1,
+        "estimate": { "min": 10, "max": 17 },
+        "why": "Whole-model design, then five unit designs two at a time, transition plan and one sign-off cycle; above the typical 6 to 10 weeks."
+      }
+    ],
+    "levers": "Run three units at once instead of two, or diagnose three representative units and extend to the other two from data."
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 9, "max": 11 },
+      "duration_derived": false,
+      "objective_one_line": "Establish the current organization, process and cost baseline of the five business units and prioritize the areas to redesign.",
+      "gate": {
+        "label": "Go/no-go on design",
+        "decision": "Go or no-go on designing the target model for the areas prioritized in the diagnostic?"
+      },
+      "depends_on_assumptions": ["engagement_length", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 13, "max": 15 },
+      "duration_derived": false,
+      "objective_one_line": "Define the target operating model for the five business units and a transition plan for each unit.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the final target model and transition plan by unit for the executive committee?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format", "timeline", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Engagement length is estimated at 22 to 26 weeks; slower unit rounds and a longer target-model design would push it toward 28.",
+    "No Implementation phase: the engagement type is assessment, so the transition is planned inside Design, not executed.",
+    "No Handover phase: the executive committee receives the result at the Design gate; add one if each unit head must receive a plan separately."
+  ]
+}

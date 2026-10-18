@@ -1,0 +1,153 @@
+{
+  "basis": {
+    "governing_question": "How should Seguros Atlântida redesign how its claims department is organized, roles and handoffs included?",
+    "archetype_id": "operating_model_redesign"
+  },
+  "sizing": {
+    "length_basis": "estimated",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "How is claims work organized today, in roles and handoffs, and where does it break down?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "What workload, cost and performance baseline must the target organization improve on?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q3",
+        "question": "Which structure, role and governance options for claims are worth comparing, and on what criteria?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q4",
+        "question": "How should roles and handoffs work in the chosen target organization?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q5",
+        "question": "What transition plan moves claims from today's organization to the target?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q6",
+        "question": "What does the executive committee need to see to approve the target organization?",
+        "phase_order": 2
+      }
+    ],
+    "drivers": [
+      {
+        "key": "business_units",
+        "value": 1,
+        "source": "profile",
+        "evidence": "One claims department"
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Unit diagnosed (interviews, process walk-throughs, workload and cost baseline)",
+            "from_library": true,
+            "driver": "business_units",
+            "count": 1,
+            "weeks_each": {
+              "min": 2,
+              "max": 3
+            },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": {
+          "min": 4,
+          "max": 5
+        },
+        "why": "One department diagnosed in a single block; one start-up week and one synthesis week frame it. Within the archetype's typical range."
+      },
+      {
+        "phase_order": 2,
+        "work": [
+          {
+            "unit": "Target model for the whole organization (structure, roles, governance)",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": {
+              "min": 4,
+              "max": 6
+            },
+            "at_once": 1
+          },
+          {
+            "unit": "Transition plan",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": {
+              "min": 1,
+              "max": 2
+            },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 1,
+        "estimate": {
+          "min": 6,
+          "max": 9
+        },
+        "why": "Target model first, then transition plan, in sequence since the scope is a single unit; one synthesis week closes the gate."
+      }
+    ],
+    "levers": "Leaving the transition plan to a later engagement would shorten it most, by 1 to 2 weeks."
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": {
+        "min": 4,
+        "max": 5
+      },
+      "duration_derived": false,
+      "objective_one_line": "Establish how claims roles, handoffs and workload run today, and which areas the redesign must address.",
+      "gate": {
+        "label": "Design scope decision",
+        "decision": "Which improvement areas will the target organization design take forward?"
+      },
+      "depends_on_assumptions": [
+        "engagement_length",
+        "timeline",
+        "prior_attempts"
+      ]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": {
+        "min": 7,
+        "max": 9
+      },
+      "duration_derived": false,
+      "objective_one_line": "Define the target claims organization (roles, handoffs, governance) and its transition plan for executive committee approval.",
+      "gate": {
+        "label": "Target model sign-off",
+        "decision": "Approve the target organization and transition plan for the executive committee?"
+      },
+      "depends_on_assumptions": [
+        "engagement_length",
+        "deliverable_format",
+        "timeline",
+        "out_of_scope"
+      ]
+    }
+  ],
+  "architect_notes": [
+    "Engagement length is open: the 11 to 14 weeks are an estimate from the sizing, to be confirmed before quoting.",
+    "Design takes 7 to 9 weeks from a 6 to 9 week estimate; a six-week target model with a two-week transition plan reaches 9.",
+    "The count of one claims department comes from public research and needs the client's confirmation; more units would lengthen both phases."
+  ]
+}

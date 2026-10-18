@@ -1,0 +1,50 @@
+{
+  "basis": {
+    "governing_question": "How should Grupo Vale integrate the sales, purchasing and finance of its three acquired regional food distributors into its own?",
+    "archetype_id": "operating_model_redesign"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 3, "max": 4 },
+      "duration_derived": false,
+      "objective_one_line": "Assess how each acquired company runs sales, purchasing and finance today compared with Grupo Vale's processes and systems.",
+      "gate": {
+        "label": "Go/no-go on design",
+        "decision": "Go or no-go on designing the integration, and which gaps to close first?"
+      },
+      "depends_on_assumptions": ["engagement_length", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 3, "max": 4 },
+      "duration_derived": false,
+      "objective_one_line": "Define the integration plan for the three companies' sales, purchasing and finance, ready for board approval.",
+      "gate": {
+        "label": "Go/no-go on cutover",
+        "decision": "Go or no-go on cutting the first company over to Grupo Vale's systems?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format"]
+    },
+    {
+      "name": "Implementation",
+      "order": 3,
+      "duration_weeks": { "min": 3, "max": 4 },
+      "duration_derived": false,
+      "objective_one_line": "Move the first company's sales, purchasing and finance onto Grupo Vale's processes and systems.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the integration plan and first-company results for the 29 January board?"
+      },
+      "depends_on_assumptions": ["engagement_length", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Length is an estimate: the archetype's shortest Diagnostic and Design take 10 of the 12 weeks available, leaving too little for Implementation.",
+    "Implementation is estimated at 3 to 4 weeks for the first company's sales, purchasing and finance; confirm that is realistic before quoting.",
+    "Brief asks for three companies integrated, but success criteria require only the first running; Implementation is planned for that one company.",
+    "Departure from the operating-model archetype: Implementation added for the first company's cutover, and phases shortened to 3-4 weeks each."
+  ]
+}

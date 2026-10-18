@@ -1,0 +1,35 @@
+{
+  "basis": {
+    "governing_question": "How should Seguros Atlântida organize its claims department, including roles and handoffs, in a target organization the executive committee approves?",
+    "archetype_id": "operating_model_redesign"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 4, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Document how the claims department is organized today, including roles and handoffs, and the pain points stakeholders see.",
+      "gate": {
+        "label": "Diagnostic readout",
+        "decision": "Which improvement areas go forward into the target organization design?"
+      },
+      "depends_on_assumptions": ["engagement_length", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 6, "max": 8 },
+      "duration_derived": false,
+      "objective_one_line": "Define the target organization for claims, with roles and handoffs, ready for executive committee approval.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the target organization as the version to put to the executive committee?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format", "timeline", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Engagement length is an estimate of 10 to 14 weeks: the archetype's typical weeks, shortened because the brief names one department."
+  ]
+}

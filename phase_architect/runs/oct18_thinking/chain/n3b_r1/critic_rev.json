@@ -1,0 +1,40 @@
+{
+  "X": {
+    "scores": {
+      "structure": 3,
+      "workstreams": 3,
+      "deliverables": 4,
+      "governance": 3,
+      "coherence": 3,
+      "sizing": 2
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "At 25-29 weeks the plan is padded for an assessment: the three unit baselines (W1-W3) run one after another over 8 weeks and every Design stream (W5-W8) is strictly sequential, producing an 18-week Design phase.",
+      "The executive committee, whose approval is the success criterion, appears in W8 activities but attends none of the six steering meetings, so the week-29 Final readout approval is taken by the steering group rather than the approving body.",
+      "The transition plan by unit (D7) is never reviewed at a workshop and reaches the steering group for the first time at the week-29 approval gate, alongside the approval pack D8 that repackages it.",
+      "D8 (approval pack) is due week 28 while W8's activities (executive committee review, resolving unit-head comments, finalizing) run through week 29, so the pack is due before the comments it must absorb.",
+      "The partner note cites unsourced 'public research' (Lisbon, Porto and 12 regional offices) that is not in the brief, and the week-1 kickoff agenda confirms access only for the claims and underwriting baseline although its decision covers all baselines."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 3,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3,
+      "sizing": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W4 claims to find gaps 'across the five units' but starts week 7 depending only on W1 and W2, and its gap deliverable D4 is due week 9, the same week as the finance baseline D3, so finance cannot properly feed the cross-unit gap analysis.",
+      "W4 checks gaps against 'customer feedback' that no diagnostic stream collects, since W2 has no customer input activity.",
+      "The final gate only approves the model 'for the executive committee' and the committee attends no meeting, so the success criterion (executive committee approval) falls outside the engagement.",
+      "The transition plan by unit (D8) is built in a 3-week W7 for five units and first seen at the week-26 final gate, leaving no steering review of it before approval.",
+      "W4 carries two overlapping deliverables (D4 gaps due week 9 and D5 diagnostic findings due week 10) reviewed at the same week-11 gate, and the 11-week serial diagnostic pads the 22-26 week total."
+    ]
+  },
+  "better": "X",
+  "why": "X's analytical chain is sound: every unit baseline finishes before the cross-unit gap analysis, the customer input it uses is collected, and the executive committee at least sees the model inside the engagement, so its defects are mainly length and governance wording. Y is three weeks leaner, but it runs the five-unit gap analysis before finance is baselined, cites customer feedback nobody gathers, and leaves the success criterion's approval outside the plan."
+}

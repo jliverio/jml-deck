@@ -1,0 +1,29 @@
+{
+  "verdict": "revise",
+  "issues": [
+    {
+      "owner": "governance",
+      "target": "G6",
+      "problem": "Success criterion is approval by the executive committee, yet G6 attendees are the CEO, COO and unit heads, and its agenda only takes the model to the committee.",
+      "fix": "Make the committee's approval a decision inside the engagement: add it as a G6 attendee or schedule its approval session by week 26, and reword the decision to approve."
+    },
+    {
+      "owner": "workstreams",
+      "target": "W4",
+      "problem": "W4 compares gaps across all five units but follows only W1 and W2; finance baseline W3 ends week 9, the same week D4 (cross-unit gaps) is due.",
+      "fix": "Make W4 follow W3 so the comparison includes finance, and place D4's due week after the finance baseline while keeping D5 before G3."
+    },
+    {
+      "owner": "lead",
+      "target": "P2",
+      "problem": "A transition plan by unit is a success criterion, but sizing counts it as one piece of 1 to 2 weeks with no driver, while unit designs scale with business_units.",
+      "fix": "Size the transition plan on business_units (five unit plans, how many at once, weeks each), re-total Design, and set W7's length from that sizing."
+    },
+    {
+      "owner": "lead",
+      "target": "P1",
+      "problem": "Profile lists Lisbon, Porto and 12 regional offices, but the diagnostic is sized on five units only, and no note asks the partner whether offices need interviews and walk-throughs.",
+      "fix": "Add a note asking the partner to confirm whether regional offices are in the diagnostic; if so, add a site driver and re-size P1 and its weeks."
+    }
+  ]
+}

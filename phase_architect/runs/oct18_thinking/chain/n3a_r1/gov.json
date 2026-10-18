@@ -1,0 +1,85 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Start the Diagnostic and agree data access",
+      "attendees": ["Chief Operating Officer", "Head of Claims"],
+      "presents": [],
+      "decision": "Which claims data and people can the Diagnostic draw on from week 1?",
+      "agenda": [
+        "Present the Diagnostic objective and the weeks 1 to 5 plan",
+        "Discuss the claims data and people the baseline needs",
+        "Align on who opens access to claims data and interviews"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Check-in: first findings",
+      "purpose": "Review the baseline and interview findings",
+      "attendees": ["Chief Operating Officer", "Head of Claims"],
+      "presents": ["D1", "D2"],
+      "decision": "Is the evidence enough to start framing problem areas and design criteria?",
+      "agenda": [
+        "Present the baseline of claims structure, roles and handoffs",
+        "Present the interview synthesis on what claims must fix and keep",
+        "Discuss gaps to close before problem areas are drafted"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Design scope decision",
+      "purpose": "Set what the Design phase takes forward",
+      "attendees": ["Chief Operating Officer", "Head of Claims"],
+      "presents": ["D1", "D2", "D3"],
+      "decision": "Which problem areas and design criteria does the Design phase take forward?",
+      "agenda": [
+        "Present the problem areas and design criteria for the Design phase",
+        "Review the baseline and interview findings behind them",
+        "Decide which areas and criteria the Design phase takes forward"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Workshop 1: model options",
+      "purpose": "Compare claims options against the criteria",
+      "attendees": ["Chief Operating Officer", "Head of Claims"],
+      "presents": ["D4"],
+      "decision": "Which claims organization option goes forward to detailed design?",
+      "agenda": [
+        "Present the claims organization options compared with design criteria",
+        "Discuss how each option handles structure, roles and handoffs",
+        "Decide which option goes forward to detailed design"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Workshop 2: detailed design",
+      "purpose": "Review the detailed target design",
+      "attendees": ["Chief Operating Officer", "Head of Claims"],
+      "presents": ["D5"],
+      "decision": "Go or no-go: take the detailed target design into transition planning?",
+      "agenda": [
+        "Present the detailed design of the target claims organization",
+        "Review structure, roles and handoffs against the design criteria",
+        "Discuss what the transition plan has to cover"
+      ]
+    },
+    {
+      "id": "G6",
+      "label": "Target model approval",
+      "purpose": "Approve the target model for submission",
+      "attendees": ["Chief Operating Officer", "Head of Claims"],
+      "presents": ["D5", "D6", "D7"],
+      "decision": "Approve the target claims organization for submission to the executive committee?",
+      "agenda": [
+        "Present the executive committee pack for the target claims organization",
+        "Review the transition roadmap and change plan for claims",
+        "Decide whether the target model goes to the executive committee"
+      ]
+    }
+  ],
+  "notes": [
+    "The executive committee approves the target model but is not in the stakeholders; confirm who represents it at the final gate."
+  ]
+}

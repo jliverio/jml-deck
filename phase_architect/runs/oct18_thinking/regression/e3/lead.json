@@ -1,0 +1,90 @@
+{
+  "basis": {
+    "governing_question": "What is the current state of patient waiting times at Norte Hospitals Group's three hospitals, and what drives them?",
+    "archetype_id": "performance_improvement"
+  },
+  "sizing": {
+    "length_basis": "stated",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "How long do patients wait at each of the three hospitals, and at which steps of their visit?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "What causes the longest waits in each hospital's patient flow and use of capacity?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q3",
+        "question": "Which causes of waiting are shared across the three hospitals and which are specific to one?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q4",
+        "question": "Which waiting-time improvement areas have the largest effect on waits, and what does each require?",
+        "phase_order": 1
+      }
+    ],
+    "drivers": [
+      {
+        "key": "sites",
+        "value": 3,
+        "source": "brief",
+        "evidence": "patient waiting times at its three hospitals"
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Site diagnosed on the floor (cost baseline, line observation, loss analysis)",
+            "from_library": true,
+            "driver": "sites",
+            "count": 3,
+            "weeks_each": {
+              "min": 2,
+              "max": 3
+            },
+            "at_once": 2
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": {
+          "min": 6,
+          "max": 8
+        },
+        "why": "All three hospitals diagnosed, two at once, in two rounds; above the archetype's 3-6 weeks because no hospital is sampled."
+      }
+    ],
+    "levers": "Running all three hospitals side by side, or diagnosing two and extending to the third from data, would bring the diagnostic within six weeks."
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": {
+        "min": 6,
+        "max": 6
+      },
+      "duration_derived": false,
+      "objective_one_line": "Establish how long patients wait at each of the three hospitals and identify the causes behind the longest waits.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the final diagnostic and choose which waiting-time causes to take forward?"
+      },
+      "depends_on_assumptions": [
+        "deliverable_format",
+        "timeline",
+        "prior_attempts",
+        "out_of_scope"
+      ]
+    }
+  ],
+  "architect_notes": [
+    "Archetype performance_improvement is used for its Diagnostic only; its Implementation phase is dropped because the type is assessment only.",
+    "Diagnosing three hospitals two at a time estimates at 6 to 8 weeks; the stated six weeks holds only at the low end."
+  ]
+}

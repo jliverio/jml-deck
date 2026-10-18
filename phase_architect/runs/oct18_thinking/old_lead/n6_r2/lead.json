@@ -1,0 +1,50 @@
+{
+  "basis": {
+    "governing_question": "How can Grupo Vale integrate the sales, purchasing and finance of the three regional food distributors it bought into its own?",
+    "archetype_id": "operating_model_redesign"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 3, "max": 4 },
+      "duration_derived": false,
+      "objective_one_line": "Assess how sales, purchasing and finance work today at Grupo Vale and the three acquired distributors.",
+      "gate": {
+        "label": "Scope and sequence",
+        "decision": "Which integration scope and company sequence goes forward into design?"
+      },
+      "depends_on_assumptions": ["engagement_length", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 3, "max": 4 },
+      "duration_derived": false,
+      "objective_one_line": "Define the integration plan for sales, purchasing and finance across the three companies, ready for board approval.",
+      "gate": {
+        "label": "Go/no-go on rollout",
+        "decision": "Go or no-go on rolling out the first company under this integration plan?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format"]
+    },
+    {
+      "name": "Implementation",
+      "order": 3,
+      "duration_weeks": { "min": 3, "max": 4 },
+      "duration_derived": false,
+      "objective_one_line": "Move the first acquired company's sales, purchasing and finance onto Grupo Vale's processes and systems.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Do we approve the plan and first-company results to take to the 29 January board?"
+      },
+      "depends_on_assumptions": ["engagement_length", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Length is an estimate: the archetype's shortest Diagnostic and Design leave no room for Implementation in the 12 weeks available, so the phases total 9-12 weeks.",
+    "Rollout of the first company starts before the board approves the plan on 29 January; confirm the steering group can authorize it.",
+    "Departure from operating_model_redesign: Implementation added, because the brief asks for the first company to run on Grupo Vale's systems.",
+    "No Implementation phase for the second and third companies: the brief asks only for their integration plan."
+  ]
+}

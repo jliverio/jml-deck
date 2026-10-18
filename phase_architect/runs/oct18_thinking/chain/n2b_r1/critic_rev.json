@@ -1,0 +1,40 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 4,
+      "governance": 3,
+      "coherence": 3,
+      "sizing": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W6 wave 1 starts in week 21 with no steering meeting reviewing D8 pilot savings (due week 20), and the week 23 check-in that does review D8 decides on wave 2 while wave 1 is already half done and D9 is not yet due.",
+      "W6 and W7 give only 4 weeks each to adapt, implement and train across the five remaining plants in two countries, while W5 spends 12 weeks on a single pilot plant, so the rollout is squeezed and the pilot padded.",
+      "W5 says the changes launch 'after the readiness workshop', but Workshop 2 (week 17) decides the wave composition, so no meeting actually approves the pilot go-live.",
+      "W1 allows only 2 weeks (D1 due week 2) to build baselines, observe lines and trace loss causes in two plants, which is too short for a floor diagnostic.",
+      "The notes to the partner cite 6-week waves while W6 and W7 run 4 weeks each, so the stated sizing logic contradicts the plan."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 4,
+      "coherence": 3,
+      "sizing": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "D10 final readout pack is due week 28, but wave 2 plants only go live by week 26 (D13) and no deliverable reports wave 2 cost per part against baseline, so the final readout cannot show the 'every plant' success criterion.",
+      "W4 sizing by plant starts in week 4, before the D2 and D3 baselines for four of the six plants (due week 5) exist and before Workshop 1 reviews them.",
+      "No meeting or deliverable decides which plants form wave 1 and wave 2, and the week 19 check-in, held as W7 wave 1 starts, decides how wave 2 is measured rather than whether wave 1 starts.",
+      "D11 (wave 1 training and go-live record for each plant) is due week 20, one week after W7 starts, which is too little time to adapt, train and go live in several plants.",
+      "Workshop 3 (week 23) re-reviews D7, D8 and D9, which the week 19 check-in already covered, and its stated purpose ('before final readout') does not match its decision (wave 2 go/no-go)."
+    ]
+  },
+  "better": "Y",
+  "why": "Y gates the pilot go-live and wave 2 on the evidence produced just before each meeting, and gives the diagnostic and rollout waves more realistic durations; X starts wave 1 with no steering review of the pilot savings and squeezes five plants into two 4-week waves. Y's main weakness is that wave 2 plants have only about two weeks of cost data before the final readout, and adding a few weeks at the end fixes that; X would need its rollout timing and its gates reworked."
+}

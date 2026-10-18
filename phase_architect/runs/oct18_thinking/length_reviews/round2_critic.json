@@ -1,0 +1,72 @@
+{
+  "n1a": {
+    "X": {"realism": 4, "partner_notes": 3},
+    "Y": {"realism": 3, "partner_notes": 3},
+    "better": "X",
+    "own_estimate_weeks": "6-9",
+    "why": "One market with two decision-makers needs about 4 weeks of Spanish retail and buyer research plus 2-4 weeks on entry options and the business case, so X's 7-10 fits and its 4-5 week no-go exit gives the CFO a clean stage-gate, while Y's 5-7 week Research for a single market is padding."
+  },
+  "n1b": {
+    "X": {"realism": 4, "partner_notes": 2},
+    "Y": {"realism": 4, "partner_notes": 4},
+    "better": "Y",
+    "own_estimate_weeks": "10-14",
+    "why": "Four markets share most of the method, so a desk screen plus two or three deep dives fits in 6-8 weeks of Research and 4-6 of Design; the totals are close, but Y names the screen assumption and the lever (a two-market shortlist cuts 3-5 weeks), which is exactly what a CFO will push on, while X only cites an unexplained archetype."
+  },
+  "n2a": {
+    "X": {"realism": 3, "partner_notes": 4},
+    "Y": {"realism": 4, "partner_notes": 3},
+    "better": "Y",
+    "own_estimate_weeks": "15-18",
+    "why": "Three lines at one plant need a 3-5 week diagnostic and roughly 10-13 weeks of line-by-line implementation, because a cost-per-part reduction only shows after about two monthly cost closes, so X's 9-11 week Implementation is tight on proof while Y's 12-14 in waves is defensible, even though X's notes are the more actionable."
+  },
+  "n2b": {
+    "X": {"realism": 2, "partner_notes": 2},
+    "Y": {"realism": 4, "partner_notes": 4},
+    "better": "Y",
+    "own_estimate_weeks": "24-32",
+    "why": "Six plants and 19 lines across two countries need a 10-12 week pilot plus two overlapping waves of 6-10 weeks each, so X's 14-16 week rollout to all six (barely longer than its one-plant plan) is not credible; Y is realistic, but baselining only three plants conflicts with the 'measurable reduction in every plant' criterion and must be settled before quoting."
+  },
+  "n3a": {
+    "X": {"realism": 3, "partner_notes": 2},
+    "Y": {"realism": 3, "partner_notes": 4},
+    "better": "Y",
+    "own_estimate_weeks": "8-11",
+    "why": "One 140-person department in one location needs about 3-4 weeks of diagnostic and 4-6 weeks of design plus an executive committee approval cycle, so both plans run long; Y at least shows how its Design weeks build up while X leans on an unexplained 'shortened archetype', though Y's two-week transition plan is not in the success criteria."
+  },
+  "n3b": {
+    "X": {"realism": 4, "partner_notes": 3},
+    "Y": {"realism": 3, "partner_notes": 4},
+    "better": "X",
+    "own_estimate_weeks": "16-20",
+    "why": "Five units, 1,800 people and 14 sites need a 6-8 week diagnostic with parallel unit teams and 8-12 weeks of design and leadership alignment, so X is tight at its 14-week floor but defensible, while Y's 9-11 week diagnostic and one-unit-at-a-time design are padding a CFO will cut."
+  },
+  "n4a": {
+    "X": {"realism": 4, "partner_notes": 3},
+    "Y": {"realism": 3, "partner_notes": 5},
+    "better": "X",
+    "own_estimate_weeks": "20-28",
+    "why": "Choosing a POS for 40 pharmacies needs about 3-4 weeks of requirements, 4-6 of vendor selection and 12-16 of configuration, a one-pharmacy pilot and waved rollout, so X's total fits (it should add Y's pilot step inside its 14-16 weeks) while Y's 19-21 week rollout is long for a till system, although Y's notes on tender, waves and process areas are the model X's should follow."
+  },
+  "n4b": {
+    "X": {"realism": 2, "partner_notes": 2},
+    "Y": {"realism": 3, "partner_notes": 4},
+    "better": "Y",
+    "own_estimate_weeks": "40-52",
+    "why": "Replacing finance, purchasing and inventory across 42 sites with data migration typically takes 10-12 weeks to select and 30-40 weeks to design, build, test, migrate and roll out, so both plans are short and X's 22-24 week Implementation with no stated basis is not credible, while Y's 28-30 is closer and its tender and training caveats tell the partner what would move it."
+  },
+  "n5": {
+    "X": {"realism": 3, "partner_notes": 3},
+    "Y": {"realism": 2, "partner_notes": 2},
+    "better": "X",
+    "own_estimate_weeks": "8-12",
+    "why": "A digital channels strategy for one bank typically takes 8-12 weeks with the diagnostic and market research run in parallel rather than in sequence, so both plans are padded by sequencing and Y's 5-7 week diagnostic more so, and neither note tells the partner that the missing success criteria and channel scope must be fixed before any length can be quoted."
+  },
+  "n6": {
+    "X": {"realism": 2, "partner_notes": 5},
+    "Y": {"realism": 2, "partner_notes": 3},
+    "better": "X",
+    "own_estimate_weeks": "18-24",
+    "why": "A board-ready integration plan for three companies fits in 6-8 weeks, but moving the first company's sales, purchasing and finance onto Grupo Vale's processes and systems takes another 12-16 weeks and spans the Christmas period, so neither 12-week plan is realistic, and X at least tells the partner the work adds to 17-24 weeks and that go-live before the 29 January board must be confirmed."
+  }
+}

@@ -1,0 +1,516 @@
+{
+ "client": "Metalúrgica Norte",
+ "basis": {
+  "governing_question": "How can Metalúrgica Norte cut conversion cost at its Braga plant and put the improvements in place?",
+  "archetype_id": "performance_improvement"
+ },
+ "total_duration_weeks": {
+  "min": 13,
+  "max": 16
+ },
+ "phases": [
+  {
+   "name": "Diagnostic",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 5,
+   "duration_weeks": {
+    "min": 4,
+    "max": 5
+   },
+   "duration_derived": false,
+   "objective_one_line": "Establish conversion cost per part at the Braga plant and size the improvements that could lower it.",
+   "gate": {
+    "label": "Initiatives go/no-go",
+    "decision": "Which sized initiatives go into implementation at the plant, and which stop here?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length",
+    "timeline",
+    "prior_attempts"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2"
+   ]
+  },
+  {
+   "name": "Implementation",
+   "order": 2,
+   "start_week": 6,
+   "end_week": 16,
+   "duration_weeks": {
+    "min": 9,
+    "max": 11
+   },
+   "duration_derived": false,
+   "objective_one_line": "Put the agreed improvements in place at the plant and show their effect on conversion cost per part.",
+   "gate": {
+    "label": "Final readout",
+    "decision": "Approve the results against the baseline and the handover to the plant team?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length",
+    "deliverable_format",
+    "timeline",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W3",
+    "W4",
+    "W5"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Conversion cost baseline",
+   "answers": "What is conversion cost per part at the Braga plant today, and where does it build up?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_week": 1,
+   "end_week": 3,
+   "follows": [],
+   "activities": [
+    "Calculate conversion cost per part from operational data",
+    "Observe lines on the floor and record where losses occur",
+    "Interview the people who run the lines about cost drivers"
+   ],
+   "deliverable_ids": [
+    "D1",
+    "D2"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Cost improvement sizing",
+   "answers": "Which improvements can lower conversion cost per part by a measurable amount, and what is each worth?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1",
+    "gate:1"
+   ],
+   "start_week": 3,
+   "end_week": 5,
+   "follows": [
+    "W1"
+   ],
+   "activities": [
+    "Identify candidate improvements from the losses found",
+    "Size each improvement's effect on cost per part from data",
+    "Prepare the sized improvement list for the go/no-go decision"
+   ],
+   "deliverable_ids": [
+    "D3"
+   ]
+  },
+  {
+   "id": "W3",
+   "phase_order": 2,
+   "name": "Improvement implementation",
+   "answers": "How are the chosen improvements put in place at the Braga plant, and in what order?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:2",
+    "gate:2"
+   ],
+   "start_week": 6,
+   "end_week": 16,
+   "follows": [],
+   "activities": [
+    "Detail each chosen improvement and set the order of changes",
+    "Prepare the changes with the people who run the lines",
+    "Put the changes into operation after the steering workshop"
+   ],
+   "deliverable_ids": [
+    "D4",
+    "D5"
+   ]
+  },
+  {
+   "id": "W4",
+   "phase_order": 2,
+   "name": "Cost per part tracking",
+   "answers": "Do the improvements keep running, and does cost per part fall against the baseline?",
+   "traces_to": [
+    "success_criteria:1",
+    "success_criteria:2",
+    "gate:2"
+   ],
+   "start_week": 8,
+   "end_week": 16,
+   "follows": [],
+   "activities": [
+    "Set up a tracker of cost per part against the baseline",
+    "Check that each improvement keeps running on the floor",
+    "Compare operational data on cost per part with the baseline"
+   ],
+   "deliverable_ids": [
+    "D6",
+    "D7"
+   ]
+  },
+  {
+   "id": "W5",
+   "phase_order": 2,
+   "name": "Plant team capability",
+   "answers": "Can the Braga plant team run the improvements and keep them going after handover?",
+   "traces_to": [
+    "success_criteria:2",
+    "gate:2"
+   ],
+   "start_week": 11,
+   "end_week": 16,
+   "follows": [
+    "W3"
+   ],
+   "activities": [
+    "Train the plant team on the changed ways of working",
+    "Coach the plant team as they run the changes themselves",
+    "Document who owns each improvement for the handover"
+   ],
+   "deliverable_ids": [
+    "D8",
+    "D9"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "Line loss observations and cost driver findings",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 2,
+   "presented_at": "Check-in: baseline findings"
+  },
+  {
+   "id": "D2",
+   "name": "Conversion cost per part baseline for the Braga plant",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 3,
+   "presented_at": "Check-in: baseline findings"
+  },
+  {
+   "id": "D3",
+   "name": "Sized improvement list with baseline for go/no-go",
+   "kind": "decision_pack",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Initiatives go/no-go"
+  },
+  {
+   "id": "D4",
+   "name": "Improvement detail and change sequence",
+   "kind": "design",
+   "workstream_id": "W3",
+   "phase_order": 2,
+   "due_week": 9,
+   "presented_at": "Workshop: go-live readiness"
+  },
+  {
+   "id": "D5",
+   "name": "Go-live record for each improvement",
+   "kind": "build",
+   "workstream_id": "W3",
+   "phase_order": 2,
+   "due_week": 14,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D6",
+   "name": "Cost per part tracker against the baseline",
+   "kind": "build",
+   "workstream_id": "W4",
+   "phase_order": 2,
+   "due_week": 10,
+   "presented_at": "Workshop: go-live readiness"
+  },
+  {
+   "id": "D7",
+   "name": "Results and handover pack against the baseline",
+   "kind": "decision_pack",
+   "workstream_id": "W4",
+   "phase_order": 2,
+   "due_week": 15,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D8",
+   "name": "Training materials and attendance record",
+   "kind": "enablement",
+   "workstream_id": "W5",
+   "phase_order": 2,
+   "due_week": 14,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D9",
+   "name": "Improvement ownership register for the handover",
+   "kind": "enablement",
+   "workstream_id": "W5",
+   "phase_order": 2,
+   "due_week": 15,
+   "presented_at": "Final readout"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 2,
+  "status_weeks": [
+   7,
+   9,
+   13,
+   15
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Agree access to plant data and people",
+    "attendees": [
+     "COO",
+     "Plant Director"
+    ],
+    "presents": [],
+    "decision": "Will the plant give the team its cost data and access to line staff from week 1?",
+    "agenda": [
+     "Present the Diagnostic objective and the weeks 1 to 5 steps",
+     "Discuss the plant data and line access the evidence work needs",
+     "Confirm who gives the team access to data and people at the plant"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "checkin",
+    "phase_order": 1,
+    "week": 3,
+    "label": "Check-in: baseline findings",
+    "purpose": "Review line losses and the cost baseline",
+    "attendees": [
+     "COO",
+     "Plant Director"
+    ],
+    "presents": [
+     "D1",
+     "D2"
+    ],
+    "decision": "Which cost drivers from the findings should the sizing cover in weeks 4 and 5?",
+    "agenda": [
+     "Review line loss observations and cost driver findings",
+     "Review the conversion cost per part baseline for the Braga plant",
+     "Discuss which cost drivers the sizing should cover next"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 5,
+    "label": "Initiatives go/no-go",
+    "purpose": "Decide which sized initiatives proceed",
+    "attendees": [
+     "COO",
+     "Plant Director"
+    ],
+    "presents": [
+     "D1",
+     "D2",
+     "D3"
+    ],
+    "decision": "Which sized initiatives go into implementation at the plant, and which stop here?",
+    "agenda": [
+     "Present the sized improvement list with baseline for go/no-go",
+     "Review the line loss findings and the cost per part baseline",
+     "Decide which initiatives go into implementation and which stop"
+    ]
+   },
+   {
+    "id": "G4",
+    "type": "workshop",
+    "phase_order": 2,
+    "week": 11,
+    "label": "Workshop: go-live readiness",
+    "purpose": "Review readiness before go-live",
+    "attendees": [
+     "COO",
+     "Plant Director"
+    ],
+    "presents": [
+     "D4",
+     "D6"
+    ],
+    "decision": "Which improvements are ready to go live at the plant, and which wait?",
+    "agenda": [
+     "Review the improvement detail and change sequence for each improvement",
+     "Review the cost per part tracker and how results will be read",
+     "Decide which improvements are ready to go live and which wait"
+    ]
+   },
+   {
+    "id": "G5",
+    "type": "gate",
+    "phase_order": 2,
+    "week": 16,
+    "label": "Final readout",
+    "purpose": "Close out results and plant handover",
+    "attendees": [
+     "COO",
+     "Plant Director"
+    ],
+    "presents": [
+     "D5",
+     "D6",
+     "D7",
+     "D8",
+     "D9"
+    ],
+    "decision": "Approve the results against the baseline and the handover to the plant team?",
+    "agenda": [
+     "Present the results and handover pack against the baseline",
+     "Review the go-live record, training materials and ownership register",
+     "Decide on approval of the results and the handover to the plant team"
+    ]
+   }
+  ]
+ },
+ "deadline": null,
+ "architect_notes": [
+  "Engagement length is not given; the 13 to 16 weeks are an estimate to confirm before this plan becomes a quote.",
+  "Implementation takes the middle of its 8 to 12 week estimate; savings slow to show in the cost data would push it to 12.",
+  "No Measurement phase: tracking against the baseline stays inside Implementation; confirm whether the client wants tracking after the engagement ends."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Diagnostic",
+    "start": 1,
+    "end": 5
+   },
+   {
+    "phase": "Implementation",
+    "start": 6,
+    "end": 16
+   }
+  ]
+ },
+ "sizing": {
+  "length_basis": "estimated",
+  "sub_questions": [
+   {
+    "id": "Q1",
+    "question": "What is conversion cost per part at the Braga plant today, and where does it build up?",
+    "phase_order": 1
+   },
+   {
+    "id": "Q2",
+    "question": "Which improvements can lower conversion cost per part by a measurable amount, and how much is each worth?",
+    "phase_order": 1
+   },
+   {
+    "id": "Q3",
+    "question": "How are the chosen improvements put in place at the plant, and in what order?",
+    "phase_order": 2
+   },
+   {
+    "id": "Q4",
+    "question": "Do the improvements keep running at the plant, and does cost per part fall against the baseline?",
+    "phase_order": 2
+   }
+  ],
+  "drivers": [
+   {
+    "key": "sites",
+    "value": 1,
+    "source": "brief",
+    "evidence": "its plant in Braga"
+   }
+  ],
+  "phases": [
+   {
+    "order": 1,
+    "name": "Diagnostic",
+    "planned_weeks": {
+     "min": 4,
+     "max": 5
+    },
+    "estimate": {
+     "min": 4,
+     "max": 5
+    },
+    "archetype_weeks": {
+     "min": 3,
+     "max": 6
+    },
+    "fixed_weeks": 2,
+    "work": [
+     {
+      "unit": "Site diagnosed on the floor (cost baseline, line observation, loss analysis)",
+      "from_library": true,
+      "driver": "sites",
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 2,
+       "max": 3
+      }
+     }
+    ],
+    "why": "One plant, so one site diagnosed on the floor; interviews run alongside. Estimate sits inside the archetype's typical 3 to 6 weeks."
+   },
+   {
+    "order": 2,
+    "name": "Implementation",
+    "planned_weeks": {
+     "min": 9,
+     "max": 11
+    },
+    "estimate": {
+     "min": 8,
+     "max": 12
+    },
+    "archetype_weeks": {
+     "min": 8,
+     "max": 16
+    },
+    "fixed_weeks": 0,
+    "work": [
+     {
+      "unit": "Pilot site: changes made and savings shown in the cost data",
+      "from_library": true,
+      "driver": null,
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 8,
+       "max": 12
+      }
+     }
+    ],
+    "why": "The single plant is the pilot site; no rollout wave is needed. Estimate sits inside the archetype's typical 8 to 16 weeks."
+   }
+  ],
+  "estimate_total": {
+   "min": 12,
+   "max": 17
+  },
+  "planned_total": {
+   "min": 13,
+   "max": 16
+  },
+  "levers": "Carry only the largest sized improvements into Implementation, which holds most of the weeks; running changes side by side would also shorten it."
+ }
+}

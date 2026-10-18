@@ -1,0 +1,54 @@
+{
+  "deliverables": [
+    {
+      "id": "D1",
+      "workstream_id": "W1",
+      "name": "Claims baseline: structure, roles, handoffs, workload, cost",
+      "kind": "analysis",
+      "due_week_in_phase": 3
+    },
+    {
+      "id": "D2",
+      "workstream_id": "W2",
+      "name": "Leadership needs and committee approval requirements",
+      "kind": "analysis",
+      "due_week_in_phase": 3
+    },
+    {
+      "id": "D3",
+      "workstream_id": "W3",
+      "name": "Design scope proposal: problem areas and design criteria",
+      "kind": "decision_pack",
+      "due_week_in_phase": 4
+    },
+    {
+      "id": "D4",
+      "workstream_id": "W4",
+      "name": "Claims organization options compared to design criteria",
+      "kind": "design",
+      "due_week_in_phase": 4
+    },
+    {
+      "id": "D5",
+      "workstream_id": "W5",
+      "name": "Detailed design of the target claims organization",
+      "kind": "design",
+      "due_week_in_phase": 9
+    },
+    {
+      "id": "D6",
+      "workstream_id": "W6",
+      "name": "Transition roadmap and change plan for claims teams",
+      "kind": "design",
+      "due_week_in_phase": 12
+    },
+    {
+      "id": "D7",
+      "workstream_id": "W7",
+      "name": "Executive committee pre-read on the target organization",
+      "kind": "decision_pack",
+      "due_week_in_phase": 14
+    }
+  ],
+  "notes": []
+}

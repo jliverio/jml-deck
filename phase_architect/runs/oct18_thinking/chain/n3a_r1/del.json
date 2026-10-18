@@ -1,0 +1,54 @@
+{
+  "deliverables": [
+    {
+      "id": "D1",
+      "workstream_id": "W1",
+      "name": "Baseline of claims structure, roles and handoffs today",
+      "kind": "analysis",
+      "due_week_in_phase": 3
+    },
+    {
+      "id": "D2",
+      "workstream_id": "W2",
+      "name": "Interview synthesis of what claims must fix and keep",
+      "kind": "analysis",
+      "due_week_in_phase": 3
+    },
+    {
+      "id": "D3",
+      "workstream_id": "W3",
+      "name": "Problem areas and design criteria for the Design phase",
+      "kind": "decision_pack",
+      "due_week_in_phase": 4
+    },
+    {
+      "id": "D4",
+      "workstream_id": "W4",
+      "name": "Claims organization options compared with design criteria",
+      "kind": "design",
+      "due_week_in_phase": 3
+    },
+    {
+      "id": "D5",
+      "workstream_id": "W5",
+      "name": "Detailed design of the target claims organization",
+      "kind": "design",
+      "due_week_in_phase": 7
+    },
+    {
+      "id": "D6",
+      "workstream_id": "W6",
+      "name": "Transition roadmap and change plan for claims",
+      "kind": "design",
+      "due_week_in_phase": 10
+    },
+    {
+      "id": "D7",
+      "workstream_id": "W7",
+      "name": "Executive committee pack for target claims organization",
+      "kind": "decision_pack",
+      "due_week_in_phase": 11
+    }
+  ],
+  "notes": []
+}

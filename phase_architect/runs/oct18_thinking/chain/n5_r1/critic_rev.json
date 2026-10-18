@@ -1,0 +1,40 @@
+{
+  "X": {
+    "scores": {
+      "structure": 3,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3,
+      "sizing": 2
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "Every stream runs in strict sequence, so the peer benchmark W6, which uses only public information, waits until weeks 12-13 instead of running alongside W4-W5; this stretches an assessment with no stated length to the 22-week top of the plan's own 16-22 range.",
+      "W11 squeezes the leadership walkthrough, the revisions and the final-readout preparation into week 22, the same week as the Final readout gate, so D11 is due the week of the meeting and there is no time to work in the CEO's and Head of Digital's comments.",
+      "W9 and D9 compare options only on fit with customer needs and leadership expectations, leaving out cost, effort and the bank's ability to deliver, so the week-19 workshop picks an option without knowing what it would take.",
+      "W5 asks W4's question again for a single segment, so it splits one customer-needs stream rather than answering a distinct question.",
+      "The CEO attends all seven steering meetings, including the week-4 and week-11 check-ins whose decisions (expectation weighting, benchmark focus) belong with the Head of Digital, and the week-7 and week-14 gates review D1, D4 and D5 again after those check-ins already covered them."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 3,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3,
+      "sizing": 2
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "Every stream runs in strict sequence, so the peer benchmark W6, which uses only public information, waits until weeks 12-13 instead of running alongside W4-W5; this stretches an assessment with no stated length to the 22-week top of the plan's own 16-22 range.",
+      "W10 gives the main output of the engagement, the strategy and roadmap, a single week (week 20) while W9's option comparison gets three; the partner note admits this is below the sized two to three weeks but does not fix it, for example by moving the options workshop to week 18.",
+      "D11, the strategy and roadmap 'for approval', is due in week 21, while W11 is still collecting the CEO's and Head of Digital's comments and revising through week 22, so the approval pack comes before the revisions it should contain.",
+      "W5 asks W4's question again for a single segment, so it splits one customer-needs stream rather than answering a distinct question.",
+      "The CEO attends all seven steering meetings, including the week-4 and week-11 check-ins whose decisions belong with the Head of Digital, the week-7 and week-14 gates review D1, D4 and D5 again after earlier meetings covered them, and the partner note refers to a 'G6 workshop' label that appears nowhere in the plan."
+    ]
+  },
+  "better": "Y",
+  "why": "Y is slightly better: it compares options on cost, effort and delivery capability rather than fit alone, asks a sharper access decision at kickoff, and has the approval pack ready a week before the readout instead of in the readout week. Both rest on the same padded, fully sequential 22-week plan, and Y's one-week strategy drafting is a real squeeze, but the note flags it and two weeks of leadership review follow it, whereas X never mentions that it fits review, revision and approval into a single week."
+}

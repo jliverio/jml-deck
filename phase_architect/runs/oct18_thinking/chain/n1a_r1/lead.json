@@ -1,0 +1,147 @@
+{
+  "basis": {
+    "governing_question": "Should Quinta Azul enter the Spanish retail market and, if so, how?",
+    "archetype_id": "market_entry_assessment"
+  },
+  "sizing": {
+    "length_basis": "estimated",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "How large and attractive is the Spanish retail market for Quinta Azul's olive oil?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "Who competes there, and what do Spanish retail buyers and shoppers need?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q3",
+        "question": "Does Quinta Azul have the assets and capabilities to win in Spain?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q4",
+        "question": "Which entry options exist for Spain, and does the business case support a go or no-go?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q5",
+        "question": "If the answer is go, what entry plan and roadmap should Quinta Azul follow?",
+        "phase_order": 2
+      }
+    ],
+    "drivers": [
+      {
+        "key": "markets",
+        "value": 1,
+        "source": "brief",
+        "evidence": "the Spanish retail market"
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Market assessed in full (demand, channels, competitors, regulation, buyer interviews)",
+            "from_library": true,
+            "driver": "markets",
+            "count": 1,
+            "weeks_each": {
+              "min": 2,
+              "max": 3
+            },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": {
+          "min": 4,
+          "max": 5
+        },
+        "why": "Spain is assessed as one market in full; the capability check and leadership interviews run alongside it."
+      },
+      {
+        "phase_order": 2,
+        "work": [
+          {
+            "unit": "Entry option and business case for one market",
+            "from_library": true,
+            "driver": "markets",
+            "count": 1,
+            "weeks_each": {
+              "min": 1,
+              "max": 2
+            },
+            "at_once": 1
+          },
+          {
+            "unit": "Entry sequence and roadmap across markets",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": {
+              "min": 1,
+              "max": 2
+            },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 1,
+        "estimate": {
+          "min": 3,
+          "max": 5
+        },
+        "why": "The entry option and business case for Spain come first, then the entry roadmap, one after the other."
+      }
+    ],
+    "levers": "Assessing only the retail channels the CEO and Commercial Director prioritize, and starting the roadmap alongside the business case, would shorten the engagement most."
+  },
+  "phases": [
+    {
+      "name": "Research",
+      "order": 1,
+      "duration_weeks": {
+        "min": 4,
+        "max": 5
+      },
+      "duration_derived": false,
+      "objective_one_line": "Assess the size, competition and buyer needs of the Spanish retail market and Quinta Azul's capability to win there.",
+      "gate": {
+        "label": "Findings sign-off",
+        "decision": "Is Spain attractive enough to justify designing entry options?"
+      },
+      "depends_on_assumptions": [
+        "engagement_length",
+        "timeline",
+        "prior_attempts"
+      ]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": {
+        "min": 3,
+        "max": 5
+      },
+      "duration_derived": false,
+      "objective_one_line": "Compare entry options for Spain, build the business case and draft the entry roadmap for the go or no-go.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the Spain go or no-go decision and, if go, the entry plan?"
+      },
+      "depends_on_assumptions": [
+        "engagement_length",
+        "deliverable_format",
+        "timeline",
+        "out_of_scope"
+      ]
+    }
+  ],
+  "architect_notes": [
+    "Engagement length is not given, so the 7 to 10 weeks are an estimate from the sizing; confirm length and any deadline before quoting.",
+    "Design is sized for a go outcome; a no-go would drop the entry roadmap and shorten the phase."
+  ]
+}

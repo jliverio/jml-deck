@@ -1,0 +1,95 @@
+{
+ "brief": {
+  "hard_fields": {
+   "client": {
+    "value": "Quinta Azul, a Portuguese olive-oil producer",
+    "source": "stated",
+    "quote": "Quinta Azul, a Portuguese olive-oil producer",
+    "assumption_text": null
+   },
+   "problem_statement": {
+    "value": "Quinta Azul wants to know whether to enter the Spanish retail market and, if so, how.",
+    "source": "stated",
+    "quote": "Quinta Azul wants to know whether to enter the Spanish retail market and, if so, how.",
+    "assumption_text": null
+   }
+  },
+  "required": {
+   "engagement_type": {
+    "value": "assessment",
+    "source": "stated",
+    "quote": "assessment",
+    "assumption_text": null
+   },
+   "engagement_length": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": "Not given; the Phase Architect estimates the duration.",
+    "weeks_min": null,
+    "weeks_max": null,
+    "duration_derived": false
+   },
+   "stakeholders": {
+    "value": [
+     "CEO",
+     "Commercial Director"
+    ],
+    "source": "stated",
+    "quote": null,
+    "assumption_text": null
+   }
+  },
+  "soft_fields": {
+   "deliverable_format": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "timeline": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "prior_attempts": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "success_criteria": {
+    "value": "A go or no-go decision on Spain; an entry plan if the answer is go",
+    "source": "stated",
+    "quote": "A go or no-go decision on Spain; an entry plan if the answer is go",
+    "assumption_text": null
+   },
+   "out_of_scope": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "workstreams": {
+    "value": null,
+    "count": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   }
+  }
+ },
+ "success_criteria_list": [
+  "A go or no-go decision on Spain",
+  "an entry plan if the answer is go"
+ ],
+ "profile": {
+  "problem_focus": "topic",
+  "topic": "Entering Spanish grocery retail",
+  "current_state": "Sells in Portugal through 3 supermarket chains; exports only to Brazil.",
+  "market": "Spanish grocery retail"
+ },
+ "market_findings": [],
+ "weeks_available": null
+}

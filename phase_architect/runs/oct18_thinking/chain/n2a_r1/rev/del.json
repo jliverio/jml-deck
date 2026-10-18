@@ -1,0 +1,96 @@
+{
+  "deliverables": [
+    {
+      "id": "D1",
+      "workstream_id": "W1",
+      "name": "Conversion cost per part baseline for the Braga plant",
+      "kind": "analysis",
+      "due_week_in_phase": 1
+    },
+    {
+      "id": "D2",
+      "workstream_id": "W2",
+      "name": "Line loss findings from the first lines observed",
+      "kind": "analysis",
+      "due_week_in_phase": 3
+    },
+    {
+      "id": "D3",
+      "workstream_id": "W2",
+      "name": "Line loss analysis by production line and loss type",
+      "kind": "analysis",
+      "due_week_in_phase": 5
+    },
+    {
+      "id": "D4",
+      "workstream_id": "W3",
+      "name": "Sized improvement pack for the go/no-go decision",
+      "kind": "decision_pack",
+      "due_week_in_phase": 6
+    },
+    {
+      "id": "D5",
+      "workstream_id": "W4",
+      "name": "Go-live readiness pack for each improvement",
+      "kind": "design",
+      "due_week_in_phase": 3
+    },
+    {
+      "id": "D6",
+      "workstream_id": "W4",
+      "name": "First-wave go-live record",
+      "kind": "build",
+      "due_week_in_phase": 6
+    },
+    {
+      "id": "D7",
+      "workstream_id": "W4",
+      "name": "Go-live record for each improvement",
+      "kind": "build",
+      "due_week_in_phase": 7
+    },
+    {
+      "id": "D8",
+      "workstream_id": "W5",
+      "name": "Cost-per-part tracker against the baseline",
+      "kind": "build",
+      "due_week_in_phase": 4
+    },
+    {
+      "id": "D9",
+      "workstream_id": "W5",
+      "name": "Cost per part results after the first go-lives",
+      "kind": "analysis",
+      "due_week_in_phase": 7
+    },
+    {
+      "id": "D10",
+      "workstream_id": "W5",
+      "name": "Final readout pack: results against baseline and handover",
+      "kind": "decision_pack",
+      "due_week_in_phase": 11
+    },
+    {
+      "id": "D11",
+      "workstream_id": "W6",
+      "name": "Plant team ownership definition",
+      "kind": "enablement",
+      "due_week_in_phase": 8
+    },
+    {
+      "id": "D12",
+      "workstream_id": "W6",
+      "name": "Plant team training record and tracker handover",
+      "kind": "enablement",
+      "due_week_in_phase": 12
+    },
+    {
+      "id": "D13",
+      "workstream_id": "W7",
+      "name": "Improvements-in-operation check and slippage log",
+      "kind": "analysis",
+      "due_week_in_phase": 11
+    }
+  ],
+  "notes": []
+}

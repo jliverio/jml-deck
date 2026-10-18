@@ -1,0 +1,117 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Current-state mapping",
+      "question_id": "Q1",
+      "answers": "How is the claims department organized today, in structure, roles and handoffs?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "activities": [
+        "Walk through claims processes and handoffs with the teams",
+        "Interview the people who do the claims work in each role",
+        "Collect operational data on claims workload and cost"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Leadership needs",
+      "question_id": "Q2",
+      "answers": "What do the COO and Head of Claims need the new organization to fix and keep?",
+      "traces_to": ["problem_statement", "success_criteria:1", "gate:1"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "activities": [
+        "Ask the COO and Head of Claims what to fix and keep",
+        "Establish with the COO how the executive committee decides",
+        "Identify the evidence the committee needs to approve"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Problem areas and criteria",
+      "question_id": "Q2",
+      "answers": "Which problem areas and design criteria should the Design phase take forward?",
+      "traces_to": ["gate:1"],
+      "start_offset": 3,
+      "duration": 2,
+      "follows": ["W1", "W2"],
+      "activities": [
+        "Rank problem areas from the mapping and interviews",
+        "Draft design criteria with the COO and Head of Claims",
+        "Prepare the Design scope proposal for the gate"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 2,
+      "name": "Claims organization options",
+      "question_id": "Q3",
+      "answers": "Which options for claims structure, roles and handoffs should be compared, and against which criteria?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 5,
+      "follows": [],
+      "activities": [
+        "Develop options for claims structure, roles and handoffs",
+        "Compare the options against the agreed design criteria",
+        "Prepare the options for choice at the design workshop"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 2,
+      "name": "Target organization design",
+      "question_id": "Q4",
+      "answers": "What does the chosen target organization look like in structure, roles, handoffs and governance?",
+      "traces_to": ["problem_statement", "gate:2"],
+      "start_offset": 5,
+      "duration": 5,
+      "follows": ["W4"],
+      "activities": [
+        "Detail the chosen option's structure, roles and governance",
+        "Design handoffs between claims roles and teams",
+        "Detail each unit's design with its leaders in two rounds"
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 2,
+      "name": "Transition plan",
+      "question_id": "Q5",
+      "answers": "What transition does the target organization need?",
+      "traces_to": ["gate:2"],
+      "start_offset": 10,
+      "duration": 2,
+      "follows": ["W5"],
+      "activities": [
+        "Sequence the steps to reach the target organization",
+        "List the role, handoff and governance changes by team",
+        "Plan the change support the claims teams will need"
+      ]
+    },
+    {
+      "id": "W7",
+      "phase_order": 2,
+      "name": "Executive approval",
+      "question_id": "Q5",
+      "answers": "What must the executive committee see to approve the target claims organization?",
+      "traces_to": ["success_criteria:1", "gate:2"],
+      "start_offset": 12,
+      "duration": 3,
+      "follows": ["W5", "W6"],
+      "activities": [
+        "Run the client review and sign-off cycle on the design",
+        "Build the pre-read on the evidence the committee asked for",
+        "Take the target organization to the executive committee"
+      ]
+    }
+  ],
+  "notes": []
+}
