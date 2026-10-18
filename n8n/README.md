@@ -16,6 +16,10 @@ and tested here first.
 | prompts/01_brief_schema.json | Brief schema |
 | code/validate_brief.js | Validate brief |
 | code/architect_input.js | Architect input |
+| code/prepare_context.js | Prepare context (template 1.4) |
+| prompts/09_context_writer.txt | Context Writer (system message) |
+| prompts/09_context_writer_schema.json | Context schema |
+| code/check_context.js | Check context |
 | code/validate_plan.js | Validate plan (generated from phase_architect/validate_plan_v2.js by `python3 phase_architect/build_n8n_validator.py`) |
 | ../phase_architect/prompt_v2.md | Phase Architect (system message) |
 | ../phase_architect/schema_v2.json | Phases schema |
@@ -111,26 +115,29 @@ deck is pinned without a file). Results on 16 Oct 2026:
 
 ## Template 1.4 (Scenario 1, October 17, 2026): in the workflow draft, not published
 
-Three slides added to the 13 of template 1.3 (16 in all):
+Two slides added to the 13 of template 1.3 (15 in all). A third, "The question this proposal
+answers" (governing question plus success criteria), was built on Oct 17 and removed on Oct 18
+at José's decision: the summary slide already carries the objectives, solution and outcomes.
+The Context Writer no longer writes criteria.
 
 - Situation (after the Context divider): written by the Context Writer from the cited
   market findings only, and only when at least three passed Assemble market's citation
   gate. Check context drops any line whose figure the findings do not hold, and the
   "We believe" line if it holds a figure. Empty title -> the renderer drops the slide
   (`if_empty: drop_slide`).
-- The question this proposal answers (after the findings): the Phase Architect's
-  governing question, plus up to four success criteria. Stated in the email -> "As stated
-  in your request" and every figure kept; not stated -> "Our reading of your request, to
-  confirm at kick-off" and no figures allowed.
 - Approach overview (first Approach slide): drawn by workplan.py from the plan (phases,
   what each answers, the decision that closes each, a governance strip). No model writes it.
 
 Sections become Executive Summary, Context, Approach, Next Steps (set in Assemble drafts,
-not in the shared table, so the published 1.3 workflow is unchanged). The 11 new rows are
-in the `template_variables` data table; 1.3 renders only warn that they are unused.
+not in the shared table, so the published 1.3 workflow is unchanged). The 5 situation rows
+are in the `template_variables` data table; 1.3 renders only warn that they are unused. Rows
+56-61 of that table (key_question_01, criteria_basis_01, criterion_01-04) belong to the removed
+slide; the n8n tools here cannot delete rows, so they stay until deleted by hand, and 1.4
+renders warn "6 table rows have no variable".
 
-Tests: `python3 tests/test_varfill.py` (54 checks, 1.4 included);
+Tests: `python3 tests/test_varfill.py` (51 checks, 1.4 included);
 `node n8n/tests/context_test.js <nodes.json> <plan.json> <writer.json> <name>` replays a
 Context Writer answer through Prepare context, Check context and Assemble drafts;
 `node n8n/tests/make_pins.js s1` builds the pin data for the in-n8n wiring test
-(execution 623: all new nodes ran, payload rendered locally to 16 slides).
+(execution 623: all new nodes ran, payload rendered locally to 16 slides, before the
+key-question slide was removed).

@@ -6,7 +6,7 @@ POST /render   header X-API-Key: <secret>
     {"values": {variable: text}, "rules": [table rows], "meta": {"filename": "..."},
      "workplan": compiled Phase Architect plan (optional; draws the timeline, deliverables, steering slides),
      "template": "1.1", "1.2" (default), "1.3" (1.2 + Approach section and work-plan slides)
-               or "1.4" (1.3 + situation, key question, approach overview)}
+               or "1.4" (1.3 + situation slide, approach overview)}
     -> 200 .pptx, header X-Render-Warnings (JSON list, may be empty)
     -> 422 {"error": ...} when the template, the table and the values disagree
   Legacy payload ({"cover": ..., "context": ...}) -> previous renderer.

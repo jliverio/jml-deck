@@ -64,8 +64,6 @@ if (mode === 's1') {
   items.push({ variable: 'situation_title_01', text: o.situation_title });
   o.situation.forEach((t, i) => items.push({ variable: `situation_0${i + 1}`, text: t }));
   items.push({ variable: 'belief_01', text: o.belief });
-  o.criteria.forEach((t, i) => items.push({ variable: `criterion_0${i + 1}`, text: t }));
-  items.push({ variable: 'key_question_01', text: plan.basis.governing_question });
 }
 const w = j => [{ json: j }];
 const pins = {

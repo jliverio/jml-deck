@@ -26,12 +26,7 @@
   "situation_01": "Spanish contractors moved more of their steel purchasing online in 2024, and Hierros García opened a marketplace in March 2025.",
   "situation_02": "Hierros García reported 1,200 registered contractors by June 2025, while Ferro Norte paused its pilot after distributors objected.",
   "situation_03": "For MetalCo, the window to enter is open, but a channel that bypasses distributors would likely meet the same resistance.",
-  "belief_01": "We believe MetalCo can win online if it moves early and gives distributors a role in the marketplace.",
-  "key_question_01": "How can MetalCo create a foothold in the digital space through a marketplace without major cannibalization or short-term loss?",
-  "criteria_basis_01": "Our reading of your request, to confirm at kick-off",
-  "criterion_01": "Launch a marketplace that contractors use to buy construction materials",
-  "criterion_02": "Keep distributor margins intact while the online channel grows",
-  "criterion_03": "Decide on the pilot with evidence from real users"
+  "belief_01": "We believe MetalCo can win online if it moves early and gives distributors a role in the marketplace."
  },
  "rules": [
   {
@@ -308,36 +303,6 @@
    "variable": "belief_01",
    "max_chars": 140,
    "if_empty": "clear"
-  },
-  {
-   "variable": "key_question_01",
-   "max_chars": 200,
-   "if_empty": "drop_slide"
-  },
-  {
-   "variable": "criteria_basis_01",
-   "max_chars": 70,
-   "if_empty": "clear"
-  },
-  {
-   "variable": "criterion_01",
-   "max_chars": 110,
-   "if_empty": "hide_line"
-  },
-  {
-   "variable": "criterion_02",
-   "max_chars": 110,
-   "if_empty": "hide_line"
-  },
-  {
-   "variable": "criterion_03",
-   "max_chars": 110,
-   "if_empty": "hide_line"
-  },
-  {
-   "variable": "criterion_04",
-   "max_chars": 110,
-   "if_empty": "hide_line"
   }
  ],
  "workplan": {

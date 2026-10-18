@@ -9,14 +9,10 @@ What 1.4 adds to 1.3 (Scenario 1 of the October 16 plan):
    situation_01..03 (where the market stands, what is changing, what it means
    for the client) and belief_01 ("We believe ..."). Written from the cited
    market findings only. situation_title_01 is drop_slide: no situation, no slide.
-2. Key-question slide, after the market findings. key_question_01 is the Phase
-   Architect's governing question (drop_slide without a plan); criteria_basis_01
-   says whether the criteria were stated by the client or are our reading;
-   criterion_01..04 are the criteria.
-3. Approach overview, first slide of the Approach section. Named, not filled:
+2. Approach overview, first slide of the Approach section. Named, not filled:
    its title placeholder is called workplan:roadmap and workplan.py draws the
    phases, the decisions that close them and a governance strip from the plan.
-4. The market findings slide gets a fixed title ("Market research findings"):
+3. The market findings slide gets a fixed title ("Market research findings"):
    in 1.4 section_02 is "Context", so the section name no longer works as its title.
 
 Section names are sent by the workflow (section_01 Executive Summary,
@@ -24,8 +20,12 @@ section_02 Context, section_04 Approach, section_03 Next Steps); the template
 is unchanged there.
 
 Slide order in 1.4: cover, agenda, 1 divider, summary, 2 divider, situation,
-market findings, key question, 3 divider, approach overview, timeline,
-deliverables, steering meetings, 4 divider, next steps, back cover (16).
+market findings, 3 divider, approach overview, timeline, deliverables,
+steering meetings, 4 divider, next steps, back cover (15).
+
+The key-question slide (governing question plus "What a good answer must
+achieve") was built on Oct 17 and removed on Oct 18 at José's decision: the
+summary slide already carries the objectives, solution and outcomes.
 """
 import copy
 import io
@@ -147,46 +147,6 @@ def situation_slide(prs, summary):
     return s
 
 
-def key_question_slide(prs, summary):
-    s = duplicate_slide(prs, summary)
-    title(s, "The question this proposal answers")
-    tracker(s, "section_02")
-    drop(s, ["Google Shape;879;p247", "Google Shape;880;p247", "Google Shape;882;p247", "Google Shape;883;p247",
-             "Google Shape;885;p247", "Google Shape;886;p247", "Google Shape;887;p247",
-             "Google Shape;889;p247", "Google Shape;890;p247", "Google Shape;891;p247"])
-    width = RIGHT - L
-    q = by_name(s, "Google Shape;878;p247")       # accent box: the question
-    set_text(q, "key_question_01")
-    q.text_frame.paragraphs[0].runs[0].font.size = Pt(22)
-    place(q, L, TOP, width, 1371600)               # 1.5 in
-    q.text_frame.margin_left = q.text_frame.margin_right = Emu(228600)
-    head = clone(s, q)
-    set_text(head, "What a good answer must achieve")
-    head.text_frame.paragraphs[0].runs[0].font.size = Pt(16)
-    place(head, L, TOP + 1371600 + 320040, width, 408038)
-    from pptx.dml.color import RGBColor
-    head.fill.solid()
-    head.fill.fore_color.rgb = RGBColor(0x05, 0x1C, 0x2C)
-    body = by_name(s, "Google Shape;881;p247")
-    set_paragraphs(body, ["criteria_basis_01", "criterion_01", "criterion_02", "criterion_03", "criterion_04"])
-    place(body, L, TOP + 1371600 + 320040 + 408038 + 45720, width, 2011680)
-    basis = body.text_frame.paragraphs[0]
-    pPr = basis._p.get_or_add_pPr()
-    from pptx.oxml.ns import qn
-    from lxml import etree
-    pPr.set("marL", "0"); pPr.set("indent", "0")
-    for tag in ("a:buChar", "a:buAutoNum", "a:buFont", "a:buClr", "a:buSzPct"):
-        for el in pPr.findall(qn(tag)):
-            pPr.remove(el)
-    etree.SubElement(pPr, qn("a:buNone"))
-    basis.runs[0].font.italic = True
-    basis.runs[0].font.size = Pt(12)
-    basis.runs[0].font.color.rgb = RGBColor(0x59, 0x59, 0x59)
-    for p in body.text_frame.paragraphs[1:]:
-        p.space_after = Pt(10)
-    return s
-
-
 def main():
     prs = varfill._load_template(SRC)
     slides = list(prs.slides)
@@ -202,12 +162,11 @@ def main():
     title(market, "Market research findings")
 
     situation = situation_slide(prs, summary)
-    keyq = key_question_slide(prs, summary)
     roadmap = add_workplan_slide(prs, timeline.slide_layout, "workplan:roadmap",
                                  "Approach overview: phases and decisions (drawn from the Phase Architect plan)",
                                  "Approach overview")
 
-    order = [cover, agenda, div1, summary, div2, situation, market, keyq, div3, roadmap,
+    order = [cover, agenda, div1, summary, div2, situation, market, div3, roadmap,
              timeline, deliverables, steering, div4, next_steps, back]
     lst = prs.slides._sldIdLst
     ids = list(lst)

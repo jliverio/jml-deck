@@ -43,12 +43,12 @@ TEMPLATES = {
     "1.1": os.path.join(HERE, "template_v1_1.potx"),
     "1.2": TEMPLATE,                                     # 1.1 + slide 4 summary variables
     "1.3": os.path.join(HERE, "template_v1_3.potx"),     # 1.2 + Approach section and work-plan slides
-    "1.4": os.path.join(HERE, "template_v1_4.potx"),     # 1.3 + situation, key question, approach overview
+    "1.4": os.path.join(HERE, "template_v1_4.potx"),     # 1.3 + situation slide, approach overview
 }
 FIRM_TODO = "[Firm to complete]"
 TOKEN = re.compile(r"(?<![A-Za-z0-9_])[a-z0-9]+(?:_[a-z0-9]+)+(?![A-Za-z0-9_])")
 # drop_slide: when the variable is empty, the whole slide it sits on is removed
-# (template 1.4: the situation slide without enough cited findings, the key-question slide without a plan).
+# (template 1.4: the situation slide without enough cited findings).
 POLICIES = {"remove_row", "hide_line", "clear", "firm_todo", "drop_slide"}
 
 # Offline defaults (the live values come from the n8n table).
@@ -70,9 +70,6 @@ DEFAULT_RULES = [
     (r"situation_title_\d+", 90, "drop_slide"),
     (r"situation_\d+", 150, "hide_line"),
     (r"belief_\d+", 140, "clear"),
-    (r"key_question_\d+", 200, "drop_slide"),
-    (r"criteria_basis_\d+", 70, "clear"),
-    (r"criterion_\d+", 110, "hide_line"),
 ]
 
 

@@ -140,7 +140,7 @@ for n in range(1, 7):
         "Verb first, one action per step. Add who and when if known.",
         "remove_row", steps[n - 1] if n <= 3 else "")
 
-# Template 1.4 (Scenario 1, Oct 17): situation slide and key-question slide.
+# Template 1.4 (Scenario 1, Oct 17): situation slide.
 # The situation is written by the Context Writer from the cited findings only; drop_slide removes the
 # slide when it is empty (fewer than three cited findings, or the writer's text failed the checks).
 add("situation_title_01", 90, "estimated", "context_writer:situation_title",
@@ -157,17 +157,8 @@ for n in range(1, 4):
 add("belief_01", 140, "estimated", "context_writer:belief",
     "One sentence starting \"We believe\": the point of view the proposal acts on. No figures.",
     "clear", "We believe a direct channel can win small buyers if it is designed with distributors, not against them.")
-add("key_question_01", 200, "estimated", "phase_architect:governing_question",
-    "The Phase Architect's governing question, kept as one question ending in a question mark.",
-    "drop_slide")
-add("criteria_basis_01", 70, "fixed", "code:criteria_basis",
-    "Set by code: \"As stated in your request\" or \"Our reading of your request, to confirm at kick-off\".",
-    "clear")
-for n in range(1, 5):
-    add(f"criterion_{n:02d}", 110, "estimated", "context_writer:criteria",
-        "Verb first, about the client: one thing a good answer must achieve. Stated criteria keep "
-        "every figure; criteria we read from the request hold no figure.",
-        "hide_line")
+# The key-question slide (key_question_01, criteria_basis_01, criterion_01..04) was removed on Oct 18:
+# the summary slide already carries the objectives, solution and outcomes.
 
 if __name__ == "__main__":
     json.dump(rows, open(os.path.join(HERE, "template_variables.json"), "w"),

@@ -43,11 +43,13 @@ const drafts = run("assemble_drafts.js", { nodes, json: { output: plan } });
 const items = Object.fromEntries(drafts.items.map(i => [i.variable, i]));
 check("template 1.4", drafts.template === "1.4");
 check("sections renamed", drafts.values.section_01 === "Executive Summary" && drafts.values.section_02 === "Context" && drafts.values.section_04 === "Approach");
-check("key question drafted from the plan", items.key_question_01 && items.key_question_01.draft === plan.basis.governing_question);
-check("criteria basis set by code", typeof drafts.values.criteria_basis_01 === "string");
+check("no key question or criteria drafted (slide removed Oct 18)",
+  !Object.keys(items).some(v => /^(key_question|criterion|criteria_basis)_/.test(v)) && !("criteria_basis_01" in drafts.values));
+check("check: no criteria in the result", !("criteria" in ctx.context_result) && !("criteria_basis" in ctx.context_result));
+check("prepare: no stated_criteria sent to the writer", !("stated_criteria" in prep.context_input) && !("criterion" in prep.context_input.limits));
 fs.mkdirSync(path.join(__dirname, "out"), { recursive: true });
 fs.writeFileSync(path.join(__dirname, "out", `ctx_${name}.json`), JSON.stringify({ prepare: prep.context_input, check: ctx.context_result, drafts }, null, 1));
 for (const r of results) console.log((r.ok ? "PASS " : "FAIL ") + r.n + (r.ok || !r.d ? "" : "  " + JSON.stringify(r.d)));
-console.log("situation:", JSON.stringify(ctx.context_result.situation_title), ctx.context_result.situation.length, "lines; criteria:", ctx.context_result.criteria.length, "|", ctx.context_result.criteria_basis);
+console.log("situation:", JSON.stringify(ctx.context_result.situation_title), ctx.context_result.situation.length, "lines");
 console.log("warnings:", JSON.stringify(ctx.context_result.warnings));
 process.exitCode = results.every(r => r.ok) ? 0 : 1;

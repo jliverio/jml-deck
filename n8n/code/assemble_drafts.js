@@ -28,8 +28,8 @@ const values = {};
 const drafts = {};
 const warnings = [];
 // Template 1.3 (= 1.2 + Approach section) names section_04 Approach, shown third on the agenda,
-// and holds the work-plan slides. Template 1.4 (Scenario 1, Oct 17) adds the situation, key-question and
-// approach-overview slides and renames the first two sections. Payloads without `template` render on 1.2.
+// and holds the work-plan slides. Template 1.4 (Scenario 1, Oct 17) adds the situation and
+// approach-overview slides and renames the first two sections (its key-question slide was removed Oct 18). Payloads without `template` render on 1.2.
 const TEMPLATE_VERSION = '1.4';
 
 // 1. Fixed text.
@@ -172,8 +172,8 @@ if (plan) {
   warnings.push('No phase plan reached the deck: the work-plan slides say [Firm to complete].' + why);
 }
 
-// 5b. Template 1.4: situation slide and key-question slide (Check context ran before the Phase Architect).
-//     Every text goes through the Copywriter to fit its box; criteria_basis_01 is fixed by code.
+// 5b. Template 1.4: situation slide (Check context ran before the Phase Architect).
+//     Every text goes through the Copywriter to fit its box.
 if (TEMPLATE_VERSION === '1.4') {
   let ctx = null;
   try { ctx = $('Check context').first().json.context_result || null; } catch (e) { ctx = null; }
@@ -184,14 +184,10 @@ if (TEMPLATE_VERSION === '1.4') {
       ctx.situation.slice(0, 3).forEach((t, i) => { const v = 'situation_0' + (i + 1); if (has(v)) drafts[v] = { draft: t, refs: [] }; });
       if (ctx.belief && has('belief_01')) drafts.belief_01 = { draft: ctx.belief, refs: [] };
     }
-    (ctx.criteria || []).slice(0, 4).forEach((t, i) => { const v = 'criterion_0' + (i + 1); if (has(v)) drafts[v] = { draft: t, refs: [] }; });
-    if (has('criteria_basis_01')) values.criteria_basis_01 = ctx.criteria_basis || '';
     (ctx.warnings || []).forEach(w => warnings.push(w));
   } else {
-    warnings.push('No Context Writer result: the situation slide is left out and the criteria are empty.');
+    warnings.push('No Context Writer result: the situation slide is left out.');
   }
-  const gq = plan && plan.basis && String(plan.basis.governing_question || '').trim();
-  if (gq && has('key_question_01')) drafts.key_question_01 = { draft: gq, refs: [] };
 }
 
 // 6. The Copywriter's work list.

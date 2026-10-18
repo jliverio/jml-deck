@@ -4,9 +4,6 @@
 //   situation  needs write_situation, a title and at least two lines; a line or title with a figure the
 //              findings do not hold is dropped (an uncited number reads as invented); belief must start
 //              "We believe" and hold no figure.
-//   criteria   stated by the client: the writer's split must keep every figure of the stated text, else
-//              the stated text is used as written. Not stated: criteria with figures are dropped
-//              (a target the client never gave reads as invented).
 // Lengths are left to the Copywriter, which fits every draft to its box.
 const inp = $('Prepare context').first().json.context_input || {};
 const market = $('Assemble market').first().json || {};
@@ -41,24 +38,4 @@ if (!err && inp.write_situation) {
   warnings.push(`Situation slide left out: ${(inp.findings || []).length} cited finding(s), fewer than 3.`);
 }
 
-const stated = inp.stated_criteria ? norm(inp.stated_criteria) : '';
-let criteria = (!err && Array.isArray(out.criteria) ? out.criteria : []).map(norm).filter(Boolean).slice(0, 4);
-let criteria_basis = '';
-if (stated) {
-  const all = plain(criteria.join(' '));
-  const lost = figures(stated).filter(f => !all.includes(plain(f)));
-  const extra = criteria.filter(c => !figures(c).every(f => plain(stated).includes(plain(f))));
-  if (!criteria.length || lost.length || extra.length) {
-    if (criteria.length) warnings.push('Criteria: the restated criteria changed or lost a figure; the stated text is used as written.');
-    criteria = stated.split(/;\s*/).map(s => s.replace(/\.$/, '').trim()).filter(Boolean).slice(0, 4)
-      .map(s => s.charAt(0).toUpperCase() + s.slice(1));
-  }
-  criteria_basis = 'As stated in your request';
-} else {
-  const before = criteria.length;
-  criteria = criteria.filter(c => !figures(c).length);
-  if (criteria.length < before) warnings.push(`Criteria: ${before - criteria.length} dropped for a figure the client never gave.`);
-  criteria_basis = criteria.length ? 'Our reading of your request, to confirm at kick-off' : 'To agree with you at kick-off';
-}
-
-return { json: { ...market, context_result: { situation_title, situation, belief, criteria, criteria_basis, warnings } } };
+return { json: { ...market, context_result: { situation_title, situation, belief, warnings } } };
