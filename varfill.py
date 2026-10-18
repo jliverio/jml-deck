@@ -70,6 +70,8 @@ DEFAULT_RULES = [
     (r"situation_title_\d+", 90, "drop_slide"),
     (r"situation_\d+", 150, "hide_line"),
     (r"belief_\d+", 140, "clear"),
+    (r"footer_\d+", 60, "clear"),
+    (r"(approach|timeline|deliverables|steering)_title_\d+", 110, "firm_todo"),
 ]
 
 
@@ -79,6 +81,12 @@ class TemplateCapacityError(ValueError):
 
 class TemplateFormatError(ValueError):
     pass
+
+
+# Title variables of the code-drawn work-plan slides (template 1.4): filled from the plan by workplan.titles()
+# unless the payload gives a value, which then replaces the composed title.
+TITLE_VARS = {"approach_title_01": "roadmap", "timeline_title_01": "timeline",
+              "deliverables_title_01": "deliverables", "steering_title_01": "governance"}
 
 
 class TemplateRulesError(ValueError):
@@ -235,6 +243,11 @@ def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=Non
     prs = _load_template(template)
     slides = list(prs.slides)
     table = _rule_table(rules)
+    import workplan as wp
+    plan = workplan if workplan is not None else values.get("workplan")
+    has_plan = isinstance(plan, dict) and bool(plan.get("phases"))
+    # slide masters and layouts: the footer (template 1.4: footer_01) sits on the masters
+    masters = [m for m in prs.slide_masters] + [lo for m in prs.slide_masters for lo in m.slide_layouts]
 
     # 0. normalise split variables, collect what the template holds
     present = set()
@@ -248,6 +261,12 @@ def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=Non
                     present.update(found)
                     if market_idx is None and "finding_01_headline" in found:
                         market_idx = si - 1
+    for mi, m in enumerate(masters):
+        for sh in _text_shapes(m):
+            for p in sh.text_frame.paragraphs:
+                _join_split_tokens(p, f"master {mi} / {sh.name}")
+                for r in p.runs:
+                    present.update(TOKEN.findall(r.text))
 
     # 1. template and table must agree
     if table is not None:
@@ -264,6 +283,13 @@ def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=Non
         if table is not None and name in table:
             return table[name]
         return _default_rule(name)
+
+    # work-plan slide titles: composed from the plan unless the payload gives them
+    if has_plan:
+        composed = wp.titles(plan)
+        for var, key in TITLE_VARS.items():
+            if var in present and not str(values.get(var) or "").strip():
+                values[var] = composed[key]
 
     # 2. agenda capacity
     slots = {v for v in present if re.fullmatch(r"section_\d+", v)}
@@ -348,6 +374,13 @@ def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=Non
                         lambda m: (value(m.group()) or FIRM_TODO) if m.group() in present else m.group(),
                         r.text)
 
+    # 4b. masters and layouts (the footer): filled, or blanked when empty
+    for m in masters:
+        for sh in _text_shapes(m):
+            for p in sh.text_frame.paragraphs:
+                for r in p.runs:
+                    r.text = TOKEN.sub(lambda mt: value(mt.group()) if mt.group() in present else mt.group(), r.text)
+
     # 5. safety net: no template variable may survive
     for sl in slides:
         for sh in _text_shapes(sl):
@@ -360,10 +393,11 @@ def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=Non
     # 5. work plan slides (Phase Architect v2): timeline, deliverables, steering
     #    meetings. Template 1.2 holds marked slides (shape named workplan:<kind>)
     #    that are drawn on; older templates get the slides added after market research.
-    import workplan as wp
-    plan = workplan if workplan is not None else values.get("workplan")
-    has_plan = isinstance(plan, dict) and bool(plan.get("phases"))
     marked = wp.marked_slides(prs)
+    if has_plan:
+        given = {key: value(var) for var, key in TITLE_VARS.items() if var in present and value(var)}
+        if given:
+            plan = {**plan, "_titles": given}
     if marked:
         wp.fill_template_slides(prs, plan if has_plan else None, marked,
                                 client=str((plan or {}).get("client") or "[Client]"))
@@ -399,7 +433,8 @@ def template_variables(template=TEMPLATE):
     """The variable names the template holds (for checks and tests)."""
     prs = _load_template(template)
     names = set()
-    for si, sl in enumerate(prs.slides, 1):
+    holders = list(prs.slides) + [m for m in prs.slide_masters] + [lo for m in prs.slide_masters for lo in m.slide_layouts]
+    for si, sl in enumerate(holders, 1):
         for sh in _text_shapes(sl):
             for p in sh.text_frame.paragraphs:
                 _join_split_tokens(p, f"slide {si}")

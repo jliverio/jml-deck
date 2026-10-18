@@ -129,7 +129,26 @@ The Context Writer no longer writes criteria.
   what each answers, the decision that closes each, a governance strip). No model writes it.
 
 Sections become Executive Summary, Context, Approach, Next Steps (set in Assemble drafts,
-not in the shared table, so the published 1.3 workflow is unchanged). The 5 situation rows
+not in the shared table, so the published 1.3 workflow is unchanged). Since Oct 18 the 1.4
+variables follow the slide order: section_03 is Approach (third), section_04 Next Steps
+(fourth); 1.3 keeps section_04 Approach. When 1.4 replaces 1.3, put these names in the table
+and remove the override.
+
+Also since Oct 18 (template 1.4 only):
+- Footer: `footer_01` on the slide masters, fixed text "{client_name} | Draft for discussion"
+  (was "JML Operations SAMPLE" on every slide). The renderer now fills masters and layouts.
+- The four code-drawn work-plan slides have title variables (`approach_title_01`,
+  `timeline_title_01`, `deliverables_title_01`, `steering_title_01`, fills_from
+  `code:workplan_title`). The renderer composes them from the plan unless the payload gives a
+  value. Each says something the summary slide does not: when the client decides (overview),
+  how much runs at once and the longest gap between steering meetings (timeline), deliverable
+  and meeting counts. The overview also shows what each phase starts after and the week of the
+  first deliverable.
+- Number style in code-written text: counts up to nine in words, weeks in digits, ranges with an
+  en dash ("two phases", "12 workstreams", "12–16 weeks"), as the Summary Writer already writes.
+- The 5 new rows (footer and titles) are in the n8n `template_variables` table; 1.3 renders only
+  warn that they are unused. Tests: `python3 tests/roadmap_stress.py` (overview layout on 158
+  plans). The 5 situation rows
 are in the `template_variables` data table; 1.3 renders only warn that they are unused. Rows
 56-61 of that table (key_question_01, criteria_basis_01, criterion_01-04) belong to the removed
 slide; the n8n tools here cannot delete rows, so they stay until deleted by hand, and 1.4

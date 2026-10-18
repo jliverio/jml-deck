@@ -42,6 +42,9 @@ def labelled(plan):
             e["decision"] = f"events[{e['id']}].decision"
         e["agenda"] = [f"events[{e['id']}].agenda[{j}]" for j in range(1, len(e.get("agenda") or []) + 1)]
         e["attendees"] = ["events[].attendees"]
+    # template 1.4: the slide titles are variables; show their names
+    plan["_titles"] = {"roadmap": "approach_title_01", "timeline": "timeline_title_01",
+                       "deliverables": "deliverables_title_01", "governance": "steering_title_01"}
     return plan
 
 

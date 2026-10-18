@@ -142,8 +142,29 @@ def _new_slide(prs, title, subtitle, section, slide=None, after=None):
     return s
 
 
-def _weeks_label(dw):
-    return f"{dw['min']} weeks" if dw["min"] == dw["max"] else f"{dw['min']}-{dw['max']} weeks"
+# Number style for every code-written text (José, Oct 18): counts up to nine in words, weeks in digits,
+# ranges with an en dash ("two phases", "12 workstreams", "12–16 weeks"). The Summary Writer's check uses the same.
+NUM_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+
+
+def _num(n):
+    return NUM_WORDS[n] if 0 <= n < len(NUM_WORDS) else str(n)
+
+
+def _count(n, noun, plural=None):
+    return f"{_num(n)} {noun if n == 1 else (plural or noun + 's')}"
+
+
+def _weeks(dw):
+    mn, mx = dw["min"], dw["max"]
+    return (f"{mx} week" + ("" if mx == 1 else "s")) if mn == mx else f"{mn}–{mx} weeks"
+
+
+def _cap(s):
+    return s[:1].upper() + s[1:]
+
+
+_weeks_label = _weeks
 
 
 def _phase_color(order):
@@ -156,22 +177,79 @@ def _clip(s, n):
 
 
 # ------------------------------------------------------------------ titles
+def _client_name(plan):
+    c = str(plan.get("client") or "").strip()
+    return c if c and not c.startswith("[") else "The client"
+
+
+def _gate_weeks(plan):
+    """[(phase, gate week)] in phase order; the gate sits in the phase's last week."""
+    gates = {e["phase_order"]: e for e in plan["governance"]["events"] if e["type"] == "gate"}
+    phases = sorted(plan["phases"], key=lambda p: p["order"])
+    return [(p, (gates.get(p["order"]) or {}).get("week") or p.get("end_week")) for p in phases]
+
+
+def _week_list(ws):
+    ws = [str(w) for w in ws]
+    return ("week " + ws[0]) if len(ws) == 1 else "weeks " + ", ".join(ws[:-1]) + " and " + ws[-1]
+
+
+def roadmap_title(plan, limit=110):
+    """When the client decides (approach overview): the gates, not the duration, which slide 4 gives."""
+    gw = _gate_weeks(plan)
+    client = _client_name(plan)
+    last_p, last_w = gw[-1]
+    if len(gw) == 1:
+        label = (last_p.get("gate") or {}).get("label") or "final decision"
+        return f"{client} takes one decision, at the {label} in week {last_w}"
+    head = (f"in week {gw[0][1]} whether {gw[1][0]['name']} goes ahead" if len(gw) == 2
+            else f"in {_week_list([w for _, w in gw[:-1]])} whether the next phase goes ahead")
+    t = f"{client} decides {head}; the work closes in week {last_w}"
+    if len(t) <= limit:
+        return t
+    nxt = gw[1][0]["name"] if len(gw) == 2 else "Each next phase"
+    return f"{nxt} goes ahead only after a decision in {_week_list([w for _, w in gw[:-1]])}; the work closes in week {last_w}"
+
+
+def _peak_parallel(plan):
+    wss = plan.get("workstreams") or []
+    total = plan["total_duration_weeks"]["max"]
+    return max([sum(1 for w in wss if w["start_week"] <= wk <= w["end_week"]) for wk in range(1, total + 1)] or [0])
+
+
+def _max_steering_gap(plan):
+    wk = sorted({e["week"] for e in plan["governance"]["events"]})
+    return max((b - a for a, b in zip(wk, wk[1:])), default=None)
+
+
 def titles(plan):
-    t = plan["total_duration_weeks"]
-    total = f"{t['max']} weeks" if t["min"] == t["max"] else f"{t['min']} to {t['max']} weeks"
-    n = len(plan["phases"])
-    # a stream that runs in several phases repeats its name in each (the partner's own streams): count it once
+    """Slide titles composed from the plan's numbers, so a title cannot disagree with its chart. The template's
+    title variables (approach_title_01, ...) carry them; a value given for a variable replaces the composed text
+    (plan["_titles"], set by the renderer)."""
     nws = len({str(w.get("name", "")).strip().lower() for w in plan["workstreams"]}) or len(plan["workstreams"])
     nd = len(plan["deliverables"])
     ev = [e for e in plan["governance"]["events"] if e["type"] != "kickoff"]
     gates = sum(1 for e in ev if e["type"] == "gate")
-    phase_word = "phase" if n == 1 else "phases"
-    return {
-        "timeline": (f"The work runs {total} in {n} {phase_word} and {nws} workstreams, each phase closing on a decision" if n > 1
-                     else f"The work runs {total} in {nws} workstreams, closing on a decision"),
-        "deliverables": f"The {nws} workstreams hand over {nd} deliverables, each reviewed at a steering meeting",
-        "governance": f"After the kick-off, {len(ev)} steering meetings review the work, {gates} of them closing a phase with a decision",
+    peak = _peak_parallel(plan)
+    gap = _max_steering_gap(plan)
+    run = "The workstreams run one at a time" if peak <= 1 else f"Up to {_count(peak, 'workstream')} run in the same week"
+    ws_part = "The workstream hands over" if nws == 1 else f"The {_count(nws, 'workstream')} hand over"
+    if len(ev) == 1:
+        gov = "After the kick-off, one steering meeting reviews the work and closes it with a decision"
+    else:
+        closing = "each closing a phase with a decision" if gates == len(ev) else (
+            f"{_num(gates)} of them closing a phase with a decision")
+        gov = f"After the kick-off, {_count(len(ev), 'steering meeting')} review the work, {closing}"
+    out = {
+        "roadmap": roadmap_title(plan),
+        "timeline": run + (f", with no more than {gap} weeks between steering meetings" if gap else ""),
+        "deliverables": f"{ws_part} {_count(nd, 'deliverable')}, each reviewed at a steering meeting",
+        "governance": gov,
     }
+    for k, v in (plan.get("_titles") or {}).items():
+        if k in out and str(v or "").strip():
+            out[k] = str(v).strip()
+    return out
 
 
 # ------------------------------------------------------------------ layout rules
@@ -560,7 +638,6 @@ def governance_slides(prs, plan, section, client, per_slide=4, slide=None):
 
 
 # ------------------------------------------------------------------ slide 0: approach overview (template 1.4)
-WORDS = ["zero", "one", "two", "three", "four", "five", "six"]
 
 
 def _list(items):
@@ -568,21 +645,11 @@ def _list(items):
     return items[0] if len(items) == 1 else ", ".join(items[:-1]) + " and " + items[-1] if items else ""
 
 
-def roadmap_title(plan):
-    n = len(plan["phases"])
-    t = plan["total_duration_weeks"]
-    total = f"{t['max']} weeks" if t["min"] == t["max"] else f"{t['min']} to {t['max']} weeks"
-    if n == 1:
-        return f"One {total} phase answers the question and ends in a decision"
-    word = WORDS[n] if n < len(WORDS) else str(n)
-    return f"{word.capitalize()} phases over {total}, each ending in a decision before the next begins"
-
-
 def roadmap_slide(prs, plan, section, client, slide=None):
     """Approach overview: one column per phase (what it answers, when it ends,
     the decision that closes it) and a governance strip. Everything is read
     from the plan; nothing here is written by a model."""
-    s = _new_slide(prs, roadmap_title(plan), "Approach overview: phases, decisions and how we work together",
+    s = _new_slide(prs, titles(plan)["roadmap"], "Approach overview: phases, decisions and how we work together",
                    section, slide=slide)
     phases = sorted(plan["phases"], key=lambda p: p["order"])
     events = plan["governance"]["events"]
@@ -592,6 +659,7 @@ def roadmap_slide(prs, plan, section, client, slide=None):
     chev_h = Inches(0.62)
     y = TOP
     gates = {e["phase_order"]: e for e in events if e["type"] == "gate"}
+    kick = next((e for e in events if e["type"] == "kickoff"), None)
     for i, p in enumerate(phases):
         x = L + i * (cw + gap)
         shape = MSO_SHAPE.PENTAGON if i == 0 else MSO_SHAPE.CHEVRON
@@ -605,13 +673,22 @@ def roadmap_slide(prs, plan, section, client, slide=None):
                    else _weeks_label(p["duration_weeks"])], size=12, bold=True, color=WHITE)
         tf.paragraphs[1].runs[0].font.bold = False
         tf.paragraphs[1].runs[0].font.size = Pt(10)
+        # what it waits for (José, Oct 18: the sequence belongs on this slide)
+        if i == 0:
+            starts = f"Starts at the kick-off, week {kick['week'] if kick else 1}"
+        else:
+            pg = gates.get(phases[i - 1]["order"]) or {}
+            plabel = (phases[i - 1].get("gate") or {}).get("label") or pg.get("label") or "previous decision"
+            starts = f"Starts after the {plabel}, week {pg.get('week') or phases[i - 1].get('end_week')}"
+        _text(s, _clip(starts, int((cw - Inches(0.1)) / Inches(0.075))), size=10, italic=True, color=GREY,
+              anchor=MSO_ANCHOR.TOP, x=x, y=y + chev_h + Inches(0.08), w=cw - Inches(0.1), h=Inches(0.22))
         # what the phase answers
         _text(s, "What it answers", size=9, bold=True, color=GREY, anchor=MSO_ANCHOR.TOP,
-              x=x, y=y + chev_h + Inches(0.14), w=cw, h=Inches(0.2))
+              x=x, y=y + chev_h + Inches(0.36), w=cw, h=Inches(0.2))
         _text(s, _clip(p.get("objective_one_line", ""), 170), size=12, anchor=MSO_ANCHOR.TOP,
-              x=x, y=y + chev_h + Inches(0.36), w=cw - Inches(0.1), h=Inches(1.0))
+              x=x, y=y + chev_h + Inches(0.58), w=cw - Inches(0.1), h=Inches(1.0))
         # the decision that closes it
-        gy = y + chev_h + Inches(1.45)
+        gy = y + chev_h + Inches(1.6)
         g = gates.get(p["order"]) or {}
         gate = p.get("gate") or {}
         label = gate.get("label") or g.get("label") or "Phase decision"
@@ -633,11 +710,12 @@ def roadmap_slide(prs, plan, section, client, slide=None):
             if a and not str(a).startswith("[") and a not in who:
                 who.append(a)
     cad = gov.get("status_cadence_weeks")
-    kick = next((e for e in events if e["type"] == "kickoff"), None)
+    first_due = min((d.get("due_week") for d in plan.get("deliverables") or [] if d.get("due_week")), default=None)
     cells = [
-        ("Steering", f"{len(steer)} steering meetings" + (f" with {_list(who)}" if who else "")
+        ("Steering", _cap(_count(len(steer), "steering meeting")) + (f" with {_list(who)}" if who else "")
          + ("; each phase ends in a decision" if n > 1 else "; the work ends in a decision")),
         ("Working rhythm", (f"Kick-off in week {kick['week']}" if kick else "Kick-off at the start")
+         + (f"; first deliverable in week {first_due}" if first_due else "")
          + (f"; status meetings every {cad} weeks" if cad and cad > 1 else ("; weekly status meetings" if cad == 1 else ""))),
         (f"What we ask of {client}", "A named project lead, plus time from the steering members; the exact commitment to agree at kick-off"),
     ]

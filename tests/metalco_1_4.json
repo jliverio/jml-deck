@@ -4,7 +4,7 @@
   "cover_subtitle_01": "A proposal for MetalCo",
   "section_01": "Executive Summary",
   "section_02": "Context",
-  "section_03": "Next Steps",
+  "section_03": "Approach",
   "finding_01_headline": "A competitor already sells in MetalCo's target channel.",
   "finding_01_context": "Spanish contractors moved more of their purchasing online in 2024. [1]",
   "finding_01_action_taken": "Hierros García launched an online steel marketplace in Spain in March 2025. [1]",
@@ -21,12 +21,13 @@
   "next_step_01": "Confirm engagement scope, length and the stakeholders on both sides.",
   "next_step_02": "Develop the detailed phase plan and deliverables.",
   "next_step_03": "Agree commercial terms and the project team before kickoff.",
-  "section_04": "Approach",
+  "section_04": "Next Steps",
   "situation_title_01": "Iberian steel buyers are moving online, but distributors can still block a direct channel",
   "situation_01": "Spanish contractors moved more of their steel purchasing online in 2024, and Hierros García opened a marketplace in March 2025.",
   "situation_02": "Hierros García reported 1,200 registered contractors by June 2025, while Ferro Norte paused its pilot after distributors objected.",
   "situation_03": "For MetalCo, the window to enter is open, but a channel that bypasses distributors would likely meet the same resistance.",
-  "belief_01": "We believe MetalCo can win online if it moves early and gives distributors a role in the marketplace."
+  "belief_01": "We believe MetalCo can win online if it moves early and gives distributors a role in the marketplace.",
+  "footer_01": "MetalCo | Draft for discussion"
  },
  "rules": [
   {
@@ -303,6 +304,31 @@
    "variable": "belief_01",
    "max_chars": 140,
    "if_empty": "clear"
+  },
+  {
+   "variable": "footer_01",
+   "max_chars": 60,
+   "if_empty": "clear"
+  },
+  {
+   "variable": "approach_title_01",
+   "max_chars": 110,
+   "if_empty": "firm_todo"
+  },
+  {
+   "variable": "timeline_title_01",
+   "max_chars": 110,
+   "if_empty": "firm_todo"
+  },
+  {
+   "variable": "deliverables_title_01",
+   "max_chars": 110,
+   "if_empty": "firm_todo"
+  },
+  {
+   "variable": "steering_title_01",
+   "max_chars": 110,
+   "if_empty": "firm_todo"
   }
  ],
  "workplan": {

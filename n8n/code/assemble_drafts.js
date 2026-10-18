@@ -37,8 +37,12 @@ for (const r of rules) {
   if (fills(r).startsWith('fixed:')) values[r.variable] = fills(r).slice(6).replace(/\{client_name\}/g, clientName);
 }
 // Section names set here, not in the shared table, so the published 1.3 workflow keeps its names.
-if (TEMPLATE_VERSION === '1.3' || TEMPLATE_VERSION === '1.4') values.section_04 = 'Approach';
-if (TEMPLATE_VERSION === '1.4') { values.section_01 = 'Executive Summary'; values.section_02 = 'Context'; }
+if (TEMPLATE_VERSION === '1.3') values.section_04 = 'Approach';
+// 1.4 (Oct 18): the section variables follow the slide order, section_03 Approach and section_04 Next Steps.
+if (TEMPLATE_VERSION === '1.4') {
+  values.section_01 = 'Executive Summary'; values.section_02 = 'Context';
+  values.section_03 = 'Approach'; values.section_04 = 'Next Steps';
+}
 
 // 2. Market findings from both researchers, strongest first.
 const RISK = { high: 0, medium: 1, none: 2 };

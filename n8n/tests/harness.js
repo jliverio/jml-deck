@@ -76,7 +76,7 @@ const topic = {
 
 // ---------- 1. Template rules ----------
 const tr = run("template_rules.js", { nodes: { checkProfiler }, input: RULES })[0].json;
-check("rules: all 55 rows kept (50 + 5 for template 1.4's situation slide)", tr._rules.length === RULES.length && RULES.length === 55, tr._rules.length);
+check("rules: all 60 rows kept (50 + 10 for template 1.4: situation, footer, work-plan titles)", tr._rules.length === RULES.length && RULES.length === 60, tr._rules.length);
 check("rules: 5 finding slots", tr._research.finding_slots === 5, tr._research.finding_slots);
 check("rules: both researchers -> 3 rows each", tr._research.max_rows === 3, tr._research.max_rows);
 check("rules: field_rules carry draft_chars 2x", tr._research.field_rules.find(f => f.field === "context").draft_chars === 180, tr._research.field_rules);
@@ -229,7 +229,7 @@ const CP = run("check_copy.js", { nodes: { "Assemble drafts": AP }, json: cleanP
 const PP = run("build_render_payload.js", { nodes: { "Assemble drafts": AP, "Template rules": trOn }, json: CP }).json;
 fs.writeFileSync(path.join(OUT, "payload_workplan.json"), JSON.stringify(PP, null, 1));
 check("payload: workplan sent to the renderer", PP.workplan && PP.workplan.deliverables.length > 0);
-check("payload: template 1.4 requested and Approach section named", PP.template === "1.4" && PP.values.section_04 === "Approach", [PP.template, PP.values.section_04]);
+check("payload: template 1.4 requested; Approach is section_03, Next Steps section_04", PP.template === "1.4" && PP.values.section_03 === "Approach" && PP.values.section_04 === "Next Steps", [PP.template, PP.values.section_03, PP.values.section_04]);
 }
 // ---------- Summary Writer chain (slide 4) ----------
 const FX = f => JSON.parse(fs.readFileSync(path.join(__dirname, "fixtures", f), "utf8"));

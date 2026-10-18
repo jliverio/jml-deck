@@ -42,7 +42,8 @@ check("check: passes Assemble market through", ctx.market_slides && !ctx.context
 const drafts = run("assemble_drafts.js", { nodes, json: { output: plan } });
 const items = Object.fromEntries(drafts.items.map(i => [i.variable, i]));
 check("template 1.4", drafts.template === "1.4");
-check("sections renamed", drafts.values.section_01 === "Executive Summary" && drafts.values.section_02 === "Context" && drafts.values.section_04 === "Approach");
+check("sections renamed, in slide order", drafts.values.section_01 === "Executive Summary" && drafts.values.section_02 === "Context" && drafts.values.section_03 === "Approach" && drafts.values.section_04 === "Next Steps");
+check("footer filled from the table", /\| Draft for discussion$/.test(drafts.values.footer_01 || ""));
 check("no key question or criteria drafted (slide removed Oct 18)",
   !Object.keys(items).some(v => /^(key_question|criterion|criteria_basis)_/.test(v)) && !("criteria_basis_01" in drafts.values));
 check("check: no criteria in the result", !("criteria" in ctx.context_result) && !("criteria_basis" in ctx.context_result));

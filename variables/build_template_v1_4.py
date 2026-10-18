@@ -14,10 +14,14 @@ What 1.4 adds to 1.3 (Scenario 1 of the October 16 plan):
    phases, the decisions that close them and a governance strip from the plan.
 3. The market findings slide gets a fixed title ("Market research findings"):
    in 1.4 section_02 is "Context", so the section name no longer works as its title.
+4. Oct 18 (José): section variables follow the slide order: section_03 is Approach
+   (third), section_04 is Next Steps (fourth); 1.3 keeps its order. The four work-plan
+   slide titles are variables (approach_title_01, timeline_title_01,
+   deliverables_title_01, steering_title_01), filled by the renderer from the plan.
+   The footer "JML Operations SAMPLE" on the slide masters becomes footer_01.
 
 Section names are sent by the workflow (section_01 Executive Summary,
-section_02 Context, section_04 Approach, section_03 Next Steps); the template
-is unchanged there.
+section_02 Context, section_03 Approach, section_04 Next Steps).
 
 Slide order in 1.4: cover, agenda, 1 divider, summary, 2 divider, situation,
 market findings, 3 divider, approach overview, timeline, deliverables,
@@ -147,6 +151,21 @@ def situation_slide(prs, summary):
     return s
 
 
+TITLE_VARS = {"roadmap": "approach_title_01", "timeline": "timeline_title_01",
+              "deliverables": "deliverables_title_01", "steering": "steering_title_01"}
+
+
+def swap_tokens(prs, a, b):
+    """Swap two variable names everywhere on the slides (agenda, dividers, trackers, titles)."""
+    import re
+    pat = re.compile(r"(?<![A-Za-z0-9_])(%s|%s)(?![A-Za-z0-9_])" % (a, b))
+    for sl in prs.slides:
+        for sh in varfill._text_shapes(sl):
+            for p in sh.text_frame.paragraphs:
+                for r in p.runs:
+                    r.text = pat.sub(lambda m: b if m.group() == a else a, r.text)
+
+
 def main():
     prs = varfill._load_template(SRC)
     slides = list(prs.slides)
@@ -176,6 +195,19 @@ def main():
         lst.remove(el)
     for sid in order_ids:
         lst.append(by_id[sid])
+
+    swap_tokens(prs, "section_03", "section_04")
+    for sl in prs.slides:
+        for sh in sl.shapes:
+            if sh.name.startswith("workplan:") and sh.name[9:] in TITLE_VARS:
+                set_text(sh, TITLE_VARS[sh.name[9:]])
+    for m in prs.slide_masters:
+        for sh in m.shapes:
+            if sh.has_text_frame and sh.text_frame.text.strip() == "JML Operations SAMPLE":
+                set_text(sh, "footer_01")
+                right = sh.left + sh.width            # keep the right edge next to the page number;
+                sh.width = Emu(4114800)               # 4.5 in holds "<client> | Draft for discussion"
+                sh.left = Emu(right - 4114800)
 
     buf = io.BytesIO()
     prs.save(buf)

@@ -157,6 +157,26 @@ for n in range(1, 4):
 add("belief_01", 140, "estimated", "context_writer:belief",
     "One sentence starting \"We believe\": the point of view the proposal acts on. No figures.",
     "clear", "We believe a direct channel can win small buyers if it is designed with distributors, not against them.")
+# Template 1.4, Oct 18 (José): the footer on the slide masters and the titles of the four code-drawn work-plan
+# slides are variables. The titles are composed by the renderer from the plan's numbers (so a title cannot
+# disagree with its chart) unless the payload gives a value; counts up to nine in words, weeks in digits.
+add("footer_01", 60, "estimated", "fixed:{client_name} | Draft for discussion",
+    "Client short name, a vertical bar, then \"Draft for discussion\".", "clear",
+    "MetalCo | Draft for discussion")
+titles = [
+    ("approach_title_01", "When the client decides: the week of each gate and whether the next phase goes ahead.",
+     "MetalCo decides in week 6 whether Pilot goes ahead; the work closes in week 20"),
+    ("timeline_title_01", "How much runs at once: the most workstreams in one week, and the longest gap between "
+     "steering meetings.", "Up to three workstreams run in the same week, with no more than 6 weeks between steering meetings"),
+    ("deliverables_title_01", "How many workstreams hand over how many deliverables, each reviewed at a meeting.",
+     "The seven workstreams hand over eight deliverables, each reviewed at a steering meeting"),
+    ("steering_title_01", "How many steering meetings follow the kick-off, and how many close a phase.",
+     "After the kick-off, five steering meetings review the work, two of them closing a phase with a decision"),
+]
+for name, rule, ex in titles:
+    add(name, 110, "estimated", "code:workplan_title", "Composed by the renderer from the plan. " + rule,
+        "firm_todo", ex)
+
 # The key-question slide (key_question_01, criteria_basis_01, criterion_01..04) was removed on Oct 18:
 # the summary slide already carries the objectives, solution and outcomes.
 
