@@ -1,0 +1,125 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Marketplace hypotheses",
+      "answers": "Which hypotheses on the marketplace blueprint and the distributors' role must the design test?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 1,
+      "follows": [],
+      "activities": [
+        "Interview the CEO, Head of Sales and distributors council",
+        "Review order data from the existing B2B ordering portal",
+        "Draft hypotheses on each blueprint component"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Contractor buying needs",
+      "answers": "How do small and mid-size contractors in Portugal and Spain buy today, and what would make them order online?",
+      "traces_to": ["problem_statement", "success_criteria:1"],
+      "start_offset": 1,
+      "duration": 3,
+      "follows": ["W1"],
+      "activities": [
+        "Interview contractors in both countries on how they buy",
+        "Analyze warehouse order data by customer size",
+        "Review marketplaces already serving contractors"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Distributor role and terms",
+      "answers": "Where would the marketplace overlap with regional distributors, and what role keeps them committed?",
+      "traces_to": ["problem_statement", "success_criteria:2"],
+      "start_offset": 1,
+      "duration": 3,
+      "follows": ["W1"],
+      "activities": [
+        "Interview distributors and the distributors council",
+        "Map where contractor demand overlaps distributor sales",
+        "Review distributor contracts for affected terms"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 1,
+      "name": "Blueprint and pilot plan",
+      "answers": "What marketplace blueprint do the tested hypotheses support, and how would a one-region pilot run?",
+      "traces_to": ["gate:1"],
+      "start_offset": 4,
+      "duration": 2,
+      "follows": ["W2", "W3"],
+      "activities": [
+        "Draft the blueprint with tested hypotheses",
+        "Test a wireframe prototype with contractors",
+        "Plan the pilot region, scope and launch steps"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 2,
+      "name": "Pilot contractor group",
+      "answers": "Which small and mid-size contractors in the pilot region should be the first group to use the marketplace?",
+      "traces_to": ["success_criteria:1"],
+      "start_offset": 0,
+      "duration": 2,
+      "follows": [],
+      "activities": [
+        "Analyze order data for contractor groups in the region",
+        "Interview contractors and distributors in the region",
+        "Agree the first contractor group with the Head of Sales"
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 2,
+      "name": "Pilot KPIs and distributors",
+      "answers": "Which KPIs do the stakeholders agree on, and how do repeat orders and distributor contract status develop?",
+      "traces_to": ["success_criteria:1", "success_criteria:2", "gate:2"],
+      "start_offset": 0,
+      "duration": 13,
+      "follows": [],
+      "activities": [
+        "Agree the KPIs with each stakeholder group",
+        "Track repeat orders from contractors in operational data",
+        "Track distributor contract status and hear their concerns"
+      ]
+    },
+    {
+      "id": "W7",
+      "phase_order": 2,
+      "name": "Marketplace first version",
+      "answers": "Can a first marketplace version be built and launched to a small group of contractors in one region?",
+      "traces_to": ["problem_statement", "success_criteria:1"],
+      "start_offset": 2,
+      "duration": 10,
+      "follows": ["W5"],
+      "activities": [
+        "Build the first marketplace version from the blueprint",
+        "Prepare the readiness review for the first workshop",
+        "Launch after the workshop and fix issues from live use"
+      ]
+    },
+    {
+      "id": "W8",
+      "phase_order": 2,
+      "name": "Pilot evidence and scale-up",
+      "answers": "What does scaling beyond the pilot region require, and is the evidence ready for the 2027 budget round?",
+      "traces_to": ["gate:2", "success_criteria:1", "success_criteria:2"],
+      "start_offset": 10,
+      "duration": 4,
+      "follows": ["W6"],
+      "activities": [
+        "Synthesize order data and interviews against the criteria",
+        "Draft the scale-up business case and roadmap",
+        "Prepare the evidence for the final readout"
+      ]
+    }
+  ],
+  "notes": []
+}

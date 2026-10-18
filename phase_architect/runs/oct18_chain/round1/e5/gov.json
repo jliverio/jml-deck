@@ -1,0 +1,44 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Confirm scope, team and calendar",
+      "attendees": ["CEO", "Export Director"],
+      "presents": [],
+      "decision": "Do the CEO and Export Director confirm scope, team and calendar for the diagnostic?",
+      "agenda": [
+        "Present the diagnostic objective and the 2025 export margin question",
+        "Review the two workstreams and the week 5 and week 8 deliverables",
+        "Confirm team, data access and meeting calendar"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Workshop: first findings",
+      "purpose": "Review first findings on margin drivers",
+      "attendees": ["CEO", "Export Director"],
+      "presents": ["D1", "D2"],
+      "decision": "Which drivers of the margin decline should the final findings detail further?",
+      "agenda": [
+        "Present the 2025 export margin bridge by market",
+        "Review distributor terms by export market against the bridge",
+        "Discuss the drivers of the margin decline and what to detail next"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Final readout",
+      "purpose": "Close the diagnostic and accept the findings",
+      "attendees": ["CEO", "Export Director"],
+      "presents": ["D3"],
+      "decision": "Do the CEO and Export Director accept the findings on the 2025 export margin decline?",
+      "agenda": [
+        "Present the findings on the 2025 export margin decline",
+        "Review how the findings address the workshop input",
+        "Decide whether the findings are accepted"
+      ]
+    }
+  ],
+  "notes": []
+}

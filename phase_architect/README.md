@@ -88,6 +88,13 @@ Assemble market → Architect input → Phase Architect → Validate plan → Pl
 - **Slide 4.** The Summary Writer fills `summary_title_01` plus the objective, solution and outcome variables. Assemble drafts drafts those rows only if the table assigns them to `phase_architect:plan`.
 - **Slide order.** Cover, agenda, 1 Context, summary, 2 Market Research, Market Research, 3 Approach, timeline, deliverables, steering meetings, 4 Next Steps, Next Steps, back cover.
 
+## Four-agent chain (v3, Oct 18 2026, not wired into n8n)
+
+`v3/` splits this agent into a lead Phase Architect (length, 1-5 phases, gates), a meeting calendar placed by code,
+and Workstream, Deliverable and Governance agents, each checked before the next runs. It produces the same plan
+format, so nothing downstream changes. Tested against this single agent on 10 briefs with a blind reviewer:
+`runs/oct18_chain/README.md`. Design and decisions: `v3/README.md`.
+
 ## Files
 
 ```

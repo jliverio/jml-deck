@@ -1,0 +1,50 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Branch rollout",
+      "answers": "In what order do the 120 branches move onto the new branch operating model, and when is each live?",
+      "traces_to": ["problem_statement", "success_criteria:1", "gate:1"],
+      "start_offset": 0,
+      "duration": 24,
+      "follows": [],
+      "activities": [
+        "Agree wave sequence and readiness checks for each branch",
+        "Launch the model wave by wave after the readiness review",
+        "Collect issues from branch staff and managers at each wave"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Staff training",
+      "answers": "How do branch staff get ready to work in the new model before their branch goes live?",
+      "traces_to": ["problem_statement", "success_criteria:1"],
+      "start_offset": 2,
+      "duration": 22,
+      "follows": ["W1"],
+      "activities": [
+        "Prepare training content for each role in the new model",
+        "Train branch staff in each wave ahead of go-live",
+        "Coach staff after go-live using feedback from branch teams"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Performance tracking",
+      "answers": "Which measures show a branch is running the new model, and how do branches perform as each goes live?",
+      "traces_to": ["success_criteria:1", "gate:1"],
+      "start_offset": 2,
+      "duration": 22,
+      "follows": ["W1"],
+      "activities": [
+        "Define the measures that show a branch runs the new model",
+        "Track each wave on those measures using operational data",
+        "Check in branches that work follows the new model"
+      ]
+    }
+  ],
+  "notes": []
+}

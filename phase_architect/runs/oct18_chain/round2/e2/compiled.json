@@ -1,0 +1,470 @@
+{
+ "client": "Lusitania Telecom",
+ "basis": {
+  "governing_question": "Why did prepaid churn rise in 2025 at Lusitania Telecom, and how can it be brought down?",
+  "archetype_id": "performance_improvement"
+ },
+ "total_duration_weeks": {
+  "min": 13,
+  "max": 13
+ },
+ "phases": [
+  {
+   "name": "Diagnostic",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 5,
+   "duration_weeks": {
+    "min": 5,
+    "max": 5
+   },
+   "duration_derived": false,
+   "objective_one_line": "Establish why prepaid churn rose in 2025 and agree which retention initiatives Lusitania Telecom rolls out.",
+   "gate": {
+    "label": "Initiatives go/no-go",
+    "decision": "Which churn drivers and retention initiatives go forward into the rollout?"
+   },
+   "depends_on_assumptions": [
+    "timeline",
+    "prior_attempts"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2",
+    "W3"
+   ]
+  },
+  {
+   "name": "Implementation",
+   "order": 2,
+   "start_week": 6,
+   "end_week": 13,
+   "duration_weeks": {
+    "min": 8,
+    "max": 8
+   },
+   "duration_derived": false,
+   "objective_one_line": "Support Lusitania Telecom's rollout of the agreed retention program and track prepaid churn against the baseline.",
+   "gate": {
+    "label": "Final readout",
+    "decision": "Does the steering group accept the rollout and its results to date?"
+   },
+   "depends_on_assumptions": [
+    "deliverable_format",
+    "timeline",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W4",
+    "W5",
+    "W6"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Customer analytics",
+   "answers": "Which customer groups, behaviors and events explain the rise in prepaid churn in 2025?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 3,
+   "follows": [],
+   "activities": [
+    "Build the prepaid churn baseline from operational data",
+    "Test churn drivers by customer segment and period",
+    "Interview customers who left prepaid in 2025"
+   ],
+   "deliverable_ids": [
+    "D1",
+    "D2"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Store operations",
+   "answers": "How do store processes and staff practice affect prepaid customers' decisions to stay or leave?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 2,
+   "end_week": 5,
+   "follows": [],
+   "activities": [
+    "Interview store staff who serve prepaid customers",
+    "Review store operating data and documented procedures",
+    "Identify store moments that affect retention"
+   ],
+   "deliverable_ids": [
+    "D3"
+   ]
+  },
+  {
+   "id": "W3",
+   "phase_order": 1,
+   "name": "Retention offers",
+   "answers": "Which retention offers could address the churn drivers found, and which are worth taking into the rollout?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 3,
+   "end_week": 5,
+   "follows": [
+    "W1"
+   ],
+   "activities": [
+    "Review documents and data on retention offers in use",
+    "Match candidate offers to the churn drivers found",
+    "Prepare initiative options for the go/no-go decision"
+   ],
+   "deliverable_ids": [
+    "D4",
+    "D5"
+   ]
+  },
+  {
+   "id": "W4",
+   "phase_order": 2,
+   "name": "Retention offers",
+   "answers": "How are the agreed retention offers set up, launched and adjusted for prepaid customers?",
+   "traces_to": [
+    "problem_statement",
+    "gate:2"
+   ],
+   "start_week": 6,
+   "end_week": 13,
+   "follows": [],
+   "activities": [
+    "Set up the agreed offers and readiness checks",
+    "Launch the offers once the workshop confirms readiness",
+    "Adjust the offers using results and feedback from stores"
+   ],
+   "deliverable_ids": [
+    "D6",
+    "D7",
+    "D8"
+   ]
+  },
+  {
+   "id": "W5",
+   "phase_order": 2,
+   "name": "Customer analytics",
+   "answers": "How does prepaid churn move against the baseline as the retention offers go live?",
+   "traces_to": [
+    "problem_statement",
+    "gate:2"
+   ],
+   "start_week": 8,
+   "end_week": 13,
+   "follows": [
+    "W4"
+   ],
+   "activities": [
+    "Build the churn tracker against the Diagnostic baseline",
+    "Compare churn of customers with and without the offers",
+    "Report churn results for the workshop and final readout"
+   ],
+   "deliverable_ids": [
+    "D9",
+    "D10"
+   ]
+  },
+  {
+   "id": "W6",
+   "phase_order": 2,
+   "name": "Store operations",
+   "answers": "How do store teams apply the retention offers with prepaid customers, and what stops them doing so?",
+   "traces_to": [
+    "problem_statement",
+    "gate:2"
+   ],
+   "start_week": 8,
+   "end_week": 13,
+   "follows": [
+    "W4"
+   ],
+   "activities": [
+    "Adapt store procedures to the agreed retention offers",
+    "Train and coach store staff before and during the rollout",
+    "Track store adherence through operational data and visits"
+   ],
+   "deliverable_ids": [
+    "D11",
+    "D12",
+    "D13"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "Prepaid churn baseline",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 2,
+   "presented_at": "Check-in: first findings"
+  },
+  {
+   "id": "D2",
+   "name": "Prepaid churn driver findings by customer segment",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 3,
+   "presented_at": "Check-in: first findings"
+  },
+  {
+   "id": "D3",
+   "name": "Store moments that affect prepaid retention",
+   "kind": "analysis",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Initiatives go/no-go"
+  },
+  {
+   "id": "D4",
+   "name": "Retention offers matched to churn drivers",
+   "kind": "design",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Initiatives go/no-go"
+  },
+  {
+   "id": "D5",
+   "name": "Retention initiative options for the go/no-go decision",
+   "kind": "decision_pack",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 5,
+   "presented_at": "Initiatives go/no-go"
+  },
+  {
+   "id": "D6",
+   "name": "Retention offer set-up specification",
+   "kind": "design",
+   "workstream_id": "W4",
+   "phase_order": 2,
+   "due_week": 7,
+   "presented_at": "Workshop: launch readiness"
+  },
+  {
+   "id": "D7",
+   "name": "Launch readiness check results",
+   "kind": "analysis",
+   "workstream_id": "W4",
+   "phase_order": 2,
+   "due_week": 9,
+   "presented_at": "Workshop: launch readiness"
+  },
+  {
+   "id": "D8",
+   "name": "Launch and adjustment record for the retention offers",
+   "kind": "build",
+   "workstream_id": "W4",
+   "phase_order": 2,
+   "due_week": 12,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D9",
+   "name": "Prepaid churn tracker against the baseline",
+   "kind": "build",
+   "workstream_id": "W5",
+   "phase_order": 2,
+   "due_week": 9,
+   "presented_at": "Workshop: launch readiness"
+  },
+  {
+   "id": "D10",
+   "name": "Churn results against the baseline for the final readout",
+   "kind": "decision_pack",
+   "workstream_id": "W5",
+   "phase_order": 2,
+   "due_week": 13,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D11",
+   "name": "Updated store procedures for the retention offers",
+   "kind": "design",
+   "workstream_id": "W6",
+   "phase_order": 2,
+   "due_week": 9,
+   "presented_at": "Workshop: launch readiness"
+  },
+  {
+   "id": "D12",
+   "name": "Store staff training materials and attendance record",
+   "kind": "enablement",
+   "workstream_id": "W6",
+   "phase_order": 2,
+   "due_week": 11,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D13",
+   "name": "Store adherence report on the retention offers",
+   "kind": "analysis",
+   "workstream_id": "W6",
+   "phase_order": 2,
+   "due_week": 13,
+   "presented_at": "Final readout"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 2,
+  "status_weeks": [
+   7,
+   9,
+   11
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Align on scope, team and calendar",
+    "attendees": [
+     "CEO",
+     "Chief Commercial Officer"
+    ],
+    "presents": [],
+    "decision": "Does the steering group confirm the scope, team and calendar?",
+    "agenda": [
+     "Align on the problem statement and what the diagnostic must answer",
+     "Review the phases, workstreams and the 13-week calendar",
+     "Confirm team roles and the steering meeting dates"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "checkin",
+    "phase_order": 1,
+    "week": 3,
+    "label": "Check-in: first findings",
+    "purpose": "Share baseline and churn driver findings",
+    "attendees": [
+     "CEO",
+     "Chief Commercial Officer"
+    ],
+    "presents": [
+     "D1",
+     "D2"
+    ],
+    "decision": "Does the steering group confirm the churn baseline as the reference for results?",
+    "agenda": [
+     "Present the prepaid churn baseline",
+     "Review churn driver findings by customer segment",
+     "Confirm the baseline as the reference for tracking results"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 5,
+    "label": "Initiatives go/no-go",
+    "purpose": "Decide what goes forward into the rollout",
+    "attendees": [
+     "CEO",
+     "Chief Commercial Officer"
+    ],
+    "presents": [
+     "D1",
+     "D2",
+     "D3",
+     "D4",
+     "D5"
+    ],
+    "decision": "Which churn drivers and retention initiatives go forward into the rollout?",
+    "agenda": [
+     "Review driver findings and store moments behind the options",
+     "Present the retention offers and the initiative options",
+     "Decide which drivers and initiatives go forward into the rollout"
+    ]
+   },
+   {
+    "id": "G4",
+    "type": "workshop",
+    "phase_order": 2,
+    "week": 10,
+    "label": "Workshop: launch readiness",
+    "purpose": "Check readiness before offers go live",
+    "attendees": [
+     "CEO",
+     "Chief Commercial Officer"
+    ],
+    "presents": [
+     "D6",
+     "D7",
+     "D9",
+     "D11"
+    ],
+    "decision": "Do the readiness check results support launching the retention offers in stores?",
+    "agenda": [
+     "Present the launch readiness check results",
+     "Review the offer specification, store procedures and churn tracker",
+     "Decide whether the retention offers go live in stores"
+    ]
+   },
+   {
+    "id": "G5",
+    "type": "gate",
+    "phase_order": 2,
+    "week": 13,
+    "label": "Final readout",
+    "purpose": "Review rollout and results to date",
+    "attendees": [
+     "CEO",
+     "Chief Commercial Officer"
+    ],
+    "presents": [
+     "D8",
+     "D10",
+     "D12",
+     "D13"
+    ],
+    "decision": "Does the steering group accept the rollout and its results to date?",
+    "agenda": [
+     "Present the launch and adjustment record for the retention offers",
+     "Review store training, adherence and churn results against the baseline",
+     "Decide whether to accept the rollout and its results to date"
+    ]
+   }
+  ]
+ },
+ "deadline": null,
+ "architect_notes": [
+  "No Design phase: the archetype's Diagnostic gate selects the initiatives; add Design if Lusitania wants to approve the retention program before rollout.",
+  "No Measurement phase: no success criteria are stated and all 13 weeks are planned; confirm the criteria and whether tracking runs past week 13.",
+  "Split of the stated 13 weeks into 5 and 8 follows the archetype's typical lengths and three workstreams; confirm the split before quoting."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Diagnostic",
+    "start": 1,
+    "end": 5
+   },
+   {
+    "phase": "Implementation",
+    "start": 6,
+    "end": 13
+   }
+  ]
+ }
+}

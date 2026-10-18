@@ -45,7 +45,7 @@ Rules:
 Each phase has:
 - `duration_weeks` {min, max}, whole weeks, from STEP 2. `duration_derived` is true only when two dates in the brief bound the stage.
 - `objective_one_line`: at most 20 words, starting with a verb: what this phase achieves for this client.
-- `gate`: the decision that closes the phase. `label` at most 22 characters ('Go/no-go on pilot', 'Findings sign-off', 'Final readout'). `decision` at most 90 characters: the one question the steering group answers there, ending with '?'. The last phase's gate approves the final result; a deadline meeting named in `timeline` (a board meeting, a budget round) falls after the plan, so word the last gate as preparing for it, never as that body deciding.
+- `gate`: the decision that closes the phase. `label` at most 22 characters ('Go/no-go on pilot', 'Findings sign-off', 'Final readout'). `decision` at most 90 characters: the one choice the steering group makes there, ending with '?': go or no-go on the next phase, which option to take forward, whether to approve the final result; never only whether findings are accepted. The last phase's gate approves the final result; a deadline meeting named in `timeline` (a board meeting, a budget round) falls after the plan, so word the last gate as preparing for it, never as that body deciding.
 
 DEPENDENCIES
 Each phase's `depends_on_assumptions` lists the open fields whose correction by the partner would change that phase's existence, length or deliverables, in this order. Never list a `stated` field.

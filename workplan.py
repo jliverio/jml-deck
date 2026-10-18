@@ -387,7 +387,9 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
     lab_size = 10 if col * step >= Inches(0.3) else 9
     for wk in range(1, total + 1, step):
         _text(s, str(wk), size=lab_size, bold=True, color=WHITE, align=PP_ALIGN.CENTER if step == 1 else PP_ALIGN.LEFT,
-              x=gx + (wk - 1) * col + (0 if step == 1 else Emu(18288)), y=yh, w=col * min(step, total - wk + 1) if step == 1 else col * step, h=_HEAD_H)
+              x=gx + (wk - 1) * col + (0 if step == 1 else Emu(18288)), y=yh,
+              w=col * min(step, total - wk + 1) if step == 1 else max(col * min(step, total - wk + 1) - Emu(18288), col),  # last tick stays inside the grid (Oct 18)
+              h=_HEAD_H)
     yr = yh + _HEAD_H
     grid_top = yr
     grid_bottom = yr + n_rows * row_h
@@ -633,7 +635,14 @@ def governance_slides(prs, plan, section, client, per_slide=4, slide=None):
                 _text(s, _clip("With: " + ", ".join(att), int((cw - Inches(0.2)) / Inches(0.066))), size=9, italic=True, color=GREY,
                       anchor=MSO_ANCHOR.TOP, x=x, y=y + Inches(1.06), w=cw, h=Inches(0.2))
             body = _box(s, x, y + Inches(1.3), cw, Inches(1.55))
-            _bullets(body, e["agenda"], size=11)
+            # long agendas (3 items of up to 80 characters in a narrow column) step down to 10 or 9 pt (Oct 18)
+            asize = 11
+            for asize in (11, 10, 9):
+                cpl = max(10, int((cw - Inches(0.35)) / Inches(0.0075 * asize)))
+                lines = sum(-(-len(str(a)) // cpl) for a in e["agenda"])
+                if lines * Inches(0.0165 * asize) + len(e["agenda"]) * Pt(6) <= Inches(1.5):
+                    break
+            _bullets(body, e["agenda"], size=asize)
             kind_rank = {"decision_pack": 0, "design": 1, "build": 2, "analysis": 3, "enablement": 4}
             ordered = sorted([d for d in e["presents"] if d in dels], key=lambda d: (kind_rank.get(dels[d]["kind"], 9), -dels[d]["due_week"]))
             pres = [f"{d}  {dels[d]['name']}" for d in ordered]
@@ -704,7 +713,7 @@ def roadmap_slide(prs, plan, section, client, slide=None):
         # what the phase answers
         _text(s, "What it answers", size=9, bold=True, color=GREY, anchor=MSO_ANCHOR.TOP,
               x=x, y=y + chev_h + Inches(0.36), w=cw, h=Inches(0.2))
-        _text(s, _clip(p.get("objective_one_line", ""), 170), size=12, anchor=MSO_ANCHOR.TOP,
+        _text(s, _clip(p.get("objective_one_line", ""), 170), size=12 if n < 5 else 11, anchor=MSO_ANCHOR.TOP,  # 5 columns: 11 pt (Oct 18)
               x=x, y=y + chev_h + Inches(0.58), w=cw - Inches(0.1), h=Inches(1.0))
         # the decision that closes it
         gy = y + chev_h + Inches(1.6)
@@ -721,7 +730,7 @@ def roadmap_slide(prs, plan, section, client, slide=None):
         _text(s, _clip(label if short else full, gfit),
               size=11, bold=True, x=x + Inches(0.32), y=gy + Inches(0.1), w=cw - Inches(0.32), h=Inches(0.3))
         if decision:
-            _text(s, _clip((f"Week {wk} decision: " if short else "Decision: ") + decision, 190), size=11, color=NAVY, anchor=MSO_ANCHOR.TOP,
+            _text(s, _clip((f"Week {wk} decision: " if short else "Decision: ") + decision, 190), size=11 if n < 5 else 10, color=NAVY, anchor=MSO_ANCHOR.TOP,
                   x=x, y=gy + Inches(0.48), w=cw - Inches(0.1), h=Inches(1.0))
     # governance strip
     gov = plan["governance"]

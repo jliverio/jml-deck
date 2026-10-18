@@ -1,0 +1,555 @@
+{
+ "client": "Iberia Foods",
+ "basis": {
+  "governing_question": "Where can Iberia Foods identify savings of 8% of its cost base without cutting service levels?",
+  "archetype_id": "performance_improvement"
+ },
+ "total_duration_weeks": {
+  "min": 12,
+  "max": 12
+ },
+ "phases": [
+  {
+   "name": "Diagnostic",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 12,
+   "duration_weeks": {
+    "min": 12,
+    "max": 12
+   },
+   "duration_derived": false,
+   "objective_one_line": "Size the cost base by function and the savings available toward the 8% target without cutting service levels.",
+   "gate": {
+    "label": "Final readout",
+    "decision": "Sign off the savings case against the 8% target and service levels?"
+   },
+   "depends_on_assumptions": [
+    "deliverable_format",
+    "timeline",
+    "prior_attempts",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2",
+    "W3",
+    "W4",
+    "W5",
+    "W6",
+    "W7",
+    "W8",
+    "W9",
+    "W10",
+    "W11",
+    "W12"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Procurement",
+   "answers": "Where can purchasing costs fall without reducing service levels?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_week": 1,
+   "end_week": 8,
+   "follows": [],
+   "activities": [
+    "Analyze spend data by category and supplier",
+    "Interview buyers and budget owners on purchasing practice",
+    "Size savings options and test their service-level effect"
+   ],
+   "deliverable_ids": [
+    "D1"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Manufacturing",
+   "answers": "Where can production costs fall without reducing service levels?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_week": 1,
+   "end_week": 8,
+   "follows": [],
+   "activities": [
+    "Analyze production cost and output data",
+    "Interview production and maintenance staff on cost drivers",
+    "Size savings options and test their service-level effect"
+   ],
+   "deliverable_ids": [
+    "D2"
+   ]
+  },
+  {
+   "id": "W3",
+   "phase_order": 1,
+   "name": "Finance",
+   "answers": "What does the cost base consist of, and do the savings found add up to 8% of it?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 12,
+   "follows": [],
+   "activities": [
+    "Compile the cost base by function from financial records",
+    "Interview budget owners on how costs are allocated",
+    "Consolidate functional savings into one case against 8%"
+   ],
+   "deliverable_ids": [
+    "D3",
+    "D4"
+   ]
+  },
+  {
+   "id": "W4",
+   "phase_order": 1,
+   "name": "Legal",
+   "answers": "Where can legal costs fall without reducing service levels?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_week": 1,
+   "end_week": 4,
+   "follows": [],
+   "activities": [
+    "Review legal spend records and external service contracts",
+    "Interview staff who handle legal matters on workload",
+    "Size savings options and test their service-level effect"
+   ],
+   "deliverable_ids": [
+    "D5"
+   ]
+  },
+  {
+   "id": "W5",
+   "phase_order": 1,
+   "name": "Customer service",
+   "answers": "What service levels do customers get today, and what savings can customer service find without lowering them?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_week": 1,
+   "end_week": 8,
+   "follows": [],
+   "activities": [
+    "Collect service-level data and customer feedback",
+    "Interview service staff on what drives cost-to-serve",
+    "Test savings options against the service-level baseline"
+   ],
+   "deliverable_ids": [
+    "D6",
+    "D7"
+   ]
+  },
+  {
+   "id": "W6",
+   "phase_order": 1,
+   "name": "Logistics",
+   "answers": "Where can transport and distribution costs fall without reducing service levels?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_week": 2,
+   "end_week": 7,
+   "follows": [],
+   "activities": [
+    "Analyze transport cost and delivery performance data",
+    "Interview logistics staff and carriers on constraints",
+    "Size savings options and test their service-level effect"
+   ],
+   "deliverable_ids": [
+    "D8"
+   ]
+  },
+  {
+   "id": "W7",
+   "phase_order": 1,
+   "name": "Warehousing",
+   "answers": "Where can storage and handling costs fall without reducing service levels?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_week": 2,
+   "end_week": 8,
+   "follows": [],
+   "activities": [
+    "Analyze storage and handling cost and capacity data",
+    "Interview warehouse staff on handling and stock practice",
+    "Size savings options and test their service-level effect"
+   ],
+   "deliverable_ids": [
+    "D9"
+   ]
+  },
+  {
+   "id": "W8",
+   "phase_order": 1,
+   "name": "Real estate",
+   "answers": "Where can property and occupancy costs fall without reducing service levels?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_week": 2,
+   "end_week": 5,
+   "follows": [],
+   "activities": [
+    "Review property lease and occupancy documents",
+    "Interview site managers on how space is used",
+    "Size savings options and test their service-level effect"
+   ],
+   "deliverable_ids": [
+    "D10"
+   ]
+  },
+  {
+   "id": "W9",
+   "phase_order": 1,
+   "name": "HR",
+   "answers": "Where can people-related costs fall without reducing service levels?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_week": 4,
+   "end_week": 8,
+   "follows": [],
+   "activities": [
+    "Analyze headcount, payroll and absence data",
+    "Interview managers on workload and staffing practice",
+    "Size savings options and test their service-level effect"
+   ],
+   "deliverable_ids": [
+    "D11"
+   ]
+  },
+  {
+   "id": "W10",
+   "phase_order": 1,
+   "name": "IT",
+   "answers": "Where can technology costs fall without reducing service levels?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_week": 4,
+   "end_week": 7,
+   "follows": [],
+   "activities": [
+    "Review IT contracts, licenses and spend records",
+    "Interview IT staff and system users on actual use",
+    "Size savings options and test their service-level effect"
+   ],
+   "deliverable_ids": [
+    "D12"
+   ]
+  },
+  {
+   "id": "W11",
+   "phase_order": 1,
+   "name": "Sales and marketing",
+   "answers": "Where can sales and marketing costs fall without reducing service levels?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_week": 5,
+   "end_week": 10,
+   "follows": [],
+   "activities": [
+    "Analyze sales and marketing spend against results",
+    "Interview sales staff and customers on what drives demand",
+    "Size savings options and test their service-level effect"
+   ],
+   "deliverable_ids": [
+    "D13"
+   ]
+  },
+  {
+   "id": "W12",
+   "phase_order": 1,
+   "name": "Pricing",
+   "answers": "Which pricing practices add cost, and what can change without reducing service levels?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_week": 6,
+   "end_week": 10,
+   "follows": [],
+   "activities": [
+    "Analyze price, discount and margin data by customer group",
+    "Interview commercial staff on how prices are set",
+    "Size savings options and test their service-level effect"
+   ],
+   "deliverable_ids": [
+    "D14"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "Procurement spend baseline and savings options",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 8,
+   "presented_at": "Workshop 2: savings options"
+  },
+  {
+   "id": "D2",
+   "name": "Manufacturing cost baseline and savings options",
+   "kind": "analysis",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 8,
+   "presented_at": "Workshop 2: savings options"
+  },
+  {
+   "id": "D3",
+   "name": "Cost baseline by function",
+   "kind": "analysis",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 3,
+   "presented_at": "Workshop 1: cost baseline"
+  },
+  {
+   "id": "D4",
+   "name": "Consolidated savings case against the 8% target",
+   "kind": "decision_pack",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 12,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D5",
+   "name": "Legal cost baseline and savings options",
+   "kind": "analysis",
+   "workstream_id": "W4",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Workshop 1: cost baseline"
+  },
+  {
+   "id": "D6",
+   "name": "Service level baseline for testing savings",
+   "kind": "analysis",
+   "workstream_id": "W5",
+   "phase_order": 1,
+   "due_week": 3,
+   "presented_at": "Workshop 1: cost baseline"
+  },
+  {
+   "id": "D7",
+   "name": "Customer service cost findings and savings options",
+   "kind": "analysis",
+   "workstream_id": "W5",
+   "phase_order": 1,
+   "due_week": 8,
+   "presented_at": "Workshop 2: savings options"
+  },
+  {
+   "id": "D8",
+   "name": "Logistics cost baseline and savings options",
+   "kind": "analysis",
+   "workstream_id": "W6",
+   "phase_order": 1,
+   "due_week": 7,
+   "presented_at": "Workshop 2: savings options"
+  },
+  {
+   "id": "D9",
+   "name": "Warehousing cost baseline and savings options",
+   "kind": "analysis",
+   "workstream_id": "W7",
+   "phase_order": 1,
+   "due_week": 8,
+   "presented_at": "Workshop 2: savings options"
+  },
+  {
+   "id": "D10",
+   "name": "Real estate cost baseline and savings options",
+   "kind": "analysis",
+   "workstream_id": "W8",
+   "phase_order": 1,
+   "due_week": 5,
+   "presented_at": "Workshop 2: savings options"
+  },
+  {
+   "id": "D11",
+   "name": "HR cost baseline and savings options",
+   "kind": "analysis",
+   "workstream_id": "W9",
+   "phase_order": 1,
+   "due_week": 8,
+   "presented_at": "Workshop 2: savings options"
+  },
+  {
+   "id": "D12",
+   "name": "IT cost baseline and savings options",
+   "kind": "analysis",
+   "workstream_id": "W10",
+   "phase_order": 1,
+   "due_week": 7,
+   "presented_at": "Workshop 2: savings options"
+  },
+  {
+   "id": "D13",
+   "name": "Sales and marketing cost baseline and savings options",
+   "kind": "analysis",
+   "workstream_id": "W11",
+   "phase_order": 1,
+   "due_week": 10,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D14",
+   "name": "Pricing practices review and cost savings options",
+   "kind": "analysis",
+   "workstream_id": "W12",
+   "phase_order": 1,
+   "due_week": 10,
+   "presented_at": "Final readout"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 2,
+  "status_weeks": [
+   3,
+   5,
+   7,
+   11
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Align on scope, streams and the 8% target",
+    "attendees": [
+     "Marta Ruiz, CFO",
+     "COO"
+    ],
+    "presents": [],
+    "decision": "Confirm the twelve workstreams and the 8% target as the scope?",
+    "agenda": [
+     "Present the twelve workstreams, their timing and the steering meetings",
+     "Align on how the 8% target and service levels will be measured",
+     "Confirm data access and a client contact for each workstream"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "workshop",
+    "phase_order": 1,
+    "week": 4,
+    "label": "Workshop 1: cost baseline",
+    "purpose": "Review the cost baseline and service levels",
+    "attendees": [
+     "Marta Ruiz, CFO",
+     "COO"
+    ],
+    "presents": [
+     "D3",
+     "D5",
+     "D6"
+    ],
+    "decision": "Confirm the cost baseline and service levels the savings are tested against?",
+    "agenda": [
+     "Present the cost baseline by function and the service level baseline",
+     "Review the first findings and savings options from the legal stream",
+     "Confirm the basis for testing savings in the other streams"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "workshop",
+    "phase_order": 1,
+    "week": 9,
+    "label": "Workshop 2: savings options",
+    "purpose": "Review savings options by function",
+    "attendees": [
+     "Marta Ruiz, CFO",
+     "COO"
+    ],
+    "presents": [
+     "D10",
+     "D8",
+     "D12",
+     "D1",
+     "D2",
+     "D9",
+     "D11",
+     "D7"
+    ],
+    "decision": "Confirm which savings options go into the consolidated savings case?",
+    "agenda": [
+     "Present savings options from the functional streams",
+     "Review the effect of each option on service levels",
+     "Decide which options go into the consolidated savings case"
+    ]
+   },
+   {
+    "id": "G4",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 12,
+    "label": "Final readout",
+    "purpose": "Decide on the final savings case",
+    "attendees": [
+     "Marta Ruiz, CFO",
+     "COO"
+    ],
+    "presents": [
+     "D13",
+     "D14",
+     "D4"
+    ],
+    "decision": "Sign off the savings case against the 8% target and service levels?",
+    "agenda": [
+     "Present the consolidated savings case against the 8% target",
+     "Review the sales, marketing and pricing findings",
+     "Decide on sign-off of the savings case"
+    ]
+   }
+  ]
+ },
+ "deadline": null,
+ "architect_notes": [
+  "Twelve streams allow one phase, named Diagnostic as the closest fit; the brief's design work sits inside it, not in a separate Design phase.",
+  "The performance improvement archetype's Implementation phase is dropped because the brief states an assessment only, with no implementation support.",
+  "Finance carries the consolidated savings case against the 8% target because the twelve named streams leave no room for a separate consolidation stream."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Diagnostic",
+    "start": 1,
+    "end": 12
+   }
+  ]
+ }
+}

@@ -1,0 +1,125 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Claims process mapping",
+      "answers": "How do property and health claims flow from opening to settlement, and where does time accumulate?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 4,
+      "follows": [],
+      "activities": [
+        "Map the property and health claims steps and handoffs",
+        "Trace a sample of claims from opening to settlement",
+        "Review claims procedures and handling documents"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Claims staff interviews",
+      "answers": "Where do the people who handle property and health claims, and their managers, see delays and their causes?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 4,
+      "follows": [],
+      "activities": [
+        "Interview the people who handle property and health claims",
+        "Interview the COO and Head of Claims on the lean program",
+        "Synthesize interviews into delay causes by claim type"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Settlement time baseline",
+      "answers": "How long do property and health claims take to settle today, and how satisfied are customers?",
+      "traces_to": ["success_criteria:1", "success_criteria:2", "gate:1"],
+      "start_offset": 2,
+      "duration": 4,
+      "follows": ["W1"],
+      "activities": [
+        "Measure settlement time by claim type from operational data",
+        "Gather customer satisfaction results by claim type",
+        "Record current levels for both success criteria"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 1,
+      "name": "Delay root causes",
+      "answers": "What causes the delays in property and health claims, and what separates them from the 2024 motor improvement?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 4,
+      "duration": 4,
+      "follows": ["W1", "W2", "W3"],
+      "activities": [
+        "Review the 2024 lean program documents and results",
+        "Compare property and health with motor claims results",
+        "Test candidate delay causes and draft the readout findings"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 2,
+      "name": "Claims model options",
+      "answers": "Which claims operating model options address the diagnosed causes of delay in property and health claims?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 5,
+      "follows": [],
+      "activities": [
+        "Set option criteria with the COO and Head of Claims",
+        "Define claims operating model options for the workshop",
+        "Frame structure, roles, process and governance per option"
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 2,
+      "name": "Model impact assessment",
+      "answers": "How would each option, and then the chosen model, change settlement time and customer satisfaction?",
+      "traces_to": ["success_criteria:1", "success_criteria:2"],
+      "start_offset": 2,
+      "duration": 7,
+      "follows": ["W5"],
+      "activities": [
+        "Estimate settlement time effects of each option",
+        "Assess customer satisfaction risks of each option",
+        "Test the chosen model against both success criteria"
+      ]
+    },
+    {
+      "id": "W7",
+      "phase_order": 2,
+      "name": "Detailed model design",
+      "answers": "How does the chosen operating model work in detail across process, roles and governance?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 6,
+      "duration": 3,
+      "follows": ["W5"],
+      "activities": [
+        "Design process, roles and governance of the chosen option",
+        "Validate the design with claims handlers and managers",
+        "Check the design against the current claims IT system"
+      ]
+    },
+    {
+      "id": "W8",
+      "phase_order": 2,
+      "name": "Board recommendations",
+      "answers": "What recommendations and supporting case will the Board receive on the claims operating model?",
+      "traces_to": ["problem_statement", "gate:2"],
+      "start_offset": 7,
+      "duration": 3,
+      "follows": ["W6", "W7"],
+      "activities": [
+        "Draft the report with findings, model and recommendations",
+        "Prepare the Board presentation for the March 2027 meeting",
+        "Review the draft with the COO and Head of Claims"
+      ]
+    }
+  ],
+  "notes": []
+}

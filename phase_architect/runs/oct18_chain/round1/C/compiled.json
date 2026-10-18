@@ -1,0 +1,181 @@
+{
+ "client": "Vinhos do Douro Lda",
+ "basis": {
+  "governing_question": "Why did Vinhos do Douro's export margins fall in 2025, looking at pricing by export market and distributor terms?",
+  "archetype_id": "performance_improvement"
+ },
+ "total_duration_weeks": {
+  "min": 4,
+  "max": 4
+ },
+ "phases": [
+  {
+   "name": "Diagnostic",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 4,
+   "duration_weeks": {
+    "min": 4,
+    "max": 4
+   },
+   "duration_derived": false,
+   "objective_one_line": "Identify what drove the 2025 export margin decline by comparing pricing by export market and distributor terms.",
+   "gate": {
+    "label": "Final readout",
+    "decision": "Does the steering group accept the findings on the 2025 export margin decline?"
+   },
+   "depends_on_assumptions": [
+    "deliverable_format",
+    "timeline",
+    "prior_attempts",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Pricing by export market",
+   "answers": "How did realized prices and margins by export market change in 2025, and which markets drove the decline?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 4,
+   "follows": [],
+   "activities": [
+    "Analyze sales and margin data by market, 2025 vs prior year",
+    "Split the margin change into price, mix and cost effects",
+    "Interview the people who set prices in each market"
+   ],
+   "deliverable_ids": [
+    "D1"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Distributor terms",
+   "answers": "Which distributor terms differ across markets, and how much of the 2025 export margin decline do they explain?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 4,
+   "follows": [],
+   "activities": [
+    "Review distributor contracts and agreed terms by market",
+    "Analyze order and payment data to compare terms in practice",
+    "Interview the people who manage distributor relationships"
+   ],
+   "deliverable_ids": [
+    "D2",
+    "D3"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "Pricing findings by export market, 2025",
+   "kind": "decision_pack",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D2",
+   "name": "Distributor terms comparison across export markets",
+   "kind": "analysis",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 3,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D3",
+   "name": "Distributor terms findings and margin impact",
+   "kind": "decision_pack",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Final readout"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 1,
+  "status_weeks": [
+   2,
+   3
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Confirm scope, team and calendar",
+    "attendees": [
+     "CEO",
+     "Export Director"
+    ],
+    "presents": [],
+    "decision": "Does the steering group confirm the scope, team and calendar?",
+    "agenda": [
+     "Present the diagnostic objective and the two parallel workstreams",
+     "Align on data access and interview schedule for weeks 1 to 4",
+     "Confirm the team, the calendar and the week 4 final readout"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 4,
+    "label": "Final readout",
+    "purpose": "Review findings on the 2025 margin decline",
+    "attendees": [
+     "CEO",
+     "Export Director"
+    ],
+    "presents": [
+     "D1",
+     "D2",
+     "D3"
+    ],
+    "decision": "Does the steering group accept the findings on the 2025 export margin decline?",
+    "agenda": [
+     "Present pricing findings by export market for 2025",
+     "Review the distributor terms comparison and margin impact findings",
+     "Discuss open points before the steering group takes its decision"
+    ]
+   }
+  ]
+ },
+ "deadline": null,
+ "architect_notes": [
+  "Four weeks leaves room for one phase only, because a second phase would run under three weeks; confirm one phase with one closing gate.",
+  "Performance improvement is the closest archetype; its Implementation phase is dropped because the engagement type is assessment, so no fix is planned.",
+  "The two parallel workstreams, pricing by export market and distributor terms, run side by side inside the single Diagnostic phase."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Diagnostic",
+    "start": 1,
+    "end": 4
+   }
+  ]
+ }
+}

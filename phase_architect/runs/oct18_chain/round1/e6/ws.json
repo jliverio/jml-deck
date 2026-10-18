@@ -1,0 +1,50 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Branch rollout",
+      "answers": "In what order and with what readiness do the 120 branches move onto the designed model?",
+      "traces_to": ["problem_statement", "success_criteria:1", "gate:1"],
+      "start_offset": 0,
+      "duration": 24,
+      "follows": [],
+      "activities": [
+        "Sequence the 120 branches into waves using branch data",
+        "Check wave readiness with the people who run the branches",
+        "Launch waves in order after the readiness workshop"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Staff training",
+      "answers": "What must branch staff learn, and how are they trained before their branch moves to the new model?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 1,
+      "duration": 21,
+      "follows": [],
+      "activities": [
+        "Interview branch staff on how the model changes their work",
+        "Prepare training content from the designed model",
+        "Train staff ahead of each wave and check what they retain"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Performance tracking",
+      "answers": "Is each branch running the new model, and how is its performance moving against its starting point?",
+      "traces_to": ["success_criteria:1", "gate:1"],
+      "start_offset": 4,
+      "duration": 20,
+      "follows": ["W1"],
+      "activities": [
+        "Agree what counts as a branch running the new model",
+        "Set the starting position from branch operating data",
+        "Report wave results against the starting position"
+      ]
+    }
+  ],
+  "notes": []
+}

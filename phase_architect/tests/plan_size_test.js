@@ -10,15 +10,16 @@ const OUT = path.join(__dirname, 'out_plan_size');
 fs.mkdirSync(OUT, { recursive: true });
 
 const NAMES = ['Diagnostic', 'Research', 'Design', 'Handover'];
+const NAMES5 = ['Diagnostic', 'Design', 'Pilot', 'Implementation', 'Measurement'];   // five phases need assessment_and_implementation (Oct 18)
 const STREAMS = ['Pricing', 'Channel economics', 'Distributor terms', 'Customer service', 'Supply chain', 'Procurement',
   'Finance processes', 'HR and organization', 'IT and data', 'Legal and compliance', 'Brand and marketing', 'Sales operations',
   'Treasury', 'Facilities'];
 
-function brief(totalWeeks, streams) {
+function brief(totalWeeks, streams, type) {
   const f = (value, extra) => ({ value, source: value == null ? 'assumed' : 'stated', quote: value == null ? null : String(value), assumption_text: null, ...(extra || {}) });
   return {
     hard_fields: { client: f('Testco'), problem_statement: f('Testco wants to know why margins fell.') },
-    required: { engagement_type: f('assessment'), engagement_length: f(`${totalWeeks} weeks`, { weeks_min: totalWeeks, weeks_max: totalWeeks, duration_derived: false }), stakeholders: f(['COO', 'CFO']) },
+    required: { engagement_type: f(type || 'assessment'), engagement_length: f(`${totalWeeks} weeks`, { weeks_min: totalWeeks, weeks_max: totalWeeks, duration_derived: false }), stakeholders: f(['COO', 'CFO']) },
     soft_fields: { deliverable_format: f(null), timeline: f(null), prior_attempts: f(null), success_criteria: f(null), out_of_scope: f(null),
       workstreams: streams ? f(streams.names ? streams.names.join('; ') : String(streams.count), { count: streams.count }) : f(null, { count: null }) }
   };
@@ -53,14 +54,14 @@ function build(phases, perPhase, stated) {
     presents: [], decision: null, agenda: ['Confirm scope and governing question', 'Align on data access and meeting rhythm'], attendees: ['COO'] });
   phases.forEach((L, i) => {
     const order = i + 1;
-    arch.phases.push({ name: NAMES[i], order, duration_weeks: { min: L, max: L }, duration_derived: false, objective_one_line: 'Establish the facts the next decision needs.',
+    arch.phases.push({ name: (phases.length === 5 ? NAMES5 : NAMES)[i], order, duration_weeks: { min: L, max: L }, duration_derived: false, objective_one_line: 'Establish the facts the next decision needs.',
       gate: { label: 'Phase sign-off', decision: 'Do the findings stand as the basis for the next step?' }, depends_on_assumptions: [] });
     const ms = meetings(L, prevAbs - start + 1);
     const fresh = ms.filter(m => m.type !== 'checkin');
     const k = perPhase[i];
     const streams = [];
     for (let j = 0; j < k; j++) {
-      const name = stated ? (stated.names ? stated.names[j] : STREAMS[j]) : `${NAMES[i]} stream ${j + 1}`;
+      const name = stated ? (stated.names ? stated.names[j] : STREAMS[j]) : `${(phases.length === 5 ? NAMES5 : NAMES)[i]} stream ${j + 1}`;
       streams.push({ id: 'W' + (++wsN), phase_order: order, name, answers: 'What explains this part of the margin fall?', traces_to: ['problem_statement'],
         start_offset: 0, duration: L, follows: [], activities: ['Review documents and operational data', 'Interview the people who do the work'], deliverables: [] });
     }
@@ -82,7 +83,7 @@ function build(phases, perPhase, stated) {
     prevAbs = start + L - 1;
     start += L;
   });
-  return { arch, ctx: { brief: brief(total, stated), success_criteria_list: [], jargon_never: [] } };
+  return { arch, ctx: { brief: brief(total, stated, phases.length === 5 ? 'assessment_and_implementation' : null), success_criteria_list: [], jargon_never: [] } };
 }
 
 const results = [];
@@ -116,6 +117,10 @@ for (const T of [2, 4, 6, 8, 12, 13, 16, 20, 26, 39, 52]) {
 // 3. One long phase: 16 to 52 weeks need gap check-ins, and pass with them
 for (const L of [16, 19, 20, 24, 30, 52]) expect(`longphase_${L}w`, [L], [3], null, 'pass');
 expect('longphase_20w_after_another', [6, 20], [2, 3], null, 'pass');
+
+// 3b. Five phases (the four-agent chain allows 5): 15 to 52 weeks, 2 streams per phase
+for (const T of [15, 20, 26, 39, 52]) expect(`five_${String(T).padStart(2, '0')}w_2perphase`, split(T, 5), [2, 2, 2, 2, 2], null, 'pass');
+expect('five_39w_uneven', [6, 6, 8, 13, 6], [2, 2, 3, 3, 2], null, 'pass');
 
 // 4. The rules still catch what they should
 expect('catch_default_6_in_a_phase', [6, 6], [6, 6], null, 'workstreams_6');

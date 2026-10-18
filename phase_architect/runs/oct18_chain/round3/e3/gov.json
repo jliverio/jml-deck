@@ -1,0 +1,44 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Start the diagnostic and secure access",
+      "attendees": ["Board's medical director (sponsor)"],
+      "presents": [],
+      "decision": "Will the sponsor open access to waiting-time data and staff at all three hospitals?",
+      "agenda": [
+        "Align on the diagnostic objective and the three hospitals in scope",
+        "Review the data and people needed for the baseline and journey maps",
+        "Decide on access to waiting-time data and staff"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Check-in: causes of waiting",
+      "purpose": "Review evidence and set findings focus",
+      "attendees": ["Board's medical director (sponsor)"],
+      "presents": ["D1", "D2", "D3"],
+      "decision": "Which tested causes of waiting should the cross-hospital readout detail?",
+      "agenda": [
+        "Present the waiting-time baseline and patient journey maps",
+        "Review the causes of waiting tested against data",
+        "Decide which causes the cross-hospital findings detail"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Final readout",
+      "purpose": "Review findings and close the diagnostic",
+      "attendees": ["Board's medical director (sponsor)"],
+      "presents": ["D1", "D2", "D3", "D4"],
+      "decision": "Does the medical director accept the waiting-time findings as the basis for action?",
+      "agenda": [
+        "Present the cross-hospital findings readout",
+        "Review the baseline, journey maps and causes behind the findings",
+        "Decide whether the findings are the basis for action"
+      ]
+    }
+  ],
+  "notes": []
+}

@@ -1,0 +1,161 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Confirm scope, team and calendar",
+      "attendees": ["CEO", "Operations Director", "Network Maintenance Manager"],
+      "presents": [],
+      "decision": "Does the steering group confirm the scope, team and calendar for the engagement?",
+      "agenda": [
+        "Present the five phases and what each one delivers",
+        "Align on team roles and who attends each steering meeting",
+        "Confirm the steering meeting dates and the network data needed from week 1"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Check-in: water balance",
+      "purpose": "Review water balance and leakage share",
+      "attendees": ["Operations Director", "Network Maintenance Manager"],
+      "presents": ["D1"],
+      "decision": "Does the water balance need any adjustment before the loss baseline is finalized?",
+      "agenda": [
+        "Present the network water balance and leakage share",
+        "Discuss figures that need adjusting before the baseline",
+        "Confirm next steps toward the loss baseline"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Diagnostic sign-off",
+      "purpose": "Close the Diagnostic on the loss baseline",
+      "attendees": ["CEO", "Operations Director", "Network Maintenance Manager"],
+      "presents": ["D1", "D2"],
+      "decision": "Does the steering group accept the loss baseline as the basis for the program design?",
+      "agenda": [
+        "Present the loss baseline by district with locations and causes",
+        "Review the water balance and leakage share behind it",
+        "Decide whether the baseline is the basis for the program design"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Check-in: design basis",
+      "purpose": "Review routine and program targets",
+      "attendees": ["Operations Director", "Network Maintenance Manager"],
+      "presents": ["D3", "D4"],
+      "decision": "Do the routine and program targets stand as the basis for the pilot plan?",
+      "agenda": [
+        "Present the leak-detection routine with its steps and roles",
+        "Review the loss-reduction program targets and measures",
+        "Confirm what the pilot plan builds on in the weeks ahead"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Go/no-go on pilot",
+      "purpose": "Decide on program design and pilot start",
+      "attendees": ["CEO", "Operations Director", "Network Maintenance Manager"],
+      "presents": ["D3", "D4", "D5"],
+      "decision": "Does the steering group approve the program design and the pilot in two districts?",
+      "agenda": [
+        "Present the pilot plan with district selection and measurement method",
+        "Review the routine design and the program targets",
+        "Decide on the program design and the pilot in two districts"
+      ]
+    },
+    {
+      "id": "G6",
+      "label": "Workshop 1: pilot readiness",
+      "purpose": "Review readiness before the pilot goes live",
+      "attendees": ["Operations Director", "Network Maintenance Manager"],
+      "presents": ["D6", "D7"],
+      "decision": "Is the pilot ready to go live in the two districts?",
+      "agenda": [
+        "Present the crew training record and readiness check",
+        "Review pre-pilot loss levels for the two districts",
+        "Confirm the go-live arrangements for the two districts"
+      ]
+    },
+    {
+      "id": "G7",
+      "label": "Go/no-go on rollout",
+      "purpose": "Decide on rollout from pilot results",
+      "attendees": ["CEO", "Operations Director", "Network Maintenance Manager"],
+      "presents": ["D8", "D9"],
+      "decision": "Do the pilot results in two districts justify rolling the program out to the others?",
+      "agenda": [
+        "Present the pilot results against pre-pilot loss levels",
+        "Review the go-live record and operation log for the two districts",
+        "Decide whether the program rolls out to the other districts"
+      ]
+    },
+    {
+      "id": "G8",
+      "label": "Workshop 2: wave readiness",
+      "purpose": "Review readiness before the first wave",
+      "attendees": ["Operations Director", "Network Maintenance Manager"],
+      "presents": ["D10"],
+      "decision": "Is the rollout ready to go live in the first wave of districts?",
+      "agenda": [
+        "Present the rollout wave plan and training material",
+        "Review the order of the waves and what each wave needs",
+        "Confirm the conditions for first-wave go-live"
+      ]
+    },
+    {
+      "id": "G9",
+      "label": "Workshop 3: wave results",
+      "purpose": "Review first-wave results before more waves",
+      "attendees": ["Operations Director", "Network Maintenance Manager"],
+      "presents": ["D12"],
+      "decision": "Should the remaining waves proceed as planned, given the first-wave results?",
+      "agenda": [
+        "Present the first-wave results report from the district rollout",
+        "Discuss lessons for training and coaching in later waves",
+        "Confirm the plan for the remaining districts"
+      ]
+    },
+    {
+      "id": "G10",
+      "label": "Rollout completion",
+      "purpose": "Close the rollout on go-live records",
+      "attendees": ["CEO", "Operations Director", "Network Maintenance Manager"],
+      "presents": ["D11", "D13"],
+      "decision": "Is the new routine running in every district, so measurement can start?",
+      "agenda": [
+        "Present the go-live record for each remaining district",
+        "Review the crew training and coaching record by wave",
+        "Decide whether the routine runs in every district"
+      ]
+    },
+    {
+      "id": "G11",
+      "label": "Check-in: loss tracking",
+      "purpose": "Review loss and routine-use tracking",
+      "attendees": ["Operations Director", "Network Maintenance Manager"],
+      "presents": ["D14"],
+      "decision": "Does the tracker cover both success criteria well enough for the results report?",
+      "agenda": [
+        "Present the loss and routine-use tracker against the baseline",
+        "Review loss and adoption figures against the two success criteria",
+        "Confirm what the results report needs to cover"
+      ]
+    },
+    {
+      "id": "G12",
+      "label": "Final readout",
+      "purpose": "Close the engagement on measured results",
+      "attendees": ["CEO", "Operations Director", "Network Maintenance Manager"],
+      "presents": ["D14", "D15"],
+      "decision": "Does the steering group accept the measured results as the final result?",
+      "agenda": [
+        "Present the results report for the final readout",
+        "Review loss and routine use against the baseline",
+        "Decide whether the measured results are accepted as final"
+      ]
+    }
+  ],
+  "notes": []
+}

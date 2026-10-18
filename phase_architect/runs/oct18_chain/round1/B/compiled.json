@@ -1,0 +1,485 @@
+{
+ "client": "Atlântico Seguros",
+ "basis": {
+  "governing_question": "Why do property and health claims take too long to settle, and what claims operating model should Atlântico Seguros move to?",
+  "archetype_id": "operating_model_redesign"
+ },
+ "total_duration_weeks": {
+  "min": 14,
+  "max": 18
+ },
+ "phases": [
+  {
+   "name": "Diagnostic",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 8,
+   "duration_weeks": {
+    "min": 6,
+    "max": 8
+   },
+   "duration_derived": false,
+   "objective_one_line": "Find why property and health claims take too long to settle, compared with the 2024 motor claims results.",
+   "gate": {
+    "label": "Diagnostic readout",
+    "decision": "Does the steering group accept the diagnostic findings on property and health claims?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2",
+    "W3",
+    "W4"
+   ]
+  },
+  {
+   "name": "Design",
+   "order": 2,
+   "start_week": 9,
+   "end_week": 18,
+   "duration_weeks": {
+    "min": 8,
+    "max": 10
+   },
+   "duration_derived": false,
+   "objective_one_line": "Define the claims operating model for property and health claims and the recommendations the Board will receive.",
+   "gate": {
+    "label": "Final readout",
+    "decision": "Are the report and Board presentation ready for the March 15, 2027 Board meeting?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length"
+   ],
+   "workstream_ids": [
+    "W5",
+    "W6",
+    "W7",
+    "W8"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Claims process mapping",
+   "answers": "How do property and health claims flow from opening to settlement, and where does time accumulate?",
+   "traces_to": [
+    "problem_statement"
+   ],
+   "start_week": 1,
+   "end_week": 4,
+   "follows": [],
+   "activities": [
+    "Map the property and health claims steps and handoffs",
+    "Trace a sample of claims from opening to settlement",
+    "Review claims procedures and handling documents"
+   ],
+   "deliverable_ids": [
+    "D1"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Claims staff interviews",
+   "answers": "Where do the people who handle property and health claims, and their managers, see delays and their causes?",
+   "traces_to": [
+    "problem_statement"
+   ],
+   "start_week": 1,
+   "end_week": 4,
+   "follows": [],
+   "activities": [
+    "Interview the people who handle property and health claims",
+    "Interview the COO and Head of Claims on the lean program",
+    "Synthesize interviews into delay causes by claim type"
+   ],
+   "deliverable_ids": [
+    "D2"
+   ]
+  },
+  {
+   "id": "W3",
+   "phase_order": 1,
+   "name": "Settlement time baseline",
+   "answers": "How long do property and health claims take to settle today, and how satisfied are customers?",
+   "traces_to": [
+    "success_criteria:1",
+    "success_criteria:2",
+    "gate:1"
+   ],
+   "start_week": 3,
+   "end_week": 6,
+   "follows": [
+    "W1"
+   ],
+   "activities": [
+    "Measure settlement time by claim type from operational data",
+    "Gather customer satisfaction results by claim type",
+    "Record current levels for both success criteria"
+   ],
+   "deliverable_ids": [
+    "D3"
+   ]
+  },
+  {
+   "id": "W4",
+   "phase_order": 1,
+   "name": "Delay root causes",
+   "answers": "What causes the delays in property and health claims, and what separates them from the 2024 motor improvement?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 5,
+   "end_week": 8,
+   "follows": [
+    "W1",
+    "W2",
+    "W3"
+   ],
+   "activities": [
+    "Review the 2024 lean program documents and results",
+    "Compare property and health with motor claims results",
+    "Test candidate delay causes and draft the readout findings"
+   ],
+   "deliverable_ids": [
+    "D4"
+   ]
+  },
+  {
+   "id": "W5",
+   "phase_order": 2,
+   "name": "Claims model options",
+   "answers": "Which claims operating model options address the diagnosed causes of delay in property and health claims?",
+   "traces_to": [
+    "problem_statement"
+   ],
+   "start_week": 9,
+   "end_week": 13,
+   "follows": [],
+   "activities": [
+    "Set option criteria with the COO and Head of Claims",
+    "Define claims operating model options for the workshop",
+    "Frame structure, roles, process and governance per option"
+   ],
+   "deliverable_ids": [
+    "D5"
+   ]
+  },
+  {
+   "id": "W6",
+   "phase_order": 2,
+   "name": "Model impact assessment",
+   "answers": "How would each option, and then the chosen model, change settlement time and customer satisfaction?",
+   "traces_to": [
+    "success_criteria:1",
+    "success_criteria:2"
+   ],
+   "start_week": 11,
+   "end_week": 17,
+   "follows": [
+    "W5"
+   ],
+   "activities": [
+    "Estimate settlement time effects of each option",
+    "Assess customer satisfaction risks of each option",
+    "Test the chosen model against both success criteria"
+   ],
+   "deliverable_ids": [
+    "D6",
+    "D7"
+   ]
+  },
+  {
+   "id": "W7",
+   "phase_order": 2,
+   "name": "Detailed model design",
+   "answers": "How does the chosen operating model work in detail across process, roles and governance?",
+   "traces_to": [
+    "problem_statement"
+   ],
+   "start_week": 15,
+   "end_week": 17,
+   "follows": [
+    "W5"
+   ],
+   "activities": [
+    "Design process, roles and governance of the chosen option",
+    "Validate the design with claims handlers and managers",
+    "Check the design against the current claims IT system"
+   ],
+   "deliverable_ids": [
+    "D8"
+   ]
+  },
+  {
+   "id": "W8",
+   "phase_order": 2,
+   "name": "Board recommendations",
+   "answers": "What recommendations and supporting case will the Board receive on the claims operating model?",
+   "traces_to": [
+    "problem_statement",
+    "gate:2"
+   ],
+   "start_week": 16,
+   "end_week": 18,
+   "follows": [
+    "W6",
+    "W7"
+   ],
+   "activities": [
+    "Draft the report with findings, model and recommendations",
+    "Prepare the Board presentation for the March 2027 meeting",
+    "Review the draft with the COO and Head of Claims"
+   ],
+   "deliverable_ids": [
+    "D9",
+    "D10"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "Property and health claims process baseline",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Workshop 1: first findings"
+  },
+  {
+   "id": "D2",
+   "name": "Interview synthesis of delay causes by claim type",
+   "kind": "analysis",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Workshop 1: first findings"
+  },
+  {
+   "id": "D3",
+   "name": "Settlement time and customer satisfaction baseline",
+   "kind": "analysis",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 6,
+   "presented_at": "Diagnostic readout"
+  },
+  {
+   "id": "D4",
+   "name": "Diagnostic findings on property and health claim delays",
+   "kind": "decision_pack",
+   "workstream_id": "W4",
+   "phase_order": 1,
+   "due_week": 8,
+   "presented_at": "Diagnostic readout"
+  },
+  {
+   "id": "D5",
+   "name": "Claims operating model options",
+   "kind": "design",
+   "workstream_id": "W5",
+   "phase_order": 2,
+   "due_week": 13,
+   "presented_at": "Workshop 2: model options"
+  },
+  {
+   "id": "D6",
+   "name": "Settlement time and satisfaction effects by option",
+   "kind": "analysis",
+   "workstream_id": "W6",
+   "phase_order": 2,
+   "due_week": 14,
+   "presented_at": "Workshop 2: model options"
+  },
+  {
+   "id": "D7",
+   "name": "Chosen model tested against both success criteria",
+   "kind": "analysis",
+   "workstream_id": "W6",
+   "phase_order": 2,
+   "due_week": 17,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D8",
+   "name": "Detailed design of the chosen claims operating model",
+   "kind": "design",
+   "workstream_id": "W7",
+   "phase_order": 2,
+   "due_week": 17,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D9",
+   "name": "Written report on the claims operating model",
+   "kind": "decision_pack",
+   "workstream_id": "W8",
+   "phase_order": 2,
+   "due_week": 18,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D10",
+   "name": "Board presentation for the March 2027 Board meeting",
+   "kind": "decision_pack",
+   "workstream_id": "W8",
+   "phase_order": 2,
+   "due_week": 18,
+   "presented_at": "Final readout"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 2,
+  "status_weeks": [
+   3,
+   7,
+   9,
+   11,
+   13,
+   15,
+   17
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Confirm scope, team and calendar",
+    "attendees": [
+     "COO",
+     "Head of Claims"
+    ],
+    "presents": [],
+    "decision": "Does the steering group confirm the scope, team and calendar?",
+    "agenda": [
+     "Present the objectives and the two-phase plan",
+     "Align on the project team and the meeting calendar",
+     "Confirm scope, success criteria and the Board date"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "workshop",
+    "phase_order": 1,
+    "week": 5,
+    "label": "Workshop 1: first findings",
+    "purpose": "Review process baseline and interviews",
+    "attendees": [
+     "COO",
+     "Head of Claims"
+    ],
+    "presents": [
+     "D1",
+     "D2"
+    ],
+    "decision": "Which delay causes should the root cause analysis prioritize?",
+    "agenda": [
+     "Present the property and health claims process baseline",
+     "Review interview synthesis of delay causes by claim type",
+     "Discuss which causes need root cause analysis"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 8,
+    "label": "Diagnostic readout",
+    "purpose": "Close Phase 1 on the diagnostic findings",
+    "attendees": [
+     "COO",
+     "Head of Claims"
+    ],
+    "presents": [
+     "D3",
+     "D4"
+    ],
+    "decision": "Does the steering group accept the diagnostic findings on property and health claims?",
+    "agenda": [
+     "Present diagnostic findings on property and health",
+     "Review the settlement time and satisfaction baseline",
+     "Discuss the comparison with the 2024 motor claims results"
+    ]
+   },
+   {
+    "id": "G4",
+    "type": "workshop",
+    "phase_order": 2,
+    "week": 14,
+    "label": "Workshop 2: model options",
+    "purpose": "Review model options and their effects",
+    "attendees": [
+     "COO",
+     "Head of Claims"
+    ],
+    "presents": [
+     "D5",
+     "D6"
+    ],
+    "decision": "Which claims operating model option should be detailed and tested?",
+    "agenda": [
+     "Present the claims operating model options",
+     "Review settlement time and satisfaction effects by option",
+     "Align on the option to take into detailed design"
+    ]
+   },
+   {
+    "id": "G5",
+    "type": "gate",
+    "phase_order": 2,
+    "week": 18,
+    "label": "Final readout",
+    "purpose": "Prepare for the March 15 Board meeting",
+    "attendees": [
+     "COO",
+     "Head of Claims"
+    ],
+    "presents": [
+     "D7",
+     "D8",
+     "D9",
+     "D10"
+    ],
+    "decision": "Are the report and Board presentation ready for the March 15, 2027 Board meeting?",
+    "agenda": [
+     "Present chosen model tested against both criteria",
+     "Review the detailed design and the written report",
+     "Decide if the Board materials are ready for March 15"
+    ]
+   }
+  ]
+ },
+ "deadline": {
+  "text": "Recommendations presented to the Board on March 15, 2027",
+  "weeks_available": 19
+ },
+ "architect_notes": [
+  "Length is an estimate of 14 to 18 weeks, resting on the archetype's typical phase lengths, two claim lines and the 19 weeks available.",
+  "Not covered by the phases: ASF, new guidance on claims-handling response times for non-life insurers. Confirm whether it is in scope.",
+  "The success criteria name a settlement-time reduction that an assessment cannot measure; confirm they become targets in the recommendations, not results to track."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Diagnostic",
+    "start": 1,
+    "end": 8
+   },
+   {
+    "phase": "Design",
+    "start": 9,
+    "end": 18
+   }
+  ]
+ }
+}

@@ -1,0 +1,273 @@
+{
+ "client": "Norte Hospitals Group",
+ "basis": {
+  "governing_question": "Where and why do patient waiting times arise at Norte Hospitals Group's three hospitals?",
+  "archetype_id": "performance_improvement"
+ },
+ "total_duration_weeks": {
+  "min": 6,
+  "max": 6
+ },
+ "phases": [
+  {
+   "name": "Diagnostic",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 6,
+   "duration_weeks": {
+    "min": 6,
+    "max": 6
+   },
+   "duration_derived": false,
+   "objective_one_line": "Establish where and why patients wait across the three hospitals and how long the waits run.",
+   "gate": {
+    "label": "Final readout",
+    "decision": "Does the medical director accept the waiting-time findings for all three hospitals?"
+   },
+   "depends_on_assumptions": [
+    "deliverable_format",
+    "timeline",
+    "prior_attempts",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2",
+    "W3",
+    "W4"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Waiting-time baseline",
+   "answers": "How long do patients wait at each of the three hospitals, and how do the waits vary?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 2,
+   "follows": [],
+   "activities": [
+    "Collect operational data on waiting times at each hospital",
+    "Calculate waits by step, hospital and period",
+    "Check data quality with the people who record it"
+   ],
+   "deliverable_ids": [
+    "D1"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Patient journey mapping",
+   "answers": "At which steps of the patient journey do patients queue at each hospital?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 2,
+   "follows": [],
+   "activities": [
+    "Interview staff and patients on where waits occur",
+    "Observe patient flow at each hospital",
+    "Map the steps patients go through at each hospital"
+   ],
+   "deliverable_ids": [
+    "D2"
+   ]
+  },
+  {
+   "id": "W3",
+   "phase_order": 1,
+   "name": "Causes of waiting",
+   "answers": "Why do waits arise at those steps, and which operational factors explain them?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 3,
+   "end_week": 4,
+   "follows": [
+    "W1",
+    "W2"
+   ],
+   "activities": [
+    "Test explanations for waits against operational data",
+    "Interview the people who schedule and deliver care",
+    "Review documents that set how care is scheduled"
+   ],
+   "deliverable_ids": [
+    "D3"
+   ]
+  },
+  {
+   "id": "W4",
+   "phase_order": 1,
+   "name": "Cross-hospital findings",
+   "answers": "How do waits and their causes compare across the three hospitals, and what do the findings show?",
+   "traces_to": [
+    "gate:1",
+    "problem_statement"
+   ],
+   "start_week": 5,
+   "end_week": 6,
+   "follows": [
+    "W1",
+    "W2",
+    "W3"
+   ],
+   "activities": [
+    "Compare waits and causes across the three hospitals",
+    "Test findings with staff at each hospital",
+    "Prepare the final readout for the medical director"
+   ],
+   "deliverable_ids": [
+    "D4",
+    "D5"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "Waiting-time baseline by hospital, step and period",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 2,
+   "presented_at": "Check-in: causes of waiting"
+  },
+  {
+   "id": "D2",
+   "name": "Patient journey map for each hospital",
+   "kind": "analysis",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 2,
+   "presented_at": "Check-in: causes of waiting"
+  },
+  {
+   "id": "D3",
+   "name": "Causes of waiting by step and hospital",
+   "kind": "analysis",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Check-in: causes of waiting"
+  },
+  {
+   "id": "D4",
+   "name": "Cross-hospital comparison of waits and causes",
+   "kind": "analysis",
+   "workstream_id": "W4",
+   "phase_order": 1,
+   "due_week": 5,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D5",
+   "name": "Final readout of waiting-time findings",
+   "kind": "decision_pack",
+   "workstream_id": "W4",
+   "phase_order": 1,
+   "due_week": 6,
+   "presented_at": "Final readout"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 1,
+  "status_weeks": [
+   2,
+   3,
+   5
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Confirm scope, team and calendar",
+    "attendees": [
+     "Board's medical director (sponsor)"
+    ],
+    "presents": [],
+    "decision": "Does the medical director confirm the scope, team and calendar for the diagnostic?",
+    "agenda": [
+     "Present the diagnostic scope, workstreams and deliverables",
+     "Align on the team and the roles of the three hospitals",
+     "Confirm the meeting calendar through week 6"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "checkin",
+    "phase_order": 1,
+    "week": 4,
+    "label": "Check-in: causes of waiting",
+    "purpose": "Review baseline, journeys and causes",
+    "attendees": [
+     "Board's medical director (sponsor)"
+    ],
+    "presents": [
+     "D1",
+     "D2",
+     "D3"
+    ],
+    "decision": "Do the causes of waiting stand as the basis for the cross-hospital comparison?",
+    "agenda": [
+     "Present the waiting-time baseline and the patient journey maps",
+     "Review the causes of waiting by step and hospital",
+     "Confirm the causes that carry into the cross-hospital comparison"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 6,
+    "label": "Final readout",
+    "purpose": "Present final findings for acceptance",
+    "attendees": [
+     "Board's medical director (sponsor)"
+    ],
+    "presents": [
+     "D1",
+     "D2",
+     "D3",
+     "D4",
+     "D5"
+    ],
+    "decision": "Does the medical director accept the waiting-time findings for all three hospitals?",
+    "agenda": [
+     "Present the final readout of waiting-time findings",
+     "Review the cross-hospital comparison of waits and causes",
+     "Decide on acceptance of the findings for all three hospitals"
+    ]
+   }
+  ]
+ },
+ "deadline": null,
+ "architect_notes": [
+  "No Implementation phase: the archetype's second phase is dropped because the engagement type is stated as assessment only.",
+  "No Design phase: the brief asks for a diagnostic only, so confirm whether the client expects recommendations within the six weeks.",
+  "No success criteria were stated, so the streams trace to the problem statement and the gate decision."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Diagnostic",
+    "start": 1,
+    "end": 6
+   }
+  ]
+ }
+}

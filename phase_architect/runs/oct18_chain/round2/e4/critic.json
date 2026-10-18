@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 4,
+      "governance": 4,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W7 is marked as running after W4 and W6 but starts in week 18 while both run to week 23, so D11 scale-up options and economics (week 19) rest on only four weeks of pilot use.",
+      "Workshop 3 (week 20) decides which scale-up options go into the business case three weeks before D7 pilot results against 200 active shippers (week 23) exist.",
+      "W4 and W5 re-agree the KPIs and the target group in weeks 9-11 that W3 already put into the pilot plan D5, so the week-8 gate approves a pilot plan whose core parameters are still open.",
+      "W6 gives four weeks (weeks 11-15) to build and launch a first working freight-matching platform and only five weeks with the full pilot group (weeks 18-23) to reach 200 active shippers, and no stream owns shipper acquisition.",
+      "Workshop 2 (week 14) decides launch readiness while reviewing only D6 and D8, with no build or test deliverable on the platform itself."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W1 runs in week 1 only, so D1 hypotheses are due in the same week as the kick-off with no stakeholder interviews or data review behind them.",
+      "Workshop 3 (week 20) asks the steering group to 'confirm' findings and the final readout (week 26) to 'accept' results, so no meeting takes a real decision and the engagement never asks for a go/no-go on scale-up.",
+      "W8 is marked as running after W7 but starts in week 21 while W7 runs to week 26, and D12 business case (week 26) has one week to absorb D11 pilot results (week 25).",
+      "W5 adds D7 list of internal hires (week 13), which the brief does not ask for and the notes do not flag, and it arrives three weeks before launch, too late to hire anyone for the pilot.",
+      "The week-8 gate already clears the pilot to launch, yet Workshop 2 (week 14) re-decides go-live readiness without any build or test deliverable on the platform, which first appears as D9 in week 16."
+    ]
+  },
+  "better": "X",
+  "why": "X grounds its Design phase in stakeholder interviews and data, and ends with a genuine go/no-go on scale-up, whereas Y's one-week hypotheses stream and its non-decisions at Workshop 3 and the final readout weaken both ends of the engagement. X's main flaw, starting the scale-up case and choosing options before the pilot results, is a timing fix, while Y needs its governance rewritten."
+}

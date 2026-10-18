@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 5,
+      "workstreams": 4,
+      "deliverables": 4,
+      "governance": 4,
+      "coherence": 4
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "D3 (findings pack) sits under W2 Distributor terms although it covers both streams, so no stream owns the combined answer to the governing question.",
+      "No steering meeting falls between the week 1 kick-off and the week 4 final readout to review D1 and D2 (due week 3), so the CEO and Export Director see no findings before the gate asks them to accept them.",
+      "W1 measures margins by market while W2 measures the margin effect of each distributor term, and no activity or deliverable reconciles the two, so the same margin loss can be counted in both streams.",
+      "The kick-off decision (granting access to pricing and contract data) is taken in week 1, the same week both streams are meant to start analysing that data, so a late answer stalls both streams.",
+      "W1's question ('How did prices and margins in each export market change in 2025?') only describes the change and does not ask what drove it, which the governing 'why' question needs."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 5,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 4
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "No deliverable brings the two streams together to answer why export margins fell, yet the week 4 gate asks whether 'the findings' explain the decline.",
+      "D1 and D3 (baselines) are due in week 2, but no steering meeting reviews them until the week 4 sign-off, where they are no longer new and D2 and D4 have replaced them.",
+      "W1 covers export discounts and W2 asks where distributor terms differ by market, so both streams work on the same discount and market data and risk counting the same margin effect twice.",
+      "The week 4 gate decision ('Do the findings explain why export margins fell in 2025?') asks the client to grade the team's work instead of deciding what to do with the findings.",
+      "The kick-off decision ('Is the scope of both workstreams confirmed?') reconfirms a split the brief already states, while data access, which the kick-off actually needs, is only an agenda item with no decision attached."
+    ]
+  },
+  "better": "X",
+  "why": "X ends with a single findings pack that answers the governing question, and its final gate asks a real business decision: whether to use the findings as the basis for margin action. Y's week 2 baselines give it a better internal rhythm, but no steering meeting reviews them, its findings stay split across two documents, and its gate only asks the client to sign off on the analysis."
+}

@@ -1,0 +1,44 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Confirm scope, team and calendar",
+      "attendees": ["Board's medical director (sponsor)"],
+      "presents": [],
+      "decision": "Does the sponsor confirm the scope, team and calendar for the diagnostic?",
+      "agenda": [
+        "Confirm the scope: patient waiting times at the three hospitals",
+        "Align on team roles and how the sponsor will steer the work",
+        "Confirm the calendar: check-in in week 4, final readout in week 6"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Check-in: early findings",
+      "purpose": "Review baseline and pathway delay findings",
+      "attendees": ["Board's medical director (sponsor)"],
+      "presents": ["D1", "D2"],
+      "decision": "Which pathway steps should the causes analysis examine in most detail?",
+      "agenda": [
+        "Present the waiting-time baseline for the three hospitals",
+        "Review patient pathway delays by step and hospital",
+        "Decide which pathway steps the causes analysis examines in most detail"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Final readout",
+      "purpose": "Present the diagnostic for sponsor approval",
+      "attendees": ["Board's medical director (sponsor)"],
+      "presents": ["D1", "D2", "D3", "D4"],
+      "decision": "Does the sponsor approve the waiting-time diagnostic as the final result?",
+      "agenda": [
+        "Present the waiting-time diagnostic final readout",
+        "Review the baseline, pathway delays and causes of delay by hospital",
+        "Decide on approval of the diagnostic as the final result"
+      ]
+    }
+  ],
+  "notes": []
+}

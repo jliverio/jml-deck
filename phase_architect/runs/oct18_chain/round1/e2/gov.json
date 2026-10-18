@@ -1,0 +1,70 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Align on scope, team and calendar",
+      "attendees": ["CEO", "Chief Commercial Officer"],
+      "presents": [],
+      "decision": "Confirm the engagement scope, team and calendar?",
+      "agenda": [
+        "Present the objectives, phases and deliverables of the engagement",
+        "Align on client and project team roles",
+        "Confirm the steering calendar and next steps"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Findings sign-off",
+      "purpose": "Review diagnostic findings for sign-off",
+      "attendees": ["CEO", "Chief Commercial Officer"],
+      "presents": ["D1", "D2", "D3", "D4"],
+      "decision": "Accept the causes found for the 2025 prepaid churn rise as the basis for design?",
+      "agenda": [
+        "Present the prepaid churn baseline by customer group and tenure",
+        "Review the retention offer and store handling findings",
+        "Discuss the causes of the 2025 prepaid churn rise"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Program approval",
+      "purpose": "Review the program design and rollout plan",
+      "attendees": ["CEO", "Chief Commercial Officer"],
+      "presents": ["D5", "D6", "D7", "D8"],
+      "decision": "Approve the retention program and its rollout plan?",
+      "agenda": [
+        "Present target customer groups, churn measures and tracking rules",
+        "Review the retention offer set and the store actions",
+        "Discuss the rollout plan ahead of program approval"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Check-in: early rollout",
+      "purpose": "Review early rollout progress",
+      "attendees": ["CEO", "Chief Commercial Officer"],
+      "presents": ["D9", "D10", "D11"],
+      "decision": "Confirm the early results and the next steps to put to the final readout?",
+      "agenda": [
+        "Present live offers, store actions and the churn tracker",
+        "Review early churn movement against the diagnostic baseline",
+        "Discuss the next steps to put to the final readout"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Final readout",
+      "purpose": "Review rollout results and next steps",
+      "attendees": ["CEO", "Chief Commercial Officer"],
+      "presents": ["D9", "D10", "D11", "D12"],
+      "decision": "Accept the rollout results and the next steps for the retention program?",
+      "agenda": [
+        "Present the rollout results against the diagnostic baseline",
+        "Review live offers, store actions and the churn tracker",
+        "Decide whether to accept the results and next steps"
+      ]
+    }
+  ],
+  "notes": []
+}

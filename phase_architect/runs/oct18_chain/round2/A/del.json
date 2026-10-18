@@ -1,0 +1,103 @@
+{
+  "deliverables": [
+    {
+      "id": "D1",
+      "workstream_id": "W1",
+      "name": "Hypotheses on each blueprint component",
+      "kind": "analysis",
+      "due_week_in_phase": 1
+    },
+    {
+      "id": "D2",
+      "workstream_id": "W2",
+      "name": "Contractor buying findings for Portugal and Spain",
+      "kind": "analysis",
+      "due_week_in_phase": 4
+    },
+    {
+      "id": "D3",
+      "workstream_id": "W3",
+      "name": "Distributor overlap map and contract terms review",
+      "kind": "analysis",
+      "due_week_in_phase": 4
+    },
+    {
+      "id": "D4",
+      "workstream_id": "W4",
+      "name": "Blueprint with tested hypotheses and wireframe prototype",
+      "kind": "design",
+      "due_week_in_phase": 6
+    },
+    {
+      "id": "D5",
+      "workstream_id": "W4",
+      "name": "Pilot plan for one region",
+      "kind": "design",
+      "due_week_in_phase": 6
+    },
+    {
+      "id": "D6",
+      "workstream_id": "W5",
+      "name": "First contractor target group in the pilot region",
+      "kind": "analysis",
+      "due_week_in_phase": 2
+    },
+    {
+      "id": "D7",
+      "workstream_id": "W6",
+      "name": "Pilot KPIs agreed with stakeholder groups",
+      "kind": "enablement",
+      "due_week_in_phase": 3
+    },
+    {
+      "id": "D8",
+      "workstream_id": "W6",
+      "name": "First-wave report on repeat orders and distributors",
+      "kind": "analysis",
+      "due_week_in_phase": 9
+    },
+    {
+      "id": "D9",
+      "workstream_id": "W6",
+      "name": "Pilot record of repeat orders and distributor status",
+      "kind": "analysis",
+      "due_week_in_phase": 13
+    },
+    {
+      "id": "D10",
+      "workstream_id": "W7",
+      "name": "Readiness review for the first marketplace version",
+      "kind": "decision_pack",
+      "due_week_in_phase": 4
+    },
+    {
+      "id": "D11",
+      "workstream_id": "W7",
+      "name": "First marketplace version and launch record",
+      "kind": "build",
+      "due_week_in_phase": 8
+    },
+    {
+      "id": "D12",
+      "workstream_id": "W7",
+      "name": "Updated marketplace version with live-use issue log",
+      "kind": "build",
+      "due_week_in_phase": 12
+    },
+    {
+      "id": "D13",
+      "workstream_id": "W8",
+      "name": "Pilot evidence synthesis against success criteria",
+      "kind": "analysis",
+      "due_week_in_phase": 13
+    },
+    {
+      "id": "D14",
+      "workstream_id": "W8",
+      "name": "Scale-up business case with roadmap",
+      "kind": "decision_pack",
+      "due_week_in_phase": 14
+    }
+  ],
+  "notes": []
+}

@@ -1,0 +1,532 @@
+{
+ "client": "MetalCo",
+ "basis": {
+  "governing_question": "How can MetalCo sell directly to small and mid-size contractors in Portugal and Spain through an online marketplace without losing its regional distributors?",
+  "archetype_id": "new_venture_build"
+ },
+ "total_duration_weeks": {
+  "min": 20,
+  "max": 20
+ },
+ "phases": [
+  {
+   "name": "Design",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 6,
+   "duration_weeks": {
+    "min": 6,
+    "max": 6
+   },
+   "duration_derived": false,
+   "objective_one_line": "Define the marketplace model and pilot plan, including how it works alongside the regional distributors.",
+   "gate": {
+    "label": "Go/no-go on pilot",
+    "decision": "Does the steering group approve the blueprint and pilot plan to start the pilot?"
+   },
+   "depends_on_assumptions": [],
+   "workstream_ids": [
+    "W1",
+    "W2",
+    "W3",
+    "W4"
+   ]
+  },
+  {
+   "name": "Pilot",
+   "order": 2,
+   "start_week": 7,
+   "end_week": 20,
+   "duration_weeks": {
+    "min": 14,
+    "max": 14
+   },
+   "duration_derived": false,
+   "objective_one_line": "Run the marketplace with contractors in one region and measure first repeat orders and distributor contract status.",
+   "gate": {
+    "label": "Final readout",
+    "decision": "Does the steering group sign off the pilot results to prepare the 2027 budget round?"
+   },
+   "depends_on_assumptions": [
+    "deliverable_format",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W5",
+    "W6",
+    "W7",
+    "W8"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Marketplace hypotheses",
+   "answers": "Which hypotheses on contractors, distributors and the marketplace model must hold for direct selling to work?",
+   "traces_to": [
+    "problem_statement"
+   ],
+   "start_week": 1,
+   "end_week": 1,
+   "follows": [],
+   "activities": [
+    "Draft hypotheses for each marketplace blueprint component",
+    "Interview the CEO, Head of Sales and distributors council",
+    "Review order data from the existing B2B ordering portal"
+   ],
+   "deliverable_ids": [
+    "D1"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Contractor demand",
+   "answers": "What do small and mid-size contractors in Portugal and Spain need from an online marketplace to order repeatedly?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_week": 2,
+   "end_week": 4,
+   "follows": [
+    "W1"
+   ],
+   "activities": [
+    "Interview small and mid-size contractors on how they buy",
+    "Analyze sales data on smaller accounts by warehouse",
+    "Build and test a wireframe prototype with contractors"
+   ],
+   "deliverable_ids": [
+    "D2",
+    "D3"
+   ]
+  },
+  {
+   "id": "W3",
+   "phase_order": 1,
+   "name": "Distributor coexistence",
+   "answers": "What role could regional distributors play in the marketplace, and what would make them stay?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:2"
+   ],
+   "start_week": 2,
+   "end_week": 4,
+   "follows": [
+    "W1"
+   ],
+   "activities": [
+    "Interview regional distributors on their role and concerns",
+    "Review distributor contracts and sales data by region",
+    "Map where the marketplace and distributors overlap"
+   ],
+   "deliverable_ids": [
+    "D4"
+   ]
+  },
+  {
+   "id": "W4",
+   "phase_order": 1,
+   "name": "Blueprint and pilot plan",
+   "answers": "Which marketplace model and pilot plan does the evidence support for a pilot in one region?",
+   "traces_to": [
+    "gate:1"
+   ],
+   "start_week": 5,
+   "end_week": 6,
+   "follows": [
+    "W2",
+    "W3"
+   ],
+   "activities": [
+    "Consolidate tested hypotheses into a blueprint",
+    "Detail the pilot plan for one region",
+    "Prepare the go/no-go pack for the steering group"
+   ],
+   "deliverable_ids": [
+    "D5",
+    "D6"
+   ]
+  },
+  {
+   "id": "W5",
+   "phase_order": 2,
+   "name": "Pilot contractor group",
+   "answers": "Which contractors in the pilot region should be invited first, and what do they need to start ordering?",
+   "traces_to": [
+    "success_criteria:1"
+   ],
+   "start_week": 7,
+   "end_week": 9,
+   "follows": [],
+   "activities": [
+    "Interview pilot-region contractors on ordering needs",
+    "Analyze sales data to segment contractors in the region",
+    "Agree the first target group with the Head of Sales"
+   ],
+   "deliverable_ids": [
+    "D7"
+   ]
+  },
+  {
+   "id": "W6",
+   "phase_order": 2,
+   "name": "Distributor alignment",
+   "answers": "Which pilot KPIs and distributor role do the CEO, Head of Sales and distributors council agree on?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:2"
+   ],
+   "start_week": 7,
+   "end_week": 18,
+   "follows": [],
+   "activities": [
+    "Agree pilot KPIs with the CEO and Head of Sales",
+    "Hold regular reviews with the regional distributors council",
+    "Identify the internal roles the pilot needs"
+   ],
+   "deliverable_ids": [
+    "D8",
+    "D9"
+   ]
+  },
+  {
+   "id": "W7",
+   "phase_order": 2,
+   "name": "Marketplace build and launch",
+   "answers": "Can the marketplace be built and launched to a first group of contractors in the pilot region?",
+   "traces_to": [
+    "success_criteria:1",
+    "gate:2"
+   ],
+   "start_week": 8,
+   "end_week": 18,
+   "follows": [
+    "W5"
+   ],
+   "activities": [
+    "Review the existing B2B portal for reuse in the marketplace",
+    "Build the first marketplace version for the pilot region",
+    "Launch to the first group after the readiness review"
+   ],
+   "deliverable_ids": [
+    "D10"
+   ]
+  },
+  {
+   "id": "W8",
+   "phase_order": 2,
+   "name": "Pilot results and scale-up",
+   "answers": "Did contractors place first repeat orders, did any distributor contract end because of the marketplace, and what does scale-up need?",
+   "traces_to": [
+    "success_criteria:1",
+    "success_criteria:2",
+    "gate:2"
+   ],
+   "start_week": 13,
+   "end_week": 20,
+   "follows": [
+    "W7"
+   ],
+   "activities": [
+    "Track repeat orders from pilot contractors",
+    "Interview contractors and distributors about the pilot",
+    "Draft the scale-up case and roadmap from the results"
+   ],
+   "deliverable_ids": [
+    "D11",
+    "D12"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "Hypotheses on each marketplace blueprint component",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 1,
+   "presented_at": "Go/no-go on pilot"
+  },
+  {
+   "id": "D2",
+   "name": "Contractor demand evidence on the marketplace hypotheses",
+   "kind": "analysis",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Check-in: design findings"
+  },
+  {
+   "id": "D3",
+   "name": "Wireframe prototype tested with contractors",
+   "kind": "build",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Check-in: design findings"
+  },
+  {
+   "id": "D4",
+   "name": "Distributor overlap map and role options",
+   "kind": "analysis",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Check-in: design findings"
+  },
+  {
+   "id": "D5",
+   "name": "Marketplace blueprint with tested hypotheses",
+   "kind": "design",
+   "workstream_id": "W4",
+   "phase_order": 1,
+   "due_week": 5,
+   "presented_at": "Go/no-go on pilot"
+  },
+  {
+   "id": "D6",
+   "name": "Pilot plan and go/no-go pack for one region",
+   "kind": "decision_pack",
+   "workstream_id": "W4",
+   "phase_order": 1,
+   "due_week": 6,
+   "presented_at": "Go/no-go on pilot"
+  },
+  {
+   "id": "D7",
+   "name": "First contractor target group for the pilot region",
+   "kind": "analysis",
+   "workstream_id": "W5",
+   "phase_order": 2,
+   "due_week": 9,
+   "presented_at": "Workshop 1: pilot readiness"
+  },
+  {
+   "id": "D8",
+   "name": "Pilot KPIs agreed with the CEO and Head of Sales",
+   "kind": "enablement",
+   "workstream_id": "W6",
+   "phase_order": 2,
+   "due_week": 8,
+   "presented_at": "Workshop 1: pilot readiness"
+  },
+  {
+   "id": "D9",
+   "name": "Distributor role in the pilot agreed with the council",
+   "kind": "design",
+   "workstream_id": "W6",
+   "phase_order": 2,
+   "due_week": 10,
+   "presented_at": "Workshop 1: pilot readiness"
+  },
+  {
+   "id": "D10",
+   "name": "First marketplace version launched to pilot contractors",
+   "kind": "build",
+   "workstream_id": "W7",
+   "phase_order": 2,
+   "due_week": 12,
+   "presented_at": "Workshop 2: interim results"
+  },
+  {
+   "id": "D11",
+   "name": "Interim results on repeat orders and distributor contracts",
+   "kind": "analysis",
+   "workstream_id": "W8",
+   "phase_order": 2,
+   "due_week": 16,
+   "presented_at": "Workshop 2: interim results"
+  },
+  {
+   "id": "D12",
+   "name": "Pilot results and scale-up case with roadmap",
+   "kind": "decision_pack",
+   "workstream_id": "W8",
+   "phase_order": 2,
+   "due_week": 20,
+   "presented_at": "Final readout"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 2,
+  "status_weeks": [
+   3,
+   5,
+   7,
+   9,
+   13,
+   15,
+   17,
+   19
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Align on scope, team and calendar",
+    "attendees": [
+     "CEO",
+     "Head of Sales",
+     "Regional distributors council"
+    ],
+    "presents": [],
+    "decision": "Does the steering group confirm the scope, team and calendar for the engagement?",
+    "agenda": [
+     "Present the engagement objective and the two phases through week 20",
+     "Review the team, the steering meeting calendar and the success criteria",
+     "Confirm the scope, including how regional distributors are involved"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "checkin",
+    "phase_order": 1,
+    "week": 4,
+    "label": "Check-in: design findings",
+    "purpose": "Share demand and distributor findings",
+    "attendees": [
+     "CEO",
+     "Head of Sales",
+     "Regional distributors council"
+    ],
+    "presents": [
+     "D2",
+     "D3",
+     "D4"
+    ],
+    "decision": "Which hypotheses and distributor role options does the blueprint detail?",
+    "agenda": [
+     "Present contractor demand evidence and the tested wireframe prototype",
+     "Review the distributor overlap map and the role options",
+     "Decide which options the blueprint and pilot plan detail"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 6,
+    "label": "Go/no-go on pilot",
+    "purpose": "Decide whether to start the pilot",
+    "attendees": [
+     "CEO",
+     "Head of Sales",
+     "Regional distributors council"
+    ],
+    "presents": [
+     "D1",
+     "D2",
+     "D3",
+     "D4",
+     "D5",
+     "D6"
+    ],
+    "decision": "Does the steering group approve the blueprint and pilot plan to start the pilot?",
+    "agenda": [
+     "Present the marketplace blueprint and the pilot plan for one region",
+     "Review how the pilot works alongside the regional distributors",
+     "Decide on the go/no-go to start the pilot"
+    ]
+   },
+   {
+    "id": "G4",
+    "type": "workshop",
+    "phase_order": 2,
+    "week": 11,
+    "label": "Workshop 1: pilot readiness",
+    "purpose": "Review readiness before the pilot goes live",
+    "attendees": [
+     "CEO",
+     "Head of Sales",
+     "Regional distributors council"
+    ],
+    "presents": [
+     "D7",
+     "D8",
+     "D9"
+    ],
+    "decision": "Is the pilot ready to go live with the target group, KPIs and distributor role?",
+    "agenda": [
+     "Present the target contractor group, the pilot KPIs and the distributor role",
+     "Review launch readiness of the first marketplace version",
+     "Decide whether the pilot is ready to go live"
+    ]
+   },
+   {
+    "id": "G5",
+    "type": "workshop",
+    "phase_order": 2,
+    "week": 16,
+    "label": "Workshop 2: interim results",
+    "purpose": "Review interim results and the scale-up case",
+    "attendees": [
+     "CEO",
+     "Head of Sales",
+     "Regional distributors council"
+    ],
+    "presents": [
+     "D10",
+     "D11"
+    ],
+    "decision": "Which scale-up options should the final readout case detail?",
+    "agenda": [
+     "Present interim results on repeat orders and distributor contracts",
+     "Review the first marketplace version launched to pilot contractors",
+     "Discuss the emerging scale-up case and roadmap ahead of the final readout"
+    ]
+   },
+   {
+    "id": "G6",
+    "type": "gate",
+    "phase_order": 2,
+    "week": 20,
+    "label": "Final readout",
+    "purpose": "Sign off pilot results, prepare budget round",
+    "attendees": [
+     "CEO",
+     "Head of Sales",
+     "Regional distributors council"
+    ],
+    "presents": [
+     "D12"
+    ],
+    "decision": "Does the steering group sign off the pilot results to prepare the 2027 budget round?",
+    "agenda": [
+     "Present the pilot results and the scale-up case with roadmap",
+     "Review repeat orders and distributor contract status against the criteria",
+     "Decide the sign-off and what carries into the 2027 budget round preparation"
+    ]
+   }
+  ]
+ },
+ "deadline": null,
+ "architect_notes": [
+  "The 6-week Design and 14-week Pilot split of the stated 20 weeks is our estimate; confirm 14 weeks is enough for repeat orders.",
+  "The marketplace is new, so the plan stops at the pilot; rollout to other regions and markets is not in these phases.",
+  "Not covered by the phases: European Commission, digital product passports under Construction Products Regulation. Confirm whether it is in scope."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Design",
+    "start": 1,
+    "end": 6
+   },
+   {
+    "phase": "Pilot",
+    "start": 7,
+    "end": 20
+   }
+  ]
+ }
+}

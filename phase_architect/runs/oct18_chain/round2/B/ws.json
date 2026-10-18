@@ -1,0 +1,125 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Claims flow mapping",
+      "answers": "Where do property and health claims wait, loop or change hands between intake and settlement?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 0,
+      "duration": 5,
+      "follows": [],
+      "activities": [
+        "Map each step of property and health claims handling",
+        "Walk through live cases with the people who handle them",
+        "Review claims handling documents and procedures"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Staff and customer views",
+      "answers": "What do claims staff and customers experience as the main delays and frustrations in settlement?",
+      "traces_to": ["problem_statement", "success_criteria:2", "gate:1"],
+      "start_offset": 0,
+      "duration": 4,
+      "follows": [],
+      "activities": [
+        "Interview the people who handle property and health claims",
+        "Interview customers whose claims were recently settled",
+        "Review customer satisfaction results on settled claims"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Motor program comparison",
+      "answers": "What did the 2024 motor lean program change, and why did it not reach property and health claims?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 1,
+      "duration": 4,
+      "follows": [],
+      "activities": [
+        "Review documents on the 2024 lean program",
+        "Interview the people who ran the motor program",
+        "Compare motor and property and health handling data"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 1,
+      "name": "Settlement time and causes",
+      "answers": "How long do property and health claims take to settle, and which causes explain the delay?",
+      "traces_to": ["success_criteria:1", "gate:1"],
+      "start_offset": 3,
+      "duration": 5,
+      "follows": ["W1"],
+      "activities": [
+        "Measure time per step from operational claims data",
+        "Test candidate causes against case files and staff views",
+        "Rank the causes by the settlement time they account for"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 2,
+      "name": "Target model options",
+      "answers": "Which claims operating models could remove the diagnosed causes of delay in property and health claims?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 5,
+      "follows": [],
+      "activities": [
+        "Define options for organizing property and health claims",
+        "Compare options against the diagnosed causes of delay",
+        "Prepare options and trade-offs for the workshop"
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 2,
+      "name": "Detailed model design",
+      "answers": "How would the chosen model run for property and health claims: roles, process flow and decision rights?",
+      "traces_to": ["problem_statement", "gate:2"],
+      "start_offset": 5,
+      "duration": 3,
+      "follows": ["W5"],
+      "activities": [
+        "Detail roles, process flow and decision rights",
+        "Fit the design to the current claims IT system",
+        "Review the draft design with the people who handle claims"
+      ]
+    },
+    {
+      "id": "W7",
+      "phase_order": 2,
+      "name": "Model test against criteria",
+      "answers": "Does the chosen model show it can shorten settlement time without lowering customer satisfaction?",
+      "traces_to": ["success_criteria:1", "success_criteria:2", "gate:2"],
+      "start_offset": 5,
+      "duration": 4,
+      "follows": ["W5"],
+      "activities": [
+        "Estimate the settlement time effect from baseline data",
+        "Check customer impact against satisfaction baseline",
+        "Document risks to settlement time and satisfaction"
+      ]
+    },
+    {
+      "id": "W8",
+      "phase_order": 2,
+      "name": "Transition roadmap",
+      "answers": "What steps, sequence and change actions move property and health claims from today's handling to the chosen model?",
+      "traces_to": ["problem_statement", "gate:2"],
+      "start_offset": 7,
+      "duration": 2,
+      "follows": ["W6"],
+      "activities": [
+        "Sequence the steps from today's handling to the model",
+        "Identify the change actions needed for claims staff",
+        "Prepare the roadmap section of the final report"
+      ]
+    }
+  ],
+  "notes": []
+}

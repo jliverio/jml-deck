@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 5,
+      "workstreams": 4,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 4
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "No deliverable or final readout agenda item combines W1 and W2 into one answer to the governing question, so D1 and D3 risk double counting distributor discounts that already sit inside the realized prices W1 splits into price, mix and cost.",
+      "W1 has a single deliverable, D1, due in week 4, so the pricing stream produces nothing reviewable before the final readout while W2 delivers D2 in week 3.",
+      "D1 and D3 are due in week 4, the same week as the final readout, which leaves no time for a pre-read or a draft review with the CEO and Export Director.",
+      "There is no steering meeting between the week 1 kickoff and the week 4 final readout, so emerging hypotheses are never tested with the CEO and Export Director, and D2 (week 3) is first reviewed only after D3 has superseded it.",
+      "The final readout decision 'accept the findings' is a sign-off rather than a real choice, and D1 and D3 are labelled decision_pack although no decision is attached to them."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 5,
+      "workstreams": 3,
+      "deliverables": 4,
+      "governance": 3,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "No activity in W1 or W2 compares 2025 with the prior year, so the plan can describe 2025 prices and terms but cannot show what changed to make margins fall.",
+      "W1's question on discounts and its activity comparing realized and list prices overlap with the distributor terms W2 quantifies, so D2 and D4 risk counting the same margin loss twice.",
+      "No deliverable or gate agenda item combines D2 and D4 into one answer, and no stream checks mix or cost effects, so the gate question 'Do the findings explain why export margins fell in 2025?' may have no answer if the decline came from elsewhere.",
+      "The week 4 gate decision is phrased as an analytical question rather than a decision, and it does not match the agenda item 'Decide whether the findings are signed off' or the kickoff's reference to a 'final readout'.",
+      "D1 and D3 are due in week 2 but no steering meeting reviews them until week 4, and D2 and D4 are due in the same week as the gate, so the steering group sees baselines and final findings together with no pre-read time."
+    ]
+  },
+  "better": "X",
+  "why": "X frames both streams to attribute the 2025 decline, with a prior-year comparison, a price, mix and cost split, and an explicit question on how much of the decline distributor terms explain, so its analysis can actually answer the governing question, while Y's streams have no prior-year comparison and overlap on discounts. Y has the better deliverable cadence, but adding a week 2 interim to X's W1 is a quicker fix than repairing Y's analytical framing and its gate wording."
+}

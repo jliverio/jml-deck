@@ -17,7 +17,7 @@ A deliverable is a tangible thing the client receives: a document, a model, a pl
 - `id`: D1, D2, ... in workstream order. `workstream_id`: the workstream that hands it over.
 - `name`: at most 60 characters, a noun phrase for the thing ('Supplier cost baseline by category'), never an activity ('Analyze suppliers') and never a state of the world ('Model live in all branches', 'Staff trained'): name what the client receives as evidence of it ('Go-live record for each branch', 'Training materials and attendance record').
 - `kind`: analysis (evidence or findings), design (a model, blueprint, option set, plan), build (something working: a prototype, a first version, a tool), decision_pack (what a gate decides on: a business case, a recommendation), enablement (people, hires, training, KPIs agreed).
-- Every gate decides on something: the workstream that runs into each phase's last week hands over the decision_pack or the design that the gate decides on.
+- Every gate decides on something: the workstream that runs into each phase's last week hands over the decision_pack or the design that the gate decides on. When the phase's streams answer separate parts of the question, that one deliverable brings their findings together into the answer the gate decides on; separate packs per stream leave the steering group to combine them.
 - When `deliverable_format` is stated, the final phase's decision_pack takes that medium.
 
 DUE WEEKS
@@ -25,7 +25,7 @@ DUE WEEKS
 - Earlier when other work or a meeting needs it: KPIs, a target group or a plan that later work runs against are due early; interim findings are due by the week of the workshop that reviews them. A plan whose KPIs arrive at the end cannot measure anything.
 - Every meeting after the kick-off (check-in, workshop or gate) needs something new to review: for each one, at least one deliverable is due after the previous meeting and no later than its own week. A check-in in a long phase reviews first results or progress (a first-wave report, an interim finding). Walk the meetings in order and confirm it.
 - When a workstream `follows` another and starts before that one ends, the earlier stream hands over an interim result: give it a deliverable due before the follower's first week.
-- What a workshop decides on is due by the week before it when the workstream's weeks allow, so the steering group can read it first. Spread the due weeks: in each phase, at most half of the phase's deliverables (or 2, when that is more) fall due in the gate week; the rest arrive as the work produces them.
+- What a workshop or gate decides on is due by the week before it when the workstream's weeks allow and the phase runs longer than 4 weeks, so the steering group can read it first. Spread the due weeks: in each phase, at most half of the phase's deliverables (or 2, when that is more) fall due in the gate week; the rest arrive as the work produces them.
 - In a Pilot or Implementation phase, what goes live is due after the phase's first workshop, which reviews readiness.
 
 NOTES

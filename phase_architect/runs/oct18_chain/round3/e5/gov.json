@@ -1,0 +1,44 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Start the diagnostic and secure data access",
+      "attendees": ["CEO", "Export Director"],
+      "presents": [],
+      "decision": "Will the CEO and Export Director open access to export pricing, invoice and payment data?",
+      "agenda": [
+        "Present the question on 2025 export margins and the 8-week diagnostic",
+        "Discuss the pricing, invoice and payment data the work needs",
+        "Confirm who supplies the data and who the team speaks with"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Workshop: first findings",
+      "purpose": "Review first price and distributor findings",
+      "attendees": ["CEO", "Export Director"],
+      "presents": ["D1", "D3"],
+      "decision": "Which markets and distributor terms should the final findings detail?",
+      "agenda": [
+        "Present interim 2025 price and margin by export market",
+        "Present distributor terms checked against invoices and payments",
+        "Discuss which markets and terms the final findings should detail"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Final readout",
+      "purpose": "Present findings and close the diagnostic",
+      "attendees": ["CEO", "Export Director"],
+      "presents": ["D2", "D4"],
+      "decision": "Do the CEO and Export Director accept the findings on why export margins fell?",
+      "agenda": [
+        "Present the findings on why 2025 export margins fell",
+        "Review the pricing practice and price list review by market",
+        "Decide whether to accept the findings"
+      ]
+    }
+  ],
+  "notes": []
+}

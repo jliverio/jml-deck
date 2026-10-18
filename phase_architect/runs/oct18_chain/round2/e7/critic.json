@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 5,
+      "workstreams": 4,
+      "deliverables": 4,
+      "governance": 4,
+      "coherence": 4
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "The Diagnostic (W1, W2) never looks at how crews find and fix leaks today, so W3 designs the new leak-detection routine without a baseline of current practice.",
+      "The week-20 go/no-go on rollout reviews D8 and D9, both due in week 20 itself, after only four weeks of pilot operation (W7, weeks 17-20), which leaves no time to digest the results and gives thin evidence that losses fell.",
+      "Workshop 1 (week 17) asks whether the pilot is ready to go live in the same week W7 starts running it, and Workshop 2 (week 25) asks the same about the first wave in the week W10 goes live, so a 'no' cannot change anything.",
+      "The CEO approves the rollout at week 20 without seeing any rollout plan, because the wave plan D10 only arrives in week 23 and goes to a workshop (week 25) without the CEO.",
+      "D1 is due in week 2 although W1 runs to week 3, W2 and W4 are marked 'after' W1 and W3 but start in their predecessor's last week, and D13 (a go-live record) is labeled a decision_pack."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 2,
+      "workstreams": 3,
+      "deliverables": 2,
+      "governance": 3,
+      "coherence": 2
+    },
+    "verdict": "No",
+    "defects": [
+      "Phase 1 merges the brief's stated 6-week Diagnostic and 6-week Design into one 12-week Design phase on the unsupported grounds that 'plans allow four', which cuts the diagnostic to weeks 1-4 and removes any sign-off gate on the loss baseline.",
+      "D7 and D11 ('Trained crews') and D8, D12 and D13 ('Routine running...') describe states rather than things the client receives, and D8 is due in week 18, one week after the pilot goes live.",
+      "W7 starts comparing pilot losses with the baseline in week 18, one week into operation, and is marked 'after W6' although it falls entirely inside W6 (weeks 17-20), and the same contradiction appears in W10 'after W9' (inside weeks 25-33) and in W4 'after W3' (two-week overlap).",
+      "The CEO is listed at all 11 meetings, including crew-readiness workshops and the week-37 check-in, so the plan never separates decision gates from operational reviews.",
+      "D14, the rollout tracker, is due in week 26, the first week of the eight-week W10 tracking stream, while W7 combines two questions (pilot results and rollout plan) in one stream and the pre-pilot loss levels reviewed at Workshop 3 have no deliverable."
+    ]
+  },
+  "better": "X",
+  "why": "X follows the brief's five stated stages and lengths exactly, gives each stage a gate, keeps the CEO for gates and Ops/Maintenance for check-ins, and its defects are fixable timing edits. Y has some better choices (a current-practice diagnosis, the rollout plan approved at the rollout gate, readiness decisions in the week before go-live), but it drops a stated stage on an invented constraint, lists states as deliverables and contradicts its own dependencies."
+}

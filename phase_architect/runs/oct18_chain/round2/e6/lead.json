@@ -1,0 +1,32 @@
+{
+  "basis": {
+    "governing_question": "How does Banco Atlântico get its new branch operating model running in all 120 branches by week 24?",
+    "archetype_id": "operating_model_redesign"
+  },
+  "phases": [
+    {
+      "name": "Implementation",
+      "order": 1,
+      "duration_weeks": {
+        "min": 24,
+        "max": 24
+      },
+      "duration_derived": false,
+      "objective_one_line": "Roll out the new branch operating model to all 120 branches, with staff training and performance tracking running alongside.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Do all 120 branches run the new model, and is the rollout accepted as complete?"
+      },
+      "depends_on_assumptions": [
+        "deliverable_format",
+        "timeline",
+        "prior_attempts",
+        "out_of_scope"
+      ]
+    }
+  ],
+  "architect_notes": [
+    "No Change & Training or Measurement phase: the brief names one 24-week rollout phase, so training and tracking run as workstreams inside Implementation.",
+    "Archetype departure: Diagnostic and Design from operating_model_redesign are dropped because the brief says the model is already designed; Implementation is added."
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Pricing by export market",
+      "answers": "How did realized prices and margins move in each export market in 2025, and where did they fall most?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 0,
+      "duration": 8,
+      "follows": [],
+      "activities": [
+        "Analyze 2025 sales and margin data by export market",
+        "Interview the people who set and approve export prices",
+        "Review price lists and pricing documents by market"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Distributor terms",
+      "answers": "How did distributor terms affect export margins in 2025, and which terms weigh most on margin?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 0,
+      "duration": 8,
+      "follows": [],
+      "activities": [
+        "Review distributor contracts and agreed terms",
+        "Analyze invoice and payment data against agreed terms",
+        "Interview staff who manage distributor relationships"
+      ]
+    }
+  ],
+  "notes": [
+    "Neither stream covers the cost side of export margins; the plan examines only pricing by market and distributor terms."
+  ]
+}

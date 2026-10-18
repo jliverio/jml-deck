@@ -1,0 +1,32 @@
+{
+  "basis": {
+    "governing_question": "Where and why do patient waiting times arise at Norte Hospitals Group's three hospitals?",
+    "archetype_id": "performance_improvement"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": {
+        "min": 6,
+        "max": 6
+      },
+      "duration_derived": false,
+      "objective_one_line": "Establish where and why patients wait across the three hospitals and how long the waits run.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Does the medical director accept the waiting-time findings for all three hospitals?"
+      },
+      "depends_on_assumptions": [
+        "deliverable_format",
+        "timeline",
+        "prior_attempts",
+        "out_of_scope"
+      ]
+    }
+  ],
+  "architect_notes": [
+    "No Implementation phase: the archetype's second phase is dropped because the engagement type is stated as assessment only.",
+    "No Design phase: the brief asks for a diagnostic only, so confirm whether the client expects recommendations within the six weeks."
+  ]
+}

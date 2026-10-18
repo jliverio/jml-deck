@@ -1,0 +1,125 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Marketplace hypotheses",
+      "answers": "Which hypotheses on contractors, distributors and the marketplace model must hold for direct selling to work?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 1,
+      "follows": [],
+      "activities": [
+        "Draft hypotheses for each marketplace blueprint component",
+        "Interview the CEO, Head of Sales and distributors council",
+        "Review order data from the existing B2B ordering portal"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Contractor demand",
+      "answers": "What do small and mid-size contractors in Portugal and Spain need from an online marketplace to order repeatedly?",
+      "traces_to": ["problem_statement", "success_criteria:1"],
+      "start_offset": 1,
+      "duration": 3,
+      "follows": ["W1"],
+      "activities": [
+        "Interview small and mid-size contractors on how they buy",
+        "Analyze sales data on smaller accounts by warehouse",
+        "Build and test a wireframe prototype with contractors"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Distributor coexistence",
+      "answers": "What role could regional distributors play in the marketplace, and what would make them stay?",
+      "traces_to": ["problem_statement", "success_criteria:2"],
+      "start_offset": 1,
+      "duration": 3,
+      "follows": ["W1"],
+      "activities": [
+        "Interview regional distributors on their role and concerns",
+        "Review distributor contracts and sales data by region",
+        "Map where the marketplace and distributors overlap"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 1,
+      "name": "Blueprint and pilot plan",
+      "answers": "Which marketplace model and pilot plan does the evidence support for a pilot in one region?",
+      "traces_to": ["gate:1"],
+      "start_offset": 4,
+      "duration": 2,
+      "follows": ["W2", "W3"],
+      "activities": [
+        "Consolidate tested hypotheses into a blueprint",
+        "Detail the pilot plan for one region",
+        "Prepare the go/no-go pack for the steering group"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 2,
+      "name": "Pilot contractor group",
+      "answers": "Which contractors in the pilot region should be invited first, and what do they need to start ordering?",
+      "traces_to": ["success_criteria:1"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "activities": [
+        "Interview pilot-region contractors on ordering needs",
+        "Analyze sales data to segment contractors in the region",
+        "Agree the first target group with the Head of Sales"
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 2,
+      "name": "Distributor alignment",
+      "answers": "Which pilot KPIs and distributor role do the CEO, Head of Sales and distributors council agree on?",
+      "traces_to": ["problem_statement", "success_criteria:2"],
+      "start_offset": 0,
+      "duration": 12,
+      "follows": [],
+      "activities": [
+        "Agree pilot KPIs with the CEO and Head of Sales",
+        "Hold regular reviews with the regional distributors council",
+        "Identify the internal roles the pilot needs"
+      ]
+    },
+    {
+      "id": "W7",
+      "phase_order": 2,
+      "name": "Marketplace build and launch",
+      "answers": "Can the marketplace be built and launched to a first group of contractors in the pilot region?",
+      "traces_to": ["success_criteria:1", "gate:2"],
+      "start_offset": 1,
+      "duration": 11,
+      "follows": ["W5"],
+      "activities": [
+        "Review the existing B2B portal for reuse in the marketplace",
+        "Build the first marketplace version for the pilot region",
+        "Launch to the first group after the readiness review"
+      ]
+    },
+    {
+      "id": "W8",
+      "phase_order": 2,
+      "name": "Pilot results and scale-up",
+      "answers": "Did contractors place first repeat orders, did any distributor contract end because of the marketplace, and what does scale-up need?",
+      "traces_to": ["success_criteria:1", "success_criteria:2", "gate:2"],
+      "start_offset": 6,
+      "duration": 8,
+      "follows": ["W7"],
+      "activities": [
+        "Track repeat orders from pilot contractors",
+        "Interview contractors and distributors about the pilot",
+        "Draft the scale-up case and roadmap from the results"
+      ]
+    }
+  ],
+  "notes": []
+}

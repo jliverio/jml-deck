@@ -1,0 +1,32 @@
+{
+  "basis": {
+    "governing_question": "How can Iberia Foods identify savings of 8% of its cost base without cutting service levels?",
+    "archetype_id": "performance_improvement"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": {
+        "min": 12,
+        "max": 12
+      },
+      "duration_derived": false,
+      "objective_one_line": "Diagnose the cost base across twelve workstreams and identify savings of 8% without cutting service levels.",
+      "gate": {
+        "label": "Savings sign-off",
+        "decision": "Does the steering group approve the savings findings and design as the final result?"
+      },
+      "depends_on_assumptions": [
+        "deliverable_format",
+        "timeline",
+        "prior_attempts",
+        "out_of_scope"
+      ]
+    }
+  ],
+  "architect_notes": [
+    "One phase, not the two stages the brief names: twelve workstreams over two phases would exceed 12 rows, so design work sits inside Diagnostic.",
+    "No Implementation phase: the brief states assessment only, so the performance_improvement archetype's Implementation phase is dropped."
+  ]
+}

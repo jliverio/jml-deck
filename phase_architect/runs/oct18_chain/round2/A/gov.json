@@ -1,0 +1,83 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Confirm scope, team and calendar",
+      "attendees": ["CEO", "Head of Sales", "Regional distributors council"],
+      "presents": [],
+      "decision": "Confirm the scope, team and calendar for the design phase?",
+      "agenda": [
+        "Present the engagement scope, phases and 20-week calendar",
+        "Review the success criteria for the pilot",
+        "Confirm client team, roles and meeting dates"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Check-in: design findings",
+      "purpose": "Review design findings before blueprint work",
+      "attendees": ["CEO", "Head of Sales", "Regional distributors council"],
+      "presents": ["D1", "D2", "D3"],
+      "decision": "Take these hypotheses and findings forward into blueprint design?",
+      "agenda": [
+        "Review hypotheses on each blueprint component",
+        "Present contractor buying findings for Portugal and Spain",
+        "Discuss the distributor overlap map and contract terms"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Go/no-go on pilot",
+      "purpose": "Decide on pilot launch from the blueprint",
+      "attendees": ["CEO", "Head of Sales", "Regional distributors council"],
+      "presents": ["D1", "D2", "D3", "D4", "D5"],
+      "decision": "Launch the pilot in one region on this blueprint?",
+      "agenda": [
+        "Present the blueprint, wireframe prototype and pilot plan",
+        "Review the hypotheses, buying findings and distributor terms behind it",
+        "Decide whether to launch the pilot in one region"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Workshop 1: pilot readiness",
+      "purpose": "Check readiness before the first go-live",
+      "attendees": ["CEO", "Head of Sales", "Regional distributors council"],
+      "presents": ["D6", "D7", "D10"],
+      "decision": "Is the first marketplace version ready to go live with this group and these KPIs?",
+      "agenda": [
+        "Review the readiness of the first marketplace version",
+        "Present the first contractor target group and pilot KPIs",
+        "Discuss open readiness points before go-live"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Workshop 2: first wave",
+      "purpose": "Review first-wave results and scale-up basis",
+      "attendees": ["CEO", "Head of Sales", "Regional distributors council"],
+      "presents": ["D8", "D11"],
+      "decision": "Confirm the first-wave evidence as the basis for the scale-up case?",
+      "agenda": [
+        "Present the first-wave report on repeat orders and distributors",
+        "Review the first marketplace version and its launch record",
+        "Discuss what the evidence so far means for the scale-up case"
+      ]
+    },
+    {
+      "id": "G6",
+      "label": "Final readout",
+      "purpose": "Close the pilot and prepare the budget round",
+      "attendees": ["CEO", "Head of Sales", "Regional distributors council"],
+      "presents": ["D9", "D12", "D13", "D14"],
+      "decision": "Are the pilot evidence and scale-up case ready to take into the 2027 budget round?",
+      "agenda": [
+        "Present the pilot evidence synthesis against the success criteria",
+        "Review the pilot record, updated version and scale-up case with roadmap",
+        "Decide if the evidence is ready for the 2027 budget round"
+      ]
+    }
+  ],
+  "notes": []
+}

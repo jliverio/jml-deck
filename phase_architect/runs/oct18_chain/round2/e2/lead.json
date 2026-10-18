@@ -1,0 +1,37 @@
+{
+  "basis": {
+    "governing_question": "Why did prepaid churn rise in 2025 at Lusitania Telecom, and how can it be brought down?",
+    "archetype_id": "performance_improvement"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 5, "max": 5 },
+      "duration_derived": false,
+      "objective_one_line": "Establish why prepaid churn rose in 2025 and agree which retention initiatives Lusitania Telecom rolls out.",
+      "gate": {
+        "label": "Initiatives go/no-go",
+        "decision": "Which churn drivers and retention initiatives go forward into the rollout?"
+      },
+      "depends_on_assumptions": ["timeline", "prior_attempts"]
+    },
+    {
+      "name": "Implementation",
+      "order": 2,
+      "duration_weeks": { "min": 8, "max": 8 },
+      "duration_derived": false,
+      "objective_one_line": "Support Lusitania Telecom's rollout of the agreed retention program and track prepaid churn against the baseline.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Does the steering group accept the rollout and its results to date?"
+      },
+      "depends_on_assumptions": ["deliverable_format", "timeline", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "No Design phase: the archetype's Diagnostic gate selects the initiatives; add Design if Lusitania wants to approve the retention program before rollout.",
+    "No Measurement phase: no success criteria are stated and all 13 weeks are planned; confirm the criteria and whether tracking runs past week 13.",
+    "Split of the stated 13 weeks into 5 and 8 follows the archetype's typical lengths and three workstreams; confirm the split before quoting."
+  ]
+}

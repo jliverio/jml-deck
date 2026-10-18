@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 2
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "Workshop 2 (week 20) asks which scale-up options the business case should detail, but W8 does not start until week 21 and no options deliverable exists; the workshop reviews only D8 and D11.",
+      "The final readout (week 26) asks for approval of pilot results, but the only results deliverable is the D8 progress report from week 20 while the pilot runs to week 23, and the gate combines two decisions (results and scale-up plan) in one question.",
+      "W7 only launches and onboards 'the first shipper group', and no stream or activity grows the pilot toward the 200 active shippers that the governing question and success criterion require.",
+      "W7 build starts in week 10, three weeks after the week 7 go/no-go, which leaves four weeks to deliver the first platform version (D10, week 14); that is not realistic for a freight-matching platform.",
+      "W8 is marked 'after W7' but starts in week 21 while W7 runs to week 23, and W5 continues to week 23 with no output after D8 in week 20."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 4,
+      "governance": 3,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "Workshop 2 (week 14) decides whether the pilot is ready to launch but reviews only D6 (KPIs) and D8 (target group); no build or launch-readiness deliverable exists before D9 in week 15.",
+      "No stream or activity acquires shippers beyond the screened target group from W5, so nothing in the plan drives the pilot to the 200 active shippers in the success criterion.",
+      "W6 build starts in week 11, three weeks after the week 8 pilot gate, which leaves four weeks to launch a first working version (D9, week 15); that is not realistic for a freight-matching platform.",
+      "D11 (scale-up options and economics, week 19) relies on one to four weeks of live pilot data, and W7 is marked 'after W4, W6' but starts in week 18 while both run to week 23.",
+      "W2 bundles shipper interviews, competitor analysis and the wireframe prototype into one stream; its only evidence deliverable (D2) is due in week 4 after two weeks of interviews, and D3 is not stated as tested with shippers."
+    ]
+  },
+  "better": "Y",
+  "why": "Y's pilot phase holds together where the decisions are made: scale-up options (D11, week 19) arrive before the workshop that chooses them, final pilot results (D7, week 23) feed the last gate, and that gate asks a single scale-up go/no-go. X has the sharper Design phase (a separate tested-prototype stream and a readiness review before go-live), but in its second half the steering group is asked to choose scale-up options before W8 starts and to approve pilot results from an interim week-20 report."
+}

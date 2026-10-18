@@ -1,0 +1,518 @@
+{
+ "client": "Atlas Logistics",
+ "basis": {
+  "governing_question": "How should Atlas Logistics design and pilot a digital freight-matching platform for small shippers in Iberia?",
+  "archetype_id": "new_venture_build"
+ },
+ "total_duration_weeks": {
+  "min": 26,
+  "max": 26
+ },
+ "phases": [
+  {
+   "name": "Design",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 8,
+   "duration_weeks": {
+    "min": 8,
+    "max": 8
+   },
+   "duration_derived": false,
+   "objective_one_line": "Define the platform blueprint and pilot plan for small shippers in Iberia, tested against customer and market evidence.",
+   "gate": {
+    "label": "Go/no-go on pilot",
+    "decision": "Do we go ahead with the pilot on this blueprint and pilot plan?"
+   },
+   "depends_on_assumptions": [
+    "engagement_type",
+    "timeline",
+    "prior_attempts"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2",
+    "W3"
+   ]
+  },
+  {
+   "name": "Pilot",
+   "order": 2,
+   "start_week": 9,
+   "end_week": 26,
+   "duration_weeks": {
+    "min": 18,
+    "max": 18
+   },
+   "duration_derived": false,
+   "objective_one_line": "Build a first version, launch it to a small group of shippers, and test it against 200 active shippers.",
+   "gate": {
+    "label": "Go/no-go on scale-up",
+    "decision": "Do we scale up the platform beyond the pilot on this business case?"
+   },
+   "depends_on_assumptions": [
+    "engagement_type",
+    "deliverable_format",
+    "timeline",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W4",
+    "W5",
+    "W6",
+    "W7"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Platform hypotheses",
+   "answers": "Which assumptions about the platform and its small-shipper customers must hold for the pilot to work?",
+   "traces_to": [
+    "problem_statement"
+   ],
+   "start_week": 1,
+   "end_week": 2,
+   "follows": [],
+   "activities": [
+    "Interview the CEO, CTO and Head of Sales on platform goals",
+    "Review existing documents and operational data",
+    "Draft hypotheses for each blueprint component"
+   ],
+   "deliverable_ids": [
+    "D1"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Shipper and market evidence",
+   "answers": "What do small shippers and the Iberian freight market show about each hypothesis?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 2,
+   "end_week": 6,
+   "follows": [
+    "W1"
+   ],
+   "activities": [
+    "Interview small shippers about how they book freight today",
+    "Analyze competing offers from public documents",
+    "Build a wireframe prototype and test it with shippers"
+   ],
+   "deliverable_ids": [
+    "D2",
+    "D3"
+   ]
+  },
+  {
+   "id": "W3",
+   "phase_order": 1,
+   "name": "Blueprint and pilot plan",
+   "answers": "What is the blueprint of the platform, and how will the pilot be run to reach 200 active shippers?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1",
+    "gate:1"
+   ],
+   "start_week": 7,
+   "end_week": 8,
+   "follows": [
+    "W2"
+   ],
+   "activities": [
+    "Consolidate tested hypotheses into the platform blueprint",
+    "Plan the pilot: target group, KPIs, launch steps",
+    "Prepare the go/no-go case for the pilot decision"
+   ],
+   "deliverable_ids": [
+    "D4",
+    "D5"
+   ]
+  },
+  {
+   "id": "W4",
+   "phase_order": 2,
+   "name": "Pilot KPIs and tracking",
+   "answers": "How will the pilot's progress toward 200 active shippers be defined, agreed and tracked?",
+   "traces_to": [
+    "success_criteria:1",
+    "gate:2"
+   ],
+   "start_week": 9,
+   "end_week": 23,
+   "follows": [],
+   "activities": [
+    "Agree pilot KPIs with the CEO, CTO and Head of Sales",
+    "Track active shippers and usage from platform data",
+    "Report pilot results to the steering group"
+   ],
+   "deliverable_ids": [
+    "D6",
+    "D7"
+   ]
+  },
+  {
+   "id": "W5",
+   "phase_order": 2,
+   "name": "Target shipper group",
+   "answers": "Which small shippers in Iberia should join the first pilot group?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_week": 9,
+   "end_week": 11,
+   "follows": [],
+   "activities": [
+    "Screen small shippers by size and freight needs",
+    "Interview shortlisted shippers on willingness to join",
+    "Agree the first target group with the Head of Sales"
+   ],
+   "deliverable_ids": [
+    "D8"
+   ]
+  },
+  {
+   "id": "W6",
+   "phase_order": 2,
+   "name": "Platform build and launch",
+   "answers": "What does it take to build, launch and grow a first working version with real shippers?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_week": 11,
+   "end_week": 23,
+   "follows": [
+    "W5"
+   ],
+   "activities": [
+    "Build the first version from the pilot plan",
+    "Onboard shippers from the target group in steps",
+    "Collect shipper feedback and fix issues in each release"
+   ],
+   "deliverable_ids": [
+    "D9",
+    "D10"
+   ]
+  },
+  {
+   "id": "W7",
+   "phase_order": 2,
+   "name": "Scale-up business case",
+   "answers": "What would scaling the platform beyond the pilot require and return, given the pilot results?",
+   "traces_to": [
+    "success_criteria:1",
+    "gate:2"
+   ],
+   "start_week": 18,
+   "end_week": 26,
+   "follows": [
+    "W4",
+    "W6"
+   ],
+   "activities": [
+    "Compare pilot results with the 200 active shippers goal",
+    "Model scale-up options from pilot data",
+    "Draft the business case, implementation plan and roadmap"
+   ],
+   "deliverable_ids": [
+    "D11",
+    "D12"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "Hypotheses on each blueprint component",
+   "kind": "design",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 2,
+   "presented_at": "Workshop 1: first findings"
+  },
+  {
+   "id": "D2",
+   "name": "Customer and market evidence on the hypotheses",
+   "kind": "analysis",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Workshop 1: first findings"
+  },
+  {
+   "id": "D3",
+   "name": "Wireframe prototype of the platform",
+   "kind": "design",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 6,
+   "presented_at": "Go/no-go on pilot"
+  },
+  {
+   "id": "D4",
+   "name": "Blueprint with tested hypotheses",
+   "kind": "decision_pack",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 7,
+   "presented_at": "Go/no-go on pilot"
+  },
+  {
+   "id": "D5",
+   "name": "Detailed plan for the pilot phase",
+   "kind": "design",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 8,
+   "presented_at": "Go/no-go on pilot"
+  },
+  {
+   "id": "D6",
+   "name": "Pilot KPIs agreed with CEO, CTO and Head of Sales",
+   "kind": "enablement",
+   "workstream_id": "W4",
+   "phase_order": 2,
+   "due_week": 11,
+   "presented_at": "Workshop 2: pilot readiness"
+  },
+  {
+   "id": "D7",
+   "name": "Pilot results against 200 active shippers",
+   "kind": "analysis",
+   "workstream_id": "W4",
+   "phase_order": 2,
+   "due_week": 23,
+   "presented_at": "Go/no-go on scale-up"
+  },
+  {
+   "id": "D8",
+   "name": "First pilot target group of small shippers",
+   "kind": "analysis",
+   "workstream_id": "W5",
+   "phase_order": 2,
+   "due_week": 11,
+   "presented_at": "Workshop 2: pilot readiness"
+  },
+  {
+   "id": "D9",
+   "name": "First version launched to a small group of shippers",
+   "kind": "build",
+   "workstream_id": "W6",
+   "phase_order": 2,
+   "due_week": 15,
+   "presented_at": "Workshop 3: pilot results"
+  },
+  {
+   "id": "D10",
+   "name": "Platform open to the full pilot shipper group",
+   "kind": "build",
+   "workstream_id": "W6",
+   "phase_order": 2,
+   "due_week": 18,
+   "presented_at": "Workshop 3: pilot results"
+  },
+  {
+   "id": "D11",
+   "name": "Scale-up options and economics from pilot data",
+   "kind": "design",
+   "workstream_id": "W7",
+   "phase_order": 2,
+   "due_week": 19,
+   "presented_at": "Workshop 3: pilot results"
+  },
+  {
+   "id": "D12",
+   "name": "Business case with implementation plan and roadmap",
+   "kind": "decision_pack",
+   "workstream_id": "W7",
+   "phase_order": 2,
+   "due_week": 26,
+   "presented_at": "Go/no-go on scale-up"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 2,
+  "status_weeks": [
+   3,
+   7,
+   9,
+   11,
+   13,
+   15,
+   17,
+   19,
+   21,
+   23,
+   25
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Align on goals, scope and plan of work",
+    "attendees": [
+     "CEO",
+     "CTO",
+     "Head of Sales"
+    ],
+    "presents": [],
+    "decision": "Do we confirm the goals, scope and way of working for the engagement?",
+    "agenda": [
+     "Present the plan of work, phases and steering meetings",
+     "Align on the 200 active shippers success criterion",
+     "Confirm access to people, documents and data"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "workshop",
+    "phase_order": 1,
+    "week": 5,
+    "label": "Workshop 1: first findings",
+    "purpose": "Review first findings and set the direction",
+    "attendees": [
+     "CEO",
+     "CTO",
+     "Head of Sales"
+    ],
+    "presents": [
+     "D1",
+     "D2"
+    ],
+    "decision": "Do we confirm the direction for the blueprint and pilot plan?",
+    "agenda": [
+     "Present the hypotheses and the evidence collected so far",
+     "Discuss which hypotheses hold and which need rework",
+     "Confirm the direction for the blueprint and pilot plan"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 8,
+    "label": "Go/no-go on pilot",
+    "purpose": "Decide whether to start the pilot",
+    "attendees": [
+     "CEO",
+     "CTO",
+     "Head of Sales"
+    ],
+    "presents": [
+     "D3",
+     "D4",
+     "D5"
+    ],
+    "decision": "Do we go ahead with the pilot on this blueprint and pilot plan?",
+    "agenda": [
+     "Present the blueprint with tested hypotheses",
+     "Review the wireframe prototype and the detailed pilot plan",
+     "Decide whether to go ahead with the pilot"
+    ]
+   },
+   {
+    "id": "G4",
+    "type": "workshop",
+    "phase_order": 2,
+    "week": 14,
+    "label": "Workshop 2: pilot readiness",
+    "purpose": "Review readiness before the first launch",
+    "attendees": [
+     "CEO",
+     "CTO",
+     "Head of Sales"
+    ],
+    "presents": [
+     "D6",
+     "D8"
+    ],
+    "decision": "Is the pilot ready to launch to the first group of shippers?",
+    "agenda": [
+     "Present the pilot KPIs and the first target group",
+     "Review build progress and launch readiness",
+     "Confirm readiness to launch to the first group of shippers"
+    ]
+   },
+   {
+    "id": "G5",
+    "type": "workshop",
+    "phase_order": 2,
+    "week": 20,
+    "label": "Workshop 3: pilot results",
+    "purpose": "Review early pilot use and scale-up options",
+    "attendees": [
+     "CEO",
+     "CTO",
+     "Head of Sales"
+    ],
+    "presents": [
+     "D9",
+     "D10",
+     "D11"
+    ],
+    "decision": "Which scale-up options go into the business case?",
+    "agenda": [
+     "Present the launched platform and pilot use so far",
+     "Review scale-up options and their economics",
+     "Decide which options go into the business case"
+    ]
+   },
+   {
+    "id": "G6",
+    "type": "gate",
+    "phase_order": 2,
+    "week": 26,
+    "label": "Go/no-go on scale-up",
+    "purpose": "Decide on scale-up after the pilot",
+    "attendees": [
+     "CEO",
+     "CTO",
+     "Head of Sales"
+    ],
+    "presents": [
+     "D7",
+     "D12"
+    ],
+    "decision": "Do we scale up the platform beyond the pilot on this business case?",
+    "agenda": [
+     "Present pilot results against 200 active shippers",
+     "Review the business case, implementation plan and roadmap",
+     "Decide whether to scale up beyond the pilot"
+    ]
+   }
+  ]
+ },
+ "deadline": null,
+ "architect_notes": [
+  "Engagement type is assumed to be assessment and implementation because of the pilot; confirm it before quoting, as it sets the Pilot phase.",
+  "The 26 weeks are split 8 for Design and 18 for Pilot as an estimate; the brief gave only the total length.",
+  "The rollout of the platform after the pilot is not in these phases; the Pilot phase ends with a scale-up business case and roadmap.",
+  "Key internal hires from the archetype's Pilot phase are dropped, because the brief does not mention hiring; confirm no hiring support is expected."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Design",
+    "start": 1,
+    "end": 8
+   },
+   {
+    "phase": "Pilot",
+    "start": 9,
+    "end": 26
+   }
+  ]
+ }
+}

@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 4,
+      "deliverables": 4,
+      "governance": 4,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W1 produces no go-live record for the waves after the first between D2 (week 12) and D3 (week 24), so Workshop 2 at week 18 re-reviews the week-12 D2 instead of current progress toward 120 branches.",
+      "The week-24 Final readout falls in the same week as the deadline and as D3, leaving no time to fix any branch not yet live before acceptance is decided.",
+      "W2 and W3 are marked 'after W1' yet start in week 3 while W1 runs weeks 1-24, and W2's own question requires training before each branch goes live, so the stated dependency contradicts the timing.",
+      "The week-13 check-in clears the next waves on D2 alone, because first-wave performance (D7) is not due until week 17.",
+      "D5 (training attendance and post-go-live coaching record) is due week 22 while W2 coaching and the last waves run to week 24, so it cannot cover the final waves."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 4,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W1, the stream that carries the success criterion, has no deliverable between the D1 rollout plan (week 5) and the D2 completion report (week 24), so no steering meeting ever reviews which branches are live.",
+      "W3 runs to week 24 but delivers nothing after D6 (week 12), so the week-24 close-out agenda item 'review final results against the KPIs' has no deliverable behind it.",
+      "The week-24 Rollout close-out falls in the same week as the deadline and as D2, leaving no time to fix any branch not yet live before the rollout is closed.",
+      "D4 'Trained staff in all 120 branches' is an outcome, not something the client receives, and should be a training completion record by branch.",
+      "Workshop 2 (week 19) re-reviews the week-12 D6 and asks a status question ('are the remaining branches on track?') rather than a real decision."
+    ]
+  },
+  "better": "X",
+  "why": "X gives every stream deliverables through to week 24, including a final go-live record and a performance report for all 120 branches that the final readout reviews, and each steering meeting reviews something new against a real decision. Y sets up a better KPI baseline and raises sharper scope questions in its partner notes, but its rollout stream shows no go-live evidence between weeks 5 and 24, its tracker stops at week 12, and its close-out asks for KPI results that no deliverable provides."
+}

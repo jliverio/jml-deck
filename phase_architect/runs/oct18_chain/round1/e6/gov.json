@@ -1,0 +1,69 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Align on scope, team and calendar",
+      "attendees": ["COO", "Head of Branch Network"],
+      "presents": [],
+      "decision": "Are the scope, team and calendar for the 24-week rollout confirmed?",
+      "agenda": [
+        "Present the rollout objective and the success criterion",
+        "Review the scope, team roles and calendar of the 24 weeks",
+        "Confirm the steering meetings and their dates"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Workshop 1: readiness",
+      "purpose": "Review readiness before the first wave",
+      "attendees": ["COO", "Head of Branch Network"],
+      "presents": ["D1", "D3", "D5"],
+      "decision": "Are the wave plan and readiness criteria agreed so the first wave can go live?",
+      "agenda": [
+        "Present the wave plan and readiness criteria",
+        "Review the training content and the definition of a running branch",
+        "Confirm what must be ready before the first wave goes live"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Check-in: rollout progress",
+      "purpose": "Check wave progress and open issues",
+      "attendees": ["COO", "Head of Branch Network"],
+      "presents": [],
+      "decision": "Do any waves need to change to keep all 120 branches live by week 24?",
+      "agenda": [
+        "Review rollout progress against the wave plan",
+        "Discuss open risks to the upcoming waves"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Workshop 2: wave results",
+      "purpose": "Review wave results and close-out evidence",
+      "attendees": ["COO", "Head of Branch Network"],
+      "presents": ["D6"],
+      "decision": "Is the close-out evidence agreed so the remaining waves can finish by week 24?",
+      "agenda": [
+        "Present the wave results against the starting position",
+        "Review what the remaining waves must deliver by week 24",
+        "Align on the evidence the close-out pack will show"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Rollout close-out",
+      "purpose": "Confirm all 120 branches run the new model",
+      "attendees": ["COO", "Head of Branch Network"],
+      "presents": ["D2", "D4", "D7"],
+      "decision": "Is the new model running in all 120 branches, ready for close-out?",
+      "agenda": [
+        "Present the close-out pack against the success criterion",
+        "Review branch status and staff training ahead of the final waves",
+        "Decide whether the rollout is ready for close-out"
+      ]
+    }
+  ],
+  "notes": []
+}

@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 3,
+      "workstreams": 3,
+      "deliverables": 4,
+      "governance": 4,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "Phase 1 merges the brief's stated 6-week diagnostic and 6-week design stages into one 12-week 'Design' phase, cutting the diagnostic to four weeks (W1, W2) and dropping a diagnostic sign-off, contrary to the five stages the client stated.",
+      "W6 runs the routine in the pilot districts for only four weeks (17-20), so D9 judges pilot-district losses against the pre-pilot baseline on two to three weeks of data, too little to test the first success criterion.",
+      "W8 trains crews only in the first rollout districts and W9 only coaches crews as districts go live, so no stream trains crews in the later districts that the all-districts criterion depends on.",
+      "W4 (weeks 9-12), W7 (weeks 18-20) and W10 (weeks 26-33) are marked 'after' W3, W6 and W9 yet start before those streams end.",
+      "W5 confirms pre-pilot loss levels in the pilot districts but produces no deliverable, so Workshop 3 and the week 20 gate have no signed-off pre-pilot baseline for the first success criterion."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 5,
+      "workstreams": 2,
+      "deliverables": 4,
+      "governance": 4,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W6 runs the routine in the pilot districts for only three weeks (18-20) after five weeks of readiness in W5, so D8 tests the first success criterion on one to two weeks of loss data.",
+      "The diagnostic streams W1 and W2 both quantify and locate losses by district and neither examines how crews find and fix leaks today, although W3 must design a new leak-detection routine.",
+      "W4 pilot plan starts in week 9, before the week 10 check-in confirms the program and routine design as its basis, and is marked 'after W3' while W3 runs to week 10.",
+      "W7 (weeks 19-20), W9 (weeks 24-33) and W12 (weeks 37-39) are marked 'after' W6, W8 and W11 yet start before those streams end.",
+      "W8 is to 'train district crews before each wave' but ends in week 25 while W10 launches waves through week 33, so later waves have no training slot."
+    ]
+  },
+  "better": "Y",
+  "why": "Y keeps the client's five stated stages with their exact lengths and a gate closing each, and adds a pre-pilot baseline deliverable (D5) and an explicit out-of-scope guard, so its defects can be fixed inside a correct skeleton. X has the stronger diagnostic and a slightly longer pilot run, but it overrides the brief's stage structure and shortens the diagnostic, which is the harder defect to justify to the client."
+}
