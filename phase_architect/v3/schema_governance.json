@@ -1,0 +1,67 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "events",
+  "notes"
+ ],
+ "properties": {
+  "events": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "id",
+     "label",
+     "purpose",
+     "attendees",
+     "presents",
+     "decision",
+     "agenda"
+    ],
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "label": {
+      "type": "string"
+     },
+     "purpose": {
+      "type": "string"
+     },
+     "attendees": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "presents": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "decision": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "agenda": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "notes": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  }
+ }
+}

@@ -110,7 +110,8 @@ function validatePlan(arch, ctx) {
     if (acts.length < 2 || acts.length > 3) v.push(`ws:${w.id}:activities_count_${acts.length}`);
     acts.forEach((a, i) => { if (String(a).length > LIM.activity) v.push(`ws:${w.id}:activity_${i + 1}_over_${LIM.activity}`); });
     const ds = w.deliverables || [];
-    if (ds.length < 1 || ds.length > 2) v.push(`ws:${w.id}:deliverables_count_${ds.length}`);
+    // 1-2 per workstream for the single agent; the four-agent chain allows 3 for a complex stream (ctx.max_deliverables_per_ws)
+    if (ds.length < 1 || ds.length > (ctx.max_deliverables_per_ws || 2)) v.push(`ws:${w.id}:deliverables_count_${ds.length}`);
     // traces
     const tr = w.traces_to || [];
     if (!tr.length) v.push(`ws:${w.id}:no_trace`);

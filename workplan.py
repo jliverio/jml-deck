@@ -32,7 +32,7 @@ WHITE = RGBColor(0xFF, 0xFF, 0xFF)
 BLACK = RGBColor(0x00, 0x00, 0x00)
 GREY = RGBColor(0x59, 0x59, 0x59)
 LGREY = RGBColor(0xD0, 0xD0, 0xD0)
-PHASE_COLORS = [BLUE, ELECTRIC, TEAL, NAVY]
+PHASE_COLORS = [BLUE, ELECTRIC, TEAL, NAVY, GREY]  # a fifth phase gets its own colour (Oct 18: five-phase plans)
 FONT = "Arial"
 
 L = Emu(554736)            # content left (title placeholder left)
@@ -376,7 +376,7 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
         b = _box(s, x, y0, w, _BAND_H, fill=_phase_color(p["order"]))
         est = "" if p["duration_weeks"]["min"] == p["duration_weeks"]["max"] else " (estimate)"
         full = f"{p['name']} · {_weeks_label(p['duration_weeks'])}{est}"
-        fit = int(w / Inches(0.075))
+        fit = int((w - Inches(0.2)) / Inches(0.075))  # inside the box margins (Oct 18: 'Measurement · 6 weeks' overflowed a 6-of-39-week band)
         _text(b, _clip(full if len(full) <= fit else p["name"], fit), size=10 if fit >= 12 else 8,
               bold=True, color=WHITE, align=PP_ALIGN.CENTER)
     _text(s, "Phase", size=10, bold=True, color=NAVY, x=L, y=y0, w=label_w, h=_BAND_H)
@@ -448,24 +448,41 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
     _text(s, "Steering", size=10, bold=True, color=NAVY, x=L, y=my - d / 2, w=label_w, h=d)
     for wk in plan["governance"]["status_weeks"]:
         _box(s, gx + (wk - 0.5) * col - d / 2, my - d / 2, d, d, fill=WHITE, line=BLACK, shape=MSO_SHAPE.OVAL, line_w=0.75)
-    last_right = [-10**12, -10**12]
-    lab_w = Inches(1.45)
     gap = Emu(45720)
-    for e in sorted(events, key=lambda e: e["week"]):
+    evs = sorted(events, key=lambda e: e["week"])
+
+    def place(lab_w):
+        # two tiers of labels; when both are taken, the label goes on the freer tier, pushed right.
+        # Returns the positions and whether any label still overlaps its neighbour at the right edge.
+        last_right = [-10**12, -10**12]
+        out, clash = [], False
+        for e in evs:
+            cx = gx + (e["week"] - 0.5) * col
+            lx = min(max(cx - lab_w / 2, L), L + W - lab_w)
+            free = [t for t in (0, 1) if lx > last_right[t] + gap]
+            if free:
+                tier = free[0]
+            else:
+                tier = 0 if last_right[0] <= last_right[1] else 1
+                lx = min(last_right[tier] + gap, L + W - lab_w)
+                clash = clash or lx < last_right[tier] + gap
+            last_right[tier] = lx + lab_w
+            out.append((e, lx, tier))
+        return out, clash
+
+    # crowded steering rows (many meetings, long plans) get narrower two-line labels (Oct 18: a 39-week,
+    # five-phase plan put its last two gate labels on top of each other)
+    for lab_w in (Inches(1.45), Inches(1.25), Inches(1.05), Inches(0.9)):
+        placed, clash = place(lab_w)
+        if not clash:
+            break
+    chars = int(2 * (lab_w - Inches(0.1)) / Inches(0.068))
+    for e, lx, tier in placed:
         cx = gx + (e["week"] - 0.5) * col
         fill = YELLOW if e["type"] in ("workshop", "gate") else NAVY
         _box(s, cx - d / 2, my - d / 2, d, d, fill=fill, shape=MSO_SHAPE.OVAL)
-        # two tiers of labels; when both are taken, the label goes on the freer tier, pushed right
-        lx = min(max(cx - lab_w / 2, L), L + W - lab_w)
-        free = [t for t in (0, 1) if lx > last_right[t] + gap]
-        if free:
-            tier = free[0]
-        else:
-            tier = 0 if last_right[0] <= last_right[1] else 1
-            lx = min(last_right[tier] + gap, L + W - lab_w)
-        last_right[tier] = lx + lab_w
         ly = my + d / 2 + Inches(0.06) + tier * _LABEL_TIER
-        _text(s, _clip(e["label"], 34), size=9, bold=e["type"] == "gate", color=BLACK, align=PP_ALIGN.CENTER,
+        _text(s, _clip(e["label"], min(34, chars)), size=9, bold=e["type"] == "gate", color=BLACK, align=PP_ALIGN.CENTER,
               anchor=MSO_ANCHOR.TOP, x=lx, y=ly, w=lab_w, h=_LABEL_H)
     dl = plan.get("deadline")
     if dl and dl.get("weeks_available") is not None:
@@ -674,10 +691,14 @@ def roadmap_slide(prs, plan, section, client, slide=None):
         # what it waits for (José, Oct 18: the sequence belongs on this slide)
         if i == 0:
             starts = f"Starts at the kick-off, week {kick['week'] if kick else 1}"
+            if len(starts) > int((cw - Inches(0.1)) / Inches(0.075)):
+                starts = f"Week {kick['week'] if kick else 1}, at the kick-off"
         else:
             pg = gates.get(phases[i - 1]["order"]) or {}
             plabel = (phases[i - 1].get("gate") or {}).get("label") or pg.get("label") or "previous decision"
             starts = f"Starts after the {plabel}, week {pg.get('week') or phases[i - 1].get('end_week')}"
+            if len(starts) > int((cw - Inches(0.1)) / Inches(0.075)):   # narrow columns (5 phases): keep the week
+                starts = f"Week {pg.get('week') or phases[i - 1].get('end_week')}, after the {plabel}"
         _text(s, _clip(starts, int((cw - Inches(0.1)) / Inches(0.075))), size=10, italic=True, color=GREY,
               anchor=MSO_ANCHOR.TOP, x=x, y=y + chev_h + Inches(0.08), w=cw - Inches(0.1), h=Inches(0.22))
         # what the phase answers
@@ -694,10 +715,13 @@ def roadmap_slide(prs, plan, section, client, slide=None):
         wk = g.get("week") or p.get("end_week")
         _line(s, x, gy, x + cw, gy, color=BLACK, width=1.0)
         dm = _box(s, x, gy + Inches(0.14), Inches(0.24), Inches(0.24), fill=YELLOW, shape=MSO_SHAPE.DIAMOND)
-        _text(s, _clip(f"{label}" + (f", week {wk}" if wk else ""), int((cw - Inches(0.34)) / Inches(0.085))),
+        gfit = int((cw - Inches(0.34)) / Inches(0.085))
+        full = f"{label}" + (f", week {wk}" if wk else "")
+        short = len(full) > gfit and wk          # narrow columns (5 phases): the week moves to the decision line
+        _text(s, _clip(label if short else full, gfit),
               size=11, bold=True, x=x + Inches(0.32), y=gy + Inches(0.1), w=cw - Inches(0.32), h=Inches(0.3))
         if decision:
-            _text(s, _clip("Decision: " + decision, 190), size=11, color=NAVY, anchor=MSO_ANCHOR.TOP,
+            _text(s, _clip((f"Week {wk} decision: " if short else "Decision: ") + decision, 190), size=11, color=NAVY, anchor=MSO_ANCHOR.TOP,
                   x=x, y=gy + Inches(0.48), w=cw - Inches(0.1), h=Inches(1.0))
     # governance strip
     gov = plan["governance"]
