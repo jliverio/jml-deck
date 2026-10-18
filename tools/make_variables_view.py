@@ -31,6 +31,7 @@ def labelled(plan):
         w["name"] = f"workstreams[{w['id']}].name"
     for d in plan["deliverables"]:
         d["name"] = f"deliverables[{d['id']}].name"
+        d["due_label"] = "due_week"
     for e in plan["governance"]["events"]:
         lab = f"events[{e['id']}].label"
         for d in plan["deliverables"]:

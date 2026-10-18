@@ -556,7 +556,7 @@ def deliverables_slide(prs, plan, section, client, slide=None, items=None, numbe
             x = L + cols[0][1]
             _text(s, _clip(f"{did}  {d['name']}", name_chars), size=size, x=x, y=yy, w=cols[1][1] - Inches(0.1), h=line_h)
             x += cols[1][1]
-            _text(s, f"Week {d['due_week']}", size=size, x=x, y=yy, w=cols[2][1], h=line_h)
+            _text(s, d.get("due_label") or f"Week {d['due_week']}", size=size, x=x, y=yy, w=cols[2][1], h=line_h)
             x += cols[2][1]
             _text(s, _clip(d.get("presented_at") or "[Firm to complete]", rev_chars), size=size, x=x, y=yy, w=cols[3][1], h=line_h)
         y += h
@@ -568,18 +568,16 @@ def deliverables_slide(prs, plan, section, client, slide=None, items=None, numbe
 def governance_slides(prs, plan, section, client, per_slide=4, slide=None):
     T = titles(plan)
     dels = {d["id"]: d for d in plan["deliverables"]}
-    evs = [e for e in plan["governance"]["events"] if e["type"] != "kickoff"]
-    # pack whole phases into slides of at most `per_slide` columns
-    chunks, cur = [], []
-    for p in plan["phases"]:
-        mine = [e for e in evs if e["phase_order"] == p["order"]]
-        if cur and len(cur) + len(mine) > per_slide:
-            chunks.append(cur); cur = []
-        while len(mine) > per_slide:  # a long phase with gap check-ins fills slides on its own
-            chunks.append(mine[:per_slide]); mine = mine[per_slide:]
-        cur += mine
-    if cur:
-        chunks.append(cur)
+    evs = sorted([e for e in plan["governance"]["events"] if e["type"] != "kickoff"], key=lambda e: e["week"])
+    # as few slides as `per_slide` columns allow, filled evenly with the extra meetings on the first slides
+    # (5 meetings: 3 then 2; José, Oct 18), whatever phase each meeting closes; the subtitle names the phases
+    pages = max(1, -(-len(evs) // per_slide))
+    base, extra = divmod(len(evs), pages)
+    chunks, start = [], 0
+    for k in range(pages):
+        size = base + (1 if k < extra else 0)
+        chunks.append(evs[start:start + size]); start += size
+    chunks = [c for c in chunks if c] or [[]]
     slides = []
     phase_by = {p["order"]: p for p in plan["phases"]}
     numbering = {}

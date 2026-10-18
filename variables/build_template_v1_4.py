@@ -197,6 +197,21 @@ def main():
         lst.append(by_id[sid])
 
     swap_tokens(prs, "section_03", "section_04")
+    # Titles inherited from template 1.1 carry a hidden bullet (a zero-width character) that pushes the text
+    # right of the other titles (José, Oct 18: slides 7, 8, 13, 14). Every title gets no bullet.
+    from pptx.oxml.ns import qn
+    from lxml import etree
+    for sl in prs.slides:
+        for ph in sl.placeholders:
+            if ph.placeholder_format.idx != 0:
+                continue
+            for p in ph.text_frame.paragraphs:
+                pPr = p._p.get_or_add_pPr()
+                for tag in ("a:buChar", "a:buAutoNum", "a:buFont", "a:buClr", "a:buSzPts", "a:buSzPct"):
+                    for el in pPr.findall(qn(tag)):
+                        pPr.remove(el)
+                if pPr.find(qn("a:buNone")) is None:
+                    etree.SubElement(pPr, qn("a:buNone"))
     for sl in prs.slides:
         for sh in sl.shapes:
             if sh.name.startswith("workplan:") and sh.name[9:] in TITLE_VARS:
