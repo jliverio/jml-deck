@@ -1,0 +1,96 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Start the work and secure plant access",
+      "attendees": ["COO", "Plant Directors of the six plants"],
+      "presents": [],
+      "decision": "Which two plants open their floors and cost data for the diagnosis in weeks 1 to 3?",
+      "agenda": [
+        "Present the diagnostic approach and plan of work",
+        "Discuss the data and people the floor diagnosis needs",
+        "Decide which two plants open their floors and cost data"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Workshop 1: baselines",
+      "purpose": "Review plant baselines and loss areas",
+      "attendees": ["COO", "Plant Directors of the six plants"],
+      "presents": ["D1", "D2"],
+      "decision": "Which loss areas should the sizing in the go/no-go pack cover in detail?",
+      "agenda": [
+        "Review cost-per-part baselines for all six plants",
+        "Discuss the loss map for the first two plants",
+        "Decide which loss areas the sizing covers in detail"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Initiative go/no-go",
+      "purpose": "Decide on the sized improvements and pilot",
+      "attendees": ["COO", "Plant Directors of the six plants"],
+      "presents": ["D3", "D4"],
+      "decision": "Go or no-go on the sized improvements, and which plant pilots them first?",
+      "agenda": [
+        "Review the sized improvement list by plant",
+        "Present the go/no-go pack with the pilot plant options",
+        "Decide go or no-go and which plant pilots first"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Workshop 2: pilot readiness",
+      "purpose": "Check pilot plant readiness before go-live",
+      "attendees": ["COO", "Plant Directors of the six plants"],
+      "presents": ["D5"],
+      "decision": "Go or no-go on taking the pilot plant changes live as planned?",
+      "agenda": [
+        "Present the pilot plant change plan",
+        "Review the readiness pack before any change goes live",
+        "Decide whether the pilot plant changes go live"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Check-in: pilot results",
+      "purpose": "Review pilot results before wave 1 starts",
+      "attendees": ["COO", "Plant Directors of the six plants"],
+      "presents": ["D6", "D7", "D8"],
+      "decision": "Start wave 1 as planned, or adjust the rollout approach first?",
+      "agenda": [
+        "Review the pilot plant go-live record and savings",
+        "Present the cost-per-part tracker on each plant's baseline",
+        "Decide whether wave 1 starts as planned"
+      ]
+    },
+    {
+      "id": "G6",
+      "label": "Workshop 3: wave 2 start",
+      "purpose": "Review wave 1 go-live before wave 2",
+      "attendees": ["COO", "Plant Directors of the six plants"],
+      "presents": ["D11"],
+      "decision": "Go or no-go on starting wave 2 in the remaining plants?",
+      "agenda": [
+        "Review the go-live and training record for wave 1 plants",
+        "Align on the results and rollout status the final readout will cover",
+        "Decide whether wave 2 starts in the remaining plants"
+      ]
+    },
+    {
+      "id": "G7",
+      "label": "Final readout",
+      "purpose": "Approve final results and rollout status",
+      "attendees": ["COO", "Plant Directors of the six plants"],
+      "presents": ["D9", "D10", "D12"],
+      "decision": "Approve the final results and the running improvements in all six plants?",
+      "agenda": [
+        "Present the cost-per-part report by plant after wave 1",
+        "Review the final readout pack and the remaining plants' go-live record",
+        "Decide whether to approve the results and the running improvements"
+      ]
+    }
+  ],
+  "notes": []
+}

@@ -1,0 +1,40 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 4,
+      "governance": 4,
+      "coherence": 4,
+      "sizing": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W8 only rehearses the data load and neither W9 nor W10 plans a live data migration or cutover for the pilot or any rollout wave, so the brief's 'migrate its data' is never actually delivered.",
+      "W7 configuration starts in week 13, the week after the vendor selection gate, with no time for contract negotiation, vendor mobilisation or solution design, and the phase called 'Design' is in fact vendor selection.",
+      "W10 has the first wave live by week 35 (D14) and the final acceptance pack due in week 41 (D15), so about 39 remaining sites go live in roughly six weeks with no hypercare before the week 42 acceptance gate.",
+      "W8 data migration cannot start until week 21, after W7 finishes, and gets only 4 weeks to map, clean and rehearse data from 42 sites, while W7 gets only 8 weeks to configure and test all three process areas.",
+      "D6 vendor shortlist is due in week 9, which leaves one week for demonstrations, scoring and reference checks before D7 in week 10, and W4 depends only on W1 and W2 even though D5 consolidates the inventory requirements from W3."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3,
+      "sizing": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W4 builds the business case only for 'the best-fitting vendor', which settles the week 12 gate question 'Which ERP vendor goes forward?' in advance and contradicts both the week 10 check-in decision on which vendors the case covers and the gate agenda item comparing vendors.",
+      "W6 only rehearses the migration, and no live data migration or cutover is planned for the pilot site or any rollout wave, so the brief's 'migrate its data' is never actually delivered.",
+      "No activity in W7 or W8 trains pharmacy or warehouse staff: they go straight from launch to support for 40 pharmacies and 2 warehouses.",
+      "W6 is marked 'after W5' but starts in week 19 while W5 runs until week 23, so D9 (migration rehearsal, week 23) is due in the same week that D8 (inventory configuration) is tested, and W2 has the same 'after W1' contradiction.",
+      "W5 starts in week 13, straight after the week 12 selection gate, with no time for contracting, vendor mobilisation or solution design, and W8 rolls out about 39 sites between week 35 and week 41 with no hypercare before the week 42 acceptance gate."
+    ]
+  },
+  "better": "X",
+  "why": "X's dependencies hold together, it trains site staff, it checks vendor references and it builds the business case across the vendors still in contention, so the selection gate decides something real, and its deliverables arrive before the meetings that review them. Y overlaps configuration and migration more realistically, but it breaks its own 'after' dependencies, leaves out training and settles the vendor choice in advance with a single-vendor business case."
+}

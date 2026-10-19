@@ -1,0 +1,135 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Agree access to data and people",
+      "attendees": ["CEO", "CFO", "Operations Director", "IT Manager"],
+      "presents": [],
+      "decision": "Confirm access to system data and process owners for the requirements work?",
+      "agenda": [
+        "Present the engagement approach and phases",
+        "Align on the data and people the diagnostic needs",
+        "Confirm access to system data and process owners"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Check-in: requirements",
+      "purpose": "Review the requirements draft",
+      "attendees": ["CFO", "Operations Director", "IT Manager"],
+      "presents": ["D1"],
+      "decision": "Confirm which finance and purchasing requirements go into the sign-off pack?",
+      "agenda": [
+        "Present the finance and purchasing requirements draft",
+        "Discuss gaps and open items by process area",
+        "Confirm which requirements go into the sign-off pack"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Requirements sign-off",
+      "purpose": "Sign off requirements and fit-gap",
+      "attendees": ["CEO", "CFO", "Operations Director", "IT Manager"],
+      "presents": ["D2", "D3"],
+      "decision": "Approve the requirements and go to vendor selection?",
+      "agenda": [
+        "Present the requirements and fit-gap pack",
+        "Review fit-gap of current systems against requirements",
+        "Decide whether to approve and go to vendor selection"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Check-in: vendor scoring",
+      "purpose": "Review vendor shortlist and scoring",
+      "attendees": ["CFO", "Operations Director", "IT Manager"],
+      "presents": ["D4", "D5"],
+      "decision": "Which scored vendors go into the business case for the selection gate?",
+      "agenda": [
+        "Present the vendor shortlist and scoring",
+        "Discuss scoring gaps between vendors",
+        "Decide which vendors go into the business case"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Vendor selection",
+      "purpose": "Choose the vendor for implementation",
+      "attendees": ["CEO", "CFO", "Operations Director", "IT Manager"],
+      "presents": ["D6"],
+      "decision": "Which ERP vendor goes forward into implementation?",
+      "agenda": [
+        "Present the ERP business case and vendor scoring",
+        "Discuss business case results by vendor",
+        "Decide which vendor goes into implementation"
+      ]
+    },
+    {
+      "id": "G6",
+      "label": "Check-in: configuration",
+      "purpose": "Review finance and purchasing setup",
+      "attendees": ["CFO", "Operations Director", "IT Manager"],
+      "presents": ["D7"],
+      "decision": "Confirm the tested finance and purchasing setup as the migration baseline?",
+      "agenda": [
+        "Present the tested finance and purchasing configuration",
+        "Review test results and open defects",
+        "Confirm the setup as the migration baseline"
+      ]
+    },
+    {
+      "id": "G7",
+      "label": "Workshop 1: pilot readiness",
+      "purpose": "Readiness review before pilot go-live",
+      "attendees": ["CEO", "CFO", "Operations Director", "IT Manager"],
+      "presents": ["D8", "D9"],
+      "decision": "Go or no-go on taking the pilot site live with the tested setup?",
+      "agenda": [
+        "Review the tested inventory configuration",
+        "Review data migration rehearsal results and load checks",
+        "Decide whether the pilot site goes live"
+      ]
+    },
+    {
+      "id": "G8",
+      "label": "Workshop 2: rollout start",
+      "purpose": "Review pilot go-live before rollout",
+      "attendees": ["CEO", "CFO", "Operations Director", "IT Manager"],
+      "presents": ["D10"],
+      "decision": "Go or no-go on starting the rollout waves at the remaining sites?",
+      "agenda": [
+        "Present the pilot go-live record and stability log",
+        "Discuss open issues from the pilot site",
+        "Decide whether the rollout waves start"
+      ]
+    },
+    {
+      "id": "G9",
+      "label": "Check-in: rollout stability",
+      "purpose": "Review first wave stability",
+      "attendees": ["CFO", "Operations Director", "IT Manager"],
+      "presents": ["D11"],
+      "decision": "Proceed with the remaining rollout waves as planned, or adjust them?",
+      "agenda": [
+        "Present the first wave go-live and stability report",
+        "Decide whether the remaining waves proceed as planned",
+        "Align on the evidence needed for final acceptance"
+      ]
+    },
+    {
+      "id": "G10",
+      "label": "Final acceptance",
+      "purpose": "Accept the ERP across all sites",
+      "attendees": ["CEO", "CFO", "Operations Director", "IT Manager"],
+      "presents": ["D12"],
+      "decision": "Approve the ERP as running in all 40 pharmacies and both warehouses?",
+      "agenda": [
+        "Present the final acceptance pack by site",
+        "Review go-live status of each pharmacy and warehouse",
+        "Decide whether to approve the ERP as running"
+      ]
+    }
+  ],
+  "notes": []
+}

@@ -1,0 +1,70 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Align on scope and secure data access",
+      "attendees": ["CEO", "Commercial Director"],
+      "presents": [],
+      "decision": "Can Quinta Azul open access to sales data and Spanish retail contacts?",
+      "agenda": [
+        "Present the assessment objective and the Research plan",
+        "Review the data and people access the evidence work needs",
+        "Decide on access to sales data and retail contacts"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Check-in: market size",
+      "purpose": "Review market size and growth findings",
+      "attendees": ["CEO", "Commercial Director"],
+      "presents": ["D1"],
+      "decision": "Which Spanish retail segments should the findings pack focus on?",
+      "agenda": [
+        "Present market size and growth by segment",
+        "Discuss what the segments mean for the remaining Research work",
+        "Decide the segments the findings pack should focus on"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Findings sign-off",
+      "purpose": "Review Research findings on Spain",
+      "attendees": ["CEO", "Commercial Director"],
+      "presents": ["D2", "D3", "D4"],
+      "decision": "Is Spain attractive enough to justify designing entry options?",
+      "agenda": [
+        "Present the findings pack on Spain's attractiveness",
+        "Review competitor profiles, buyer needs and the gap assessment",
+        "Decide whether Spain justifies designing entry options"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Check-in: entry options",
+      "purpose": "Review entry options before the roadmap",
+      "attendees": ["CEO", "Commercial Director"],
+      "presents": ["D5"],
+      "decision": "Which Spain entry option should the roadmap and decision pack detail?",
+      "agenda": [
+        "Present the entry options compared on agreed criteria",
+        "Discuss the trade-offs between the options",
+        "Decide which option the roadmap and decision pack detail"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Final readout",
+      "purpose": "Approve the Spain go or no-go decision",
+      "attendees": ["CEO", "Commercial Director"],
+      "presents": ["D6", "D7", "D8"],
+      "decision": "Approve the Spain go or no-go decision and, if go, the entry plan?",
+      "agenda": [
+        "Present the business case and the entry roadmap",
+        "Review the go or no-go decision pack and entry plan",
+        "Decide on approval of the go or no-go and the entry plan"
+      ]
+    }
+  ],
+  "notes": []
+}

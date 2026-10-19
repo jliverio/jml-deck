@@ -1,0 +1,530 @@
+{
+ "client": "Quinta Azul",
+ "basis": {
+  "governing_question": "Should Quinta Azul enter the Spanish retail market and, if so, how?",
+  "archetype_id": "market_entry_assessment"
+ },
+ "total_duration_weeks": {
+  "min": 7,
+  "max": 10
+ },
+ "phases": [
+  {
+   "name": "Research",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 5,
+   "duration_weeks": {
+    "min": 4,
+    "max": 5
+   },
+   "duration_derived": false,
+   "objective_one_line": "Assess the size, competition and buyer needs of the Spanish retail market and Quinta Azul's capability to win there.",
+   "gate": {
+    "label": "Findings sign-off",
+    "decision": "Is Spain attractive enough to justify designing entry options?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length",
+    "timeline",
+    "prior_attempts"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2",
+    "W3"
+   ]
+  },
+  {
+   "name": "Design",
+   "order": 2,
+   "start_week": 6,
+   "end_week": 10,
+   "duration_weeks": {
+    "min": 3,
+    "max": 5
+   },
+   "duration_derived": false,
+   "objective_one_line": "Compare entry options for Spain, build the business case and draft the entry roadmap for the go or no-go.",
+   "gate": {
+    "label": "Final readout",
+    "decision": "Approve the Spain go or no-go decision and, if go, the entry plan?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length",
+    "deliverable_format",
+    "timeline",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W4",
+    "W5",
+    "W6"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Spain market attractiveness",
+   "answers": "How large and attractive is the Spanish retail market for Quinta Azul's olive oil?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 3,
+   "follows": [],
+   "activities": [
+    "Size Spanish retail olive-oil demand and growth by segment",
+    "Review published market reports and retail sales data",
+    "Assess regulation and retail channel structure in Spain"
+   ],
+   "deliverable_ids": [
+    "D1"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Competition and buyer needs",
+   "answers": "Who competes in Spanish retail, and what do retail buyers and shoppers there need?",
+   "traces_to": [
+    "gate:1"
+   ],
+   "start_week": 2,
+   "end_week": 5,
+   "follows": [],
+   "activities": [
+    "Profile competitors selling olive oil in Spanish retail",
+    "Interview Spanish retail buyers and shoppers on their needs",
+    "Compare competitor pricing, ranges and shelf presence"
+   ],
+   "deliverable_ids": [
+    "D2"
+   ]
+  },
+  {
+   "id": "W3",
+   "phase_order": 1,
+   "name": "Capability to win in Spain",
+   "answers": "Does Quinta Azul have the assets and capabilities to win in Spanish retail?",
+   "traces_to": [
+    "gate:1"
+   ],
+   "start_week": 3,
+   "end_week": 5,
+   "follows": [],
+   "activities": [
+    "Interview the CEO, Commercial Director and operations staff",
+    "Review Quinta Azul's production and sales data",
+    "Assess gaps between Quinta Azul's assets and buyer needs"
+   ],
+   "deliverable_ids": [
+    "D3",
+    "D4"
+   ]
+  },
+  {
+   "id": "W4",
+   "phase_order": 2,
+   "name": "Entry options for Spain",
+   "answers": "Which entry options exist for Spain, and how do they compare on agreed criteria?",
+   "traces_to": [
+    "problem_statement",
+    "gate:2"
+   ],
+   "start_week": 6,
+   "end_week": 7,
+   "follows": [],
+   "activities": [
+    "Define the entry options for Spanish retail",
+    "Test the options with retail buyers and Quinta Azul's staff",
+    "Compare the options on criteria agreed with Quinta Azul"
+   ],
+   "deliverable_ids": [
+    "D5"
+   ]
+  },
+  {
+   "id": "W5",
+   "phase_order": 2,
+   "name": "Spain business case",
+   "answers": "Does the business case for the preferred entry option support a go or no-go on Spain?",
+   "traces_to": [
+    "success_criteria:1",
+    "gate:2"
+   ],
+   "start_week": 8,
+   "end_week": 9,
+   "follows": [
+    "W4"
+   ],
+   "activities": [
+    "Model revenue, cost and investment for the preferred option",
+    "Draw cost inputs from Quinta Azul's operational data",
+    "Set out the risks and assumptions behind the go or no-go"
+   ],
+   "deliverable_ids": [
+    "D6"
+   ]
+  },
+  {
+   "id": "W6",
+   "phase_order": 2,
+   "name": "Spain entry roadmap",
+   "answers": "If the answer is go, what entry plan and roadmap should Quinta Azul follow in Spain?",
+   "traces_to": [
+    "success_criteria:2",
+    "gate:2"
+   ],
+   "start_week": 10,
+   "end_week": 10,
+   "follows": [
+    "W5"
+   ],
+   "activities": [
+    "Draft the entry roadmap if the answer is go",
+    "Define owners and decisions needed for each entry step",
+    "Check the draft roadmap with the people who would run it"
+   ],
+   "deliverable_ids": [
+    "D7",
+    "D8"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "Spanish retail olive-oil market size and growth by segment",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 3,
+   "presented_at": "Check-in: market sizing"
+  },
+  {
+   "id": "D2",
+   "name": "Competitor profiles and buyer needs in Spanish retail",
+   "kind": "analysis",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Findings sign-off"
+  },
+  {
+   "id": "D3",
+   "name": "Gap assessment of Quinta Azul's assets for Spanish retail",
+   "kind": "analysis",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Findings sign-off"
+  },
+  {
+   "id": "D4",
+   "name": "Findings pack on Spain's attractiveness for sign-off",
+   "kind": "decision_pack",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 5,
+   "presented_at": "Findings sign-off"
+  },
+  {
+   "id": "D5",
+   "name": "Spain entry options compared on agreed criteria",
+   "kind": "design",
+   "workstream_id": "W4",
+   "phase_order": 2,
+   "due_week": 7,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D6",
+   "name": "Business case for the preferred Spain entry option",
+   "kind": "design",
+   "workstream_id": "W5",
+   "phase_order": 2,
+   "due_week": 9,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D7",
+   "name": "Spain entry roadmap with owners and decisions per step",
+   "kind": "design",
+   "workstream_id": "W6",
+   "phase_order": 2,
+   "due_week": 10,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D8",
+   "name": "Spain go or no-go decision pack with entry plan",
+   "kind": "decision_pack",
+   "workstream_id": "W6",
+   "phase_order": 2,
+   "due_week": 10,
+   "presented_at": "Final readout"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 2,
+  "status_weeks": [
+   7,
+   9
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Agree access and start the evidence work",
+    "attendees": [
+     "CEO",
+     "Commercial Director"
+    ],
+    "presents": [],
+    "decision": "Who will give the team access to the data and people the research needs?",
+    "agenda": [
+     "Present the Spain question and the plan for the research phase",
+     "Align on the data and people the research needs",
+     "Confirm the date and focus of the week 3 check-in"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "checkin",
+    "phase_order": 1,
+    "week": 3,
+    "label": "Check-in: market sizing",
+    "purpose": "Review market size and growth findings",
+    "attendees": [
+     "CEO",
+     "Commercial Director"
+    ],
+    "presents": [
+     "D1"
+    ],
+    "decision": "Is the market size and growth base solid enough to build the findings pack on?",
+    "agenda": [
+     "Review market size and growth by segment",
+     "Discuss open questions for the remaining research",
+     "Confirm the base for the findings pack"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 5,
+    "label": "Findings sign-off",
+    "purpose": "Sign off findings on Spain's attractiveness",
+    "attendees": [
+     "CEO",
+     "Commercial Director"
+    ],
+    "presents": [
+     "D2",
+     "D3",
+     "D4"
+    ],
+    "decision": "Is Spain attractive enough to justify designing entry options?",
+    "agenda": [
+     "Present competitor profiles, buyer needs and the gap assessment",
+     "Review the findings pack on Spain's attractiveness",
+     "Decide whether to design Spain entry options"
+    ]
+   },
+   {
+    "id": "G4",
+    "type": "checkin",
+    "phase_order": 2,
+    "week": 8,
+    "label": "Check-in: design progress",
+    "purpose": "Check progress on the design workstreams",
+    "attendees": [
+     "CEO",
+     "Commercial Director"
+    ],
+    "presents": [],
+    "decision": "Is the remaining work on track for a go or no-go at the final readout?",
+    "agenda": [
+     "Present status of entry options and business case",
+     "Discuss emerging direction ahead of the final readout",
+     "Confirm what the final readout must settle"
+    ]
+   },
+   {
+    "id": "G5",
+    "type": "gate",
+    "phase_order": 2,
+    "week": 10,
+    "label": "Final readout",
+    "purpose": "Decide on Spain go or no-go and entry plan",
+    "attendees": [
+     "CEO",
+     "Commercial Director"
+    ],
+    "presents": [
+     "D5",
+     "D6",
+     "D7",
+     "D8"
+    ],
+    "decision": "Approve the Spain go or no-go decision and, if go, the entry plan?",
+    "agenda": [
+     "Present the go or no-go decision pack and entry plan",
+     "Review entry options, business case and roadmap",
+     "Decide go or no-go and, if go, the entry plan"
+    ]
+   }
+  ]
+ },
+ "deadline": null,
+ "architect_notes": [
+  "Engagement length is not given, so the 7 to 10 weeks are an estimate from the sizing; confirm length and any deadline before quoting.",
+  "Design is sized for a go outcome; a no-go would drop the entry roadmap and shorten the phase."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Research",
+    "start": 1,
+    "end": 5
+   },
+   {
+    "phase": "Design",
+    "start": 6,
+    "end": 10
+   }
+  ]
+ },
+ "sizing": {
+  "length_basis": "estimated",
+  "sub_questions": [
+   {
+    "id": "Q1",
+    "question": "How large and attractive is the Spanish retail market for Quinta Azul's olive oil?",
+    "phase_order": 1
+   },
+   {
+    "id": "Q2",
+    "question": "Who competes there, and what do Spanish retail buyers and shoppers need?",
+    "phase_order": 1
+   },
+   {
+    "id": "Q3",
+    "question": "Does Quinta Azul have the assets and capabilities to win in Spain?",
+    "phase_order": 1
+   },
+   {
+    "id": "Q4",
+    "question": "Which entry options exist for Spain, and does the business case support a go or no-go?",
+    "phase_order": 2
+   },
+   {
+    "id": "Q5",
+    "question": "If the answer is go, what entry plan and roadmap should Quinta Azul follow?",
+    "phase_order": 2
+   }
+  ],
+  "drivers": [
+   {
+    "key": "markets",
+    "value": 1,
+    "source": "brief",
+    "evidence": "the Spanish retail market"
+   }
+  ],
+  "phases": [
+   {
+    "order": 1,
+    "name": "Research",
+    "planned_weeks": {
+     "min": 4,
+     "max": 5
+    },
+    "estimate": {
+     "min": 4,
+     "max": 5
+    },
+    "archetype_weeks": {
+     "min": 4,
+     "max": 8
+    },
+    "fixed_weeks": 2,
+    "work": [
+     {
+      "unit": "Market assessed in full (demand, channels, competitors, regulation, buyer interviews)",
+      "from_library": true,
+      "driver": "markets",
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 2,
+       "max": 3
+      }
+     }
+    ],
+    "why": "Spain is assessed as one market in full; the capability check and leadership interviews run alongside it."
+   },
+   {
+    "order": 2,
+    "name": "Design",
+    "planned_weeks": {
+     "min": 3,
+     "max": 5
+    },
+    "estimate": {
+     "min": 3,
+     "max": 5
+    },
+    "archetype_weeks": {
+     "min": 3,
+     "max": 6
+    },
+    "fixed_weeks": 1,
+    "work": [
+     {
+      "unit": "Entry option and business case for one market",
+      "from_library": true,
+      "driver": "markets",
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 1,
+       "max": 2
+      }
+     },
+     {
+      "unit": "Entry sequence and roadmap across markets",
+      "from_library": true,
+      "driver": null,
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 1,
+       "max": 2
+      }
+     }
+    ],
+    "why": "The entry option and business case for Spain come first, then the entry roadmap, one after the other."
+   }
+  ],
+  "estimate_total": {
+   "min": 7,
+   "max": 10
+  },
+  "planned_total": {
+   "min": 7,
+   "max": 10
+  },
+  "levers": "Assessing only the retail channels the CEO and Commercial Director prioritize, and starting the roadmap alongside the business case, would shorten the engagement most."
+ }
+}

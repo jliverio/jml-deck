@@ -1,0 +1,40 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 4,
+      "deliverables": 4,
+      "governance": 4,
+      "coherence": 4,
+      "sizing": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W6 drafts the entry roadmap in week 10, the same week D7 and D8 are due and the final readout reviews them, which leaves no time to check the roadmap with the people who would run it or to revise it after the go or no-go.",
+      "D6 business case is the core evidence for the go or no-go, but it is due in week 9 and no steering meeting reviews it before the week-10 final readout, so the CEO and Commercial Director first see it at the decision meeting.",
+      "The schedule takes the top of both phase estimates (5 + 5 weeks), so an assessment of one market and one product category runs 10 weeks while the header says 7-10, which looks padded and contradicts the stated range.",
+      "W5 builds the business case for the preferred option from week 8, the same week the check-in chooses that option, even though D5 is ready in week 7; the check-in should move to week 7.",
+      "D3 assesses gaps against buyer needs and is due in week 4, the same week D2 delivers the buyer needs it depends on."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3,
+      "sizing": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "D5, the findings pack for sign-off, is due in week 4 while W2 and W3 run to week 5, so the pack is finalised before the evidence streams finish and a week before the gate that uses it.",
+      "W6 gets one week (week 10) with only two generic activities and no owners per step, and D8 and D9 are due in the same week as the final readout that approves them.",
+      "D7 business case is mislabelled as a decision pack and no steering meeting reviews it before the week-10 final readout, even though the go or no-go depends on it.",
+      "The schedule takes the top of both phase estimates (5 + 5 weeks), so an assessment of one market runs 10 weeks against a stated 7-10, which looks padded.",
+      "The week-5 gate re-reviews D1 and D2 and the final readout re-reviews D6, all of which earlier meetings already covered, and no deliverable states what format the client receives."
+    ]
+  },
+  "better": "X",
+  "why": "Both plans share the same skeleton and the same Phase 2 weaknesses (a 10-week schedule at the top of its range, a business case nobody reviews before the readout, a roadmap squeezed into the readout week), but X's Phase 1 dates hold together while Y's findings pack is due before its evidence streams end. X also has more specific activities (the roadmap names owners and is checked with the people who would run it), gives deliverable formats, and keeps each steering meeting on new material, whereas Y re-reviews items earlier meetings already covered."
+}

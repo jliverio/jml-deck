@@ -1,0 +1,107 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Spain market attractiveness",
+      "question_id": "Q1",
+      "answers": "How large and attractive is the Spanish retail market for Quinta Azul's olive oil?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "builds_on_meeting": null,
+      "activities": [
+        "Size Spanish retail olive-oil demand and growth by segment",
+        "Review published market reports and retail sales data",
+        "Assess regulation and retail channel structure in Spain"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Competition and buyer needs",
+      "question_id": "Q2",
+      "answers": "Who competes in Spanish retail, and what do retail buyers and shoppers there need?",
+      "traces_to": ["gate:1"],
+      "start_offset": 1,
+      "duration": 4,
+      "follows": [],
+      "builds_on_meeting": null,
+      "activities": [
+        "Profile competitors selling olive oil in Spanish retail",
+        "Interview Spanish retail buyers and shoppers on their needs",
+        "Compare competitor pricing, ranges and shelf presence"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Capability to win in Spain",
+      "question_id": "Q3",
+      "answers": "Does Quinta Azul have the assets and capabilities to win in Spanish retail?",
+      "traces_to": ["gate:1"],
+      "start_offset": 2,
+      "duration": 3,
+      "follows": [],
+      "builds_on_meeting": null,
+      "activities": [
+        "Interview the CEO, Commercial Director and operations staff",
+        "Review Quinta Azul's production and sales data",
+        "Assess gaps between Quinta Azul's assets and buyer needs"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 2,
+      "name": "Entry options for Spain",
+      "question_id": "Q4",
+      "answers": "Which entry options exist for Spain, and how do they compare on agreed criteria?",
+      "traces_to": ["problem_statement", "gate:2"],
+      "start_offset": 0,
+      "duration": 2,
+      "follows": [],
+      "builds_on_meeting": "G3",
+      "activities": [
+        "Define the entry options for Spanish retail",
+        "Test the options with retail buyers and Quinta Azul's staff",
+        "Compare the options on criteria agreed with Quinta Azul"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 2,
+      "name": "Spain business case",
+      "question_id": "Q4",
+      "answers": "Does the business case for the preferred entry option support a go or no-go on Spain?",
+      "traces_to": ["success_criteria:1", "gate:2"],
+      "start_offset": 2,
+      "duration": 2,
+      "follows": ["W4"],
+      "builds_on_meeting": null,
+      "activities": [
+        "Model revenue, cost and investment for the preferred option",
+        "Draw cost inputs from Quinta Azul's operational data",
+        "Set out the risks and assumptions behind the go or no-go"
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 2,
+      "name": "Spain entry roadmap",
+      "question_id": "Q5",
+      "answers": "If the answer is go, what entry plan and roadmap should Quinta Azul follow in Spain?",
+      "traces_to": ["success_criteria:2", "gate:2"],
+      "start_offset": 4,
+      "duration": 1,
+      "follows": ["W5"],
+      "builds_on_meeting": null,
+      "activities": [
+        "Draft the entry roadmap if the answer is go",
+        "Define owners and decisions needed for each entry step",
+        "Check the draft roadmap with the people who would run it"
+      ]
+    }
+  ],
+  "notes": []
+}

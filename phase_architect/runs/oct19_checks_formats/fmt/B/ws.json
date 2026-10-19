@@ -1,0 +1,141 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Stakeholder interviews",
+      "question_id": "Q1",
+      "answers": "Where do the people who handle and oversee property and health claims say settlement time is lost, and why?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 2,
+      "follows": [],
+      "builds_on_meeting": null,
+      "activities": [
+        "Interview the people who handle property and health claims",
+        "Interview the COO, Head of Claims and Board members",
+        "Synthesize interview pain points by claims line"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Time & satisfaction baseline",
+      "question_id": "Q3",
+      "answers": "What are current average settlement time and customer satisfaction for property and health claims?",
+      "traces_to": ["success_criteria:1", "success_criteria:2"],
+      "start_offset": 0,
+      "duration": 4,
+      "follows": [],
+      "builds_on_meeting": null,
+      "activities": [
+        "Measure settlement time from operational claims data",
+        "Measure customer satisfaction with customer feedback data",
+        "Agree the measurement definitions with the Head of Claims"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Motor lean program review",
+      "question_id": "Q2",
+      "answers": "What did the 2024 lean program change for motor claims, and what carries over to property and health?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 2,
+      "duration": 3,
+      "follows": ["W1"],
+      "builds_on_meeting": null,
+      "activities": [
+        "Review lean program documents and motor handling-time data",
+        "Interview those who ran the program and motor handlers",
+        "Test which motor changes apply to property and health"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 1,
+      "name": "Settlement delay causes",
+      "question_id": "Q1",
+      "answers": "At which settlement steps do property and health claims lose time, and what causes the loss?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 2,
+      "duration": 5,
+      "follows": ["W1"],
+      "builds_on_meeting": null,
+      "activities": [
+        "Map property and health settlement steps with the handlers",
+        "Measure waiting and rework time per step from claims data",
+        "Trace the causes of delay and rank them by time lost"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 2,
+      "name": "Operating model options",
+      "question_id": "Q4",
+      "answers": "Which claims operating models fit property and health claims, and how do they compare on settlement time and satisfaction?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 4,
+      "follows": [],
+      "builds_on_meeting": "G3",
+      "activities": [
+        "Define candidate claims operating models for both lines",
+        "Compare options on delay causes addressed and satisfaction",
+        "Prepare the option comparison for the first workshop"
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 2,
+      "name": "Chosen model design",
+      "question_id": "Q5",
+      "answers": "Does the chosen option cut settlement time for property and health without lowering satisfaction below current levels?",
+      "traces_to": ["success_criteria:1", "success_criteria:2", "gate:2"],
+      "start_offset": 4,
+      "duration": 4,
+      "follows": ["W5"],
+      "builds_on_meeting": "G4",
+      "activities": [
+        "Detail structure, roles and governance of the chosen model",
+        "Detail property and health designs with the line leaders",
+        "Test the design against both success criteria"
+      ]
+    },
+    {
+      "id": "W7",
+      "phase_order": 2,
+      "name": "Transition plan",
+      "question_id": "Q6",
+      "answers": "What transition steps move the insurer to the chosen model, and what must the Board decide?",
+      "traces_to": ["problem_statement", "gate:2"],
+      "start_offset": 8,
+      "duration": 2,
+      "follows": ["W6"],
+      "builds_on_meeting": "G5",
+      "activities": [
+        "Sequence steps that work with the current claims IT system",
+        "Define change actions for claims staff and line leaders",
+        "List the decisions the Board must take"
+      ]
+    },
+    {
+      "id": "W8",
+      "phase_order": 2,
+      "name": "Report and Board readout",
+      "question_id": null,
+      "answers": "Do the final report and Board presentation give the Board what it needs to decide?",
+      "traces_to": ["problem_statement", "gate:2"],
+      "start_offset": 10,
+      "duration": 2,
+      "follows": ["W6", "W7"],
+      "builds_on_meeting": null,
+      "activities": [
+        "Draft the final report from diagnostic and design findings",
+        "Prepare the Board presentation",
+        "Review drafts with the COO and Head of Claims"
+      ]
+    }
+  ],
+  "notes": []
+}

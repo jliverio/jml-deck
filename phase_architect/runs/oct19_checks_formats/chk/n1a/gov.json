@@ -1,0 +1,70 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Agree access and start the evidence work",
+      "attendees": ["CEO", "Commercial Director"],
+      "presents": [],
+      "decision": "Who will give the team access to the data and people the research needs?",
+      "agenda": [
+        "Present the Spain question and the plan for the research phase",
+        "Align on the data and people the research needs",
+        "Confirm the date and focus of the week 3 check-in"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Check-in: market sizing",
+      "purpose": "Review market size and growth findings",
+      "attendees": ["CEO", "Commercial Director"],
+      "presents": ["D1"],
+      "decision": "Is the market size and growth base solid enough to build the findings pack on?",
+      "agenda": [
+        "Review market size and growth by segment",
+        "Discuss open questions for the remaining research",
+        "Confirm the base for the findings pack"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Findings sign-off",
+      "purpose": "Sign off findings on Spain's attractiveness",
+      "attendees": ["CEO", "Commercial Director"],
+      "presents": ["D2", "D3", "D4"],
+      "decision": "Is Spain attractive enough to justify designing entry options?",
+      "agenda": [
+        "Present competitor profiles, buyer needs and the gap assessment",
+        "Review the findings pack on Spain's attractiveness",
+        "Decide whether to design Spain entry options"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Check-in: design progress",
+      "purpose": "Check progress on the design workstreams",
+      "attendees": ["CEO", "Commercial Director"],
+      "presents": [],
+      "decision": "Is the remaining work on track for a go or no-go at the final readout?",
+      "agenda": [
+        "Present status of entry options and business case",
+        "Discuss emerging direction ahead of the final readout",
+        "Confirm what the final readout must settle"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Final readout",
+      "purpose": "Decide on Spain go or no-go and entry plan",
+      "attendees": ["CEO", "Commercial Director"],
+      "presents": ["D5", "D6", "D7", "D8"],
+      "decision": "Approve the Spain go or no-go decision and, if go, the entry plan?",
+      "agenda": [
+        "Present the go or no-go decision pack and entry plan",
+        "Review entry options, business case and roadmap",
+        "Decide go or no-go and, if go, the entry plan"
+      ]
+    }
+  ],
+  "notes": []
+}
