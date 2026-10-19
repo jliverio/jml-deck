@@ -708,6 +708,8 @@ def roadmap_slide(prs, plan, section, client, slide=None):
             starts = f"Starts after the {plabel}, week {pg.get('week') or phases[i - 1].get('end_week')}"
             if len(starts) > int((cw - Inches(0.1)) / Inches(0.075)):   # narrow columns (5 phases): keep the week
                 starts = f"Week {pg.get('week') or phases[i - 1].get('end_week')}, after the {plabel}"
+            if len(starts) > int((cw - Inches(0.1)) / Inches(0.075)):   # still too long: name the phase, not the gate (Oct 19)
+                starts = f"Week {pg.get('week') or phases[i - 1].get('end_week')}, after Phase {phases[i - 1]['order']}"
         _text(s, _clip(starts, int((cw - Inches(0.1)) / Inches(0.075))), size=10, italic=True, color=GREY,
               anchor=MSO_ANCHOR.TOP, x=x, y=y + chev_h + Inches(0.08), w=cw - Inches(0.1), h=Inches(0.22))
         # what the phase answers
