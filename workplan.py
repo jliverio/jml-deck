@@ -14,6 +14,7 @@ from the numbers (no model writes them), so they can never disagree with the cha
     build_workplan_deck(plan) -> pptx bytes (template with only these slides; for tests)
 """
 import io
+import os
 
 from pptx.dml.color import RGBColor
 from pptx.enum.shapes import MSO_SHAPE, MSO_CONNECTOR
@@ -508,13 +509,49 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
 
 # ------------------------------------------------------------------ slide 2: deliverables
 _DEL_COLS = (("Workstream", Inches(2.3)), ("Deliverables", Inches(5.25)), ("Due", Inches(0.9)), ("Reviewed at", None))
+# What the client receives (José, Oct 19): an icon on each deliverable line, the words in a legend at the foot of the
+# page. Same ids, labels and defaults as phase_architect/deliverable_formats.json (tests/test_formats.py checks it).
+FORMATS = (("presentation", "Presentation"), ("report", "Report"), ("model", "Model"), ("dashboard", "Dashboard"),
+           ("playbook", "Playbook"), ("training", "Training"), ("solution", "Working solution"))
+FORMAT_DEFAULT = {"analysis": "presentation", "design": "presentation", "build": "solution",
+                  "decision_pack": "presentation", "enablement": "training"}
+ICON_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "format_icons")
+_ICON = Inches(0.22)
+
+
+def _format(d):
+    f = d.get("format")
+    return f if f in dict(FORMATS) else FORMAT_DEFAULT.get(d.get("kind"), "presentation")
+
+
+def _icon(slide, fmt, x, y, size):
+    path = os.path.join(ICON_DIR, fmt + ".png")
+    if os.path.exists(path):
+        pic = slide.shapes.add_picture(path, x, y, size, size)
+        pic.name = f"format:{fmt}"
+        return pic
+    return None
+
+
+def _format_legend(slide, plan):
+    """Icons with their words, at the foot of the page, for the formats this plan uses (same on every page)."""
+    used = {_format(d) for d in plan["deliverables"]}
+    ly = BOTTOM - Inches(0.2)
+    _text(slide, "What the client receives:", size=8, bold=True, color=GREY, x=L, y=ly, w=Inches(1.6), h=Inches(0.17))
+    lx = L + Inches(1.6)
+    for fid, label in FORMATS:
+        if fid not in used:
+            continue
+        _icon(slide, fid, lx, ly, Inches(0.17))
+        _text(slide, label, size=8, color=GREY, x=lx + Inches(0.21), y=ly - Inches(0.01), w=Inches(1.25), h=Inches(0.17))
+        lx += Inches(0.3) + Inches(0.065) * len(label) + Inches(0.25)
 
 
 def deliverables_slides(prs, plan, section, client, slide=None):
     """One or more deliverables pages; a workstream never splits across pages
     unless it alone has more deliverables than a page holds."""
     y_first = TOP - Inches(0.05) + Inches(0.38)
-    avail = BOTTOM - Inches(0.1) - y_first
+    avail = BOTTOM - _LEGEND_H - Inches(0.05) - y_first        # the format legend sits at the foot (Oct 19)
     cap = max(1, int(avail // MIN_LINE))
     order = _ws_order(plan)
     numbering = {w["id"]: i + 1 for i, w in enumerate(order)}
@@ -551,10 +588,11 @@ def deliverables_slide(prs, plan, section, client, slide=None, items=None, numbe
         x += w
     y += Inches(0.38)
     if avail is None:
-        avail = BOTTOM - Inches(0.1) - y
+        avail = BOTTOM - _LEGEND_H - Inches(0.05) - y
     line_h = max(MIN_LINE, min(MAX_LINE, avail / max(len(items), 1)))
     size = 11 if line_h >= Inches(0.4) else 10
-    name_chars = int((cols[1][1] - Inches(0.1)) / Inches(0.0795 if size == 11 else 0.072))
+    icon_w = _ICON + Inches(0.1)
+    name_chars = int((cols[1][1] - Inches(0.1) - icon_w) / Inches(0.0795 if size == 11 else 0.072))
     rev_chars = int((cols[3][1] - Inches(0.05)) / Inches(0.0795 if size == 11 else 0.072))
     # group consecutive items of the same workstream
     runs = []
@@ -573,13 +611,15 @@ def deliverables_slide(prs, plan, section, client, slide=None, items=None, numbe
             d = dels[did]
             yy = y + j * line_h
             x = L + cols[0][1]
-            _text(s, _clip(f"{did}  {d['name']}", name_chars), size=size, x=x, y=yy, w=cols[1][1] - Inches(0.1), h=line_h)
+            _icon(s, _format(d), x, yy + (line_h - _ICON) / 2, _ICON)
+            _text(s, _clip(f"{did}  {d['name']}", name_chars), size=size, x=x + icon_w, y=yy, w=cols[1][1] - Inches(0.1) - icon_w, h=line_h)
             x += cols[1][1]
             _text(s, d.get("due_label") or f"Week {d['due_week']}", size=size, x=x, y=yy, w=cols[2][1], h=line_h)
             x += cols[2][1]
             _text(s, _clip(d.get("presented_at") or "[Firm to complete]", rev_chars), size=size, x=x, y=yy, w=cols[3][1], h=line_h)
         y += h
         _line(s, L, y, L + W, y, color=LGREY, width=0.5, dash=True)
+    _format_legend(s, plan)
     return s
 
 

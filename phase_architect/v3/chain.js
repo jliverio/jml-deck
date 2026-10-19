@@ -9,6 +9,8 @@
 // Pure functions, no I/O: the same code can run in n8n Code nodes.
 
 const { validatePlan } = require('../validate_plan_v2.js');
+const FORMATS = require('../deliverable_formats.json');
+const FORMAT_IDS = FORMATS.formats.map(f => f.id);
 
 const MAX_PHASES = 5;
 const MAX_DEL_PER_WS = 3;
@@ -258,7 +260,7 @@ function stageInput(stage, state) {
       brief: briefSubset(brief, ['client', 'problem_statement'], ['engagement_type', 'stakeholders'], ['timeline', 'success_criteria']),
       phases: phasesView(state.lead),
       workstreams: wsv.map(w => pick(w, ['id', 'phase_order', 'name', 'start_week', 'end_week', 'builds_on_meeting'])),
-      deliverables: ((state.del || {}).deliverables || []).map(d => ({ ...pick(d, ['id', 'workstream_id', 'name', 'kind', 'due_week_in_phase']), due_week: ((ph[(wsById[d.workstream_id] || {}).phase_order] || {}).start_week || 1) + (Number(d.due_week_in_phase) || 1) - 1 })),
+      deliverables: ((state.del || {}).deliverables || []).map(d => ({ ...pick(d, ['id', 'workstream_id', 'name', 'kind', 'format', 'due_week_in_phase']), due_week: ((ph[(wsById[d.workstream_id] || {}).phase_order] || {}).start_week || 1) + (Number(d.due_week_in_phase) || 1) - 1 })),
       meetings: meetings.map(m => m.type === 'gate' ? { ...m, label: ((ph[m.phase_order] || {}).gate || {}).label, decision: ((ph[m.phase_order] || {}).gate || {}).decision } : m),
       ...(state.review_feedback && state.review_feedback.gov ? { review_feedback: state.review_feedback.gov } : {}),
     };
@@ -291,7 +293,7 @@ function buildArch(state) {
   const delOut = ((state.del || {}).deliverables) || [];
   const workstreams = (((state.ws || {}).workstreams) || []).map(w => ({
     ...pick(w, ['id', 'phase_order', 'name', 'question_id', 'answers', 'traces_to', 'start_offset', 'duration', 'follows', 'builds_on_meeting', 'activities']),
-    deliverables: delOut.filter(d => d.workstream_id === w.id).map(d => pick(d, ['id', 'name', 'kind', 'due_week_in_phase'])),
+    deliverables: delOut.filter(d => d.workstream_id === w.id).map(d => pick(d, ['id', 'name', 'kind', 'format', 'due_week_in_phase'])),
   }));
   const content = Object.fromEntries((((state.gov || {}).events) || []).map(e => [e.id, e]));
   const events = (state.calendar || []).map(c => {
@@ -374,6 +376,35 @@ function noteNumbers(notes, state) {
 }
 
 // Violations for one stage only. `calendar` reports calendar errors, which are code bugs, never the agent's.
+// Formats (José, Oct 19): what the client physically receives, allowed per kind; a format the brief names must appear,
+// and the final phase's decision pack takes the medium the brief names.
+function briefFormats(inp) {
+  const f = ((((inp || {}).brief || {}).soft_fields || {}).deliverable_format) || {};
+  if (f.source !== 'stated' || !f.value) return [];
+  const t = norm(typeof f.value === 'string' ? f.value : JSON.stringify(f.value));
+  return FORMAT_IDS.filter(id => (FORMATS.brief_words[id] || []).some(w => new RegExp(`\\b${w}\\b`).test(t)));
+}
+function checkFormats(state, r) {
+  const v = [];
+  const dels = (state.del || {}).deliverables || [];
+  for (const d of dels) {
+    if (!d.format) { v.push(`del:${d.id}:no_format`); continue; }
+    if (!FORMAT_IDS.includes(d.format)) { v.push(`del:${d.id}:format_${d.format}_unknown`); continue; }
+    const ok = FORMATS.allowed_by_kind[d.kind] || [];
+    if (!ok.includes(d.format)) v.push(`del:${d.id}:format_${d.format}_not_allowed_for_${d.kind}_use_${ok.join('_or_')}`);
+  }
+  const named = briefFormats(state.input);
+  for (const f of named) if (!dels.some(d => d.format === f)) v.push(`del:brief_asks_for_${f}_but_no_deliverable_is_one`);
+  const media = named.filter(f => f === 'presentation' || f === 'report');
+  if (media.length && r.plan.phases.length) {
+    const last = Math.max(...r.plan.phases.map(p => p.order));
+    for (const d of r.plan.deliverables.filter(x => x.phase_order === last && x.kind === 'decision_pack')) {
+      const raw = dels.find(x => x.id === d.id) || {};
+      if (raw.format && !media.includes(raw.format)) v.push(`del:${d.id}:final_pack_is_${raw.format}_but_brief_asks_for_${media.join('_or_')}`);
+    }
+  }
+  return v;
+}
 const L0 = state => state.lead || {};
 function checkStage(stage, state, ctx) {
   ctx = ctx || {};
@@ -423,7 +454,8 @@ function checkStage(stage, state, ctx) {
     let prevWk = 0;
     for (const m of state.calendar) {
       if (m.type === 'kickoff') continue;
-      if (!dues.some(w => w > prevWk && w <= m.week)) v.push(`del:nothing_due_for_${m.id}_${m.type}_wk${m.week}_since_wk${prevWk}`);
+      const can = m.type === 'checkin' ? r.plan.deliverables.filter(d => d.kind !== 'decision_pack').map(d => d.due_week) : dues;   // a check-in leaves packs to the next workshop or gate
+      if (!can.some(w => w > prevWk && w <= m.week)) v.push(`del:nothing_due_for_${m.id}_${m.type}_wk${m.week}_since_wk${prevWk}`);
       prevWk = m.week;
     }
     // a stream that follows another and starts before it ends needs an interim handover from it
@@ -450,6 +482,7 @@ function checkStage(stage, state, ctx) {
       const atGate = mine.filter(d => d.due_week === p.end_week).length;
       if (atGate > Math.max(2, Math.ceil(mine.length / 2))) v.push(`del:${p.name}:${atGate}_of_${mine.length}_due_in_gate_week_${p.end_week}`);
     }
+    v.push(...checkFormats(state, r));
     v.push(...agentNotes('del', state.del, state));
   }
   if (stage === 'gov') {
@@ -462,7 +495,7 @@ function checkStage(stage, state, ctx) {
     const wk = Object.fromEntries(state.calendar.map(m => [m.id, m]));
     const dueOf = Object.fromEntries(r.plan.deliverables.map(d => [d.id, d.due_week]));
     for (const d of r.plan.deliverables) {
-      const decides = ['decision_pack', 'design'].includes(d.kind);
+      const decides = d.kind === 'decision_pack';     // designs may be chosen at a check-in (Oct 19: check-ins were left empty)
       const types = decides ? ['gate', 'workshop'] : ['gate', 'workshop', 'checkin'];
       const shown = ((state.gov || {}).events || []).some(e => wk[e.id] && types.includes(wk[e.id].type) && (e.presents || []).includes(d.id) && wk[e.id].week >= dueOf[d.id]);
       if (!shown) v.push(decides ? `gov:${d.id}:not_shown_at_a_workshop_or_gate_from_wk${d.due_week}` : `gov:${d.id}:not_shown_at_any_meeting_from_wk${d.due_week}`);
@@ -482,7 +515,8 @@ function checkStage(stage, state, ctx) {
     for (const m of state.calendar) {
       if (m.type === 'kickoff') continue;
       const ev = ((state.gov || {}).events || []).find(e => e.id === m.id) || {};
-      const fresh = r.plan.deliverables.filter(d => d.due_week > prev && d.due_week <= m.week && !(m.type === 'checkin' && ['decision_pack', 'design'].includes(d.kind))).map(d => d.id);
+      const fresh = r.plan.deliverables.filter(d => d.due_week > prev && d.due_week <= m.week && !(m.type === 'checkin' && d.kind === 'decision_pack')).map(d => d.id);
+      if (!(ev.presents || []).length) v.push(`gov:${m.id}:${m.type}_wk${m.week}_reviews_nothing`);
       const missing = fresh.filter(id => !(ev.presents || []).includes(id));
       if (missing.length) v.push(`gov:${m.id}:does_not_present_${missing.join('_')}_due_since_wk${prev}`);
       prev = m.week;
@@ -517,7 +551,7 @@ function reviewInput(state) {
     plan: {
       phases: p.phases.map(x => ({ order: x.order, name: x.name, weeks: `${x.start_week}-${x.end_week}`, objective: x.objective_one_line, gate: x.gate })),
       workstreams: p.workstreams.map(w => ({ id: w.id, phase: w.phase_order, name: w.name, question_id: qid[w.id] === undefined ? null : qid[w.id], answers: w.answers, weeks: `${w.start_week}-${w.end_week}`, follows: w.follows, activities: w.activities })),
-      deliverables: p.deliverables.map(d => ({ id: d.id, workstream: d.workstream_id, name: d.name, due_week: d.due_week })),
+      deliverables: p.deliverables.map(d => ({ id: d.id, workstream: d.workstream_id, name: d.name, format: d.format, due_week: d.due_week })),
       meetings: p.governance.events.map(e => ({ id: e.id, type: e.type, week: e.week, label: e.label, purpose: e.purpose, attendees: e.attendees, presents: e.presents, decision: e.decision, agenda: e.agenda })),
       notes: [].concat(p.architect_notes || []),
     },

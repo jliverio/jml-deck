@@ -18,6 +18,7 @@
      "workstream_id",
      "name",
      "kind",
+     "format",
      "due_week_in_phase"
     ],
     "properties": {
@@ -38,6 +39,18 @@
        "build",
        "decision_pack",
        "enablement"
+      ]
+     },
+     "format": {
+      "type": "string",
+      "enum": [
+       "presentation",
+       "report",
+       "model",
+       "dashboard",
+       "playbook",
+       "training",
+       "solution"
       ]
      },
      "due_week_in_phase": {

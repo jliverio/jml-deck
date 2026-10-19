@@ -28,7 +28,7 @@ function render(p) {
     for (const w of p.workstreams.filter(w => w.phase_order === ph.order)) {
       L.push(`  ${w.id} ${w.name}, weeks ${w.start_week}-${w.end_week}${w.follows.length ? ', after ' + w.follows.join(', ') : ''}. Answers: ${w.answers}`);
       L.push(`     Activities: ${w.activities.join('; ')}`);
-      for (const id of w.deliverable_ids) { const d = p.deliverables.find(x => x.id === id); L.push(`     ${d.id} (${d.kind}, due week ${d.due_week}): ${d.name}`); }
+      for (const id of w.deliverable_ids) { const d = p.deliverables.find(x => x.id === id); L.push(`     ${d.id} (${d.kind}${d.format ? ', ' + d.format : ''}, due week ${d.due_week}): ${d.name}`); }
     }
   }
   L.push(`\nSteering meetings (status meetings every ${p.governance.status_cadence_weeks} week(s) in between):`);

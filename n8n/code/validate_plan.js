@@ -9,6 +9,8 @@
 
 const LIM = { ws_name: 28, deliverable: 60, activity: 60, label: 28, purpose: 45, decision: 90, agenda: 80, gate_label: 22, objective_words: 20, answers_words: 20, gq_words: 25, note_words: 25 };
 const AGENDA_VERBS = ['Present', 'Review', 'Align', 'Discuss', 'Confirm', 'Decide'];
+// What the client receives when the agent gave no format (deliverable_formats.json default_by_kind; tests keep them in step)
+const FORMAT_DEFAULT = { analysis: 'presentation', design: 'presentation', build: 'solution', decision_pack: 'presentation', enablement: 'training' };
 
 // Deadline in the brief's timeline -> whole weeks available from (today + startLag weeks).
 const MONTHS = ['january','february','march','april','may','june','july','august','september','october','november','december'];
@@ -111,7 +113,8 @@ function validatePlan(arch, ctx) {
     if (acts.length < 2 || acts.length > 3) v.push(`ws:${w.id}:activities_count_${acts.length}`);
     acts.forEach((a, i) => { if (String(a).length > LIM.activity) v.push(`ws:${w.id}:activity_${i + 1}_over_${LIM.activity}`); });
     const ds = w.deliverables || [];
-    if (ds.length < 1 || ds.length > 2) v.push(`ws:${w.id}:deliverables_count_${ds.length}`);
+    // 1-2 per workstream for the single agent; the four-agent chain allows 3 for a complex stream (ctx.max_deliverables_per_ws)
+    if (ds.length < 1 || ds.length > (ctx.max_deliverables_per_ws || 2)) v.push(`ws:${w.id}:deliverables_count_${ds.length}`);
     // traces
     const tr = w.traces_to || [];
     if (!tr.length) v.push(`ws:${w.id}:no_trace`);
@@ -212,8 +215,9 @@ function validatePlan(arch, ctx) {
   // Repair: a deliverable that no gate or workshop presents goes to its own phase's gate, which sits at the
   // phase end and so always at or after the due week. Every live first pass (runs 26, 50, 75, Oct 16) broke
   // this rule and cost a second Phase Architect call; placing a deliverable at its gate needs no judgment.
+  const reviewTypes = d => (ctx.any_meeting_reviews && d.kind !== 'decision_pack') ? ['gate', 'workshop', 'checkin'] : ['gate', 'workshop'];
   for (const d of dels) {
-    const shownAt = e => (e.type === 'gate' || e.type === 'workshop') && (e.presents || []).includes(d.id) && e.week >= d.due_week;
+    const shownAt = e => reviewTypes(d).includes(e.type) && (e.presents || []).includes(d.id) && e.week >= d.due_week;
     if (events.some(shownAt)) continue;
     const g = events.find(e => e.type === 'gate' && e.phase_order === d.phase_order && e.week >= d.due_week)
       || events.filter(e => (e.type === 'gate' || e.type === 'workshop') && e.week >= d.due_week).sort((a, b) => a.week - b.week)[0];
@@ -269,7 +273,7 @@ function validatePlan(arch, ctx) {
   }
   // every deliverable presented at a gate/workshop at or after due
   for (const d of dels) {
-    const shown = events.some(e => (e.type === 'gate' || e.type === 'workshop') && (e.presents || []).includes(d.id) && e.week >= d.due_week);
+    const shown = events.some(e => reviewTypes(d).includes(e.type) && (e.presents || []).includes(d.id) && e.week >= d.due_week);
     if (!shown) v.push(`del:${d.id}:never_presented`);
   }
 
@@ -303,7 +307,7 @@ function validatePlan(arch, ctx) {
     total_duration_weeks: total,
     phases: phases.map(p => ({ name: p.name, order: p.order, start_week: p.start_week, end_week: p.end_week, duration_weeks: p.duration_weeks, duration_derived: !!p.duration_derived, objective_one_line: p.objective_one_line, gate: p.gate, depends_on_assumptions: p.depends_on_assumptions || [], workstream_ids: p.workstream_ids || [] })),
     workstreams: wss.map(w => ({ id: w.id, phase_order: w.phase_order, name: w.name, answers: w.answers, traces_to: w.traces_to || [], start_week: w.start_week, end_week: w.end_week, follows: w.follows || [], activities: w.activities || [], deliverable_ids: (w.deliverables || []).map(d => d.id) })),
-    deliverables: dels.map(d => ({ id: d.id, name: d.name, kind: d.kind, workstream_id: d.workstream_id, phase_order: d.phase_order, due_week: d.due_week, presented_at: presentedAt[d.id] })),
+    deliverables: dels.map(d => ({ id: d.id, name: d.name, kind: d.kind, format: d.format || FORMAT_DEFAULT[d.kind] || 'presentation', workstream_id: d.workstream_id, phase_order: d.phase_order, due_week: d.due_week, presented_at: presentedAt[d.id] })),
     governance: { status_cadence_weeks: cadence, status_weeks: statusWeeks, events: evSorted.map(e => ({ id: e.id, type: e.type, phase_order: e.phase_order, week: e.week, label: e.label, purpose: e.purpose, attendees: e.attendees || [], presents: e.presents || [], decision: e.decision || null, agenda: e.agenda || [] })) },
     deadline: (ctx.weeks_available != null) ? { text: (((brief.soft_fields || {}).timeline) || {}).value || null, weeks_available: ctx.weeks_available } : null,
     architect_notes: arch.architect_notes || [],
