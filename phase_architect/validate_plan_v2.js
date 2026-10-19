@@ -212,8 +212,9 @@ function validatePlan(arch, ctx) {
   // Repair: a deliverable that no gate or workshop presents goes to its own phase's gate, which sits at the
   // phase end and so always at or after the due week. Every live first pass (runs 26, 50, 75, Oct 16) broke
   // this rule and cost a second Phase Architect call; placing a deliverable at its gate needs no judgment.
+  const reviewTypes = d => (ctx.any_meeting_reviews && !['decision_pack', 'design'].includes(d.kind)) ? ['gate', 'workshop', 'checkin'] : ['gate', 'workshop'];
   for (const d of dels) {
-    const shownAt = e => (e.type === 'gate' || e.type === 'workshop') && (e.presents || []).includes(d.id) && e.week >= d.due_week;
+    const shownAt = e => reviewTypes(d).includes(e.type) && (e.presents || []).includes(d.id) && e.week >= d.due_week;
     if (events.some(shownAt)) continue;
     const g = events.find(e => e.type === 'gate' && e.phase_order === d.phase_order && e.week >= d.due_week)
       || events.filter(e => (e.type === 'gate' || e.type === 'workshop') && e.week >= d.due_week).sort((a, b) => a.week - b.week)[0];
@@ -269,7 +270,7 @@ function validatePlan(arch, ctx) {
   }
   // every deliverable presented at a gate/workshop at or after due
   for (const d of dels) {
-    const shown = events.some(e => (e.type === 'gate' || e.type === 'workshop') && (e.presents || []).includes(d.id) && e.week >= d.due_week);
+    const shown = events.some(e => reviewTypes(d).includes(e.type) && (e.presents || []).includes(d.id) && e.week >= d.due_week);
     if (!shown) v.push(`del:${d.id}:never_presented`);
   }
 

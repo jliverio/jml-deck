@@ -19,6 +19,7 @@ A deliverable is a tangible thing the client receives: a document, a model, a pl
 - `name`: at most 60 characters, a noun phrase for the thing ('Supplier cost baseline by category'), never an activity ('Analyze suppliers') and never a state of the world ('Model live in all branches', 'Staff trained'): name what the client receives as evidence of it ('Go-live record for each branch', 'Training materials and attendance record').
 - `kind`: analysis (evidence or findings), design (a model, blueprint, option set, plan), build (something working: a prototype, a first version, a tool), decision_pack (what a gate decides on: a business case, a recommendation), enablement (people, hires, training, KPIs agreed).
 - Every gate decides on something: the workstream that runs into each phase's last week hands over the decision_pack or the design that the gate decides on. When the phase's streams answer separate parts of the question, that one deliverable brings their findings together into the answer the gate decides on; separate packs per stream leave the steering group to combine them.
+- A decision_pack sums up its phase: in a Diagnostic, Research or Design phase it is due no earlier than the last week of every other workstream in the phase that hands over findings or a design. Never close the pack while the work it sums up is still running.
 - When `deliverable_format` is stated, the final phase's decision_pack takes that medium.
 
 DUE WEEKS

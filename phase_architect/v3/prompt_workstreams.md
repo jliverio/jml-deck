@@ -24,6 +24,7 @@ A workstream is a stream of work inside one phase that answers one part of the g
 - `name`: at most 28 characters, a noun phrase in the client's subject matter ('Supplier economics', not 'Analysis').
 - `question_id`: the id of the sub-question this workstream answers (Q1, Q2, ...), or null for a stream that supports the others (stakeholder alignment, enablement, results tracking).
 - `answers`: at most 20 words: the question this workstream answers, in this client's terms.
+- `builds_on_meeting`: the id of the meeting whose choice this workstream builds on, or null. A stream that details the chosen option, builds the business case for the preferred option, builds the chosen design, or rolls out after a pilot builds on the workshop or gate that makes that choice: name it here and start the stream after that meeting's week. Code checks it.
 - `traces_to`: why it exists, one or more of: 'problem_statement'; 'success_criteria:k' for item k of `success_criteria_list`; 'gate:p' when it produces what the gate of phase p decides on. Every item of `success_criteria_list` must be traced by at least one workstream, and by one in the last phase, where the answer is tested against it.
 - `activities`: 2 or 3, each at most 60 characters, starting with a verb: what the team does. Evidence work names its sources by type (interviews with the people who do the work, operational data, documents, customers), not only the sponsors' views, and never by a name the brief does not give.
 

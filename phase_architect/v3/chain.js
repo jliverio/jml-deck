@@ -227,7 +227,7 @@ function wsView(state) {
   return ((state.ws || {}).workstreams || []).map(w => {
     const p = ph[w.phase_order] || { start_week: 1 };
     const so = Number(w.start_offset) || 0, du = Math.max(1, Number(w.duration) || 1);
-    return { ...pick(w, ['id', 'phase_order', 'name', 'question_id', 'answers', 'traces_to', 'start_offset', 'duration', 'follows', 'activities']), weeks_in_phase: `${so + 1}-${so + du}`, start_week: p.start_week + so, end_week: p.start_week + so + du - 1 };
+    return { ...pick(w, ['id', 'phase_order', 'name', 'question_id', 'answers', 'traces_to', 'start_offset', 'duration', 'follows', 'builds_on_meeting', 'activities']), weeks_in_phase: `${so + 1}-${so + du}`, start_week: p.start_week + so, end_week: p.start_week + so + du - 1 };
   });
 }
 function stageInput(stage, state) {
@@ -257,7 +257,7 @@ function stageInput(stage, state) {
     return {
       brief: briefSubset(brief, ['client', 'problem_statement'], ['engagement_type', 'stakeholders'], ['timeline', 'success_criteria']),
       phases: phasesView(state.lead),
-      workstreams: wsv.map(w => pick(w, ['id', 'phase_order', 'name', 'start_week', 'end_week'])),
+      workstreams: wsv.map(w => pick(w, ['id', 'phase_order', 'name', 'start_week', 'end_week', 'builds_on_meeting'])),
       deliverables: ((state.del || {}).deliverables || []).map(d => ({ ...pick(d, ['id', 'workstream_id', 'name', 'kind', 'due_week_in_phase']), due_week: ((ph[(wsById[d.workstream_id] || {}).phase_order] || {}).start_week || 1) + (Number(d.due_week_in_phase) || 1) - 1 })),
       meetings: meetings.map(m => m.type === 'gate' ? { ...m, label: ((ph[m.phase_order] || {}).gate || {}).label, decision: ((ph[m.phase_order] || {}).gate || {}).decision } : m),
       ...(state.review_feedback && state.review_feedback.gov ? { review_feedback: state.review_feedback.gov } : {}),
@@ -290,7 +290,7 @@ function buildArch(state) {
   const phases = (lead.phases || []).map((p, i) => gateWord[i + 1] ? { ...p, gate: { ...(p.gate || {}), decision: gateWord[i + 1] } } : p);
   const delOut = ((state.del || {}).deliverables) || [];
   const workstreams = (((state.ws || {}).workstreams) || []).map(w => ({
-    ...pick(w, ['id', 'phase_order', 'name', 'question_id', 'answers', 'traces_to', 'start_offset', 'duration', 'follows', 'activities']),
+    ...pick(w, ['id', 'phase_order', 'name', 'question_id', 'answers', 'traces_to', 'start_offset', 'duration', 'follows', 'builds_on_meeting', 'activities']),
     deliverables: delOut.filter(d => d.workstream_id === w.id).map(d => pick(d, ['id', 'name', 'kind', 'due_week_in_phase'])),
   }));
   const content = Object.fromEntries((((state.gov || {}).events) || []).map(e => [e.id, e]));
@@ -311,7 +311,7 @@ function buildArch(state) {
 
 function vctx(state, ctx) {
   const inp = state.input;
-  return { brief: inp.brief, success_criteria_list: inp.success_criteria_list || [], jargon_never: ctx.jargon_never || [], weeks_available: inp.weeks_available, max_deliverables_per_ws: MAX_DEL_PER_WS };
+  return { brief: inp.brief, success_criteria_list: inp.success_criteria_list || [], jargon_never: ctx.jargon_never || [], weeks_available: inp.weeks_available, max_deliverables_per_ws: MAX_DEL_PER_WS, any_meeting_reviews: true };
 }
 
 const CALENDAR = /^gov:(gap_|kickoff_count|[^:]+:(gates_|workshops_|checkins_|workshop_outside|checkin_outside|workshops_under))/;
@@ -322,15 +322,59 @@ const STAGE = {
   gov: v => (/^gov:/.test(v) && !CALENDAR.test(v)) || /^del:[^:]+:never_presented$/.test(v),
 };
 
-function agentNotes(stage, out) {
+function agentNotes(stage, out, state) {
   const v = [];
   const n = (out || {}).notes || [];
   if (n.length > MAX_AGENT_NOTES) v.push(`notes:${stage}_${n.length}_over_${MAX_AGENT_NOTES}`);
   n.forEach((s, i) => { if (words(s) > NOTE_WORDS) v.push(`notes:${stage}_${i + 1}_over_${NOTE_WORDS}_words`); });
+  if (state) noteNumbers(n, state).forEach(x => v.push(`notes:${stage}_${i1(x)}`));
+  return v;
+}
+const i1 = x => x;
+// Week ranges and week counts a note may quote: what the plan, its sizing, the archetype or the brief contains.
+function planNumbers(state) {
+  const inp = state.input, L = state.lead || {};
+  const ranges = new Set(), singles = new Set();
+  const add = (a, b) => { if (a == null || b == null) return; ranges.add(`${a}-${b}`); singles.add(a); singles.add(b); };
+  const planned = phaseWeeks(L.phases);
+  planned.forEach(p => add(p.duration_weeks.min, p.duration_weeks.max));
+  add(planned.reduce((a, p) => a + p.duration_weeks.min, 0), planned.reduce((a, p) => a + p.duration_weeks.max, 0));
+  const sz = sizingSummary(state);
+  if (sz) {
+    sz.phases.forEach(p => { add(p.estimate.min, p.estimate.max); if (p.archetype_weeks) add(p.archetype_weeks.min, p.archetype_weeks.max); singles.add(p.fixed_weeks);
+      p.work.forEach(w => { add((w.weeks_each || {}).min, (w.weeks_each || {}).max); singles.add(w.count); }); });
+    add(sz.estimate_total.min, sz.estimate_total.max);
+  }
+  (inp.method_library || []).forEach(a => (a.phases || []).forEach(p => add(p.typical_weeks[0], p.typical_weeks[1])));
+  const el = (((inp.brief || {}).required || {}).engagement_length) || {};
+  add(el.weeks_min, el.weeks_max);
+  if (inp.weeks_available != null) singles.add(inp.weeks_available);
+  planned.forEach(p => { singles.add(p.start_week); singles.add(p.end_week); });
+  ((state.ws || {}).workstreams || []).forEach(w => { singles.add(Number(w.duration)); });
+  (state.calendar || []).forEach(m => singles.add(m.week));
+  return { ranges, singles };
+}
+function noteNumbers(notes, state) {
+  const { ranges, singles } = planNumbers(state);
+  const v = [];
+  (notes || []).forEach((t, i) => {
+    const s = String(t || '');
+    const seen = new Set();
+    for (const m of s.matchAll(/(\d+)\s*(?:-|–|to)\s*(\d+)[\s-]*weeks?/gi)) {
+      seen.add(m.index);
+      if (!ranges.has(`${m[1]}-${m[2]}`)) v.push(`${i + 1}_says_${m[1]}-${m[2]}_weeks_but_the_plan_has_no_such_range`);
+    }
+    for (const m of s.matchAll(/(\d+)[\s-]*weeks?\b/gi)) {
+      const before = s.slice(Math.max(0, m.index - 6), m.index);
+      if (/\d\s*(?:-|–|to)\s*$/i.test(before) || /(?:-|–|to)\s*$/.test(before.trim() ? before : '')) continue;
+      if (!singles.has(Number(m[1]))) v.push(`${i + 1}_says_${m[1]}_weeks_but_the_plan_has_no_such_length`);
+    }
+  });
   return v;
 }
 
 // Violations for one stage only. `calendar` reports calendar errors, which are code bugs, never the agent's.
+const L0 = state => state.lead || {};
 function checkStage(stage, state, ctx) {
   ctx = ctx || {};
   const arch = buildArch(state);
@@ -341,6 +385,7 @@ function checkStage(stage, state, ctx) {
     const n = (state.lead.phases || []).length;
     if (n > MAX_PHASES) v.push(`phase:count_${n}_over_${MAX_PHASES}`);
     v.push(...checkSizing(state, ctx));
+    noteNumbers(L0(state).architect_notes, state).forEach(x => v.push(`note_${x}`));
   }
   if (stage === 'ws') {
     const orders = new Set((state.lead.phases || []).map((_, i) => i + 1));
@@ -350,6 +395,15 @@ function checkStage(stage, state, ctx) {
     const qids = new Set(sq.map(q => q.id));
     (state.ws.workstreams || []).forEach(w => { if (w.question_id != null && !qids.has(w.question_id)) v.push(`ws:${w.id}:question_id_${w.question_id}_unknown`); });
     sq.forEach(q => { if (!(state.ws.workstreams || []).some(w => w.question_id === q.id && w.phase_order === q.phase_order)) v.push(`ws:no_workstream_answers_${q.id}_in_phase_${q.phase_order}`); });
+    const mById = Object.fromEntries((state.calendar || []).map(m => [m.id, m]));
+    (state.ws.workstreams || []).forEach(w => {
+      if (w.builds_on_meeting == null) return;
+      const m = mById[w.builds_on_meeting];
+      if (!m || m.type === 'kickoff') { v.push(`ws:${w.id}:builds_on_meeting_${w.builds_on_meeting}_is_not_a_steering_meeting`); return; }
+      const ph0 = phaseWeeks(state.lead.phases).find(p => p.order === w.phase_order) || { start_week: 1 };
+      const st = ph0.start_week + (Number(w.start_offset) || 0);
+      if (st <= m.week) v.push(`ws:${w.id}:builds_on_${m.id}_wk${m.week}_but_starts_wk${st}`);
+    });
     // a stream that follows another but overlaps it must leave room for an interim handover (at least 2 weeks in)
     const pw = Object.fromEntries(phaseWeeks(state.lead.phases).map(p => [p.order, p]));
     const abs = w => { const so = Number(w.start_offset) || 0, du = Math.max(1, Number(w.duration) || 1), st = ((pw[w.phase_order] || {}).start_week || 1) + so; return { st, en: st + du - 1 }; };
@@ -359,7 +413,7 @@ function checkStage(stage, state, ctx) {
       const a = abs(w), b = abs(p);
       if (a.st <= b.en && a.st - b.st < 2) v.push(`ws:${w.id}:follows_${f}_but_starts_${a.st - b.st}_week_after_it`);
     }));
-    v.push(...agentNotes('ws', state.ws));
+    v.push(...agentNotes('ws', state.ws, state));
   }
   if (stage === 'del') {
     const ids = new Set((state.ws.workstreams || []).map(w => w.id));
@@ -380,13 +434,23 @@ function checkStage(stage, state, ctx) {
       const handed = r.plan.deliverables.some(d => d.workstream_id === f && d.due_week < w.start_week);
       if (!handed) v.push(`del:${f}_hands_nothing_to_${w.id}_before_wk${w.start_week}`);
     }
+    // a decision pack sums up its phase: in an assessment phase it is due once the other streams that hand over
+    // findings or a design have ended
+    for (const d of r.plan.deliverables.filter(x => x.kind === 'decision_pack')) {
+      const ph = r.plan.phases.find(p => p.order === d.phase_order);
+      if (!ph || !['Diagnostic', 'Research', 'Design'].includes(ph.name)) continue;
+      for (const w of r.plan.workstreams.filter(x => x.phase_order === d.phase_order && x.id !== d.workstream_id)) {
+        const feeds = r.plan.deliverables.some(x => x.workstream_id === w.id && ['analysis', 'design'].includes(x.kind));
+        if (feeds && w.end_week > d.due_week) v.push(`del:${d.id}:decision_pack_due_wk${d.due_week}_before_${w.id}_ends_wk${w.end_week}`);
+      }
+    }
     // spread: at most half of a phase's deliverables (or 2) fall due in its gate week
     for (const p of r.plan.phases) {
       const mine = r.plan.deliverables.filter(d => d.phase_order === p.order);
       const atGate = mine.filter(d => d.due_week === p.end_week).length;
       if (atGate > Math.max(2, Math.ceil(mine.length / 2))) v.push(`del:${p.name}:${atGate}_of_${mine.length}_due_in_gate_week_${p.end_week}`);
     }
-    v.push(...agentNotes('del', state.del));
+    v.push(...agentNotes('del', state.del, state));
   }
   if (stage === 'gov') {
     const cal = new Set(state.calendar.map(m => m.id));
@@ -398,20 +462,32 @@ function checkStage(stage, state, ctx) {
     const wk = Object.fromEntries(state.calendar.map(m => [m.id, m]));
     const dueOf = Object.fromEntries(r.plan.deliverables.map(d => [d.id, d.due_week]));
     for (const d of r.plan.deliverables) {
-      const shown = ((state.gov || {}).events || []).some(e => wk[e.id] && (wk[e.id].type === 'gate' || wk[e.id].type === 'workshop') && (e.presents || []).includes(d.id) && wk[e.id].week >= dueOf[d.id]);
-      if (!shown) v.push(`gov:${d.id}:not_shown_at_a_workshop_or_gate_from_wk${d.due_week}`);
+      const decides = ['decision_pack', 'design'].includes(d.kind);
+      const types = decides ? ['gate', 'workshop'] : ['gate', 'workshop', 'checkin'];
+      const shown = ((state.gov || {}).events || []).some(e => wk[e.id] && types.includes(wk[e.id].type) && (e.presents || []).includes(d.id) && wk[e.id].week >= dueOf[d.id]);
+      if (!shown) v.push(decides ? `gov:${d.id}:not_shown_at_a_workshop_or_gate_from_wk${d.due_week}` : `gov:${d.id}:not_shown_at_any_meeting_from_wk${d.due_week}`);
+      // reviewed once: at the first meeting that can take it
+      const at = ((state.gov || {}).events || []).filter(e => wk[e.id] && wk[e.id].type !== 'kickoff' && (e.presents || []).includes(d.id));
+      if (at.length > 1) v.push(`gov:${d.id}:reviewed_at_${at.length}_meetings_${at.map(e => e.id).join('_')}`);
+    }
+    // a meeting a workstream builds on must take a decision
+    for (const w of ((state.ws || {}).workstreams || [])) {
+      if (w.builds_on_meeting == null) continue;
+      const e = ((state.gov || {}).events || []).find(x => x.id === w.builds_on_meeting);
+      const c = state.calendar.find(m => m.id === w.builds_on_meeting);
+      if (c && c.type !== 'gate' && e && !String(e.decision || '').trim()) v.push(`gov:${w.builds_on_meeting}:${w.id}_builds_on_it_but_it_takes_no_decision`);
     }
     // each meeting after the kick-off reviews everything that fell due since the previous one
     let prev = 0;
     for (const m of state.calendar) {
       if (m.type === 'kickoff') continue;
       const ev = ((state.gov || {}).events || []).find(e => e.id === m.id) || {};
-      const fresh = r.plan.deliverables.filter(d => d.due_week > prev && d.due_week <= m.week).map(d => d.id);
+      const fresh = r.plan.deliverables.filter(d => d.due_week > prev && d.due_week <= m.week && !(m.type === 'checkin' && ['decision_pack', 'design'].includes(d.kind))).map(d => d.id);
       const missing = fresh.filter(id => !(ev.presents || []).includes(id));
       if (missing.length) v.push(`gov:${m.id}:does_not_present_${missing.join('_')}_due_since_wk${prev}`);
       prev = m.week;
     }
-    v.push(...agentNotes('gov', state.gov));
+    v.push(...agentNotes('gov', state.gov, state));
   }
   return { violations: [...new Set(v)], calendar, repairs: r.repairs };
 }

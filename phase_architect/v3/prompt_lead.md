@@ -84,7 +84,7 @@ ARCHITECT NOTES
 - a phase the brief points to that you left out, named as a phase ('No Measurement phase: ...'); never claim that work is not covered, because the Workstream agent may still cover it inside a phase;
 - each finding with `scope_risk` high: "Not covered by the phases: <actor>, <summary>. Confirm whether it is in scope." Shorten the summary, never the actor;
 - a conflict in the brief, a name taken as the closest fit, or a departure from the archetype.
-Write no note without one of these reasons.
+Write no note without one of these reasons. Every length a note quotes (a range or a number of weeks) must be one the plan or its sizing contains: a phase's weeks, an estimate, a piece's weeks, the total or the archetype's typical weeks. Code checks it.
 
 SELF-CHECK BEFORE ANSWERING
 Recompute every `estimate` from its pieces. Add up the phases' min and max weeks and compare them with the stated length, `weeks_available`, or (estimated) each phase's estimate. Confirm every phase answers a sub-question, every range is at most 2 weeks wide, every name is one of the eight, the type rule holds, and there are at most 5 phases. When `workstreams` is given, multiply its count by the phases each stream runs in and confirm the rows stay at or under 12.
