@@ -20,6 +20,15 @@ something due before every meeting after the kick-off, and every meeting reviews
 at a workshop or gate by the agent itself (v2 repaired this silently). The governance agent may reword a gate's
 decision to match what the gate reviews; that wording then closes the phase on every slide.
 
+Added Oct 19: a decision pack in a Diagnostic, Research or Design phase is due only after the other findings and design
+streams end; a stream that builds on a meeting's choice (`builds_on_meeting`) starts after it, and that meeting takes a
+decision; each deliverable is reviewed at one meeting only (findings, designs, builds and enablement at the first
+meeting that can take it, a check-in included; decision packs at the first workshop or gate); no meeting after the
+kick-off reviews nothing; week numbers quoted in notes exist in the plan. Each deliverable carries a `format`
+(`../deliverable_formats.json`: presentation, report, model, dashboard, playbook, training, solution), allowed per
+kind; a format the brief names must appear, and the final pack takes the medium the brief names. The deliverables
+slide shows it as an icon with a legend at the foot of the page. Live results: `../runs/oct19_checks_formats/`.
+
 Sizing (`checkSizing()`): each driver's evidence must appear word for word in a stated brief field, the profile or the
 findings; a library unit must keep the library's weeks and at-once values; each phase's estimate must equal fixed weeks
 plus ceil(count / at once) x weeks each; with no stated length each phase's weeks sit inside its estimate; every phase
