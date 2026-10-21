@@ -14,6 +14,19 @@ R = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PA = os.path.join(R, "phase_architect")
 rd = lambda *p: open(os.path.join(*p), encoding="utf-8").read()
 
+IDENT = re.compile(r"^[A-Za-z_$][A-Za-z0-9_$]*$")
+def js(v):
+    """A JS literal with single-quoted strings and bare keys: far fewer escapes when pasted into n8n through JSON."""
+    if isinstance(v, dict):
+        return "{" + ", ".join((k if IDENT.match(k) else js(k)) + ": " + js(x) for k, x in v.items()) + "}"
+    if isinstance(v, list):
+        return "[" + ", ".join(js(x) for x in v) + "]"
+    if isinstance(v, str):
+        if "'" in v and '"' not in v:
+            return json.dumps(v, ensure_ascii=False)
+        return "'" + v.replace("\\", "\\\\").replace("'", "\\'").replace("\n", "\\n") + "'"
+    return json.dumps(v)
+
 # ---- Chain check ----
 val = rd(PA, "validate_plan_v2.js")
 exp = "if (typeof module !== 'undefined') module.exports = { validatePlan, weeksAvailable, parseDeadline, LIM };"
@@ -27,7 +40,7 @@ assert chain.count(req1) == 1 and chain.count(req2) == 1
 formats = json.loads(rd(PA, "deliverable_formats.json"))
 formats.pop("_note", None)
 chain = chain.replace(req1, "// validatePlan: from the validator block above").replace(
-    req2, "const FORMATS = " + json.dumps(formats, ensure_ascii=False) + ";")
+    req2, "const FORMATS = " + js(formats) + ";")
 m = re.search(r"if \(typeof module !== 'undefined'\) module\.exports = (\{[^}]*\});", chain)
 assert m, "chain.js export line not found"
 chain = chain.replace(m.group(0), "return " + m.group(1) + ";")
@@ -47,9 +60,9 @@ print("built n8n/code/chain_check.js", len(out), "chars")
 lib = json.loads(rd(PA, "method_library.json"))
 ai_path = os.path.join(R, "n8n", "code", "architect_input.js")
 ai = rd(ai_path)
-ai = re.sub(r"^const METHOD_LIBRARY = .*;$", "const METHOD_LIBRARY = " + json.dumps(lib["archetypes"], ensure_ascii=False) + ";",
-            ai, count=1, flags=re.M)
-sc_line = "const SIZING_COMMON = " + json.dumps(lib["sizing_common"], ensure_ascii=False) + ";"
+ml_line = "const METHOD_LIBRARY = " + js(lib["archetypes"]) + ";"
+ai = re.sub(r"^const METHOD_LIBRARY = .*;$", lambda _: ml_line, ai, count=1, flags=re.M)
+sc_line = "const SIZING_COMMON = " + js(lib["sizing_common"]) + ";"
 if re.search(r"^const SIZING_COMMON = .*;$", ai, flags=re.M):
     ai = re.sub(r"^const SIZING_COMMON = .*;$", lambda _: sc_line, ai, count=1, flags=re.M)
 else:
