@@ -1,6 +1,6 @@
 {
- "note": "Chain section of \"Proposal request -> scoping deck reply\" (Id8uRq0GgHDg7NBV) as saved on Oct 21, 2026; long texts point to the repo files they were pasted from.",
- "versionId": "9599dcd5-bef5-4b67-8538-2588a70fd9d8",
+ "note": "Chain section of \"Proposal request -> scoping deck reply\" (Id8uRq0GgHDg7NBV) as saved on Oct 21, 2026; long texts point to the repo files they were pasted from (n8n/README.md lists them).",
+ "versionId": "1d124aa1-1fb7-44d1-828c-2738a8d9b2fd",
  "nodes": [
   {
    "name": "Phase Architect",
@@ -11,9 +11,9 @@
     -300
    ],
    "parameters": {
-    "hasOutputParser": true,
+    "hasOutputParser": false,
     "options": {
-     "systemMessage": "<see repo prompt: 14990 chars>"
+     "systemMessage": "<see repo prompt: 18523 chars>"
     },
     "promptType": "define",
     "text": "={{ JSON.stringify($json.agent_input || $json.architect_input) }}"
@@ -40,22 +40,6 @@
      "maxTokensToSample": 32000,
      "streaming": true
     }
-   }
-  },
-  {
-   "name": "Phases schema",
-   "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
-   "typeVersion": 1.3,
-   "position": [
-    2700,
-    -80
-   ],
-   "parameters": {
-    "inputSchema": "<see repo file: 3358 chars>",
-    "schemaType": "manual",
-    "autoFix": true,
-    "customizeRetryPrompt": true,
-    "prompt": "The text in COMPLETION was meant to be one JSON object that follows INSTRUCTIONS, but it failed with ERROR.\nReturn the s..."
    }
   },
   {
@@ -265,31 +249,11 @@
     -300
    ],
    "parameters": {
-    "jsCode": "<see repo file: 68619 chars>",
+    "jsCode": "<see repo file: 69748 chars>",
     "language": "javaScript",
     "mode": "runOnceForEachItem"
    },
    "notes": "n8n/code/chain_check.js (generated). Runs after every agent of the chain; Route reads its `route`."
-  },
-  {
-   "name": "Model: Phase Architect fixer",
-   "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
-   "typeVersion": 1.6,
-   "position": [
-    2700,
-    140
-   ],
-   "parameters": {
-    "model": {
-     "__rl": true,
-     "cachedResultName": "Claude Sonnet 5.5",
-     "mode": "list",
-     "value": "claude-sonnet-5-5"
-    },
-    "options": {
-     "maxTokensToSample": 16384
-    }
-   }
   },
   {
    "name": "Model: Workstream fixer",
@@ -359,17 +323,6 @@
      {
       "node": "Phase Architect",
       "type": "ai_languageModel",
-      "index": 0
-     }
-    ]
-   ]
-  },
-  "Phases schema": {
-   "ai_outputParser": [
-    [
-     {
-      "node": "Phase Architect",
-      "type": "ai_outputParser",
       "index": 0
      }
     ]
@@ -541,17 +494,6 @@
      {
       "node": "Route",
       "type": "main",
-      "index": 0
-     }
-    ]
-   ]
-  },
-  "Model: Phase Architect fixer": {
-   "ai_languageModel": [
-    [
-     {
-      "node": "Phases schema",
-      "type": "ai_languageModel",
       "index": 0
      }
     ]

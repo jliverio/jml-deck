@@ -1,6 +1,7 @@
 # Phase Architect v3: a lead agent and three agents in a chain, and a Plan Reviewer
 
-Status (Oct 18, 2026): tested on 10 briefs with a stated length and 10 without one (`../runs/oct18_chain/`, `../runs/oct18_thinking/`); not wired into n8n. The plan it produces has the same format as v2,
+Status: tested on 10 briefs with a stated length and 10 without one (`../runs/oct18_chain/`, `../runs/oct18_thinking/`, Oct 18);
+in the n8n workflow since Oct 21 (`../../n8n/README.md`, section "Four-agent Phase Architect chain"), without the Plan Reviewer. The plan it produces has the same format as v2,
 so the renderer, Assemble drafts and the Summary Writer need no change.
 
 | Step | Who | File | Output |
