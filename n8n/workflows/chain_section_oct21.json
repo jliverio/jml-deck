@@ -1,6 +1,6 @@
 {
  "note": "Chain section of \"Proposal request -> scoping deck reply\" (Id8uRq0GgHDg7NBV) as saved on Oct 21, 2026; long texts point to the repo files they were pasted from (n8n/README.md lists them).",
- "versionId": "1d124aa1-1fb7-44d1-828c-2738a8d9b2fd",
+ "versionId": "7e430e0f-bb7c-4c9c-baa7-75543d96f8e4",
  "nodes": [
   {
    "name": "Phase Architect",
@@ -37,8 +37,7 @@
      "value": "claude-sonnet-5-5"
     },
     "options": {
-     "maxTokensToSample": 32000,
-     "streaming": true
+     "maxTokensToSample": 20000
     }
    }
   },
@@ -249,7 +248,7 @@
     -300
    ],
    "parameters": {
-    "jsCode": "<see repo file: 69748 chars>",
+    "jsCode": "<see repo file: 70065 chars>",
     "language": "javaScript",
     "mode": "runOnceForEachItem"
    },

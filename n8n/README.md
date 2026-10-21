@@ -116,6 +116,11 @@ The single Phase Architect call and its Validate plan / Plan valid? loop are rep
 - Context Writer: output cap 2,000 -> 8,000. Run 831 spent all 2,000 tokens thinking and returned nothing, so the
   situation slide was dropped.
 
+Live tests on the published version (7e430e0f, Oct 21): execution 973 (Quinta Azul, 10-week assessment) ran every agent,
+two retries, and compiled a plan with no open check (2 phases, 6 workstreams, 8 deliverables); execution 974 (Ferragens,
+40 weeks) compiled 3 phases, 10 workstreams and 16 deliverables with one open check (a workstream's `answers` over 20
+words). Both decks built on template 1.4.
+
 Tests: `node n8n/tests/chain_test.js` replays saved answers through chain_check.js with n8n-like lookups (29 checks, including the lead's text-answer forms and streamed chunks);
 `node n8n/tests/make_pins.js chain|chain_error` builds the in-n8n wiring test (execution 826 ran the whole loop).
 In a pinned run the pinned agents answer any run index, so the pass comes from `$prevNode.runIndex` (probe, execution 827).
