@@ -15,6 +15,10 @@ Columns
                                         action, result, sources
                   summary_writer:<part> the Summary Writer agent: title,
                                         objectives, solution, outcomes
+                  phase_architect:<part> the Phase Architect chain's plan
+                                        (deliverable_NN_* rows: one row per
+                                        field for every deliverable, NN = its
+                                        number; drawn by the renderer)
                   pending:<agent>       not built yet; treated as empty
                   none                  slot not used
   writing_rule  instruction given to the agent that writes or shortens it
@@ -176,6 +180,31 @@ titles = [
 for name, rule, ex in titles:
     add(name, 110, "estimated", "code:workplan_title", "Composed by the renderer from the plan. " + rule,
         "firm_todo", ex)
+
+# Deliverable variables (José, Oct 22): one row per field for the group deliverable_01_* .. deliverable_16_*
+# (NN = the deliverable's number, D3 -> 03). Not template tokens: the renderer draws them from the plan (the timeline
+# diamond, the line on the deliverables page, the 'Reviews' line of its steering meeting) and names the shapes after
+# them. A value given in the payload for name, due week or format replaces the plan's once checked; workstream and
+# reviewed-at follow from the plan.
+deliverable_rows = [
+    ("deliverable_NN_name", 60, "phase_architect:deliverables.name",
+     "What the client receives, as a noun phrase ('Supplier cost baseline by category'), written by the Deliverable "
+     "agent. Shown as its number on the timeline, in full on the deliverables page and in its meeting's Reviews. "
+     "A value given replaces the plan's, cut to this limit.", "Cost-per-part baseline by plant with two-year trend"),
+    ("deliverable_NN_due_week", None, "phase_architect:deliverables.due_week",
+     "Week of the engagement in which the client receives it; places its diamond on the timeline. A value given must "
+     "lie inside its workstream's weeks and no later than the meeting that reviews it, or it is refused.", "8"),
+    ("deliverable_NN_format", None, "phase_architect:deliverables.format",
+     "What the client physically receives: presentation, report, model, dashboard, playbook, training or solution, "
+     "as its kind allows (phase_architect/deliverable_formats.json); sets its icon. Other values are refused.", "model"),
+    ("deliverable_NN_workstream", None, "phase_architect:workstreams",
+     "The workstream that hands it over ('03 Opportunity sizing'); sets its timeline row. Read-only: follows from "
+     "the plan.", "03 Opportunity sizing"),
+    ("deliverable_NN_reviewed_at", 28, "phase_architect:governance",
+     "The steering meeting that reviews it. Read-only: follows from the steering meetings.", "Initiatives go/no-go"),
+]
+for name, mx, src, rule, ex in deliverable_rows:
+    add(name, mx, "estimated", src, rule, "firm_todo", ex)
 
 # The key-question slide (key_question_01, criteria_basis_01, criterion_01..04) was removed on Oct 18:
 # the summary slide already carries the objectives, solution and outcomes.

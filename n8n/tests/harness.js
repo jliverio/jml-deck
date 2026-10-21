@@ -76,7 +76,7 @@ const topic = {
 
 // ---------- 1. Template rules ----------
 const tr = run("template_rules.js", { nodes: { checkProfiler }, input: RULES })[0].json;
-check("rules: all 60 rows kept (50 + 10 for template 1.4: situation, footer, work-plan titles)", tr._rules.length === RULES.length && RULES.length === 60, tr._rules.length);
+check("rules: all 65 rows kept (50 + 10 for template 1.4: situation, footer, work-plan titles; + 5 deliverable_NN_* rows, Oct 22)", tr._rules.length === RULES.length && RULES.length === 65, tr._rules.length);
 check("rules: 5 finding slots", tr._research.finding_slots === 5, tr._research.finding_slots);
 check("rules: both researchers -> 3 rows each", tr._research.max_rows === 3, tr._research.max_rows);
 check("rules: field_rules carry draft_chars 2x", tr._research.field_rules.find(f => f.field === "context").draft_chars === 180, tr._research.field_rules);

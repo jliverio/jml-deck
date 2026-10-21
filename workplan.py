@@ -13,8 +13,10 @@ from the numbers (no model writes them), so they can never disagree with the cha
     add_workplan_slides(prs, plan, section="Approach", client="[Client]") -> [slides]
     build_workplan_deck(plan) -> pptx bytes (template with only these slides; for tests)
 """
+import copy
 import io
 import os
+import re
 
 from pptx.dml.color import RGBColor
 from pptx.enum.shapes import MSO_SHAPE, MSO_CONNECTOR
@@ -442,6 +444,7 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
             placed = [max(gx + dm / 2, c - shift) for c in placed]
         for (dw, did), cx in zip(marks, placed):
             dmd = _box(s, cx - dm / 2, y + (row_h - dm) / 2, dm, dm, fill=WHITE, line=NAVY, shape=MSO_SHAPE.DIAMOND, line_w=0.75)
+            dmd.name = del_key(did)
             tf = dmd.text_frame
             tf.margin_left = tf.margin_right = tf.margin_top = tf.margin_bottom = Emu(0)
             num = did[1:] if did[:1] == "D" else did
@@ -547,6 +550,109 @@ def _format_legend(slide, plan):
         lx += Inches(0.3) + Inches(0.065) * len(label) + Inches(0.25)
 
 
+# ------------------------------------------------------------------ deliverable variables (José, Oct 22)
+# Each deliverable is a group of variables keyed by its number: deliverable_03_name, _due_week, _format, _workstream,
+# _reviewed_at. Its diamond on the timeline, its line on the deliverables page and the 'Reviews' line of its steering
+# meeting all read the same group, and the shapes carry the group's names (deliverable_03 for the diamond,
+# deliverable_03_name, _due_week, _reviewed_at, _format on its line; PowerPoint's Selection Pane shows them).
+# Name, due week and format can be given as values (payload `values`); each is checked before it replaces the plan's.
+# Workstream and reviewed-at follow from the workstreams and steering meetings and are read-only here.
+DEL_FIELDS = ("name", "due_week", "format", "workstream", "reviewed_at")
+DEL_EDITABLE = ("name", "due_week", "format")
+DEL_NAME_MAX = 60                      # the Deliverable agent's limit (validate_plan_v2.js LIM.deliverable)
+# formats each kind may take: phase_architect/deliverable_formats.json allowed_by_kind (tests/test_formats.py checks it)
+FORMAT_ALLOWED = {"analysis": ["presentation", "report", "model", "dashboard"],
+                  "design": ["presentation", "report", "model", "playbook"],
+                  "build": ["solution", "model", "dashboard", "playbook"],
+                  "decision_pack": ["presentation", "report"],
+                  "enablement": ["training", "playbook", "dashboard", "report"]}
+DEL_VAR = re.compile(r"(deliverable_(\d{2}))_(" + "|".join(DEL_FIELDS) + r")")
+
+
+def del_key(did):
+    """'D3' -> 'deliverable_03'."""
+    m = re.search(r"\d+", str(did))
+    return f"deliverable_{int(m.group()):02d}" if m else f"deliverable_{did}"
+
+
+def deliverable_variables(plan):
+    """{deliverable_03_name: ..., deliverable_03_due_week: 8, ...} for every deliverable of the plan."""
+    order = _ws_order(plan)
+    num = {w["id"]: i + 1 for i, w in enumerate(order)}
+    names = {w["id"]: w.get("name", "") for w in plan["workstreams"]}
+    out = {}
+    for d in plan["deliverables"]:
+        k = del_key(d["id"])
+        out[k + "_name"] = d["name"]
+        out[k + "_due_week"] = d["due_week"]
+        out[k + "_format"] = _format(d)
+        out[k + "_workstream"] = f"{num.get(d['workstream_id'], 0):02d} {names.get(d['workstream_id'], '')}".strip()
+        out[k + "_reviewed_at"] = d.get("presented_at") or ""
+    return out
+
+
+def apply_deliverable_values(plan, values, name_max=DEL_NAME_MAX):
+    """The plan with the deliverable values in `values` applied, and warnings for those refused. Checks: a due week
+    inside its workstream's weeks and no later than the meeting that reviews it; a format its kind allows; a name cut
+    to `name_max`. The input plan is not changed."""
+    given = []
+    for k, v in (values or {}).items():
+        m = DEL_VAR.fullmatch(str(k))
+        if m and v is not None and str(v).strip():
+            given.append((str(k), m.group(1), m.group(3), v))
+    if not given:
+        return plan, []
+    plan = copy.deepcopy(plan)
+    by = {del_key(d["id"]): d for d in plan["deliverables"]}
+    ws = {w["id"]: w for w in plan["workstreams"]}
+    week_of = {e["label"]: e["week"] for e in plan["governance"]["events"]}
+    current = deliverable_variables(plan)
+    total = plan["total_duration_weeks"]["max"]
+    warn = []
+    for k, key, field, v in sorted(given):
+        d = by.get(key)
+        if d is None:
+            warn.append(f"{k}: the plan has no deliverable {int(key[-2:])}; value ignored")
+            continue
+        if field not in DEL_EDITABLE:
+            if str(v).strip() != str(current[k]):
+                src = "workstreams" if field == "workstream" else "steering meetings"
+                warn.append(f"{k}: follows from the plan's {src}; value ignored")
+            continue
+        if field == "name":
+            t = " ".join(str(v).split())
+            if len(t) > name_max:
+                t = _clip(t, name_max)
+                warn.append(f"{k}: cut to {name_max} characters")
+            d["name"] = t
+        elif field == "format":
+            f = str(v).strip().lower()
+            ok = FORMAT_ALLOWED.get(d.get("kind"), [x for x, _ in FORMATS])
+            if f in ok:
+                d["format"] = f
+            else:
+                kind = str(d.get("kind") or "this").replace("_", " ")
+                warn.append(f"{k}: '{f}' is not a format for {'an' if kind[:1] in 'aeiou' else 'a'} {kind} deliverable "
+                            f"({', '.join(ok)}); value ignored")
+        else:
+            try:
+                wk = int(str(v).strip())
+            except ValueError:
+                warn.append(f"{k}: '{v}' is not a week number; value ignored")
+                continue
+            w = ws.get(d["workstream_id"], {})
+            lo, hi = w.get("start_week", 1), w.get("end_week", total)
+            rv = week_of.get(d.get("presented_at"))
+            if not lo <= wk <= hi:
+                warn.append(f"{k}: week {wk} is outside its workstream (weeks {lo}-{hi}); value ignored")
+            elif rv is not None and wk > rv:
+                warn.append(f"{k}: week {wk} is after the {d['presented_at']} (week {rv}) that reviews it; value ignored")
+            else:
+                d["due_week"] = wk
+                d.pop("due_label", None)
+    return plan, warn
+
+
 def deliverables_slides(prs, plan, section, client, slide=None):
     """One or more deliverables pages; a workstream never splits across pages
     unless it alone has more deliverables than a page holds."""
@@ -611,12 +717,17 @@ def deliverables_slide(prs, plan, section, client, slide=None, items=None, numbe
             d = dels[did]
             yy = y + j * line_h
             x = L + cols[0][1]
-            _icon(s, _format(d), x, yy + (line_h - _ICON) / 2, _ICON)
-            _text(s, _clip(f"{did}  {d['name']}", name_chars), size=size, x=x + icon_w, y=yy, w=cols[1][1] - Inches(0.1) - icon_w, h=line_h)
+            key = del_key(did)
+            fmt = _format(d)
+            pic = _icon(s, fmt, x, yy + (line_h - _ICON) / 2, _ICON)
+            if pic is not None:
+                pic.name = key + "_format"
+                pic._element.nvPicPr.cNvPr.set("descr", fmt)
+            _text(s, _clip(f"{did}  {d['name']}", name_chars), size=size, x=x + icon_w, y=yy, w=cols[1][1] - Inches(0.1) - icon_w, h=line_h).name = key + "_name"
             x += cols[1][1]
-            _text(s, d.get("due_label") or f"Week {d['due_week']}", size=size, x=x, y=yy, w=cols[2][1], h=line_h)
+            _text(s, d.get("due_label") or f"Week {d['due_week']}", size=size, x=x, y=yy, w=cols[2][1], h=line_h).name = key + "_due_week"
             x += cols[2][1]
-            _text(s, _clip(d.get("presented_at") or "[Firm to complete]", rev_chars), size=size, x=x, y=yy, w=cols[3][1], h=line_h)
+            _text(s, _clip(d.get("presented_at") or "[Firm to complete]", rev_chars), size=size, x=x, y=yy, w=cols[3][1], h=line_h).name = key + "_reviewed_at"
         y += h
         _line(s, L, y, L + W, y, color=LGREY, width=0.5, dash=True)
     _format_legend(s, plan)

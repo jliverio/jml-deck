@@ -212,7 +212,12 @@ check("1.2 stays the default (9 slides, no Approach)", len(texts(varfill.build_d
 NAV = json.load(open(os.path.join(HERE, "metalco_1_4.json")))
 tv14 = varfill.template_variables(varfill.TEMPLATES["1.4"])
 check("1.4: every template variable has a table row", tv14 <= table_names, sorted(tv14 - table_names))
-check("1.4: every table row has a variable in 1.4", table_names <= tv14, sorted(table_names - tv14))
+# deliverable_NN_* rows describe variables drawn from the plan, not template tokens (Oct 22)
+check("1.4: every table row has a variable in 1.4", {n for n in table_names if not varfill.GROUP_ROW.fullmatch(n)} <= tv14,
+      sorted(n for n in table_names - tv14 if not varfill.GROUP_ROW.fullmatch(n)))
+check("1.4: the deliverable group rows are the only rows outside the template",
+      sorted(n for n in table_names - tv14) == sorted(n for n in table_names if varfill.GROUP_ROW.fullmatch(n)) and
+      len([n for n in table_names if n.startswith("deliverable_NN_")]) == 5, sorted(table_names - tv14))
 pptx, warns = varfill.build_deck(NAV["values"], NAV["rules"], workplan=NAV["workplan"], version="1.4")
 prs, tx = texts(pptx)
 left = [t for t in tx if re.search(r"(?<![A-Za-z0-9_])(situation|belief|key_question|criteria_basis|criterion)_[0-9a-z_]+", t[2])]

@@ -22,6 +22,8 @@ m = re.search(r"const FORMAT_DEFAULT = (\{[^}]*\});", js)
 jsdef = json.loads(re.sub(r"(\w+):", r'"\1":', m.group(1)).replace("'", '"')) if m else None
 if jsdef != spec["default_by_kind"]:
     bad.append(f"validate_plan_v2.js FORMAT_DEFAULT {jsdef} differs from deliverable_formats.json")
+if wp.FORMAT_ALLOWED != spec["allowed_by_kind"]:
+    bad.append("workplan.FORMAT_ALLOWED differs from deliverable_formats.json allowed_by_kind")
 for kind, d in spec["default_by_kind"].items():
     if d not in spec["allowed_by_kind"].get(kind, []):
         bad.append(f"default {d} not allowed for {kind}")

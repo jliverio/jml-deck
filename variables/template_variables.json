@@ -598,5 +598,55 @@
   "writing_rule": "Composed by the renderer from the plan. How many steering meetings follow the kick-off, and how many close a phase.",
   "if_empty": "firm_todo",
   "example": "After the kick-off, five steering meetings review the work, two of them closing a phase with a decision"
+ },
+ {
+  "variable": "deliverable_NN_name",
+  "draft_chars": null,
+  "max_chars": 60,
+  "limit_basis": "estimated",
+  "fills_from": "phase_architect:deliverables.name",
+  "writing_rule": "What the client receives, as a noun phrase ('Supplier cost baseline by category'), written by the Deliverable agent. Shown as its number on the timeline, in full on the deliverables page and in its meeting's Reviews. A value given replaces the plan's, cut to this limit.",
+  "if_empty": "firm_todo",
+  "example": "Cost-per-part baseline by plant with two-year trend"
+ },
+ {
+  "variable": "deliverable_NN_due_week",
+  "draft_chars": null,
+  "max_chars": null,
+  "limit_basis": "estimated",
+  "fills_from": "phase_architect:deliverables.due_week",
+  "writing_rule": "Week of the engagement in which the client receives it; places its diamond on the timeline. A value given must lie inside its workstream's weeks and no later than the meeting that reviews it, or it is refused.",
+  "if_empty": "firm_todo",
+  "example": "8"
+ },
+ {
+  "variable": "deliverable_NN_format",
+  "draft_chars": null,
+  "max_chars": null,
+  "limit_basis": "estimated",
+  "fills_from": "phase_architect:deliverables.format",
+  "writing_rule": "What the client physically receives: presentation, report, model, dashboard, playbook, training or solution, as its kind allows (phase_architect/deliverable_formats.json); sets its icon. Other values are refused.",
+  "if_empty": "firm_todo",
+  "example": "model"
+ },
+ {
+  "variable": "deliverable_NN_workstream",
+  "draft_chars": null,
+  "max_chars": null,
+  "limit_basis": "estimated",
+  "fills_from": "phase_architect:workstreams",
+  "writing_rule": "The workstream that hands it over ('03 Opportunity sizing'); sets its timeline row. Read-only: follows from the plan.",
+  "if_empty": "firm_todo",
+  "example": "03 Opportunity sizing"
+ },
+ {
+  "variable": "deliverable_NN_reviewed_at",
+  "draft_chars": null,
+  "max_chars": 28,
+  "limit_basis": "estimated",
+  "fills_from": "phase_architect:governance",
+  "writing_rule": "The steering meeting that reviews it. Read-only: follows from the steering meetings.",
+  "if_empty": "firm_todo",
+  "example": "Initiatives go/no-go"
  }
 ]

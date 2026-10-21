@@ -24,6 +24,10 @@ Rules applied
   * text longer than max_chars is cut at a word (or, for "; " lists, at a
     whole entry) and gets an ellipsis - a last resort; the workflow is meant
     to deliver text that already fits;
+  * deliverable variables (deliverable_03_name, _due_week, _format, _workstream, _reviewed_at; workplan.py) are
+    drawn from the plan, not template tokens: their table rows are written deliverable_NN_* and are exempt from
+    the template check; values given for name, due week or format replace the plan's once checked (refusals are
+    warnings);
   * more agenda topics than the template holds -> TemplateCapacityError;
   * anything still unfilled at the end becomes [Firm to complete].
 """
@@ -46,6 +50,9 @@ TEMPLATES = {
     "1.4": os.path.join(HERE, "template_v1_4.potx"),     # 1.3 + situation slide, approach overview
 }
 FIRM_TODO = "[Firm to complete]"
+# A table row for a group of variables drawn from the plan (deliverable_NN_name: one row for deliverable_01_name,
+# deliverable_02_name, ...). The template holds no such token, so these rows are not reported as missing from it.
+GROUP_ROW = re.compile(r"[a-z]+_NN_[a-z_]+")
 TOKEN = re.compile(r"(?<![A-Za-z0-9_])[a-z0-9]+(?:_[a-z0-9]+)+(?![A-Za-z0-9_])")
 # drop_slide: when the variable is empty, the whole slide it sits on is removed
 # (template 1.4: the situation slide without enough cited findings).
@@ -274,7 +281,7 @@ def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=Non
         if missing:
             raise TemplateRulesError(
                 "These template variables have no row in template_variables: " + ", ".join(missing))
-        extra = sorted(v for v in table if v not in present)
+        extra = sorted(v for v in table if v not in present and not GROUP_ROW.fullmatch(v))
         if extra:
             warnings.append(f"{len(extra)} table rows have no variable in the template "
                             f"(e.g. {extra[0]})")
@@ -395,6 +402,9 @@ def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=Non
     #    that are drawn on; older templates get the slides added after market research.
     marked = wp.marked_slides(prs)
     if has_plan:
+        # deliverable variables (deliverable_03_name, ...): values given in the payload replace the plan's, checked
+        plan, dw = wp.apply_deliverable_values(plan, values, name_max=rule("deliverable_NN_name")[0] or wp.DEL_NAME_MAX)
+        warnings.extend(dw)
         given = {key: value(var) for var, key in TITLE_VARS.items() if var in present and value(var)}
         if given:
             plan = {**plan, "_titles": given}
