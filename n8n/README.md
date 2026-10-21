@@ -72,10 +72,10 @@ their stubs, and the deck is built without market research (checkProfiler logs
 `profiler_failed`). Copywriter, Phase Architect and Summary Writer already
 continued on error with code fallbacks.
 
-Phase Architect model: claude-sonnet-5-5, output cap 32,000 with streaming on
-(the Anthropic SDK refuses non-streaming calls above ~21k tokens). Long
-engagements need it: a 40-week plan with 10 workstreams retried once and used
-the room (execution 555). Streaming hides the token count in the run log.
+Phase Architect model: claude-sonnet-5-5, output cap 20,000, streaming off (Oct 21). The v2 single agent needed 32,000
+with streaming (a 40-week plan with 10 workstreams, execution 555); in the chain the lead writes only sizing, phases and
+notes (about 1-3k tokens). Streaming also broke the chain's text answer: n8n joined the streamed chunks with a newline,
+inside keys and strings (runs 930 and 931), and it hid the token count in the run log.
 Plan size limits (prompt + validator): up to 12 workstreams and 16 deliverables;
 the schema tolerates 16 workstreams so an oversized plan reaches the validator
 and gets a retry instead of a parser error. When the partner's email names or
@@ -97,7 +97,7 @@ The single Phase Architect call and its Validate plan / Plan valid? loop are rep
 
 - **Phase Architect** (the lead): sub-questions, phases, gates, and each phase's length sized from the work it holds
   (`sizing`: drivers with their evidence, pieces of work from the method library's `sizing_units`). Architect input
-  now passes `method_library` with `sizing_units` and `sizing_common`. Model: Sonnet 5.5, 32k cap, streaming.
+  now passes `method_library` with `sizing_units` and `sizing_common`. Model: Sonnet 5.5, 20k cap, no streaming.
 - **Workstream agent**, **Deliverable agent** (with a `format` per deliverable: presentation, report, model, dashboard,
   playbook, training, working solution), **Governance agent**. Sonnet 5.5, 20k cap, adaptive thinking at medium effort.
 - **Chain check** (code) runs after every agent: it reads the latest answer of each agent ($(...).first() is the latest
@@ -116,7 +116,7 @@ The single Phase Architect call and its Validate plan / Plan valid? loop are rep
 - Context Writer: output cap 2,000 -> 8,000. Run 831 spent all 2,000 tokens thinking and returned nothing, so the
   situation slide was dropped.
 
-Tests: `node n8n/tests/chain_test.js` replays saved answers through chain_check.js with n8n-like lookups (25 checks, including the lead's text-answer forms);
+Tests: `node n8n/tests/chain_test.js` replays saved answers through chain_check.js with n8n-like lookups (29 checks, including the lead's text-answer forms and streamed chunks);
 `node n8n/tests/make_pins.js chain|chain_error` builds the in-n8n wiring test (execution 826 ran the whole loop).
 In a pinned run the pinned agents answer any run index, so the pass comes from `$prevNode.runIndex` (probe, execution 827).
 Not in this build: the Plan Reviewer (fifth agent); its role is still José's decision. The run logger lists the new

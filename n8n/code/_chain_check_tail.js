@@ -20,6 +20,8 @@ try { prevName = $prevNode.name; prevRun = $prevNode.runIndex; } catch (e) { /* 
 // The Phase Architect answers as text (no output parser since Oct 21: its first answers came back as
 // {"output": "<JSON as a string>"} and the parser, even with a fixer, rejected them). Parse it here: strip a code
 // fence, take the outermost {...}, unwrap {"output": ...}, parse a JSON string inside it. Parsed answers pass through.
+// A streamed answer comes back with a newline between chunks, inside keys and strings too (runs 930, 931): when the text
+// does not parse, it is parsed again without its raw line breaks, which valid JSON never needs.
 function parseAnswer(j) {
   if (!j || j.error) return j || {};
   let o = j.output;
@@ -28,7 +30,10 @@ function parseAnswer(j) {
       const s = o.trim().replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '');
       const a = s.indexOf('{'), b = s.lastIndexOf('}');
       if (a < 0 || b < a) return { error: 'format: the answer holds no JSON object' };
-      try { o = JSON.parse(s.slice(a, b + 1)); } catch (e) { return { error: 'format: invalid JSON (' + e.message + ')' }; }
+      const t = s.slice(a, b + 1);
+      try { o = JSON.parse(t); } catch (e) {
+        try { o = JSON.parse(t.replace(/[\r\n]/g, '')); } catch (e2) { return { error: 'format: invalid JSON (' + e.message + ')' }; }
+      }
     }
     if (o && typeof o === 'object' && !Array.isArray(o) && Object.keys(o).length === 1 && 'output' in o) { o = o.output; continue; }
     break;

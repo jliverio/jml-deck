@@ -126,6 +126,19 @@ const fullInput = dir => ({ ...rd(path.join(dir, "input.json")), method_library:
     const a = chainRun(fullInput(dir))("Phase Architect", { output: text });
     check(`lead as ${name} -> ws`, a.route === "ws" && a.agent_input && a.agent_input.sub_questions, a.route + " " + JSON.stringify(a.violations));
   }
+  // streamed (runs 930, 931): n8n joins the chunks with a newline, inside keys, strings and numbers
+  for (const size of [7, 20, 23]) {
+    const flat = JSON.stringify(lead), parts = [];
+    for (let i = 0; i < flat.length; i += size) parts.push(flat.slice(i, i + size));
+    const a = chainRun(fullInput(dir))("Phase Architect", { output: parts.join("\n") });
+    check(`lead streamed in ${size}-char chunks -> ws`, a.route === "ws" && a.agent_input && a.agent_input.sub_questions, a.route + " " + JSON.stringify(a.violations));
+    if (size === 20) {
+      const st = chainRun(fullInput(dir));
+      st("Phase Architect", { output: parts.join("\n") });
+      const c = st("Workstream agent", { output: rd(path.join(dir, "ws.json")) });
+      check("ws reads the streamed lead -> del", c.route === "del", JSON.stringify(c.violations));
+    }
+  }
   const ans = chainRun(fullInput(dir));
   const b1 = ans("Phase Architect", { output: '{"basis": {"governing_question": "x"' });
   check("broken JSON -> lead retry with a format violation", b1.route === "lead" && /^agent_error: format:/.test(b1.violations[0]), JSON.stringify(b1.violations));
