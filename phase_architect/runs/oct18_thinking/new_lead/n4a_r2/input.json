@@ -1,0 +1,95 @@
+{
+ "brief": {
+  "hard_fields": {
+   "client": {
+    "value": "Farmácias Lusas, a chain of 40 pharmacies",
+    "source": "stated",
+    "quote": "Farmácias Lusas, a chain of 40 pharmacies",
+    "assumption_text": null
+   },
+   "problem_statement": {
+    "value": "Farmácias Lusas wants to choose a new point-of-sale system and roll it out to its pharmacies.",
+    "source": "stated",
+    "quote": "Farmácias Lusas wants to choose a new point-of-sale system and roll it out to its pharmacies.",
+    "assumption_text": null
+   }
+  },
+  "required": {
+   "engagement_type": {
+    "value": "assessment_and_implementation",
+    "source": "stated",
+    "quote": "assessment_and_implementation",
+    "assumption_text": null
+   },
+   "engagement_length": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": "Not given; the Phase Architect estimates the duration.",
+    "weeks_min": null,
+    "weeks_max": null,
+    "duration_derived": false
+   },
+   "stakeholders": {
+    "value": [
+     "CEO",
+     "Operations Director",
+     "IT Manager"
+    ],
+    "source": "stated",
+    "quote": null,
+    "assumption_text": null
+   }
+  },
+  "soft_fields": {
+   "deliverable_format": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "timeline": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "prior_attempts": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "success_criteria": {
+    "value": "The new point-of-sale system running in all 40 pharmacies",
+    "source": "stated",
+    "quote": "The new point-of-sale system running in all 40 pharmacies",
+    "assumption_text": null
+   },
+   "out_of_scope": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "workstreams": {
+    "value": null,
+    "count": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   }
+  }
+ },
+ "success_criteria_list": [
+  "The new point-of-sale system running in all 40 pharmacies"
+ ],
+ "profile": {
+  "problem_focus": "topic",
+  "topic": "Pharmacy point-of-sale systems",
+  "current_state": "40 pharmacies on a 12-year-old point-of-sale system.",
+  "market": null
+ },
+ "market_findings": [],
+ "weeks_available": null
+}

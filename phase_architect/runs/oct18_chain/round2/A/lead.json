@@ -1,0 +1,38 @@
+{
+  "basis": {
+    "governing_question": "How can MetalCo sell directly to small and mid-size contractors in Portugal and Spain through an online marketplace without losing its regional distributors?",
+    "archetype_id": "new_venture_build"
+  },
+  "phases": [
+    {
+      "name": "Design",
+      "order": 1,
+      "duration_weeks": { "min": 6, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Define the marketplace blueprint for small and mid-size contractors and how regional distributors fit, and plan the pilot.",
+      "gate": {
+        "label": "Go/no-go on pilot",
+        "decision": "Launch the pilot in one region on this blueprint?"
+      },
+      "depends_on_assumptions": []
+    },
+    {
+      "name": "Pilot",
+      "order": 2,
+      "duration_weeks": { "min": 14, "max": 14 },
+      "duration_derived": false,
+      "objective_one_line": "Launch a first marketplace version to contractors in one region and track repeat orders and distributor contract status.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Is the pilot evidence ready to take into the 2027 budget round?"
+      },
+      "depends_on_assumptions": ["deliverable_format", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "The 20 weeks are stated; the 6-week Design and 14-week Pilot split is an estimate based on archetype lengths and time to repeat orders.",
+    "No Implementation phase: the marketplace is new, so the plan stops at the pilot; the rollout after it is not in these phases.",
+    "No Measurement phase: the brief's repeat-order and distributor criteria are tracked inside the Pilot, because 20 weeks leave no separate post-launch stage.",
+    "Not covered by the phases: European Commission, digital product passports under the Construction Products Regulation. Confirm whether it is in scope."
+  ]
+}

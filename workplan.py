@@ -14,6 +14,7 @@ from the numbers (no model writes them), so they can never disagree with the cha
     build_workplan_deck(plan) -> pptx bytes (template with only these slides; for tests)
 """
 import io
+import os
 
 from pptx.dml.color import RGBColor
 from pptx.enum.shapes import MSO_SHAPE, MSO_CONNECTOR
@@ -32,7 +33,7 @@ WHITE = RGBColor(0xFF, 0xFF, 0xFF)
 BLACK = RGBColor(0x00, 0x00, 0x00)
 GREY = RGBColor(0x59, 0x59, 0x59)
 LGREY = RGBColor(0xD0, 0xD0, 0xD0)
-PHASE_COLORS = [BLUE, ELECTRIC, TEAL, NAVY]
+PHASE_COLORS = [BLUE, ELECTRIC, TEAL, NAVY, GREY]  # a fifth phase gets its own colour (Oct 18: five-phase plans)
 FONT = "Arial"
 
 L = Emu(554736)            # content left (title placeholder left)
@@ -142,8 +143,29 @@ def _new_slide(prs, title, subtitle, section, slide=None, after=None):
     return s
 
 
-def _weeks_label(dw):
-    return f"{dw['min']} weeks" if dw["min"] == dw["max"] else f"{dw['min']}-{dw['max']} weeks"
+# Number style for every code-written text (José, Oct 18): counts up to nine in words, weeks in digits,
+# ranges with an en dash ("two phases", "12 workstreams", "12–16 weeks"). The Summary Writer's check uses the same.
+NUM_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+
+
+def _num(n):
+    return NUM_WORDS[n] if 0 <= n < len(NUM_WORDS) else str(n)
+
+
+def _count(n, noun, plural=None):
+    return f"{_num(n)} {noun if n == 1 else (plural or noun + 's')}"
+
+
+def _weeks(dw):
+    mn, mx = dw["min"], dw["max"]
+    return (f"{mx} week" + ("" if mx == 1 else "s")) if mn == mx else f"{mn}–{mx} weeks"
+
+
+def _cap(s):
+    return s[:1].upper() + s[1:]
+
+
+_weeks_label = _weeks
 
 
 def _phase_color(order):
@@ -156,21 +178,79 @@ def _clip(s, n):
 
 
 # ------------------------------------------------------------------ titles
+def _client_name(plan):
+    c = str(plan.get("client") or "").strip()
+    return c if c and not c.startswith("[") else "The client"
+
+
+def _gate_weeks(plan):
+    """[(phase, gate week)] in phase order; the gate sits in the phase's last week."""
+    gates = {e["phase_order"]: e for e in plan["governance"]["events"] if e["type"] == "gate"}
+    phases = sorted(plan["phases"], key=lambda p: p["order"])
+    return [(p, (gates.get(p["order"]) or {}).get("week") or p.get("end_week")) for p in phases]
+
+
+def _week_list(ws):
+    ws = [str(w) for w in ws]
+    return ("week " + ws[0]) if len(ws) == 1 else "weeks " + ", ".join(ws[:-1]) + " and " + ws[-1]
+
+
+def roadmap_title(plan, limit=110):
+    """When the client decides (approach overview): the gates, not the duration, which slide 4 gives."""
+    gw = _gate_weeks(plan)
+    client = _client_name(plan)
+    last_p, last_w = gw[-1]
+    if len(gw) == 1:
+        label = (last_p.get("gate") or {}).get("label") or "final decision"
+        return f"{client} takes one decision, at the {label} in week {last_w}"
+    head = (f"in week {gw[0][1]} whether {gw[1][0]['name']} goes ahead" if len(gw) == 2
+            else f"in {_week_list([w for _, w in gw[:-1]])} whether the next phase goes ahead")
+    t = f"{client} decides {head}; the work closes in week {last_w}"
+    if len(t) <= limit:
+        return t
+    nxt = gw[1][0]["name"] if len(gw) == 2 else "Each next phase"
+    return f"{nxt} goes ahead only after a decision in {_week_list([w for _, w in gw[:-1]])}; the work closes in week {last_w}"
+
+
+def _peak_parallel(plan):
+    wss = plan.get("workstreams") or []
+    total = plan["total_duration_weeks"]["max"]
+    return max([sum(1 for w in wss if w["start_week"] <= wk <= w["end_week"]) for wk in range(1, total + 1)] or [0])
+
+
+def _max_steering_gap(plan):
+    wk = sorted({e["week"] for e in plan["governance"]["events"]})
+    return max((b - a for a, b in zip(wk, wk[1:])), default=None)
+
+
 def titles(plan):
-    t = plan["total_duration_weeks"]
-    total = f"{t['max']} weeks" if t["min"] == t["max"] else f"{t['min']} to {t['max']} weeks"
-    n = len(plan["phases"])
-    nws = len(plan["workstreams"])
+    """Slide titles composed from the plan's numbers, so a title cannot disagree with its chart. The template's
+    title variables (approach_title_01, ...) carry them; a value given for a variable replaces the composed text
+    (plan["_titles"], set by the renderer)."""
+    nws = len({str(w.get("name", "")).strip().lower() for w in plan["workstreams"]}) or len(plan["workstreams"])
     nd = len(plan["deliverables"])
     ev = [e for e in plan["governance"]["events"] if e["type"] != "kickoff"]
     gates = sum(1 for e in ev if e["type"] == "gate")
-    phase_word = "phase" if n == 1 else "phases"
-    return {
-        "timeline": (f"The work runs {total} in {n} {phase_word} and {nws} workstreams, each phase closing on a decision" if n > 1
-                     else f"The work runs {total} in {nws} workstreams, closing on a decision"),
-        "deliverables": f"The {nws} workstreams hand over {nd} deliverables, each reviewed at a steering meeting",
-        "governance": f"After the kick-off, {len(ev)} steering meetings review the work, {gates} of them closing a phase with a decision",
+    peak = _peak_parallel(plan)
+    gap = _max_steering_gap(plan)
+    run = "The workstreams run one at a time" if peak <= 1 else f"Up to {_count(peak, 'workstream')} run in the same week"
+    ws_part = "The workstream hands over" if nws == 1 else f"The {_count(nws, 'workstream')} hand over"
+    if len(ev) == 1:
+        gov = "After the kick-off, one steering meeting reviews the work and closes it with a decision"
+    else:
+        closing = "each closing a phase with a decision" if gates == len(ev) else (
+            f"{_num(gates)} of them closing a phase with a decision")
+        gov = f"After the kick-off, {_count(len(ev), 'steering meeting')} review the work, {closing}"
+    out = {
+        "roadmap": roadmap_title(plan),
+        "timeline": run + (f", with no more than {gap} weeks between steering meetings" if gap else ""),
+        "deliverables": f"{ws_part} {_count(nd, 'deliverable')}, each reviewed at a steering meeting",
+        "governance": gov,
     }
+    for k, v in (plan.get("_titles") or {}).items():
+        if k in out and str(v or "").strip():
+            out[k] = str(v).strip()
+    return out
 
 
 # ------------------------------------------------------------------ layout rules
@@ -297,7 +377,7 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
         b = _box(s, x, y0, w, _BAND_H, fill=_phase_color(p["order"]))
         est = "" if p["duration_weeks"]["min"] == p["duration_weeks"]["max"] else " (estimate)"
         full = f"{p['name']} · {_weeks_label(p['duration_weeks'])}{est}"
-        fit = int(w / Inches(0.075))
+        fit = int((w - Inches(0.2)) / Inches(0.075))  # inside the box margins (Oct 18: 'Measurement · 6 weeks' overflowed a 6-of-39-week band)
         _text(b, _clip(full if len(full) <= fit else p["name"], fit), size=10 if fit >= 12 else 8,
               bold=True, color=WHITE, align=PP_ALIGN.CENTER)
     _text(s, "Phase", size=10, bold=True, color=NAVY, x=L, y=y0, w=label_w, h=_BAND_H)
@@ -308,7 +388,9 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
     lab_size = 10 if col * step >= Inches(0.3) else 9
     for wk in range(1, total + 1, step):
         _text(s, str(wk), size=lab_size, bold=True, color=WHITE, align=PP_ALIGN.CENTER if step == 1 else PP_ALIGN.LEFT,
-              x=gx + (wk - 1) * col + (0 if step == 1 else Emu(18288)), y=yh, w=col * min(step, total - wk + 1) if step == 1 else col * step, h=_HEAD_H)
+              x=gx + (wk - 1) * col + (0 if step == 1 else Emu(18288)), y=yh,
+              w=col * min(step, total - wk + 1) if step == 1 else max(col * min(step, total - wk + 1) - Emu(18288), col),  # last tick stays inside the grid (Oct 18)
+              h=_HEAD_H)
     yr = yh + _HEAD_H
     grid_top = yr
     grid_bottom = yr + n_rows * row_h
@@ -369,24 +451,41 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
     _text(s, "Steering", size=10, bold=True, color=NAVY, x=L, y=my - d / 2, w=label_w, h=d)
     for wk in plan["governance"]["status_weeks"]:
         _box(s, gx + (wk - 0.5) * col - d / 2, my - d / 2, d, d, fill=WHITE, line=BLACK, shape=MSO_SHAPE.OVAL, line_w=0.75)
-    last_right = [-10**12, -10**12]
-    lab_w = Inches(1.45)
     gap = Emu(45720)
-    for e in sorted(events, key=lambda e: e["week"]):
+    evs = sorted(events, key=lambda e: e["week"])
+
+    def place(lab_w):
+        # two tiers of labels; when both are taken, the label goes on the freer tier, pushed right.
+        # Returns the positions and whether any label still overlaps its neighbour at the right edge.
+        last_right = [-10**12, -10**12]
+        out, clash = [], False
+        for e in evs:
+            cx = gx + (e["week"] - 0.5) * col
+            lx = min(max(cx - lab_w / 2, L), L + W - lab_w)
+            free = [t for t in (0, 1) if lx > last_right[t] + gap]
+            if free:
+                tier = free[0]
+            else:
+                tier = 0 if last_right[0] <= last_right[1] else 1
+                lx = min(last_right[tier] + gap, L + W - lab_w)
+                clash = clash or lx < last_right[tier] + gap
+            last_right[tier] = lx + lab_w
+            out.append((e, lx, tier))
+        return out, clash
+
+    # crowded steering rows (many meetings, long plans) get narrower two-line labels (Oct 18: a 39-week,
+    # five-phase plan put its last two gate labels on top of each other)
+    for lab_w in (Inches(1.45), Inches(1.25), Inches(1.05), Inches(0.9)):
+        placed, clash = place(lab_w)
+        if not clash:
+            break
+    chars = int(2 * (lab_w - Inches(0.1)) / Inches(0.068))
+    for e, lx, tier in placed:
         cx = gx + (e["week"] - 0.5) * col
         fill = YELLOW if e["type"] in ("workshop", "gate") else NAVY
         _box(s, cx - d / 2, my - d / 2, d, d, fill=fill, shape=MSO_SHAPE.OVAL)
-        # two tiers of labels; when both are taken, the label goes on the freer tier, pushed right
-        lx = min(max(cx - lab_w / 2, L), L + W - lab_w)
-        free = [t for t in (0, 1) if lx > last_right[t] + gap]
-        if free:
-            tier = free[0]
-        else:
-            tier = 0 if last_right[0] <= last_right[1] else 1
-            lx = min(last_right[tier] + gap, L + W - lab_w)
-        last_right[tier] = lx + lab_w
         ly = my + d / 2 + Inches(0.06) + tier * _LABEL_TIER
-        _text(s, _clip(e["label"], 34), size=9, bold=e["type"] == "gate", color=BLACK, align=PP_ALIGN.CENTER,
+        _text(s, _clip(e["label"], min(34, chars)), size=9, bold=e["type"] == "gate", color=BLACK, align=PP_ALIGN.CENTER,
               anchor=MSO_ANCHOR.TOP, x=lx, y=ly, w=lab_w, h=_LABEL_H)
     dl = plan.get("deadline")
     if dl and dl.get("weeks_available") is not None:
@@ -410,13 +509,49 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
 
 # ------------------------------------------------------------------ slide 2: deliverables
 _DEL_COLS = (("Workstream", Inches(2.3)), ("Deliverables", Inches(5.25)), ("Due", Inches(0.9)), ("Reviewed at", None))
+# What the client receives (José, Oct 19): an icon on each deliverable line, the words in a legend at the foot of the
+# page. Same ids, labels and defaults as phase_architect/deliverable_formats.json (tests/test_formats.py checks it).
+FORMATS = (("presentation", "Presentation"), ("report", "Report"), ("model", "Model"), ("dashboard", "Dashboard"),
+           ("playbook", "Playbook"), ("training", "Training"), ("solution", "Working solution"))
+FORMAT_DEFAULT = {"analysis": "presentation", "design": "presentation", "build": "solution",
+                  "decision_pack": "presentation", "enablement": "training"}
+ICON_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "format_icons")
+_ICON = Inches(0.22)
+
+
+def _format(d):
+    f = d.get("format")
+    return f if f in dict(FORMATS) else FORMAT_DEFAULT.get(d.get("kind"), "presentation")
+
+
+def _icon(slide, fmt, x, y, size):
+    path = os.path.join(ICON_DIR, fmt + ".png")
+    if os.path.exists(path):
+        pic = slide.shapes.add_picture(path, x, y, size, size)
+        pic.name = f"format:{fmt}"
+        return pic
+    return None
+
+
+def _format_legend(slide, plan):
+    """Icons with their words, at the foot of the page, for the formats this plan uses (same on every page)."""
+    used = {_format(d) for d in plan["deliverables"]}
+    ly = BOTTOM - Inches(0.2)
+    _text(slide, "What the client receives:", size=8, bold=True, color=GREY, x=L, y=ly, w=Inches(1.6), h=Inches(0.17))
+    lx = L + Inches(1.6)
+    for fid, label in FORMATS:
+        if fid not in used:
+            continue
+        _icon(slide, fid, lx, ly, Inches(0.17))
+        _text(slide, label, size=8, color=GREY, x=lx + Inches(0.21), y=ly - Inches(0.01), w=Inches(1.25), h=Inches(0.17))
+        lx += Inches(0.3) + Inches(0.065) * len(label) + Inches(0.25)
 
 
 def deliverables_slides(prs, plan, section, client, slide=None):
     """One or more deliverables pages; a workstream never splits across pages
     unless it alone has more deliverables than a page holds."""
     y_first = TOP - Inches(0.05) + Inches(0.38)
-    avail = BOTTOM - Inches(0.1) - y_first
+    avail = BOTTOM - _LEGEND_H - Inches(0.05) - y_first        # the format legend sits at the foot (Oct 19)
     cap = max(1, int(avail // MIN_LINE))
     order = _ws_order(plan)
     numbering = {w["id"]: i + 1 for i, w in enumerate(order)}
@@ -453,10 +588,11 @@ def deliverables_slide(prs, plan, section, client, slide=None, items=None, numbe
         x += w
     y += Inches(0.38)
     if avail is None:
-        avail = BOTTOM - Inches(0.1) - y
+        avail = BOTTOM - _LEGEND_H - Inches(0.05) - y
     line_h = max(MIN_LINE, min(MAX_LINE, avail / max(len(items), 1)))
     size = 11 if line_h >= Inches(0.4) else 10
-    name_chars = int((cols[1][1] - Inches(0.1)) / Inches(0.0795 if size == 11 else 0.072))
+    icon_w = _ICON + Inches(0.1)
+    name_chars = int((cols[1][1] - Inches(0.1) - icon_w) / Inches(0.0795 if size == 11 else 0.072))
     rev_chars = int((cols[3][1] - Inches(0.05)) / Inches(0.0795 if size == 11 else 0.072))
     # group consecutive items of the same workstream
     runs = []
@@ -475,13 +611,15 @@ def deliverables_slide(prs, plan, section, client, slide=None, items=None, numbe
             d = dels[did]
             yy = y + j * line_h
             x = L + cols[0][1]
-            _text(s, _clip(f"{did}  {d['name']}", name_chars), size=size, x=x, y=yy, w=cols[1][1] - Inches(0.1), h=line_h)
+            _icon(s, _format(d), x, yy + (line_h - _ICON) / 2, _ICON)
+            _text(s, _clip(f"{did}  {d['name']}", name_chars), size=size, x=x + icon_w, y=yy, w=cols[1][1] - Inches(0.1) - icon_w, h=line_h)
             x += cols[1][1]
-            _text(s, f"Week {d['due_week']}", size=size, x=x, y=yy, w=cols[2][1], h=line_h)
+            _text(s, d.get("due_label") or f"Week {d['due_week']}", size=size, x=x, y=yy, w=cols[2][1], h=line_h)
             x += cols[2][1]
             _text(s, _clip(d.get("presented_at") or "[Firm to complete]", rev_chars), size=size, x=x, y=yy, w=cols[3][1], h=line_h)
         y += h
         _line(s, L, y, L + W, y, color=LGREY, width=0.5, dash=True)
+    _format_legend(s, plan)
     return s
 
 
@@ -489,16 +627,16 @@ def deliverables_slide(prs, plan, section, client, slide=None, items=None, numbe
 def governance_slides(prs, plan, section, client, per_slide=4, slide=None):
     T = titles(plan)
     dels = {d["id"]: d for d in plan["deliverables"]}
-    evs = [e for e in plan["governance"]["events"] if e["type"] != "kickoff"]
-    # pack whole phases into slides of at most `per_slide` columns
-    chunks, cur = [], []
-    for p in plan["phases"]:
-        mine = [e for e in evs if e["phase_order"] == p["order"]]
-        if cur and len(cur) + len(mine) > per_slide:
-            chunks.append(cur); cur = []
-        cur += mine
-    if cur:
-        chunks.append(cur)
+    evs = sorted([e for e in plan["governance"]["events"] if e["type"] != "kickoff"], key=lambda e: e["week"])
+    # as few slides as `per_slide` columns allow, filled evenly with the extra meetings on the first slides
+    # (5 meetings: 3 then 2; José, Oct 18), whatever phase each meeting closes; the subtitle names the phases
+    pages = max(1, -(-len(evs) // per_slide))
+    base, extra = divmod(len(evs), pages)
+    chunks, start = [], 0
+    for k in range(pages):
+        size = base + (1 if k < extra else 0)
+        chunks.append(evs[start:start + size]); start += size
+    chunks = [c for c in chunks if c] or [[]]
     slides = []
     phase_by = {p["order"]: p for p in plan["phases"]}
     numbering = {}
@@ -534,15 +672,22 @@ def governance_slides(prs, plan, section, client, per_slide=4, slide=None):
             _text(band, e["purpose"], size=12, bold=True, color=NAVY if e["type"] == "gate" else WHITE)
             att = e.get("attendees") or []
             if att:
-                _text(s, _clip("With: " + ", ".join(att), int(cw / Inches(0.062))), size=9, italic=True, color=GREY,
+                _text(s, _clip("With: " + ", ".join(att), int((cw - Inches(0.2)) / Inches(0.066))), size=9, italic=True, color=GREY,
                       anchor=MSO_ANCHOR.TOP, x=x, y=y + Inches(1.06), w=cw, h=Inches(0.2))
             body = _box(s, x, y + Inches(1.3), cw, Inches(1.55))
-            _bullets(body, e["agenda"], size=11)
+            # long agendas (3 items of up to 80 characters in a narrow column) step down to 10 or 9 pt (Oct 18)
+            asize = 11
+            for asize in (11, 10, 9):
+                cpl = max(10, int((cw - Inches(0.35)) / Inches(0.0075 * asize)))
+                lines = sum(-(-len(str(a)) // cpl) for a in e["agenda"])
+                if lines * Inches(0.0165 * asize) + len(e["agenda"]) * Pt(6) <= Inches(1.5):
+                    break
+            _bullets(body, e["agenda"], size=asize)
             kind_rank = {"decision_pack": 0, "design": 1, "build": 2, "analysis": 3, "enablement": 4}
             ordered = sorted([d for d in e["presents"] if d in dels], key=lambda d: (kind_rank.get(dels[d]["kind"], 9), -dels[d]["due_week"]))
             pres = [f"{d}  {dels[d]['name']}" for d in ordered]
             if pres:
-                maxc = int(cw / Inches(0.062))
+                maxc = int((cw - Inches(0.2)) / Inches(0.066))  # one 9 pt line inside the box margins (Oct 18 stress test)
                 shown = pres[:3] if len(pres) <= 3 else pres[:2]
                 lines = [_clip(p, maxc) for p in shown] + ([f"+{len(pres) - len(shown)} more (see deliverables page)"] if len(pres) > len(shown) else [])
                 _text(s, "Reviews", size=9, bold=True, color=GREY, anchor=MSO_ANCHOR.TOP, x=x, y=y + Inches(2.9), w=cw, h=Inches(0.2))
@@ -556,6 +701,113 @@ def governance_slides(prs, plan, section, client, per_slide=4, slide=None):
     return slides
 
 
+# ------------------------------------------------------------------ slide 0: approach overview (template 1.4)
+
+
+def _list(items):
+    items = [str(i) for i in items if str(i).strip()]
+    return items[0] if len(items) == 1 else ", ".join(items[:-1]) + " and " + items[-1] if items else ""
+
+
+def roadmap_slide(prs, plan, section, client, slide=None):
+    """Approach overview: one column per phase (what it answers, when it ends,
+    the decision that closes it) and a governance strip. Everything is read
+    from the plan; nothing here is written by a model."""
+    s = _new_slide(prs, titles(plan)["roadmap"], "Approach overview: phases, decisions and how we work together",
+                   section, slide=slide)
+    phases = sorted(plan["phases"], key=lambda p: p["order"])
+    events = plan["governance"]["events"]
+    n = len(phases)
+    gap = Inches(0.12)
+    cw = (W - gap * (n - 1)) / n
+    chev_h = Inches(0.62)
+    y = TOP
+    gates = {e["phase_order"]: e for e in events if e["type"] == "gate"}
+    kick = next((e for e in events if e["type"] == "kickoff"), None)
+    for i, p in enumerate(phases):
+        x = L + i * (cw + gap)
+        shape = MSO_SHAPE.PENTAGON if i == 0 else MSO_SHAPE.CHEVRON
+        ch = _box(s, x, y, cw + (gap if i < n - 1 else 0), chev_h, fill=_phase_color(p["order"]), shape=shape)
+        ch.adjustments[0] = 0.25
+        weeks = (f"Week {p['start_week']}" if p.get("start_week") == p.get("end_week")
+                 else f"Weeks {p.get('start_week')}–{p.get('end_week')}") if p.get("start_week") else ""
+        tf = ch.text_frame
+        tf.margin_left = Inches(0.3) if i else Inches(0.15)
+        _text(ch, [f"Phase {p['order']}: {p['name']}", f"{weeks} ({_weeks_label(p['duration_weeks'])})" if weeks
+                   else _weeks_label(p["duration_weeks"])], size=12, bold=True, color=WHITE)
+        tf.paragraphs[1].runs[0].font.bold = False
+        tf.paragraphs[1].runs[0].font.size = Pt(10)
+        # what it waits for (José, Oct 18: the sequence belongs on this slide)
+        if i == 0:
+            starts = f"Starts at the kick-off, week {kick['week'] if kick else 1}"
+            if len(starts) > int((cw - Inches(0.1)) / Inches(0.075)):
+                starts = f"Week {kick['week'] if kick else 1}, at the kick-off"
+        else:
+            pg = gates.get(phases[i - 1]["order"]) or {}
+            plabel = (phases[i - 1].get("gate") or {}).get("label") or pg.get("label") or "previous decision"
+            starts = f"Starts after the {plabel}, week {pg.get('week') or phases[i - 1].get('end_week')}"
+            if len(starts) > int((cw - Inches(0.1)) / Inches(0.075)):   # narrow columns (5 phases): keep the week
+                starts = f"Week {pg.get('week') or phases[i - 1].get('end_week')}, after the {plabel}"
+            if len(starts) > int((cw - Inches(0.1)) / Inches(0.075)):   # still too long: name the phase, not the gate (Oct 19)
+                starts = f"Week {pg.get('week') or phases[i - 1].get('end_week')}, after Phase {phases[i - 1]['order']}"
+        _text(s, _clip(starts, int((cw - Inches(0.1)) / Inches(0.075))), size=10, italic=True, color=GREY,
+              anchor=MSO_ANCHOR.TOP, x=x, y=y + chev_h + Inches(0.08), w=cw - Inches(0.1), h=Inches(0.22))
+        # what the phase answers
+        _text(s, "What it answers", size=9, bold=True, color=GREY, anchor=MSO_ANCHOR.TOP,
+              x=x, y=y + chev_h + Inches(0.36), w=cw, h=Inches(0.2))
+        _text(s, _clip(p.get("objective_one_line", ""), 170), size=12 if n < 5 else 11, anchor=MSO_ANCHOR.TOP,  # 5 columns: 11 pt (Oct 18)
+              x=x, y=y + chev_h + Inches(0.58), w=cw - Inches(0.1), h=Inches(1.0))
+        # the decision that closes it
+        gy = y + chev_h + Inches(1.6)
+        g = gates.get(p["order"]) or {}
+        gate = p.get("gate") or {}
+        label = gate.get("label") or g.get("label") or "Phase decision"
+        decision = gate.get("decision") or g.get("decision") or ""
+        wk = g.get("week") or p.get("end_week")
+        _line(s, x, gy, x + cw, gy, color=BLACK, width=1.0)
+        dm = _box(s, x, gy + Inches(0.14), Inches(0.24), Inches(0.24), fill=YELLOW, shape=MSO_SHAPE.DIAMOND)
+        gfit = int((cw - Inches(0.34)) / Inches(0.085))
+        full = f"{label}" + (f", week {wk}" if wk else "")
+        short = len(full) > gfit and wk          # narrow columns (5 phases): the week moves to the decision line
+        _text(s, _clip(label if short else full, gfit),
+              size=11, bold=True, x=x + Inches(0.32), y=gy + Inches(0.1), w=cw - Inches(0.32), h=Inches(0.3))
+        if decision:
+            _text(s, _clip((f"Week {wk} decision: " if short else "Decision: ") + decision, 190), size=11 if n < 5 else 10, color=NAVY, anchor=MSO_ANCHOR.TOP,
+                  x=x, y=gy + Inches(0.48), w=cw - Inches(0.1), h=Inches(1.0))
+    # governance strip
+    gov = plan["governance"]
+    steer = [e for e in events if e["type"] != "kickoff"]
+    who = []
+    for e in events:
+        for a in e.get("attendees") or []:
+            if a and not str(a).startswith("[") and a not in who:
+                who.append(a)
+    cad = gov.get("status_cadence_weeks")
+    first_due = min((d.get("due_week") for d in plan.get("deliverables") or [] if d.get("due_week")), default=None)
+    cells = [
+        ("Steering", _cap(_count(len(steer), "steering meeting")) + (f" with {_list(who)}" if who else "")
+         + ("; each phase ends in a decision" if n > 1 else "; the work ends in a decision")),
+        ("Working rhythm", (f"Kick-off in week {kick['week']}" if kick else "Kick-off at the start")
+         + (f"; first deliverable in week {first_due}" if first_due else "")
+         + (f"; status meetings every {cad} weeks" if cad and cad > 1 else ("; weekly status meetings" if cad == 1 else ""))),
+        (f"What we ask of {client}", "A named project lead, plus time from the steering members; the exact commitment to agree at kick-off"),
+    ]
+    sy = BOTTOM - Inches(1.05)
+    band = _box(s, L, sy, W, Inches(1.0), fill=None, line=NAVY)
+    cwid = W / 3
+    for k, (head, body) in enumerate(cells):
+        cx = L + k * cwid
+        _text(s, head, size=10, bold=True, color=NAVY, anchor=MSO_ANCHOR.TOP,
+              x=cx + Inches(0.15), y=sy + Inches(0.1), w=cwid - Inches(0.3), h=Inches(0.22))
+        _text(s, _clip(body, 150), size=10, anchor=MSO_ANCHOR.TOP,
+              x=cx + Inches(0.15), y=sy + Inches(0.36), w=cwid - Inches(0.3), h=Inches(0.6))
+        if k:
+            _line(s, cx, sy + Inches(0.12), cx, sy + Inches(0.88), color=LGREY, width=0.75)
+    _text(s, f"Initial view – to confirm with {client}", size=10, italic=True, color=GREY,
+          align=PP_ALIGN.RIGHT, x=L + W - Inches(4), y=TOP - Inches(0.28), w=Inches(4), h=Inches(0.22))
+    return s
+
+
 # ------------------------------------------------------------------ entry points
 def add_workplan_slides(prs, plan, section="Approach", client="[Client]"):
     out = timeline_slides(prs, plan, section, client) + deliverables_slides(prs, plan, section, client)
@@ -563,7 +815,7 @@ def add_workplan_slides(prs, plan, section="Approach", client="[Client]"):
     return out
 
 
-MARKERS = ("timeline", "deliverables", "steering")
+MARKERS = ("roadmap", "timeline", "deliverables", "steering")
 
 
 def marked_slides(prs):
@@ -580,12 +832,15 @@ def fill_template_slides(prs, plan, marked, client="[Client]"):
     """Draw the plan onto the template's work-plan slides. Without a plan the
     slides stay and say what the firm has to complete."""
     if not (isinstance(plan, dict) and plan.get("phases")):
-        todo = {"timeline": "Work plan: timeline by workstream", "deliverables": "Deliverables by workstream",
+        todo = {"roadmap": "Approach overview: phases and decisions",
+                "timeline": "Work plan: timeline by workstream", "deliverables": "Deliverables by workstream",
                 "steering": "Steering meetings"}
         for kind, sl in marked.items():
             _new_slide(prs, "[Firm to complete] " + todo[kind], "", "", slide=sl)
         return list(marked.values())
     out = []
+    if "roadmap" in marked:
+        out.append(roadmap_slide(prs, plan, "", client, slide=marked["roadmap"]))
     if "timeline" in marked:
         out += timeline_slides(prs, plan, "", client, slide=marked["timeline"])
     if "deliverables" in marked:

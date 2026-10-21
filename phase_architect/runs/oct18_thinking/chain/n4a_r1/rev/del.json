@@ -1,0 +1,82 @@
+{
+  "deliverables": [
+    {
+      "id": "D1",
+      "workstream_id": "W1",
+      "name": "Interim business requirements for first process areas",
+      "kind": "analysis",
+      "due_week_in_phase": 3
+    },
+    {
+      "id": "D2",
+      "workstream_id": "W2",
+      "name": "Business requirements and practice gaps for sign-off",
+      "kind": "decision_pack",
+      "due_week_in_phase": 5
+    },
+    {
+      "id": "D3",
+      "workstream_id": "W3",
+      "name": "Vendor shortlist against signed-off requirements",
+      "kind": "analysis",
+      "due_week_in_phase": 3
+    },
+    {
+      "id": "D4",
+      "workstream_id": "W3",
+      "name": "Vendor scoring against signed-off requirements",
+      "kind": "analysis",
+      "due_week_in_phase": 5
+    },
+    {
+      "id": "D5",
+      "workstream_id": "W4",
+      "name": "Business case and vendor comparison for selection decision",
+      "kind": "decision_pack",
+      "due_week_in_phase": 5
+    },
+    {
+      "id": "D6",
+      "workstream_id": "W5",
+      "name": "Configured and tested system, first two process areas",
+      "kind": "build",
+      "due_week_in_phase": 5
+    },
+    {
+      "id": "D7",
+      "workstream_id": "W5",
+      "name": "Readiness results: configuration and data load rehearsal",
+      "kind": "analysis",
+      "due_week_in_phase": 8
+    },
+    {
+      "id": "D8",
+      "workstream_id": "W6",
+      "name": "Pilot pharmacy go-live and stability record",
+      "kind": "build",
+      "due_week_in_phase": 15
+    },
+    {
+      "id": "D9",
+      "workstream_id": "W7",
+      "name": "Training materials for pharmacy teams",
+      "kind": "enablement",
+      "due_week_in_phase": 17
+    },
+    {
+      "id": "D10",
+      "workstream_id": "W7",
+      "name": "Go-live and stability record, waves 1 and 2",
+      "kind": "build",
+      "due_week_in_phase": 21
+    },
+    {
+      "id": "D11",
+      "workstream_id": "W8",
+      "name": "Rollout record with stability check, all 40 pharmacies",
+      "kind": "decision_pack",
+      "due_week_in_phase": 27
+    }
+  ],
+  "notes": []
+}

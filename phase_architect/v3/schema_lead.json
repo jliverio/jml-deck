@@ -1,0 +1,302 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "basis",
+  "sizing",
+  "phases",
+  "architect_notes"
+ ],
+ "properties": {
+  "basis": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "governing_question",
+    "archetype_id"
+   ],
+   "properties": {
+    "governing_question": {
+     "type": "string"
+    },
+    "archetype_id": {
+     "type": [
+      "string",
+      "null"
+     ]
+    }
+   }
+  },
+  "sizing": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "length_basis",
+    "sub_questions",
+    "drivers",
+    "phase_work",
+    "levers"
+   ],
+   "properties": {
+    "length_basis": {
+     "type": "string",
+     "enum": [
+      "stated",
+      "stage_lengths",
+      "deadline",
+      "estimated"
+     ]
+    },
+    "sub_questions": {
+     "type": "array",
+     "minItems": 3,
+     "maxItems": 6,
+     "items": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "id",
+       "question",
+       "phase_order"
+      ],
+      "properties": {
+       "id": {
+        "type": "string"
+       },
+       "question": {
+        "type": "string"
+       },
+       "phase_order": {
+        "type": "integer"
+       }
+      }
+     }
+    },
+    "drivers": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "key",
+       "value",
+       "source",
+       "evidence"
+      ],
+      "properties": {
+       "key": {
+        "type": "string"
+       },
+       "value": {
+        "type": "number"
+       },
+       "source": {
+        "type": "string",
+        "enum": [
+         "brief",
+         "profile",
+         "findings",
+         "assumed"
+        ]
+       },
+       "evidence": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "phase_work": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "phase_order",
+       "work",
+       "fixed_weeks",
+       "estimate",
+       "why"
+      ],
+      "properties": {
+       "phase_order": {
+        "type": "integer"
+       },
+       "work": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "additionalProperties": false,
+         "required": [
+          "unit",
+          "from_library",
+          "driver",
+          "count",
+          "weeks_each",
+          "at_once"
+         ],
+         "properties": {
+          "unit": {
+           "type": "string"
+          },
+          "from_library": {
+           "type": "boolean"
+          },
+          "driver": {
+           "type": [
+            "string",
+            "null"
+           ]
+          },
+          "count": {
+           "type": "integer"
+          },
+          "weeks_each": {
+           "type": "object",
+           "additionalProperties": false,
+           "required": [
+            "min",
+            "max"
+           ],
+           "properties": {
+            "min": {
+             "type": "integer"
+            },
+            "max": {
+             "type": "integer"
+            }
+           }
+          },
+          "at_once": {
+           "type": "integer"
+          }
+         }
+        }
+       },
+       "fixed_weeks": {
+        "type": "integer"
+       },
+       "estimate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+         "min",
+         "max"
+        ],
+        "properties": {
+         "min": {
+          "type": "integer"
+         },
+         "max": {
+          "type": "integer"
+         }
+        }
+       },
+       "why": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "levers": {
+     "type": "string"
+    }
+   }
+  },
+  "phases": {
+   "type": "array",
+   "minItems": 1,
+   "maxItems": 6,
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "name",
+     "order",
+     "duration_weeks",
+     "duration_derived",
+     "objective_one_line",
+     "gate",
+     "depends_on_assumptions"
+    ],
+    "properties": {
+     "name": {
+      "type": "string",
+      "enum": [
+       "Diagnostic",
+       "Research",
+       "Design",
+       "Pilot",
+       "Implementation",
+       "Change & Training",
+       "Measurement",
+       "Handover"
+      ]
+     },
+     "order": {
+      "type": "integer"
+     },
+     "duration_weeks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "min",
+       "max"
+      ],
+      "properties": {
+       "min": {
+        "type": "integer"
+       },
+       "max": {
+        "type": "integer"
+       }
+      }
+     },
+     "duration_derived": {
+      "type": "boolean"
+     },
+     "objective_one_line": {
+      "type": "string"
+     },
+     "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "label",
+       "decision"
+      ],
+      "properties": {
+       "label": {
+        "type": "string"
+       },
+       "decision": {
+        "type": "string"
+       }
+      }
+     },
+     "depends_on_assumptions": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "enum": [
+        "engagement_type",
+        "engagement_length",
+        "stakeholders",
+        "deliverable_format",
+        "timeline",
+        "prior_attempts",
+        "success_criteria",
+        "out_of_scope"
+       ]
+      }
+     }
+    }
+   }
+  },
+  "architect_notes": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  }
+ }
+}

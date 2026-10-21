@@ -1,0 +1,83 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Start the work and secure access",
+      "attendees": ["COO", "Head of Claims"],
+      "presents": [],
+      "decision": "Can the COO and Head of Claims open access to claims data and interviewees?",
+      "agenda": [
+        "Present the problem, the scope boundary and the plan of work",
+        "Review the claims data and interviews the first weeks need",
+        "Decide who opens access to claims data and interviewees"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Check-in: early findings",
+      "purpose": "Check early findings and the baseline",
+      "attendees": ["COO", "Head of Claims"],
+      "presents": ["D1", "D2"],
+      "decision": "Confirm the baseline as the reference for measuring settlement time and satisfaction?",
+      "agenda": [
+        "Present the interview synthesis of pain points by claims line",
+        "Review the settlement time and satisfaction baseline",
+        "Confirm the baseline as the reference for later results"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Go/no-go on design",
+      "purpose": "Decide whether to move into design",
+      "attendees": ["COO", "Head of Claims"],
+      "presents": ["D3", "D4", "D5"],
+      "decision": "Go on to design, and which causes of delay must the target model address?",
+      "agenda": [
+        "Review the step map and the motor lean carry-over findings",
+        "Present the diagnostic readout on the causes of delay",
+        "Decide go or no-go on design and the causes it must address"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Workshop 1: model options",
+      "purpose": "Choose the model option to detail",
+      "attendees": ["COO", "Head of Claims"],
+      "presents": ["D6"],
+      "decision": "Which claims operating model option goes forward to detailed design?",
+      "agenda": [
+        "Present the claims operating model options and their comparison",
+        "Discuss how each option addresses the agreed causes of delay",
+        "Decide which option goes forward to detailed design"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Workshop 2: detailed design",
+      "purpose": "Review the design and set transition focus",
+      "attendees": ["COO", "Head of Claims"],
+      "presents": ["D7"],
+      "decision": "Which parts of the detailed design should the transition plan cover first?",
+      "agenda": [
+        "Present the detailed design of the chosen claims model",
+        "Discuss what the design changes for property and health claims",
+        "Decide which parts the transition plan covers first"
+      ]
+    },
+    {
+      "id": "G6",
+      "label": "Final readout",
+      "purpose": "Approve the final package for the Board",
+      "attendees": ["COO", "Head of Claims"],
+      "presents": ["D8", "D9", "D10"],
+      "decision": "Approve the final report, roadmap and Board presentation for the 15 March 2027 Board?",
+      "agenda": [
+        "Present the transition roadmap and change plan",
+        "Review the final report and the Board presentation",
+        "Decide on approval ahead of the Board meeting on 15 March 2027"
+      ]
+    }
+  ],
+  "notes": []
+}

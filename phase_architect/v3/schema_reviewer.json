@@ -1,0 +1,23 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "required": ["verdict", "issues"],
+ "properties": {
+  "verdict": {"type": "string", "enum": ["send", "revise"]},
+  "issues": {
+   "type": "array",
+   "maxItems": 5,
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["owner", "target", "problem", "fix"],
+    "properties": {
+     "owner": {"type": "string", "enum": ["lead", "workstreams", "deliverables", "governance"]},
+     "target": {"type": "string"},
+     "problem": {"type": "string"},
+     "fix": {"type": "string"}
+    }
+   }
+  }
+ }
+}

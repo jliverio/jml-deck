@@ -1,0 +1,112 @@
+{
+ "brief": {
+  "hard_fields": {
+   "client": {
+    "value": "MetalCo, a Portuguese steel and building-materials distributor",
+    "source": "stated",
+    "quote": "MetalCo, a Portuguese steel and building-materials distributor",
+    "assumption_text": null
+   },
+   "problem_statement": {
+    "value": "MetalCo wants to sell directly to small and mid-size contractors in Portugal and Spain through an online marketplace, without losing its regional distributors. MetalCo has 14 warehouses and an existing B2B ordering portal used by large accounts only.",
+    "source": "stated",
+    "quote": "sell directly to small and mid-size contractors in Portugal and Spain through an online marketplace, without losing its regional distributors",
+    "assumption_text": null
+   }
+  },
+  "required": {
+   "engagement_type": {
+    "value": "assessment_and_implementation",
+    "source": "stated",
+    "quote": "design it with us and then run a pilot in one region",
+    "assumption_text": null
+   },
+   "engagement_length": {
+    "value": "20 weeks",
+    "source": "stated",
+    "quote": "we have 20 weeks before the 2027 budget round",
+    "assumption_text": null,
+    "weeks_min": 20,
+    "weeks_max": 20,
+    "duration_derived": false
+   },
+   "stakeholders": {
+    "value": [
+     "CEO",
+     "Head of Sales",
+     "Regional distributors council"
+    ],
+    "source": "stated",
+    "quote": "the CEO, our Head of Sales and the regional distributors council",
+    "assumption_text": null
+   }
+  },
+  "soft_fields": {
+   "deliverable_format": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "timeline": {
+    "value": "Results before the 2027 budget round",
+    "source": "stated",
+    "quote": "we have 20 weeks before the 2027 budget round",
+    "assumption_text": null
+   },
+   "prior_attempts": {
+    "value": "A B2B ordering portal launched for large accounts only",
+    "source": "stated",
+    "quote": "an existing B2B ordering portal used by large accounts only",
+    "assumption_text": null
+   },
+   "success_criteria": {
+    "value": "First repeat orders from contractors in the pilot region; no regional distributor contract terminated because of the marketplace",
+    "source": "stated",
+    "quote": "first repeat orders from contractors in the pilot region and no distributor walking away",
+    "assumption_text": null
+   },
+   "out_of_scope": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "workstreams": {
+    "value": null,
+    "count": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   }
+  }
+ },
+ "success_criteria_list": [
+  "First repeat orders from contractors in the pilot region",
+  "no regional distributor contract terminated because of the marketplace"
+ ],
+ "profile": {
+  "problem_focus": "offering",
+  "topic": null,
+  "current_state": null,
+  "market": "Steel and building materials distribution to contractors, Iberia"
+ },
+ "market_findings": [
+  {
+   "actor": "European Commission",
+   "summary": "Construction Products Regulation introduces digital product passports for construction products",
+   "scope_risk": "high"
+  },
+  {
+   "actor": "Hierros García",
+   "summary": "Spanish distributor launched an online steel marketplace for contractors in 2025",
+   "scope_risk": "medium"
+  },
+  {
+   "actor": "Eurostat",
+   "summary": "Online B2B sales reached 23% of EU wholesale turnover in 2024",
+   "scope_risk": "none"
+  }
+ ],
+ "weeks_available": null
+}

@@ -1,0 +1,20 @@
+{
+  "deliverables": [
+    {"id": "D1", "workstream_id": "W1", "name": "Network water balance and leakage share", "kind": "analysis", "due_week_in_phase": 2},
+    {"id": "D2", "workstream_id": "W2", "name": "Loss baseline by district, with locations and causes", "kind": "decision_pack", "due_week_in_phase": 6},
+    {"id": "D3", "workstream_id": "W3", "name": "Leak-detection routine with steps and roles", "kind": "design", "due_week_in_phase": 3},
+    {"id": "D4", "workstream_id": "W3", "name": "Loss-reduction program targets and measures", "kind": "design", "due_week_in_phase": 4},
+    {"id": "D5", "workstream_id": "W4", "name": "Pilot plan with district selection and measurement method", "kind": "decision_pack", "due_week_in_phase": 6},
+    {"id": "D6", "workstream_id": "W5", "name": "Crew training record and pilot readiness check", "kind": "enablement", "due_week_in_phase": 4},
+    {"id": "D7", "workstream_id": "W6", "name": "Pre-pilot loss levels for the two districts", "kind": "analysis", "due_week_in_phase": 3},
+    {"id": "D8", "workstream_id": "W6", "name": "Pilot results against pre-pilot loss levels", "kind": "decision_pack", "due_week_in_phase": 8},
+    {"id": "D9", "workstream_id": "W7", "name": "Pilot go-live record and operation log, two districts", "kind": "build", "due_week_in_phase": 8},
+    {"id": "D10", "workstream_id": "W8", "name": "Rollout wave plan and training material", "kind": "design", "due_week_in_phase": 3},
+    {"id": "D11", "workstream_id": "W9", "name": "Crew training and coaching record by wave", "kind": "enablement", "due_week_in_phase": 13},
+    {"id": "D12", "workstream_id": "W10", "name": "First-wave results report from the district rollout", "kind": "analysis", "due_week_in_phase": 8},
+    {"id": "D13", "workstream_id": "W10", "name": "Go-live record for each remaining district", "kind": "decision_pack", "due_week_in_phase": 13},
+    {"id": "D14", "workstream_id": "W11", "name": "Loss and routine-use tracker against the baseline", "kind": "analysis", "due_week_in_phase": 4},
+    {"id": "D15", "workstream_id": "W12", "name": "Results report for the final readout", "kind": "decision_pack", "due_week_in_phase": 6}
+  ],
+  "notes": []
+}

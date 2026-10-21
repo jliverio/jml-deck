@@ -1,0 +1,44 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Confirm scope, team and calendar",
+      "attendees": ["Board's medical director (sponsor)"],
+      "presents": [],
+      "decision": "Does the medical director confirm the scope, team and calendar for the diagnostic?",
+      "agenda": [
+        "Present the diagnostic scope, workstreams and deliverables",
+        "Align on the team and the roles of the three hospitals",
+        "Confirm the meeting calendar through week 6"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Check-in: causes of waiting",
+      "purpose": "Review baseline, journeys and causes",
+      "attendees": ["Board's medical director (sponsor)"],
+      "presents": ["D1", "D2", "D3"],
+      "decision": "Do the causes of waiting stand as the basis for the cross-hospital comparison?",
+      "agenda": [
+        "Present the waiting-time baseline and the patient journey maps",
+        "Review the causes of waiting by step and hospital",
+        "Confirm the causes that carry into the cross-hospital comparison"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Final readout",
+      "purpose": "Present final findings for acceptance",
+      "attendees": ["Board's medical director (sponsor)"],
+      "presents": ["D1", "D2", "D3", "D4", "D5"],
+      "decision": "Does the medical director accept the waiting-time findings for all three hospitals?",
+      "agenda": [
+        "Present the final readout of waiting-time findings",
+        "Review the cross-hospital comparison of waits and causes",
+        "Decide on acceptance of the findings for all three hospitals"
+      ]
+    }
+  ],
+  "notes": []
+}

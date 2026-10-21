@@ -1,0 +1,33 @@
+{
+  "basis": {
+    "governing_question": "Why did Vinhos do Douro Lda's export margins fall in 2025?",
+    "archetype_id": "performance_improvement"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": {
+        "min": 8,
+        "max": 8
+      },
+      "duration_derived": false,
+      "objective_one_line": "Establish why export margins fell in 2025 by examining pricing in each export market and distributor terms.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Do the CEO and Export Director accept the findings on why export margins fell?"
+      },
+      "depends_on_assumptions": [
+        "engagement_type",
+        "deliverable_format",
+        "timeline",
+        "prior_attempts",
+        "out_of_scope"
+      ]
+    }
+  ],
+  "architect_notes": [
+    "Engagement type is assumed from 'a quick diagnostic'; confirm assessment-only before quoting, because an implementation scope would add phases to the plan.",
+    "Departure from the performance_improvement archetype: Implementation dropped because the type is assessment, so one Diagnostic phase covers the stated eight weeks."
+  ]
+}

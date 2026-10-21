@@ -1,0 +1,29 @@
+{
+  "verdict": "revise",
+  "issues": [
+    {
+      "owner": "lead",
+      "target": "P3",
+      "problem": "G8 releases wave 1 at week 30, four weeks after pilot go-live (D10) and before close-out D12. No pilot deliverable shows a month-end close; only the run-in does.",
+      "fix": "Size the pilot to include a first month-end close at the pilot sites, and move the wave 1 go/no-go to after that close and the D12 open-issue log."
+    },
+    {
+      "owner": "lead",
+      "target": "P3",
+      "problem": "Four sequential waves of up to 10 sites take 12 to 16 weeks; wave size and the one-pharmacy pilot are assumed; no note asks the partner to confirm them.",
+      "fix": "Add wave size and pilot scope as assumed drivers, and add a note asking the partner to confirm them, noting two waves at once saves 6 to 8 weeks."
+    },
+    {
+      "owner": "lead",
+      "target": "P3",
+      "problem": "Vendor selection at G5 (week 12) is followed by configuration in week 13. No phase sizes contracting the chosen vendor or mobilizing its implementation team, which precede any build.",
+      "fix": "Add a sized contracting and mobilization piece to Implementation, or add a note stating it sits outside the plan and asking the partner to confirm the week-13 start."
+    },
+    {
+      "owner": "workstreams",
+      "target": "W5",
+      "problem": "W5 gathers cost data only from today's systems; no activity obtains vendor pricing for the shortlisted vendors, so G5 cannot compare vendor costs.",
+      "fix": "Add a W4 or W5 activity requesting pricing and implementation estimates from shortlisted vendors, and make D6 compare vendor cost against benefit for the G5 decision."
+    }
+  ]
+}

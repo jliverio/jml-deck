@@ -1,0 +1,126 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "basis",
+  "phases",
+  "architect_notes"
+ ],
+ "properties": {
+  "basis": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "governing_question",
+    "archetype_id"
+   ],
+   "properties": {
+    "governing_question": {
+     "type": "string"
+    },
+    "archetype_id": {
+     "type": [
+      "string",
+      "null"
+     ]
+    }
+   }
+  },
+  "phases": {
+   "type": "array",
+   "minItems": 1,
+   "maxItems": 6,
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "name",
+     "order",
+     "duration_weeks",
+     "duration_derived",
+     "objective_one_line",
+     "gate",
+     "depends_on_assumptions"
+    ],
+    "properties": {
+     "name": {
+      "type": "string",
+      "enum": [
+       "Diagnostic",
+       "Research",
+       "Design",
+       "Pilot",
+       "Implementation",
+       "Change & Training",
+       "Measurement",
+       "Handover"
+      ]
+     },
+     "order": {
+      "type": "integer"
+     },
+     "duration_weeks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "min",
+       "max"
+      ],
+      "properties": {
+       "min": {
+        "type": "integer"
+       },
+       "max": {
+        "type": "integer"
+       }
+      }
+     },
+     "duration_derived": {
+      "type": "boolean"
+     },
+     "objective_one_line": {
+      "type": "string"
+     },
+     "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "label",
+       "decision"
+      ],
+      "properties": {
+       "label": {
+        "type": "string"
+       },
+       "decision": {
+        "type": "string"
+       }
+      }
+     },
+     "depends_on_assumptions": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "enum": [
+        "engagement_type",
+        "engagement_length",
+        "stakeholders",
+        "deliverable_format",
+        "timeline",
+        "prior_attempts",
+        "success_criteria",
+        "out_of_scope"
+       ]
+      }
+     }
+    }
+   }
+  },
+  "architect_notes": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  }
+ }
+}

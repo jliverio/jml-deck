@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 2
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W2 Distributor terms is labelled 'after W1' but runs weeks 2-8 while W1 runs weeks 1-5, so the stated order contradicts the timing.",
+      "W1 Pricing by export market ends in week 5, the week of the workshop, so the workshop decision on where the remaining analysis should focus cannot redirect any pricing work.",
+      "D4, the overall findings on why export margins fell, sits inside W2 Distributor terms, so no stream owns the synthesis of pricing and distributor effects that the week 8 gate is asked to accept.",
+      "D2 and D3 are due in week 5, the same week as the workshop that reviews them, and D4 is due in week 8, the week of the gate, leaving no pre-read time for either meeting.",
+      "The workshop decision 'Is the remaining analysis focused on the right drivers of the margin fall?' is a yes/no confirmation rather than a real choice between markets or drivers."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 4,
+      "deliverables": 3,
+      "governance": 4,
+      "coherence": 4
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "No deliverable combines pricing and distributor terms into one explanation of the margin fall, yet the week 8 gate asks the CEO and Export Director to accept findings on why export margins fell, and the two separate packs D2 and D4 risk double-counting because distributor terms also drive realized prices.",
+      "Neither W1 nor W2 covers the cost side of export margins, which the notes flag but do not resolve, so the plan may not answer the governing question if costs drove the 2025 fall.",
+      "D2 and D4 are due in week 8, the same week as the final readout that reviews them, leaving no pre-read time.",
+      "W1 activities analyse 2025 sales and margin data without a stated comparison to the prior year, so how prices and margins 'moved' has no defined baseline.",
+      "The kick-off decision bundles scope, team and calendar into one question instead of asking one decision."
+    ]
+  },
+  "better": "Y",
+  "why": "Y runs both streams in parallel across the eight weeks, delivers interim findings a week before the workshop, and asks the workshop a real choice that steers the final weeks, so phases, streams, deliverables and meetings fit together. X contradicts itself on stream order, closes pricing work at the workshop that is supposed to redirect it, and hides the overall synthesis inside the distributor stream, while Y's main gap, a missing integrated synthesis, is a simpler fix."
+}

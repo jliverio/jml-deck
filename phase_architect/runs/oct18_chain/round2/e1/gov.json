@@ -1,0 +1,57 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Align on scope, team and calendar",
+      "attendees": ["Marta Ruiz, CFO", "COO"],
+      "presents": [],
+      "decision": "Does the steering group confirm the scope, team and calendar for the 12 weeks?",
+      "agenda": [
+        "Confirm the scope: cost diagnostic and design across twelve workstreams",
+        "Align on the team, sponsor roles and the steering calendar",
+        "Discuss data requests and client contacts for each workstream"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Workshop 1: first findings",
+      "purpose": "Review interim findings and service levels",
+      "attendees": ["Marta Ruiz, CFO", "COO"],
+      "presents": ["D2", "D5", "D7", "D13"],
+      "decision": "Does the steering group confirm the current service levels as the floor for savings?",
+      "agenda": [
+        "Present interim manufacturing, warehousing and sales spend findings",
+        "Review current service levels and the cost to deliver them",
+        "Confirm the service level floor for savings options"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Workshop 2: cost findings",
+      "purpose": "Review cost findings before savings design",
+      "attendees": ["Marta Ruiz, CFO", "COO"],
+      "presents": ["D1", "D4", "D10"],
+      "decision": "Does the steering group confirm these findings as the base for the savings design?",
+      "agenda": [
+        "Present procurement, logistics and HR cost findings",
+        "Discuss how the findings relate to the 8% savings target",
+        "Confirm the findings as the base for the final savings design"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Savings sign-off",
+      "purpose": "Approve final savings findings and design",
+      "attendees": ["Marta Ruiz, CFO", "COO"],
+      "presents": ["D1", "D3", "D4", "D6", "D8", "D9", "D10", "D11", "D12", "D14", "D15", "D16"],
+      "decision": "Does the steering group approve the savings findings and design as the final result?",
+      "agenda": [
+        "Present the savings designs and the sign-off pack tested against 8%",
+        "Review the service level risk assessment for the savings options",
+        "Decide whether to approve the savings findings and design as final"
+      ]
+    }
+  ],
+  "notes": []
+}

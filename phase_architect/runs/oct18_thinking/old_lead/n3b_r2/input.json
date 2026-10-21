@@ -1,0 +1,96 @@
+{
+ "brief": {
+  "hard_fields": {
+   "client": {
+    "value": "Seguros Atlântida, a Portuguese insurer",
+    "source": "stated",
+    "quote": "Seguros Atlântida, a Portuguese insurer",
+    "assumption_text": null
+   },
+   "problem_statement": {
+    "value": "Seguros Atlântida wants to redesign the operating model of all five business units (claims, underwriting, sales, customer service and finance) and plan the transition to it.",
+    "source": "stated",
+    "quote": "Seguros Atlântida wants to redesign the operating model of all five business units (claims, underwriting, sales, customer service and finance) and plan the transition to it.",
+    "assumption_text": null
+   }
+  },
+  "required": {
+   "engagement_type": {
+    "value": "assessment",
+    "source": "stated",
+    "quote": "assessment",
+    "assumption_text": null
+   },
+   "engagement_length": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": "Not given; the Phase Architect estimates the duration.",
+    "weeks_min": null,
+    "weeks_max": null,
+    "duration_derived": false
+   },
+   "stakeholders": {
+    "value": [
+     "Chief Executive Officer",
+     "Chief Operating Officer",
+     "Heads of the five business units"
+    ],
+    "source": "stated",
+    "quote": null,
+    "assumption_text": null
+   }
+  },
+  "soft_fields": {
+   "deliverable_format": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "timeline": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "prior_attempts": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "success_criteria": {
+    "value": "A target operating model for the five units that the executive committee approves; a transition plan by unit",
+    "source": "stated",
+    "quote": "A target operating model for the five units that the executive committee approves; a transition plan by unit",
+    "assumption_text": null
+   },
+   "out_of_scope": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "workstreams": {
+    "value": null,
+    "count": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   }
+  }
+ },
+ "success_criteria_list": [
+  "A target operating model for the five units that the executive committee approves",
+  "a transition plan by unit"
+ ],
+ "profile": {
+  "problem_focus": "topic",
+  "topic": "Insurer operating model",
+  "current_state": "Five business units with about 1,800 people in Lisbon, Porto and 12 regional offices.",
+  "market": null
+ },
+ "market_findings": [],
+ "weeks_available": null
+}

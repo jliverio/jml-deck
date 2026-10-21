@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 4,
+      "deliverables": 4,
+      "governance": 4,
+      "coherence": 4
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "The week 1 kickoff confirms neither which waits are measured (e.g. emergency, outpatient, surgical lists) nor access to hospital data and staff, yet W1 and W2 start collecting data, interviewing and observing at all three hospitals in week 1.",
+      "W1 calculates waits 'by step' in weeks 1-2 while W2 is only mapping those steps in the same weeks, so D1 cannot be cut by step until D2 exists.",
+      "W4 largely repeats W1 and W3, since D1 and D3 already cut waits and causes by hospital, and its 'what do the findings show' is synthesis rather than a distinct question.",
+      "Every steering meeting lists only the medical director, although the kickoff agenda aligns on 'the roles of the three hospitals' and no hospital lead is ever in the room to own the findings.",
+      "D4 is due in week 5 but no steering meeting reviews it until the week 6 gate, which also re-lists D1-D3 already reviewed in week 4 instead of reviewing only what is new."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 2,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 2
+    },
+    "verdict": "No",
+    "defects": [
+      "Dependencies contradict the timings: W3 runs weeks 2-4 'after W1' though W1 ends in week 3, and W4 starts in week 3 'after W1, W2, W3' though W2 and W3 end in week 4.",
+      "D4, the long list consolidated from all findings, is due in week 4, the same week as its inputs D2 and D3, so it cannot consolidate them.",
+      "W4 ranks improvement areas 'against agreed criteria', but no activity or meeting agrees those criteria, and the week 4 check-in decision ('do the findings so far cover the right causes?') is not a real choice.",
+      "The gate asks whether 'the steering group' accepts the findings, yet every meeting lists only the medical director, so the plan defines no steering group.",
+      "W2 is defined by a method (staff and patient input) rather than a question, and it overlaps W3 on the causes of waits, while W3's operational data analysis overlaps W1's data collection."
+    ]
+  },
+  "better": "X",
+  "why": "X's four streams form a clean chain (how long, where, why, compare) with consistent timings, deliverables due when the meetings need them and a real decision at the week 4 check-in, so it needs only edits on data access, step definitions and attendees. Y adds useful prioritization, but its stream dependencies contradict its own timings, its long list is due the same week as its inputs, and its ranking criteria and 'steering group' never exist in the plan."
+}

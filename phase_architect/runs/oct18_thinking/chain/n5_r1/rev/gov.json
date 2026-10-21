@@ -1,0 +1,96 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Agree access and start the Diagnostic",
+      "attendees": ["CEO", "Head of Digital"],
+      "presents": [],
+      "decision": "Which digital channel data and people will the team have access to in weeks 1-5?",
+      "agenda": [
+        "Present the Diagnostic workstreams and what each needs from the bank",
+        "Discuss access to channel performance data and to leadership time",
+        "Decide the data and people access for weeks 1-5"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Check-in: expectations",
+      "purpose": "Review what leadership expects",
+      "attendees": ["CEO", "Head of Digital"],
+      "presents": ["D1"],
+      "decision": "Which leadership expectations should the channel gap ranking be measured against?",
+      "agenda": [
+        "Present the CEO and Head of Digital expectations summary",
+        "Review progress on the channel performance work",
+        "Decide which expectations anchor the channel gap ranking"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Research focus",
+      "purpose": "Choose the channel gaps to research",
+      "attendees": ["CEO", "Head of Digital"],
+      "presents": ["D1", "D2", "D3"],
+      "decision": "Which channel gaps should the customer and competitor research take forward?",
+      "agenda": [
+        "Present the channel performance and customer journey findings",
+        "Review the ranked channel gap list against leadership expectations",
+        "Decide which channel gaps the customer and competitor research covers"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Check-in: customer needs",
+      "purpose": "Review customer needs ahead of benchmark",
+      "attendees": ["CEO", "Head of Digital"],
+      "presents": ["D4", "D5"],
+      "decision": "Which customer needs should the peer bank benchmark focus on?",
+      "agenda": [
+        "Present customer needs findings for all three segments",
+        "Discuss how the needs differ across segments",
+        "Decide the customer needs the peer bank benchmark focuses on"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Design focus",
+      "purpose": "Choose the evidence the options build on",
+      "attendees": ["CEO", "Head of Digital"],
+      "presents": ["D4", "D5", "D6", "D7"],
+      "decision": "Which customer needs and peer practices should the strategy options build on?",
+      "agenda": [
+        "Present the peer bank digital channel benchmark",
+        "Review the customer and peer evidence base for design focus",
+        "Decide which needs and practices the strategy options build on"
+      ]
+    },
+    {
+      "id": "G6",
+      "label": "Workshop: option comparison",
+      "purpose": "Compare strategic options against criteria",
+      "attendees": ["CEO", "Head of Digital"],
+      "presents": ["D8", "D9"],
+      "decision": "Which strategic option should the strategy and roadmap detail?",
+      "agenda": [
+        "Present the strategic options and the criteria",
+        "Review the option comparison against the agreed criteria",
+        "Decide which option the strategy and roadmap will detail"
+      ]
+    },
+    {
+      "id": "G7",
+      "label": "Final readout",
+      "purpose": "Approve the strategy and roadmap",
+      "attendees": ["CEO", "Head of Digital"],
+      "presents": ["D10", "D11"],
+      "decision": "Approve the digital channels strategy and roadmap as the final result?",
+      "agenda": [
+        "Present the strategy and roadmap for approval",
+        "Review the strategy and roadmap against the chosen option",
+        "Decide on approval of the strategy and roadmap"
+      ]
+    }
+  ],
+  "notes": []
+}

@@ -1,0 +1,48 @@
+{
+  "basis": {
+    "governing_question": "Which ERP should replace the finance, purchasing and inventory systems, and how is it migrated and rolled out to 40 pharmacies and 2 warehouses?",
+    "archetype_id": "technology_selection_implementation"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 4, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Establish business requirements and process fit-gaps for finance, purchasing and inventory across 40 pharmacies and 2 warehouses.",
+      "gate": {
+        "label": "Requirements sign-off",
+        "decision": "Go or no-go on starting vendor selection against the agreed requirements?"
+      },
+      "depends_on_assumptions": ["engagement_length", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 6, "max": 8 },
+      "duration_derived": false,
+      "objective_one_line": "Shortlist and score ERP vendors, and build the business case and rollout and migration plan for the selection decision.",
+      "gate": {
+        "label": "Selection decision",
+        "decision": "Which ERP vendor and rollout plan go forward into implementation?"
+      },
+      "depends_on_assumptions": ["engagement_length"]
+    },
+    {
+      "name": "Implementation",
+      "order": 3,
+      "duration_weeks": { "min": 22, "max": 24 },
+      "duration_derived": false,
+      "objective_one_line": "Migrate data and roll out the selected ERP to 40 pharmacies and 2 warehouses for finance, purchasing and inventory.",
+      "gate": {
+        "label": "Final acceptance",
+        "decision": "Approve the ERP as running in all 40 pharmacies and both warehouses?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format", "timeline", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Engagement length is not given: 32 to 38 weeks is an estimate based on archetype ranges, 40 pharmacies, 2 warehouses and data migration.",
+    "Implementation added to the archetype's Diagnostic and Design because the brief covers migration and rollout; the archetype gives it no length."
+  ]
+}

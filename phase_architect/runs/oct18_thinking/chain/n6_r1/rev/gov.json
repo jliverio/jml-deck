@@ -1,0 +1,72 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Start the work and secure data access",
+      "attendees": ["CEO", "CFO", "Heads of the three acquired companies"],
+      "presents": [],
+      "decision": "Confirm access to each company's sales, purchasing and finance data and people?",
+      "agenda": [
+        "Present the three phases and the dates of each meeting",
+        "Discuss the data and people needed from each company",
+        "Confirm access and one contact per company"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Check-in: current state",
+      "purpose": "Review current state of all three companies",
+      "attendees": ["CEO", "CFO", "Heads of the three acquired companies"],
+      "presents": ["D1", "D2"],
+      "decision": "Which differences from Grupo Vale should the gap ranking cover?",
+      "agenda": [
+        "Present the current-state comparisons for all three companies",
+        "Discuss where each company differs from Grupo Vale",
+        "Align on what the gap ranking covers in weeks 5-6"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Go/no-go on design",
+      "purpose": "Decide whether to start design",
+      "attendees": ["CEO", "CFO", "Heads of the three acquired companies"],
+      "presents": ["D1", "D2", "D3"],
+      "decision": "Go ahead with design on the agreed priority gaps in sales, purchasing and finance?",
+      "agenda": [
+        "Present the ranked gaps and agreed priorities",
+        "Review the current-state comparisons behind the ranking",
+        "Decide whether design starts on the priority gaps"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Go/no-go on cutover",
+      "purpose": "Decide whether to move the first company",
+      "attendees": ["CEO", "CFO", "Heads of the three acquired companies"],
+      "presents": ["D4", "D5"],
+      "decision": "Go or no-go on moving the first company onto Grupo Vale's processes and systems?",
+      "agenda": [
+        "Present the move design for each acquired company",
+        "Review the integration plan and its risks",
+        "Decide go or no-go on moving the first company"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Final readout",
+      "purpose": "Approve the result, prepare for the board",
+      "attendees": ["CEO", "CFO", "Heads of the three acquired companies"],
+      "presents": ["D6", "D7", "D8"],
+      "decision": "Approve the first-company result and the integration plan to take to the board?",
+      "agenda": [
+        "Present the go-live record and run confirmation by process area",
+        "Review the cutover readiness record and the updated integration plan",
+        "Decide whether to take the result and plan to the board"
+      ]
+    }
+  ],
+  "notes": [
+    "The board approves the integration plan but is not among the stakeholders; confirm whether a board representative should attend the final readout."
+  ]
+}

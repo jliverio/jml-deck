@@ -1,0 +1,149 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Finance and purchasing needs",
+      "question_id": "Q1",
+      "answers": "What must the ERP do for finance and purchasing at the pharmacies and warehouses?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 0,
+      "duration": 2,
+      "follows": [],
+      "activities": [
+        "Interview the staff who run finance and purchasing",
+        "Map finance and purchasing processes as they run today",
+        "List requirements from operational data and documents"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Inventory needs",
+      "question_id": "Q1",
+      "answers": "What must the ERP do for inventory in the pharmacies and warehouses?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 2,
+      "duration": 2,
+      "follows": [],
+      "activities": [
+        "Interview pharmacy and warehouse staff who manage stock",
+        "Map inventory handling in warehouses and pharmacies",
+        "List requirements from stock data and documents"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Fit-gap of current systems",
+      "question_id": "Q1",
+      "answers": "Where do today's finance, purchasing and inventory systems fall short of the requirements?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 3,
+      "duration": 3,
+      "follows": ["W1", "W2"],
+      "activities": [
+        "Compare today's systems with the requirements",
+        "Test gaps with the people who use the systems",
+        "Consolidate the requirements for sign-off"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 2,
+      "name": "ERP vendor selection",
+      "question_id": "Q2",
+      "answers": "Which ERP vendors meet the approved requirements for finance, purchasing and inventory?",
+      "traces_to": ["problem_statement", "gate:2"],
+      "start_offset": 0,
+      "duration": 4,
+      "follows": [],
+      "activities": [
+        "Shortlist ERP vendors against the approved requirements",
+        "Run demonstrations with pharmacy and warehouse users",
+        "Score vendors against each requirement"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 2,
+      "name": "ERP business case",
+      "question_id": "Q2",
+      "answers": "Does the business case support selecting the leading ERP vendor for Farmácias Lusas?",
+      "traces_to": ["problem_statement", "gate:2"],
+      "start_offset": 3,
+      "duration": 3,
+      "follows": ["W4"],
+      "activities": [
+        "Gather cost data from today's systems and records",
+        "Build the cost and benefit view for shortlisted vendors",
+        "Test the case with the CFO and Operations Director"
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 3,
+      "name": "ERP build and testing",
+      "question_id": "Q3",
+      "answers": "Can the ERP be configured and tested for finance, purchasing and inventory?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 10,
+      "follows": [],
+      "activities": [
+        "Configure finance and purchasing, then inventory",
+        "Test each area with the people who will use it",
+        "Record test results for the readiness review"
+      ]
+    },
+    {
+      "id": "W7",
+      "phase_order": 3,
+      "name": "Data migration rehearsal",
+      "question_id": "Q3",
+      "answers": "Can data from today's systems be migrated and loaded into the configured ERP?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 6,
+      "duration": 4,
+      "follows": ["W6"],
+      "activities": [
+        "Map and clean data from today's systems",
+        "Rehearse the data load and reconcile the results",
+        "Agree reconciliation checks with the CFO and IT Manager"
+      ]
+    },
+    {
+      "id": "W8",
+      "phase_order": 3,
+      "name": "Pilot pharmacy and warehouse",
+      "question_id": "Q4",
+      "answers": "Does the ERP run live and stable at the pilot pharmacy and warehouse?",
+      "traces_to": ["problem_statement", "success_criteria:1"],
+      "start_offset": 10,
+      "duration": 10,
+      "follows": ["W6", "W7"],
+      "activities": [
+        "Confirm readiness of the pilot sites before go-live",
+        "Load live data and cut over at each pilot site",
+        "Track stability and issues with the staff using the ERP"
+      ]
+    },
+    {
+      "id": "W9",
+      "phase_order": 3,
+      "name": "Rollout waves and run-in",
+      "question_id": "Q4",
+      "answers": "Does the ERP run for finance, purchasing and inventory in all 40 pharmacies and both warehouses?",
+      "traces_to": ["problem_statement", "success_criteria:1", "gate:3"],
+      "start_offset": 20,
+      "duration": 21,
+      "follows": ["W8"],
+      "activities": [
+        "Load live data and cut over each wave of sites",
+        "Roll out wave by wave and track issues with site staff",
+        "Run a month-end close with all sites live and review it"
+      ]
+    }
+  ],
+  "notes": []
+}

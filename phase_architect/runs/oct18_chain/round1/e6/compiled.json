@@ -1,0 +1,313 @@
+{
+ "client": "Banco Atlântico",
+ "basis": {
+  "governing_question": "How does Banco Atlântico get its new, already designed branch operating model running in all 120 branches within one 24-week rollout phase?",
+  "archetype_id": "performance_improvement"
+ },
+ "total_duration_weeks": {
+  "min": 24,
+  "max": 24
+ },
+ "phases": [
+  {
+   "name": "Implementation",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 24,
+   "duration_weeks": {
+    "min": 24,
+    "max": 24
+   },
+   "duration_derived": false,
+   "objective_one_line": "Roll out the designed branch operating model to all 120 branches, with staff training and performance tracking running alongside.",
+   "gate": {
+    "label": "Rollout close-out",
+    "decision": "Is the new model running in all 120 branches, ready for close-out?"
+   },
+   "depends_on_assumptions": [
+    "deliverable_format",
+    "timeline",
+    "prior_attempts",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2",
+    "W3"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Branch rollout",
+   "answers": "In what order and with what readiness do the 120 branches move onto the designed model?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 24,
+   "follows": [],
+   "activities": [
+    "Sequence the 120 branches into waves using branch data",
+    "Check wave readiness with the people who run the branches",
+    "Launch waves in order after the readiness workshop"
+   ],
+   "deliverable_ids": [
+    "D1",
+    "D2"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Staff training",
+   "answers": "What must branch staff learn, and how are they trained before their branch moves to the new model?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 2,
+   "end_week": 22,
+   "follows": [],
+   "activities": [
+    "Interview branch staff on how the model changes their work",
+    "Prepare training content from the designed model",
+    "Train staff ahead of each wave and check what they retain"
+   ],
+   "deliverable_ids": [
+    "D3",
+    "D4"
+   ]
+  },
+  {
+   "id": "W3",
+   "phase_order": 1,
+   "name": "Performance tracking",
+   "answers": "Is each branch running the new model, and how is its performance moving against its starting point?",
+   "traces_to": [
+    "success_criteria:1",
+    "gate:1"
+   ],
+   "start_week": 5,
+   "end_week": 24,
+   "follows": [
+    "W1"
+   ],
+   "activities": [
+    "Agree what counts as a branch running the new model",
+    "Set the starting position from branch operating data",
+    "Report wave results against the starting position"
+   ],
+   "deliverable_ids": [
+    "D5",
+    "D6",
+    "D7"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "Branch wave plan and readiness criteria",
+   "kind": "design",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 6,
+   "presented_at": "Workshop 1: readiness"
+  },
+  {
+   "id": "D2",
+   "name": "New operating model live in all 120 branches",
+   "kind": "build",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 24,
+   "presented_at": "Rollout close-out"
+  },
+  {
+   "id": "D3",
+   "name": "Branch staff training content",
+   "kind": "enablement",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 6,
+   "presented_at": "Workshop 1: readiness"
+  },
+  {
+   "id": "D4",
+   "name": "Branch staff trained ahead of each wave",
+   "kind": "enablement",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 22,
+   "presented_at": "Rollout close-out"
+  },
+  {
+   "id": "D5",
+   "name": "Definition of a running branch and starting position",
+   "kind": "analysis",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 7,
+   "presented_at": "Workshop 1: readiness"
+  },
+  {
+   "id": "D6",
+   "name": "Wave results against the starting position",
+   "kind": "analysis",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 18,
+   "presented_at": "Workshop 2: wave results"
+  },
+  {
+   "id": "D7",
+   "name": "Rollout close-out pack against the success criterion",
+   "kind": "decision_pack",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 24,
+   "presented_at": "Rollout close-out"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 2,
+  "status_weeks": [
+   3,
+   5,
+   9,
+   11,
+   15,
+   17,
+   19,
+   21,
+   23
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Align on scope, team and calendar",
+    "attendees": [
+     "COO",
+     "Head of Branch Network"
+    ],
+    "presents": [],
+    "decision": "Are the scope, team and calendar for the 24-week rollout confirmed?",
+    "agenda": [
+     "Present the rollout objective and the success criterion",
+     "Review the scope, team roles and calendar of the 24 weeks",
+     "Confirm the steering meetings and their dates"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "workshop",
+    "phase_order": 1,
+    "week": 7,
+    "label": "Workshop 1: readiness",
+    "purpose": "Review readiness before the first wave",
+    "attendees": [
+     "COO",
+     "Head of Branch Network"
+    ],
+    "presents": [
+     "D1",
+     "D3",
+     "D5"
+    ],
+    "decision": "Are the wave plan and readiness criteria agreed so the first wave can go live?",
+    "agenda": [
+     "Present the wave plan and readiness criteria",
+     "Review the training content and the definition of a running branch",
+     "Confirm what must be ready before the first wave goes live"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "checkin",
+    "phase_order": 1,
+    "week": 13,
+    "label": "Check-in: rollout progress",
+    "purpose": "Check wave progress and open issues",
+    "attendees": [
+     "COO",
+     "Head of Branch Network"
+    ],
+    "presents": [],
+    "decision": "Do any waves need to change to keep all 120 branches live by week 24?",
+    "agenda": [
+     "Review rollout progress against the wave plan",
+     "Discuss open risks to the upcoming waves"
+    ]
+   },
+   {
+    "id": "G4",
+    "type": "workshop",
+    "phase_order": 1,
+    "week": 18,
+    "label": "Workshop 2: wave results",
+    "purpose": "Review wave results and close-out evidence",
+    "attendees": [
+     "COO",
+     "Head of Branch Network"
+    ],
+    "presents": [
+     "D6"
+    ],
+    "decision": "Is the close-out evidence agreed so the remaining waves can finish by week 24?",
+    "agenda": [
+     "Present the wave results against the starting position",
+     "Review what the remaining waves must deliver by week 24",
+     "Align on the evidence the close-out pack will show"
+    ]
+   },
+   {
+    "id": "G5",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 24,
+    "label": "Rollout close-out",
+    "purpose": "Confirm all 120 branches run the new model",
+    "attendees": [
+     "COO",
+     "Head of Branch Network"
+    ],
+    "presents": [
+     "D2",
+     "D4",
+     "D7"
+    ],
+    "decision": "Is the new model running in all 120 branches, ready for close-out?",
+    "agenda": [
+     "Present the close-out pack against the success criterion",
+     "Review branch status and staff training ahead of the final waves",
+     "Decide whether the rollout is ready for close-out"
+    ]
+   }
+  ]
+ },
+ "deadline": null,
+ "architect_notes": [
+  "The brief says the operating model is already designed, so the archetype's Diagnostic phase is dropped and only Implementation is kept.",
+  "The brief names one 24-week rollout phase, so the plan holds one phase with branch rollout, staff training and performance tracking side by side."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Implementation",
+    "start": 1,
+    "end": 24
+   }
+  ]
+ }
+}

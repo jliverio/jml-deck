@@ -1,0 +1,588 @@
+{
+ "client": "Iberia Foods",
+ "basis": {
+  "governing_question": "How can Iberia Foods identify savings of 8% of its cost base without cutting service levels?",
+  "archetype_id": "performance_improvement"
+ },
+ "total_duration_weeks": {
+  "min": 12,
+  "max": 12
+ },
+ "phases": [
+  {
+   "name": "Diagnostic",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 12,
+   "duration_weeks": {
+    "min": 12,
+    "max": 12
+   },
+   "duration_derived": false,
+   "objective_one_line": "Diagnose the cost base across twelve workstreams and identify savings of 8% without cutting service levels.",
+   "gate": {
+    "label": "Savings sign-off",
+    "decision": "Does the steering group approve the savings findings and design as the final result?"
+   },
+   "depends_on_assumptions": [
+    "deliverable_format",
+    "timeline",
+    "prior_attempts",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2",
+    "W3",
+    "W4",
+    "W5",
+    "W6",
+    "W7",
+    "W8",
+    "W9",
+    "W10",
+    "W11",
+    "W12"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Procurement",
+   "answers": "What does Iberia Foods buy, on what terms, and where could purchasing cost fall without affecting service?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 12,
+   "follows": [],
+   "activities": [
+    "Analyze purchasing data by category and supplier",
+    "Review supplier contracts and price terms",
+    "Interview buyers and production staff on specifications"
+   ],
+   "deliverable_ids": [
+    "D1"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Manufacturing",
+   "answers": "What drives production cost per product, and which drivers can change without cutting service levels?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 12,
+   "follows": [],
+   "activities": [
+    "Analyze production cost and yield data by product",
+    "Interview line supervisors and operators on cost drivers",
+    "Observe production runs to check reported cost data"
+   ],
+   "deliverable_ids": [
+    "D2",
+    "D3"
+   ]
+  },
+  {
+   "id": "W3",
+   "phase_order": 1,
+   "name": "Logistics",
+   "answers": "What does moving product to customers cost, and which drivers can change without hurting delivery service?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 12,
+   "follows": [],
+   "activities": [
+    "Analyze shipment and transport cost data by route",
+    "Interview transport and delivery staff on constraints",
+    "Review customer delivery requirements and contract terms"
+   ],
+   "deliverable_ids": [
+    "D4"
+   ]
+  },
+  {
+   "id": "W4",
+   "phase_order": 1,
+   "name": "Warehousing",
+   "answers": "What does storing and handling product cost, and which drivers can change without hurting order availability?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 12,
+   "follows": [],
+   "activities": [
+    "Analyze storage, handling and inventory cost data",
+    "Interview warehouse staff on workflow and bottlenecks",
+    "Compare stock levels with order fulfillment records"
+   ],
+   "deliverable_ids": [
+    "D5",
+    "D6"
+   ]
+  },
+  {
+   "id": "W5",
+   "phase_order": 1,
+   "name": "Sales and marketing",
+   "answers": "What do sales and marketing cost, and which spend can change without affecting customer service levels?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 12,
+   "follows": [],
+   "activities": [
+    "Analyze sales and marketing spend by channel and activity",
+    "Interview sales and marketing staff on how spend is set",
+    "Interview customers on what they value in sales support"
+   ],
+   "deliverable_ids": [
+    "D7",
+    "D8"
+   ]
+  },
+  {
+   "id": "W6",
+   "phase_order": 1,
+   "name": "Finance",
+   "answers": "What does finance cost, and do savings across all streams add up to 8% of the cost base?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 12,
+   "follows": [],
+   "activities": [
+    "Build a cost base baseline by category and function",
+    "Interview finance staff on reporting and approval work",
+    "Test savings from all streams against 8% of the cost base"
+   ],
+   "deliverable_ids": [
+    "D9"
+   ]
+  },
+  {
+   "id": "W7",
+   "phase_order": 1,
+   "name": "HR",
+   "answers": "What do HR services and workforce policies cost, and which can change without affecting service levels?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 12,
+   "follows": [],
+   "activities": [
+    "Analyze headcount, absence and overtime data by function",
+    "Interview line managers and HR staff on staffing practices",
+    "Review HR policies and employment terms"
+   ],
+   "deliverable_ids": [
+    "D10"
+   ]
+  },
+  {
+   "id": "W8",
+   "phase_order": 1,
+   "name": "IT",
+   "answers": "What do IT systems and services cost, and which can change without affecting operations or service levels?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 12,
+   "follows": [],
+   "activities": [
+    "Analyze IT spend, licenses and usage data",
+    "Interview system users and IT staff on needs and gaps",
+    "Review IT contracts and service agreements"
+   ],
+   "deliverable_ids": [
+    "D11"
+   ]
+  },
+  {
+   "id": "W9",
+   "phase_order": 1,
+   "name": "Legal",
+   "answers": "What do legal services and contract terms cost, and which can change without raising risk or cutting service?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 12,
+   "follows": [],
+   "activities": [
+    "Analyze legal spend by type of work and provider",
+    "Interview legal staff and contract owners on workload",
+    "Review contract and compliance documents for cost terms"
+   ],
+   "deliverable_ids": [
+    "D12"
+   ]
+  },
+  {
+   "id": "W10",
+   "phase_order": 1,
+   "name": "Customer service",
+   "answers": "What service levels do customers get today, what does delivering them cost, and where are they at risk?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 12,
+   "follows": [],
+   "activities": [
+    "Analyze service level, complaint and contact data",
+    "Interview customers on the service levels they rely on",
+    "Interview customer service staff on cost and workload"
+   ],
+   "deliverable_ids": [
+    "D13",
+    "D14"
+   ]
+  },
+  {
+   "id": "W11",
+   "phase_order": 1,
+   "name": "Pricing",
+   "answers": "Which pricing and discount terms carry cost, and how do they link to the service levels customers get?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 5,
+   "end_week": 12,
+   "follows": [
+    "W5",
+    "W10"
+   ],
+   "activities": [
+    "Analyze price, discount and margin data by customer",
+    "Review customer pricing agreements and price lists",
+    "Interview sales and pricing staff on how prices are set"
+   ],
+   "deliverable_ids": [
+    "D15"
+   ]
+  },
+  {
+   "id": "W12",
+   "phase_order": 1,
+   "name": "Real estate",
+   "answers": "What does property cost, and what space do manufacturing and warehousing need to hold service levels?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 5,
+   "end_week": 12,
+   "follows": [
+    "W2",
+    "W4"
+   ],
+   "activities": [
+    "Analyze property cost, area and utilization data by site",
+    "Review lease and ownership documents for cost terms",
+    "Interview site and facilities staff on space use"
+   ],
+   "deliverable_ids": [
+    "D16"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "Procurement cost findings by category and supplier",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 7,
+   "presented_at": "Workshop 2: cost findings"
+  },
+  {
+   "id": "D2",
+   "name": "Interim manufacturing cost driver findings",
+   "kind": "analysis",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 3,
+   "presented_at": "Workshop 1: first findings"
+  },
+  {
+   "id": "D3",
+   "name": "Manufacturing cost savings design",
+   "kind": "design",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 11,
+   "presented_at": "Savings sign-off"
+  },
+  {
+   "id": "D4",
+   "name": "Logistics cost findings by route",
+   "kind": "analysis",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 7,
+   "presented_at": "Workshop 2: cost findings"
+  },
+  {
+   "id": "D5",
+   "name": "Interim warehousing cost and availability findings",
+   "kind": "analysis",
+   "workstream_id": "W4",
+   "phase_order": 1,
+   "due_week": 3,
+   "presented_at": "Workshop 1: first findings"
+  },
+  {
+   "id": "D6",
+   "name": "Warehousing cost savings design",
+   "kind": "design",
+   "workstream_id": "W4",
+   "phase_order": 1,
+   "due_week": 11,
+   "presented_at": "Savings sign-off"
+  },
+  {
+   "id": "D7",
+   "name": "Interim sales and marketing spend findings",
+   "kind": "analysis",
+   "workstream_id": "W5",
+   "phase_order": 1,
+   "due_week": 3,
+   "presented_at": "Workshop 1: first findings"
+  },
+  {
+   "id": "D8",
+   "name": "Sales and marketing spend savings design",
+   "kind": "design",
+   "workstream_id": "W5",
+   "phase_order": 1,
+   "due_week": 10,
+   "presented_at": "Savings sign-off"
+  },
+  {
+   "id": "D9",
+   "name": "Savings sign-off pack tested against 8% of cost base",
+   "kind": "decision_pack",
+   "workstream_id": "W6",
+   "phase_order": 1,
+   "due_week": 12,
+   "presented_at": "Savings sign-off"
+  },
+  {
+   "id": "D10",
+   "name": "HR cost findings by function",
+   "kind": "analysis",
+   "workstream_id": "W7",
+   "phase_order": 1,
+   "due_week": 7,
+   "presented_at": "Workshop 2: cost findings"
+  },
+  {
+   "id": "D11",
+   "name": "IT spend findings and savings design",
+   "kind": "design",
+   "workstream_id": "W8",
+   "phase_order": 1,
+   "due_week": 10,
+   "presented_at": "Savings sign-off"
+  },
+  {
+   "id": "D12",
+   "name": "Legal spend and contract terms findings",
+   "kind": "analysis",
+   "workstream_id": "W9",
+   "phase_order": 1,
+   "due_week": 9,
+   "presented_at": "Savings sign-off"
+  },
+  {
+   "id": "D13",
+   "name": "Current service levels and cost to deliver them",
+   "kind": "analysis",
+   "workstream_id": "W10",
+   "phase_order": 1,
+   "due_week": 3,
+   "presented_at": "Workshop 1: first findings"
+  },
+  {
+   "id": "D14",
+   "name": "Service level risk assessment for savings options",
+   "kind": "analysis",
+   "workstream_id": "W10",
+   "phase_order": 1,
+   "due_week": 11,
+   "presented_at": "Savings sign-off"
+  },
+  {
+   "id": "D15",
+   "name": "Pricing and discount terms cost findings",
+   "kind": "analysis",
+   "workstream_id": "W11",
+   "phase_order": 1,
+   "due_week": 10,
+   "presented_at": "Savings sign-off"
+  },
+  {
+   "id": "D16",
+   "name": "Property cost and space need findings",
+   "kind": "analysis",
+   "workstream_id": "W12",
+   "phase_order": 1,
+   "due_week": 11,
+   "presented_at": "Savings sign-off"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 2,
+  "status_weeks": [
+   3,
+   5,
+   7,
+   9,
+   11
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Align on scope, team and calendar",
+    "attendees": [
+     "Marta Ruiz, CFO",
+     "COO"
+    ],
+    "presents": [],
+    "decision": "Does the steering group confirm the scope, team and calendar for the 12 weeks?",
+    "agenda": [
+     "Confirm the scope: cost diagnostic and design across twelve workstreams",
+     "Align on the team, sponsor roles and the steering calendar",
+     "Discuss data requests and client contacts for each workstream"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "workshop",
+    "phase_order": 1,
+    "week": 4,
+    "label": "Workshop 1: first findings",
+    "purpose": "Review interim findings and service levels",
+    "attendees": [
+     "Marta Ruiz, CFO",
+     "COO"
+    ],
+    "presents": [
+     "D2",
+     "D5",
+     "D7",
+     "D13"
+    ],
+    "decision": "Does the steering group confirm the current service levels as the floor for savings?",
+    "agenda": [
+     "Present interim manufacturing, warehousing and sales spend findings",
+     "Review current service levels and the cost to deliver them",
+     "Confirm the service level floor for savings options"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "workshop",
+    "phase_order": 1,
+    "week": 8,
+    "label": "Workshop 2: cost findings",
+    "purpose": "Review cost findings before savings design",
+    "attendees": [
+     "Marta Ruiz, CFO",
+     "COO"
+    ],
+    "presents": [
+     "D1",
+     "D4",
+     "D10"
+    ],
+    "decision": "Does the steering group confirm these findings as the base for the savings design?",
+    "agenda": [
+     "Present procurement, logistics and HR cost findings",
+     "Discuss how the findings relate to the 8% savings target",
+     "Confirm the findings as the base for the final savings design"
+    ]
+   },
+   {
+    "id": "G4",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 12,
+    "label": "Savings sign-off",
+    "purpose": "Approve final savings findings and design",
+    "attendees": [
+     "Marta Ruiz, CFO",
+     "COO"
+    ],
+    "presents": [
+     "D1",
+     "D3",
+     "D4",
+     "D6",
+     "D8",
+     "D9",
+     "D10",
+     "D11",
+     "D12",
+     "D14",
+     "D15",
+     "D16"
+    ],
+    "decision": "Does the steering group approve the savings findings and design as the final result?",
+    "agenda": [
+     "Present the savings designs and the sign-off pack tested against 8%",
+     "Review the service level risk assessment for the savings options",
+     "Decide whether to approve the savings findings and design as final"
+    ]
+   }
+  ]
+ },
+ "deadline": null,
+ "architect_notes": [
+  "One phase, not the two stages the brief names: twelve workstreams over two phases would exceed 12 rows, so design work sits inside Diagnostic.",
+  "No Implementation phase: the brief states assessment only, so the performance_improvement archetype's Implementation phase is dropped.",
+  "No stream owns the cross-function savings total; Finance carries the test against the 8% target, and the partner may want a separate owner."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Diagnostic",
+    "start": 1,
+    "end": 12
+   }
+  ]
+ }
+}

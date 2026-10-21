@@ -1,0 +1,89 @@
+{
+  "deliverables": [
+    {
+      "id": "D1",
+      "workstream_id": "W1",
+      "name": "Hypotheses on each blueprint component",
+      "kind": "design",
+      "due_week_in_phase": 1
+    },
+    {
+      "id": "D2",
+      "workstream_id": "W2",
+      "name": "Shipper and market evidence on each hypothesis",
+      "kind": "analysis",
+      "due_week_in_phase": 4
+    },
+    {
+      "id": "D3",
+      "workstream_id": "W3",
+      "name": "Wireframe prototype of the shipper journey",
+      "kind": "build",
+      "due_week_in_phase": 4
+    },
+    {
+      "id": "D4",
+      "workstream_id": "W4",
+      "name": "Blueprint with tested hypotheses",
+      "kind": "design",
+      "due_week_in_phase": 7
+    },
+    {
+      "id": "D5",
+      "workstream_id": "W4",
+      "name": "Pilot plan with milestones and launch criteria",
+      "kind": "decision_pack",
+      "due_week_in_phase": 8
+    },
+    {
+      "id": "D6",
+      "workstream_id": "W5",
+      "name": "Pilot KPIs agreed with key stakeholders",
+      "kind": "enablement",
+      "due_week_in_phase": 3
+    },
+    {
+      "id": "D7",
+      "workstream_id": "W5",
+      "name": "List of key internal hires for the pilot",
+      "kind": "enablement",
+      "due_week_in_phase": 5
+    },
+    {
+      "id": "D8",
+      "workstream_id": "W6",
+      "name": "First target group of small shippers for launch",
+      "kind": "analysis",
+      "due_week_in_phase": 3
+    },
+    {
+      "id": "D9",
+      "workstream_id": "W7",
+      "name": "First platform version with launch record",
+      "kind": "build",
+      "due_week_in_phase": 8
+    },
+    {
+      "id": "D10",
+      "workstream_id": "W7",
+      "name": "First-wave pilot usage data and shipper feedback",
+      "kind": "analysis",
+      "due_week_in_phase": 11
+    },
+    {
+      "id": "D11",
+      "workstream_id": "W7",
+      "name": "Pilot results against the 200-shipper target",
+      "kind": "analysis",
+      "due_week_in_phase": 17
+    },
+    {
+      "id": "D12",
+      "workstream_id": "W8",
+      "name": "Scale-up business case with implementation plan and roadmap",
+      "kind": "decision_pack",
+      "due_week_in_phase": 18
+    }
+  ],
+  "notes": []
+}

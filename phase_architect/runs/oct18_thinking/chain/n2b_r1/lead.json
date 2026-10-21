@@ -1,0 +1,119 @@
+{
+  "basis": {
+    "governing_question": "How can Metalúrgica Norte cut conversion cost across its six plants in Portugal and Spain and put the improvements in place in every plant?",
+    "archetype_id": "performance_improvement"
+  },
+  "sizing": {
+    "length_basis": "estimated",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "Where does conversion cost per part sit in each plant today, and what drives it?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "Which improvements, sized per plant, cut conversion cost per part by a measurable amount in every plant?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q3",
+        "question": "Do the approved improvements show savings in the cost data at the pilot plant?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q4",
+        "question": "How are the improvements put in place in the other plants so they are running in all six plants?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q5",
+        "question": "What conversion cost per part does each plant show against its baseline once the improvements run?",
+        "phase_order": 2
+      }
+    ],
+    "drivers": [
+      {
+        "key": "sites",
+        "value": 6,
+        "source": "brief",
+        "evidence": "six plants in Portugal and Spain"
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Site diagnosed on the floor (cost baseline, line observation, loss analysis)",
+            "from_library": true,
+            "driver": "sites",
+            "count": 3,
+            "weeks_each": { "min": 2, "max": 3 },
+            "at_once": 2
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": { "min": 6, "max": 8 },
+        "why": "Three plants diagnosed two at a time, the other three extended from data; above typical 3-6 weeks because three plants need two rounds."
+      },
+      {
+        "phase_order": 2,
+        "work": [
+          {
+            "unit": "Pilot site: changes made and savings shown in the cost data",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 8, "max": 12 },
+            "at_once": 1
+          },
+          {
+            "unit": "Rollout wave of up to 3 sites",
+            "from_library": true,
+            "driver": "sites",
+            "count": 2,
+            "weeks_each": { "min": 4, "max": 6 },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 0,
+        "estimate": { "min": 16, "max": 24 },
+        "why": "Pilot plant, then two rollout waves for the other five plants in sequence; above the typical 8-16 weeks because the work adds up."
+      }
+    ],
+    "levers": "Running the two rollout waves side by side would cut the most; diagnosing two plants instead of three saves about two weeks."
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 6, "max": 8 },
+      "duration_derived": false,
+      "objective_one_line": "Establish where conversion cost per part arises in each plant and size the improvements that would reduce it.",
+      "gate": {
+        "label": "Initiative go/no-go",
+        "decision": "Go or no-go on the sized improvements, and which plant pilots them first?"
+      },
+      "depends_on_assumptions": ["engagement_length", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Implementation",
+      "order": 2,
+      "duration_weeks": { "min": 19, "max": 21 },
+      "duration_derived": false,
+      "objective_one_line": "Carry out the approved improvements at a pilot plant, roll them out to the other plants, and track savings.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the final results and the running improvements in all six plants?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format", "timeline", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "The brief gives no engagement length, so the 25 to 29 weeks are an estimate from the work sizing, not a stated length.",
+    "Implementation takes the middle of a 16 to 24 week estimate; a 12-week pilot plant and 6-week waves would push it to the top.",
+    "Diagnostic assumes three representative plants are diagnosed on the floor and the other three extended from data; which plants is open.",
+    "No Measurement phase: results tracking runs inside Implementation, so post-launch tracking beyond the last wave needs the partner's decision."
+  ]
+}

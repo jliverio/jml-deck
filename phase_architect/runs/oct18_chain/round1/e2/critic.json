@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 4,
+      "governance": 4,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "The partner note saying 'measurement after launch is not planned' contradicts W9, D11 and D12, which build a churn tracker and report churn movement after go-live.",
+      "W6 starts in week 6 'after W5' and defines store actions for each offer, but W5's offer set (D7) is only due in week 7, so store actions are designed before the offers they serve are fixed.",
+      "D12 and the week-13 final readout judge churn movement against the baseline only about four weeks after offers go live (D9, week 9), too short for prepaid churn to show, so the readout should be framed on leading indicators.",
+      "D2, the causes decision pack due week 4, sits under W1 yet has to integrate D3 and D4, which are due the same week, leaving no time to synthesise offer and store findings before the sign-off.",
+      "D11, the churn tracker, is due week 10, a week after offers go live in week 9, so the first live weeks are not tracked against the baseline even though D6 set the tracking rules in week 6."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 3,
+      "workstreams": 2,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 2
+    },
+    "verdict": "No",
+    "defects": [
+      "The week-13 final readout asks whether first results support continuing the program, but offers go live only in week 11 (D6) and store procedures in week 12 (D8), leaving one to two weeks of churn data.",
+      "W5 introduces changed store procedures that no stream designs and no gate approves, since Phase 1 store work ends at findings (D2) and the prioritized initiatives (D4) sit in the retention offers stream.",
+      "The 5-week Diagnostic folds program design into W3 alone, so target customer groups are never defined and W4 launches offers to 'prepaid customers' in general.",
+      "W4 takes until week 9 to produce the offer rollout plan (D5) and until week 11 to go live, so most of the 8-week Implementation phase is spent preparing, not rolling out.",
+      "W3 is marked 'after W1, W2' yet starts in week 2 and delivers D3 in week 3, before W2 ends in week 4, so the stated dependency contradicts the week ranges."
+    ]
+  },
+  "better": "X",
+  "why": "X separates diagnosis, design and rollout with a gate on each, so targeting, offers and store actions are all approved before go-live and run live for about four weeks before the readout. Y squeezes design into one diagnostic stream, rolls out store procedures nobody designed, and asks the final readout to judge churn on one to two weeks of live data."
+}

@@ -1,0 +1,35 @@
+{
+  "basis": {
+    "governing_question": "Should Quinta Azul enter the retail markets of Spain, France, Germany and Poland, and in which order?",
+    "archetype_id": "market_entry_assessment"
+  },
+  "phases": [
+    {
+      "name": "Research",
+      "order": 1,
+      "duration_weeks": { "min": 6, "max": 8 },
+      "duration_derived": false,
+      "objective_one_line": "Assess retail attractiveness, competition and Quinta Azul's capability to win in Spain, France, Germany and Poland.",
+      "gate": {
+        "label": "Countries to design",
+        "decision": "Which of the four countries go forward into entry options design?"
+      },
+      "depends_on_assumptions": ["engagement_length", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 4, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Compare entry options per country and define the go or no-go, sequence and entry plan.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the go or no-go per country, the entry sequence and the entry plan?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format", "timeline", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "The 10 to 14 weeks is an estimate: the archetype's typical weeks, extended for four countries; confirm length and split before this becomes a quote."
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Confirm scope, team and calendar",
+      "attendees": ["CEO", "CTO", "Head of Sales"],
+      "presents": [],
+      "decision": "Are the scope, team and calendar confirmed for the engagement?",
+      "agenda": [
+        "Present the objective, the two phases and the 26-week plan",
+        "Align on scope and the 200-shipper pilot success measure",
+        "Confirm the team and the steering meeting calendar"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Workshop 1: first findings",
+      "purpose": "Review first evidence and the prototype",
+      "attendees": ["CEO", "CTO", "Head of Sales"],
+      "presents": ["D1", "D2", "D3"],
+      "decision": "Which hypotheses should the blueprint and pilot plan detail?",
+      "agenda": [
+        "Present the hypotheses and the shipper and market evidence",
+        "Review the wireframe prototype of the shipper journey",
+        "Discuss which hypotheses to detail in the blueprint"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Go/no-go on pilot",
+      "purpose": "Decide on the blueprint and pilot launch",
+      "attendees": ["CEO", "CTO", "Head of Sales"],
+      "presents": ["D4", "D5"],
+      "decision": "Is the blueprint approved and the pilot cleared to launch?",
+      "agenda": [
+        "Present the blueprint with tested hypotheses",
+        "Review the pilot plan with milestones and launch criteria",
+        "Decide whether the blueprint is approved and the pilot cleared"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Workshop 2: pilot readiness",
+      "purpose": "Review readiness before go-live",
+      "attendees": ["CEO", "CTO", "Head of Sales"],
+      "presents": ["D6", "D7", "D8"],
+      "decision": "Are the pilot KPIs, hire list and first shipper group ready for go-live?",
+      "agenda": [
+        "Present the pilot KPIs agreed with key stakeholders",
+        "Review the first shipper group and the list of key internal hires",
+        "Confirm readiness against the launch criteria of the pilot plan"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Workshop 3: first-wave data",
+      "purpose": "Review first-wave data and plan next steps",
+      "attendees": ["CEO", "CTO", "Head of Sales"],
+      "presents": ["D9", "D10"],
+      "decision": "Confirm the first-wave findings as input to the scale-up business case?",
+      "agenda": [
+        "Review the first platform version with its launch record",
+        "Present first-wave usage data and shipper feedback",
+        "Discuss what the findings imply for the scale-up business case"
+      ]
+    },
+    {
+      "id": "G6",
+      "label": "Final readout",
+      "purpose": "Decide on the pilot results and scale-up",
+      "attendees": ["CEO", "CTO", "Head of Sales"],
+      "presents": ["D11", "D12"],
+      "decision": "Does the steering group accept the pilot results and the scale-up plan?",
+      "agenda": [
+        "Present pilot results against the 200-shipper target",
+        "Review the scale-up business case, implementation plan and roadmap",
+        "Decide whether to accept the pilot results and the scale-up plan"
+      ]
+    }
+  ],
+  "notes": []
+}

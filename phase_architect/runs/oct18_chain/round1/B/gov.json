@@ -1,0 +1,70 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Confirm scope, team and calendar",
+      "attendees": ["COO", "Head of Claims"],
+      "presents": [],
+      "decision": "Does the steering group confirm the scope, team and calendar?",
+      "agenda": [
+        "Present the objectives and the two-phase plan",
+        "Align on the project team and the meeting calendar",
+        "Confirm scope, success criteria and the Board date"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Workshop 1: first findings",
+      "purpose": "Review process baseline and interviews",
+      "attendees": ["COO", "Head of Claims"],
+      "presents": ["D1", "D2"],
+      "decision": "Which delay causes should the root cause analysis prioritize?",
+      "agenda": [
+        "Present the property and health claims process baseline",
+        "Review interview synthesis of delay causes by claim type",
+        "Discuss which causes need root cause analysis"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Diagnostic readout",
+      "purpose": "Close Phase 1 on the diagnostic findings",
+      "attendees": ["COO", "Head of Claims"],
+      "presents": ["D3", "D4"],
+      "decision": "Does the steering group accept the diagnostic findings on property and health claims?",
+      "agenda": [
+        "Present diagnostic findings on property and health",
+        "Review the settlement time and satisfaction baseline",
+        "Discuss the comparison with the 2024 motor claims results"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Workshop 2: model options",
+      "purpose": "Review model options and their effects",
+      "attendees": ["COO", "Head of Claims"],
+      "presents": ["D5", "D6"],
+      "decision": "Which claims operating model option should be detailed and tested?",
+      "agenda": [
+        "Present the claims operating model options",
+        "Review settlement time and satisfaction effects by option",
+        "Align on the option to take into detailed design"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Final readout",
+      "purpose": "Prepare for the March 15 Board meeting",
+      "attendees": ["COO", "Head of Claims"],
+      "presents": ["D7", "D8", "D9", "D10"],
+      "decision": "Are the report and Board presentation ready for the March 15, 2027 Board meeting?",
+      "agenda": [
+        "Present chosen model tested against both criteria",
+        "Review the detailed design and the written report",
+        "Decide if the Board materials are ready for March 15"
+      ]
+    }
+  ],
+  "notes": []
+}

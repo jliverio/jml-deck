@@ -1,0 +1,70 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Launch work and set the success tests",
+      "attendees": ["CEO", "Commercial Director"],
+      "presents": [],
+      "decision": "Which Quinta Azul data and Spanish buyer contacts will the team get access to?",
+      "agenda": [
+        "Present the phases, gates and what each phase delivers",
+        "Discuss access to Quinta Azul data and Spanish buyers",
+        "Align on measurable definitions of 'attractive enough' and 'go'"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Workshop: first findings",
+      "purpose": "Review early market and buyer evidence",
+      "attendees": ["CEO", "Commercial Director"],
+      "presents": ["D1", "D2", "D3"],
+      "decision": "Which buyer listing criteria should the gap assessment of Quinta Azul's assets test?",
+      "agenda": [
+        "Present market, channel and competitor findings",
+        "Review buyer interview findings on listing criteria",
+        "Decide the criteria for the capability gap assessment"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Findings sign-off",
+      "purpose": "Decide whether Spain justifies entry design",
+      "attendees": ["CEO", "Commercial Director"],
+      "presents": ["D4", "D5", "D6"],
+      "decision": "Against the agreed tests, is Spain attractive enough to justify designing entry options?",
+      "agenda": [
+        "Present the findings pack for the attractiveness decision",
+        "Review buyer and shopper needs and the capability gaps",
+        "Decide whether Spain meets the agreed attractiveness tests"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Check-in: business case",
+      "purpose": "Review entry options and business case",
+      "attendees": ["CEO", "Commercial Director"],
+      "presents": ["D7", "D8"],
+      "decision": "Which entry option should the entry plan and roadmap detail?",
+      "agenda": [
+        "Present entry options compared on agreed criteria",
+        "Review the business case for the go or no-go decision",
+        "Decide which option the roadmap details"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Final readout",
+      "purpose": "Approve the go or no-go and entry plan",
+      "attendees": ["CEO", "Commercial Director"],
+      "presents": ["D7", "D8", "D9"],
+      "decision": "Approve the Spain go or no-go decision and, if go, the entry plan?",
+      "agenda": [
+        "Present the entry plan and roadmap for Spain",
+        "Review the business case against the agreed 'go' test",
+        "Decide whether to approve the go or no-go and entry plan"
+      ]
+    }
+  ],
+  "notes": []
+}

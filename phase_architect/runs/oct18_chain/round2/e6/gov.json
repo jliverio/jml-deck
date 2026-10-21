@@ -1,0 +1,70 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Agree scope, team and calendar",
+      "attendees": ["COO", "Head of Branch Network"],
+      "presents": [],
+      "decision": "Confirm scope, team and calendar for the 24-week rollout?",
+      "agenda": [
+        "Present the rollout objective and the 120-branch scope",
+        "Confirm the team roles and the meeting calendar",
+        "Align on the week-24 target: all 120 branches running the new model"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Workshop 1: readiness",
+      "purpose": "Review readiness before first go-live",
+      "attendees": ["COO", "Head of Branch Network"],
+      "presents": ["D1", "D4", "D6"],
+      "decision": "Approve the first wave to go live based on the readiness checks?",
+      "agenda": [
+        "Present wave sequence and readiness checks for the 120 branches",
+        "Review role-based training materials and branch performance measures",
+        "Decide on first-wave go-live based on the readiness checks"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Check-in: first wave live",
+      "purpose": "Check first-wave results and next waves",
+      "attendees": ["COO", "Head of Branch Network"],
+      "presents": ["D2"],
+      "decision": "Confirm first-wave go-live results so the next waves can proceed?",
+      "agenda": [
+        "Present the first-wave go-live record by branch",
+        "Discuss issues found in the first wave and their effect on the next waves",
+        "Confirm first-wave results before the next waves proceed"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Workshop 2: wave progress",
+      "purpose": "Review progress toward all 120 branches",
+      "attendees": ["COO", "Head of Branch Network"],
+      "presents": ["D2", "D7"],
+      "decision": "Confirm any wave adjustments needed for all 120 branches to be live by week 24?",
+      "agenda": [
+        "Review the first-wave go-live record and the interim performance by wave",
+        "Discuss progress toward all 120 branches and the remaining waves",
+        "Confirm wave adjustments and the evidence the final readout will need"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Final readout",
+      "purpose": "Decide on rollout acceptance",
+      "attendees": ["COO", "Head of Branch Network"],
+      "presents": ["D3", "D5", "D8"],
+      "decision": "Do all 120 branches run the new model, and is the rollout accepted as complete?",
+      "agenda": [
+        "Present the final go-live record and rollout acceptance pack",
+        "Review training attendance, coaching and performance for all 120 branches",
+        "Decide whether the rollout is accepted as complete"
+      ]
+    }
+  ],
+  "notes": []
+}

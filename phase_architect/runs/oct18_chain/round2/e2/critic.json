@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 4,
+      "deliverables": 4,
+      "governance": 4,
+      "coherence": 4
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "The week-10 launch readiness workshop decides store go-live without seeing staff training, because D12 (training materials and attendance record) is due in week 11, after the go-live decision.",
+      "Offers cannot launch before the week-10 workshop, so D10 in week 13 reports churn on at most about three weeks of live data, which is too thin for the final readout to 'accept the rollout and its results to date'.",
+      "W5 and W6 are marked 'after W4' but start in week 8 while W4 runs to week 13, and W3 is marked 'after W1' but starts in week 3, the week W1 ends.",
+      "The week-5 gate bundles two decisions (which churn drivers and which initiatives go forward, and drivers do not 'go forward' into a rollout) and re-reviews D1 and D2, which the week-3 check-in already covered.",
+      "W3 matches offers only to the churn drivers (D4) and its activities never use the store findings in D3, even though the gate agenda presents store moments as part of the basis for the options."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 2
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "No churn baseline is produced or agreed in the Diagnostic, yet W6, D9 and the final readout all measure churn 'against the baseline'.",
+      "The week-10 workshop approves go-live in stores and D6 has the offers live by week 11, but the store procedures (D8) are only in use in week 12 and are never reviewed before go-live.",
+      "W3 is marked 'after W1, W2' but starts in week 2 while W1 runs to week 3 and W2 to week 4, and W5 and W6 are marked 'after W4' while W4 runs to week 13.",
+      "The week-3 check-in decision ('Do the early findings change where the team should look next?') is a question for the team, not a decision for the CEO and Chief Commercial Officer.",
+      "D6 'Retention offers live' and D8 'Store procedures in use' are states rather than things the client receives, and the D5 rollout plan arrives only in week 9, the fourth week of implementation."
+    ]
+  },
+  "better": "X",
+  "why": "X carries a confirmed churn baseline from D1 through the tracker to the final readout, puts the store procedures before the launch decision, gives every steering meeting a real decision, and its partner notes flag its own gaps (no success criteria, tracking beyond week 13). Y has the same phase skeleton but never defines the baseline it measures against, lets offers go live before store procedures are in use, and holds a check-in with no real decision."
+}

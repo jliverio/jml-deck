@@ -1,0 +1,70 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Align on scope, team and calendar",
+      "attendees": ["CEO", "Chief Commercial Officer"],
+      "presents": [],
+      "decision": "Does the steering group confirm the scope, team and calendar?",
+      "agenda": [
+        "Align on the problem statement and what the diagnostic must answer",
+        "Review the phases, workstreams and the 13-week calendar",
+        "Confirm team roles and the steering meeting dates"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Check-in: first findings",
+      "purpose": "Share baseline and churn driver findings",
+      "attendees": ["CEO", "Chief Commercial Officer"],
+      "presents": ["D1", "D2"],
+      "decision": "Does the steering group confirm the churn baseline as the reference for results?",
+      "agenda": [
+        "Present the prepaid churn baseline",
+        "Review churn driver findings by customer segment",
+        "Confirm the baseline as the reference for tracking results"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Initiatives go/no-go",
+      "purpose": "Decide what goes forward into the rollout",
+      "attendees": ["CEO", "Chief Commercial Officer"],
+      "presents": ["D1", "D2", "D3", "D4", "D5"],
+      "decision": "Which churn drivers and retention initiatives go forward into the rollout?",
+      "agenda": [
+        "Review driver findings and store moments behind the options",
+        "Present the retention offers and the initiative options",
+        "Decide which drivers and initiatives go forward into the rollout"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Workshop: launch readiness",
+      "purpose": "Check readiness before offers go live",
+      "attendees": ["CEO", "Chief Commercial Officer"],
+      "presents": ["D6", "D7", "D9", "D11"],
+      "decision": "Do the readiness check results support launching the retention offers in stores?",
+      "agenda": [
+        "Present the launch readiness check results",
+        "Review the offer specification, store procedures and churn tracker",
+        "Decide whether the retention offers go live in stores"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Final readout",
+      "purpose": "Review rollout and results to date",
+      "attendees": ["CEO", "Chief Commercial Officer"],
+      "presents": ["D8", "D10", "D12", "D13"],
+      "decision": "Does the steering group accept the rollout and its results to date?",
+      "agenda": [
+        "Present the launch and adjustment record for the retention offers",
+        "Review store training, adherence and churn results against the baseline",
+        "Decide whether to accept the rollout and its results to date"
+      ]
+    }
+  ],
+  "notes": []
+}

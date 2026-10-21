@@ -1,0 +1,187 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Procurement",
+      "answers": "What does Iberia Foods spend on bought goods and services, and where could spend fall without lowering service levels?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 0,
+      "duration": 12,
+      "follows": [],
+      "activities": [
+        "Analyze spend data by category and supplier",
+        "Interview buyers and internal users of purchased items",
+        "Size savings options and design how to deliver them"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Manufacturing",
+      "answers": "What does production cost, and where could that cost fall without lowering service levels?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 0,
+      "duration": 12,
+      "follows": [],
+      "activities": [
+        "Analyze production cost data by process step",
+        "Interview line staff and supervisors on cost drivers",
+        "Size savings options and design how to deliver them"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Logistics",
+      "answers": "What do transport and delivery cost, and where could that cost fall without lowering service levels?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 0,
+      "duration": 12,
+      "follows": [],
+      "activities": [
+        "Analyze transport cost and delivery performance data",
+        "Interview the people who plan and make deliveries",
+        "Size savings options and design how to deliver them"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 1,
+      "name": "Sales and marketing",
+      "answers": "What do selling and marketing activities cost, and which could cost less without lowering service levels?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 0,
+      "duration": 12,
+      "follows": [],
+      "activities": [
+        "Analyze sales and marketing spend against sales results",
+        "Interview customers on what selling support they value",
+        "Size savings options and design how to deliver them"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 1,
+      "name": "Finance",
+      "answers": "What is the verified cost base, including finance's own cost, and what do all sized savings add up to?",
+      "traces_to": ["problem_statement", "success_criteria:1", "gate:1"],
+      "start_offset": 0,
+      "duration": 12,
+      "follows": [],
+      "activities": [
+        "Build the cost base from financial records",
+        "Interview finance staff on how costs are recorded",
+        "Reconcile each stream's sized savings to the cost base"
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 1,
+      "name": "Customer service",
+      "answers": "What do customer service activities cost, and what service levels must other savings leave intact?",
+      "traces_to": ["success_criteria:1", "gate:1"],
+      "start_offset": 0,
+      "duration": 12,
+      "follows": [],
+      "activities": [
+        "Interview customers on the service levels they rely on",
+        "Analyze service performance and customer contact data",
+        "Test other streams' savings options against service levels"
+      ]
+    },
+    {
+      "id": "W7",
+      "phase_order": 1,
+      "name": "Warehousing",
+      "answers": "What do storage and handling cost, and where could that cost fall without lowering service levels?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 2,
+      "duration": 10,
+      "follows": ["W3"],
+      "activities": [
+        "Analyze storage cost and stock handling data",
+        "Interview the people who handle stock and orders",
+        "Size savings options and design how to deliver them"
+      ]
+    },
+    {
+      "id": "W8",
+      "phase_order": 1,
+      "name": "Pricing",
+      "answers": "How do pricing practices relate to the cost of serving customers, and what could change without lowering service levels?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 2,
+      "duration": 10,
+      "follows": ["W4"],
+      "activities": [
+        "Review pricing documents and sales data by customer",
+        "Interview the people who set and apply prices",
+        "Size savings options and design how to deliver them"
+      ]
+    },
+    {
+      "id": "W9",
+      "phase_order": 1,
+      "name": "HR",
+      "answers": "What do HR activities and workforce arrangements cost, and which could change without lowering service levels?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 4,
+      "duration": 8,
+      "follows": ["W2"],
+      "activities": [
+        "Analyze workforce cost and staffing data by activity",
+        "Interview managers and staff on how work is organized",
+        "Size savings options and test them against service levels"
+      ]
+    },
+    {
+      "id": "W10",
+      "phase_order": 1,
+      "name": "IT",
+      "answers": "What do IT services and systems cost, and which could change without lowering service levels?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 4,
+      "duration": 8,
+      "follows": ["W5"],
+      "activities": [
+        "Analyze IT cost data by service and user group",
+        "Interview IT staff and the users of its services",
+        "Size savings options and the IT support other streams need"
+      ]
+    },
+    {
+      "id": "W11",
+      "phase_order": 1,
+      "name": "Legal",
+      "answers": "What do legal services cost, and which contractual commitments constrain savings in other streams?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 4,
+      "duration": 8,
+      "follows": ["W1"],
+      "activities": [
+        "Review contracts and commitments that limit savings",
+        "Analyze legal service cost data by type of matter",
+        "Interview contract owners in the other streams"
+      ]
+    },
+    {
+      "id": "W12",
+      "phase_order": 1,
+      "name": "Real estate",
+      "answers": "What do property and sites cost, and which could change without lowering service levels?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 4,
+      "duration": 8,
+      "follows": ["W2", "W7"],
+      "activities": [
+        "Analyze property cost and space use data",
+        "Interview the people who use and manage the sites",
+        "Size savings options and test them against service levels"
+      ]
+    }
+  ],
+  "notes": [
+    "No stream owns the cross-stream program design; Finance reconciles savings to the cost base and each stream designs its own part."
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Conversion cost baseline",
+      "question_id": "Q1",
+      "answers": "What is conversion cost per part at the Braga plant today, built up from cost data?",
+      "traces_to": ["problem_statement", "success_criteria:1"],
+      "start_offset": 0,
+      "duration": 1,
+      "follows": [],
+      "activities": [
+        "Collect conversion cost data for the Braga plant",
+        "Build conversion cost per part from the cost data",
+        "Test the baseline with the people who run the plant"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Line loss analysis",
+      "question_id": "Q1",
+      "answers": "On which production lines, and in which losses, does conversion cost build up at the Braga plant?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 1,
+      "duration": 4,
+      "follows": ["W1"],
+      "activities": [
+        "Observe the production lines on the floor, two at a time",
+        "Quantify losses on each line from operational data",
+        "Interview the people who run each line about losses"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Improvement sizing",
+      "question_id": "Q2",
+      "answers": "Which improvements can lower conversion cost per part by a measurable amount, and how much is each worth?",
+      "traces_to": ["problem_statement", "success_criteria:1", "gate:1"],
+      "start_offset": 3,
+      "duration": 4,
+      "follows": ["W1", "W2"],
+      "activities": [
+        "List candidate improvements from the loss analysis",
+        "Size each one's effect on cost per part with cost data",
+        "Set out the sized list for the go/no-go decision"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 2,
+      "name": "Line improvement rollout",
+      "question_id": "Q3",
+      "answers": "How are the chosen improvements put in place on the plant's lines, and in what order?",
+      "traces_to": ["problem_statement", "success_criteria:2"],
+      "start_offset": 0,
+      "duration": 7,
+      "follows": [],
+      "activities": [
+        "Prepare each improvement with the people on the line",
+        "Show readiness at the first workshop before any go-live",
+        "Bring improvements to go-live, two at a time"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 2,
+      "name": "Cost per part tracking",
+      "question_id": "Q4",
+      "answers": "Does conversion cost per part fall against the baseline as the improvements go live?",
+      "traces_to": ["success_criteria:1", "gate:2"],
+      "start_offset": 2,
+      "duration": 10,
+      "follows": [],
+      "activities": [
+        "Set up the cost-per-part tracker against the baseline",
+        "Read cost data on each line after every go-live",
+        "Report results against the baseline at each review"
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 2,
+      "name": "Plant team capability",
+      "question_id": null,
+      "answers": "What must the plant team know and do to own the improvements after handover?",
+      "traces_to": ["success_criteria:2", "gate:2"],
+      "start_offset": 6,
+      "duration": 6,
+      "follows": ["W4"],
+      "activities": [
+        "Define what the plant team will own after handover",
+        "Train and coach plant staff on the running improvements",
+        "Hand the tracker and routines to the plant team"
+      ]
+    },
+    {
+      "id": "W7",
+      "phase_order": 2,
+      "name": "Improvements in operation",
+      "question_id": "Q4",
+      "answers": "Do the improvements keep running on the lines once live, without slipping back?",
+      "traces_to": ["success_criteria:2", "gate:2"],
+      "start_offset": 7,
+      "duration": 5,
+      "follows": ["W4"],
+      "activities": [
+        "Observe the improved lines in running operation",
+        "Check with line staff that the changes are still followed",
+        "Log slippage in operational data and agree fixes"
+      ]
+    }
+  ],
+  "notes": []
+}

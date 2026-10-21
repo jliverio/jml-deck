@@ -1,0 +1,95 @@
+{
+ "brief": {
+  "hard_fields": {
+   "client": {
+    "value": "Metalúrgica Norte, a Portuguese metal-parts manufacturer",
+    "source": "stated",
+    "quote": "Metalúrgica Norte, a Portuguese metal-parts manufacturer",
+    "assumption_text": null
+   },
+   "problem_statement": {
+    "value": "Metalúrgica Norte wants to cut conversion cost across its six plants in Portugal and Spain and put the improvements in place in every plant.",
+    "source": "stated",
+    "quote": "Metalúrgica Norte wants to cut conversion cost across its six plants in Portugal and Spain and put the improvements in place in every plant.",
+    "assumption_text": null
+   }
+  },
+  "required": {
+   "engagement_type": {
+    "value": "assessment_and_implementation",
+    "source": "stated",
+    "quote": "assessment_and_implementation",
+    "assumption_text": null
+   },
+   "engagement_length": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": "Not given; the Phase Architect estimates the duration.",
+    "weeks_min": null,
+    "weeks_max": null,
+    "duration_derived": false
+   },
+   "stakeholders": {
+    "value": [
+     "COO",
+     "Plant Directors of the six plants"
+    ],
+    "source": "stated",
+    "quote": null,
+    "assumption_text": null
+   }
+  },
+  "soft_fields": {
+   "deliverable_format": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "timeline": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "prior_attempts": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "success_criteria": {
+    "value": "Conversion cost per part down by a measurable amount in every plant; improvements running in all six plants",
+    "source": "stated",
+    "quote": "Conversion cost per part down by a measurable amount in every plant; improvements running in all six plants",
+    "assumption_text": null
+   },
+   "out_of_scope": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "workstreams": {
+    "value": null,
+    "count": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   }
+  }
+ },
+ "success_criteria_list": [
+  "Conversion cost per part down by a measurable amount in every plant",
+  "improvements running in all six plants"
+ ],
+ "profile": {
+  "problem_focus": "topic",
+  "topic": "Conversion cost in metal parts manufacturing",
+  "current_state": "Six plants in Portugal and Spain with 2,900 employees and 19 production lines.",
+  "market": null
+ },
+ "market_findings": [],
+ "weeks_available": null
+}

@@ -1,0 +1,37 @@
+{
+  "basis": {
+    "governing_question": "How should Atlas Logistics design and pilot a digital freight-matching platform for small shippers in Iberia, reaching 200 active shippers on the pilot?",
+    "archetype_id": "new_venture_build"
+  },
+  "phases": [
+    {
+      "name": "Design",
+      "order": 1,
+      "duration_weeks": { "min": 7, "max": 7 },
+      "duration_derived": false,
+      "objective_one_line": "Define the freight-matching platform blueprint for small Iberian shippers and test its hypotheses with customer evidence.",
+      "gate": {
+        "label": "Go/no-go on pilot",
+        "decision": "Does the blueprint justify launching the pilot with real customers?"
+      },
+      "depends_on_assumptions": ["engagement_type", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Pilot",
+      "order": 2,
+      "duration_weeks": { "min": 19, "max": 19 },
+      "duration_derived": false,
+      "objective_one_line": "Launch a first platform version to real small shippers and track progress toward 200 active pilot shippers.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Are the pilot results against the 200-shipper target and the scale-up plan approved?"
+      },
+      "depends_on_assumptions": ["engagement_type", "deliverable_format", "timeline", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "The plan rests on an assumed engagement type, inferred from the pilot with real customers; confirm it before this becomes a quote.",
+    "The stated 26 weeks are split into 7 for Design and 19 for Pilot, an estimate within the archetype's typical ranges.",
+    "The rollout after the pilot is not in these phases, because the client wants a new platform built; confirm no later phase is wanted."
+  ]
+}

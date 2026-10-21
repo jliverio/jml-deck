@@ -1,0 +1,139 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Customer analytics",
+      "answers": "Which prepaid customer groups churned more in 2025, and what changed in their behavior before leaving?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 0,
+      "duration": 4,
+      "follows": [],
+      "activities": [
+        "Extract operational data on prepaid customer activity",
+        "Analyze 2025 churn by customer group and tenure",
+        "Interview customers who left in 2025"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Retention offers",
+      "answers": "How did prepaid customers respond to the retention offers, and where did the offers not hold them?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 1,
+      "duration": 3,
+      "follows": ["W1"],
+      "activities": [
+        "Review documents on retention offers made to customers",
+        "Compare churn of customers with and without an offer",
+        "Interview commercial staff who design and run the offers"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Store operations",
+      "answers": "How do store processes and staff handling of prepaid customers contribute to churn?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 1,
+      "duration": 3,
+      "follows": [],
+      "activities": [
+        "Observe how stores serve prepaid customers",
+        "Interview store staff and managers on churn and retention",
+        "Analyze operational data from stores on prepaid customers"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 2,
+      "name": "Customer analytics",
+      "answers": "Which prepaid customers should the program target, and which churn measures will show whether it works?",
+      "traces_to": ["problem_statement", "gate:2"],
+      "start_offset": 0,
+      "duration": 2,
+      "follows": [],
+      "activities": [
+        "Define target customer groups from the diagnostic findings",
+        "Set churn measures and tracking rules against the baseline"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 2,
+      "name": "Retention offers",
+      "answers": "Which offers make up the retention program for prepaid customers, and what rules govern each?",
+      "traces_to": ["problem_statement", "gate:2"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "activities": [
+        "Draft offer options from the diagnostic findings",
+        "Test the options with commercial staff and customers",
+        "Specify rules and tracking for each offer in the program"
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 2,
+      "name": "Store operations",
+      "answers": "Which store actions and rollout steps carry the retention program to prepaid customers?",
+      "traces_to": ["problem_statement", "gate:2"],
+      "start_offset": 1,
+      "duration": 2,
+      "follows": ["W4", "W5"],
+      "activities": [
+        "Define store actions for each offer and customer group",
+        "Test store actions with store staff and managers",
+        "Sequence the rollout across stores and teams"
+      ]
+    },
+    {
+      "id": "W7",
+      "phase_order": 3,
+      "name": "Retention offers",
+      "answers": "How do prepaid customers respond to the approved retention offers once they are live?",
+      "traces_to": ["problem_statement", "gate:3"],
+      "start_offset": 0,
+      "duration": 6,
+      "follows": [],
+      "activities": [
+        "Launch the approved offers to the target customer groups",
+        "Monitor offer uptake and refine rules with client teams",
+        "Gather customer feedback on the offers during rollout"
+      ]
+    },
+    {
+      "id": "W8",
+      "phase_order": 3,
+      "name": "Store operations",
+      "answers": "Do store teams carry out the approved store actions, and what blocks them where they do not?",
+      "traces_to": ["problem_statement", "gate:3"],
+      "start_offset": 0,
+      "duration": 6,
+      "follows": [],
+      "activities": [
+        "Brief and train store teams on the approved store actions",
+        "Roll out the store actions following the agreed sequence",
+        "Check store adherence through visits and operational data"
+      ]
+    },
+    {
+      "id": "W9",
+      "phase_order": 3,
+      "name": "Customer analytics",
+      "answers": "How far has prepaid churn moved against the diagnostic baseline since the program went live?",
+      "traces_to": ["problem_statement", "gate:3"],
+      "start_offset": 1,
+      "duration": 5,
+      "follows": ["W7", "W8"],
+      "activities": [
+        "Build the churn tracker against the diagnostic baseline",
+        "Compare churn by customer group and by store",
+        "Report early churn movement at check-in and readout"
+      ]
+    }
+  ],
+  "notes": []
+}

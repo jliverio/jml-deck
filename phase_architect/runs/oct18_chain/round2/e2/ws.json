@@ -1,0 +1,95 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Customer analytics",
+      "answers": "Which customer groups, behaviors and events explain the rise in prepaid churn in 2025?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "activities": [
+        "Build the prepaid churn baseline from operational data",
+        "Test churn drivers by customer segment and period",
+        "Interview customers who left prepaid in 2025"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Store operations",
+      "answers": "How do store processes and staff practice affect prepaid customers' decisions to stay or leave?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 1,
+      "duration": 4,
+      "follows": [],
+      "activities": [
+        "Interview store staff who serve prepaid customers",
+        "Review store operating data and documented procedures",
+        "Identify store moments that affect retention"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Retention offers",
+      "answers": "Which retention offers could address the churn drivers found, and which are worth taking into the rollout?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 2,
+      "duration": 3,
+      "follows": ["W1"],
+      "activities": [
+        "Review documents and data on retention offers in use",
+        "Match candidate offers to the churn drivers found",
+        "Prepare initiative options for the go/no-go decision"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 2,
+      "name": "Retention offers",
+      "answers": "How are the agreed retention offers set up, launched and adjusted for prepaid customers?",
+      "traces_to": ["problem_statement", "gate:2"],
+      "start_offset": 0,
+      "duration": 8,
+      "follows": [],
+      "activities": [
+        "Set up the agreed offers and readiness checks",
+        "Launch the offers once the workshop confirms readiness",
+        "Adjust the offers using results and feedback from stores"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 2,
+      "name": "Customer analytics",
+      "answers": "How does prepaid churn move against the baseline as the retention offers go live?",
+      "traces_to": ["problem_statement", "gate:2"],
+      "start_offset": 2,
+      "duration": 6,
+      "follows": ["W4"],
+      "activities": [
+        "Build the churn tracker against the Diagnostic baseline",
+        "Compare churn of customers with and without the offers",
+        "Report churn results for the workshop and final readout"
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 2,
+      "name": "Store operations",
+      "answers": "How do store teams apply the retention offers with prepaid customers, and what stops them doing so?",
+      "traces_to": ["problem_statement", "gate:2"],
+      "start_offset": 2,
+      "duration": 6,
+      "follows": ["W4"],
+      "activities": [
+        "Adapt store procedures to the agreed retention offers",
+        "Train and coach store staff before and during the rollout",
+        "Track store adherence through operational data and visits"
+      ]
+    }
+  ],
+  "notes": []
+}

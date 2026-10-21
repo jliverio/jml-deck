@@ -1,0 +1,65 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Waiting-time baseline",
+      "answers": "How long do patients wait at each of the three hospitals today, and how does that vary?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "activities": [
+        "Agree waiting-time definitions with the sponsor",
+        "Collect waiting-time data from operational records",
+        "Compute baseline waits for each hospital"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Patient pathway delays",
+      "answers": "At which steps of the patient pathway do waits build up, and at which hospitals?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 1,
+      "duration": 3,
+      "follows": ["W1"],
+      "activities": [
+        "Interview staff who run each step of the patient pathway",
+        "Measure queue times at each step from operational data",
+        "Walk the pathway at each hospital to observe waits"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Causes of delay",
+      "answers": "Why do the delays occur, and do the causes differ between the three hospitals?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 2,
+      "duration": 3,
+      "follows": ["W1", "W2"],
+      "activities": [
+        "Interview clinicians and administrative staff on delays",
+        "Review procedures and scheduling documents",
+        "Test candidate causes against operational data"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 1,
+      "name": "Diagnostic synthesis",
+      "answers": "What is the current state of waiting times across the three hospitals, taken together?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 4,
+      "duration": 2,
+      "follows": ["W2", "W3"],
+      "activities": [
+        "Combine baseline, pathway and cause findings",
+        "Test findings with the sponsor before the readout",
+        "Prepare the final readout for the sponsor"
+      ]
+    }
+  ],
+  "notes": []
+}

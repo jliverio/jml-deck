@@ -1,0 +1,51 @@
+{
+  "basis": {
+    "governing_question": "How can Metalúrgica Norte cut conversion cost across its six plants in Portugal and Spain and put the improvements in place in every plant?",
+    "archetype_id": "performance_improvement"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": {
+        "min": 4,
+        "max": 6
+      },
+      "duration_derived": false,
+      "objective_one_line": "Establish the conversion cost baseline in each of the six plants and size the improvement opportunities.",
+      "gate": {
+        "label": "Initiatives go/no-go",
+        "decision": "Go or no-go on implementing the prioritized initiatives in all six plants?"
+      },
+      "depends_on_assumptions": [
+        "engagement_length",
+        "timeline",
+        "prior_attempts"
+      ]
+    },
+    {
+      "name": "Implementation",
+      "order": 2,
+      "duration_weeks": {
+        "min": 14,
+        "max": 16
+      },
+      "duration_derived": false,
+      "objective_one_line": "Roll out the approved improvements to all six plants in waves and track conversion cost per part against the baseline.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the final result: improvements running in all six plants?"
+      },
+      "depends_on_assumptions": [
+        "engagement_length",
+        "deliverable_format",
+        "timeline",
+        "out_of_scope"
+      ]
+    }
+  ],
+  "architect_notes": [
+    "Length is an estimate of 18-22 weeks from the archetype's typical weeks, stretched for six plants in two countries; confirm it before quoting.",
+    "No Measurement phase: the archetype tracks results inside Implementation, so confirm whether the client wants a separate post-launch tracking phase."
+  ]
+}

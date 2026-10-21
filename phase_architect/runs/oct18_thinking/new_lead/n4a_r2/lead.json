@@ -1,0 +1,170 @@
+{
+  "basis": {
+    "governing_question": "Which new point-of-sale system should Farmácias Lusas choose, and how can it be rolled out to its 40 pharmacies?",
+    "archetype_id": "technology_selection_implementation"
+  },
+  "sizing": {
+    "length_basis": "estimated",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "What must the new point-of-sale system do in each pharmacy process area?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "Where does the current system fall short of those requirements?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q3",
+        "question": "Which point-of-sale vendor best meets the requirements, and what business case supports choosing it?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q4",
+        "question": "How is the chosen system configured, tested and loaded with data from the current system?",
+        "phase_order": 3
+      },
+      {
+        "id": "Q5",
+        "question": "How does the new system get running in all 40 pharmacies, pilot site first, then in waves?",
+        "phase_order": 3
+      }
+    ],
+    "drivers": [
+      {
+        "key": "sites",
+        "value": 40,
+        "source": "brief",
+        "evidence": "a chain of 40 pharmacies"
+      },
+      {
+        "key": "process_areas",
+        "value": 4,
+        "source": "assumed",
+        "evidence": ""
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Process area mapped with its requirements",
+            "from_library": true,
+            "driver": "process_areas",
+            "count": 4,
+            "weeks_each": { "min": 1, "max": 2 },
+            "at_once": 2
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": { "min": 4, "max": 6 },
+        "why": "Four process areas mapped two at a time, with stakeholder interviews running alongside; within the archetype's typical 3 to 6 weeks."
+      },
+      {
+        "phase_order": 2,
+        "work": [
+          {
+            "unit": "Vendor shortlist, demonstrations and scoring",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 3, "max": 5 },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 1,
+        "estimate": { "min": 4, "max": 6 },
+        "why": "One shortlist, demonstration and scoring round, no formal tender; within the archetype's typical 4 to 8 weeks."
+      },
+      {
+        "phase_order": 3,
+        "work": [
+          {
+            "unit": "System configured and tested for one process area",
+            "from_library": true,
+            "driver": "process_areas",
+            "count": 4,
+            "weeks_each": { "min": 4, "max": 6 },
+            "at_once": 2
+          },
+          {
+            "unit": "Data migration rehearsal",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 2, "max": 3 },
+            "at_once": 1
+          },
+          {
+            "unit": "Pilot site live and stable",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 3, "max": 4 },
+            "at_once": 1
+          },
+          {
+            "unit": "Rollout wave of up to 10 sites",
+            "from_library": true,
+            "driver": "sites",
+            "count": 4,
+            "weeks_each": { "min": 2, "max": 3 },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 0,
+        "estimate": { "min": 21, "max": 31 },
+        "why": "Four process areas configured two at a time; pilot site first, then the other 39 pharmacies in four waves of up to 10."
+      }
+    ],
+    "levers": "Configuring fewer process areas in a first release, or running rollout waves two at a time, would shorten Implementation most."
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 4, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Document what each pharmacy process area needs from a point-of-sale system and where the current system falls short.",
+      "gate": {
+        "label": "Requirements sign-off",
+        "decision": "Go or no-go on vendor selection against the signed-off requirements?"
+      },
+      "depends_on_assumptions": ["engagement_length", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 4, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Score vendors against the requirements and set out the business case for the preferred system.",
+      "gate": {
+        "label": "Vendor selection",
+        "decision": "Which vendor goes forward to implementation, and is the business case approved?"
+      },
+      "depends_on_assumptions": ["engagement_length"]
+    },
+    {
+      "name": "Implementation",
+      "order": 3,
+      "duration_weeks": { "min": 25, "max": 27 },
+      "duration_derived": false,
+      "objective_one_line": "Configure and test the chosen system, prove it at a pilot pharmacy and roll it out to all 40.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the new point-of-sale system as running in all 40 pharmacies?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format", "timeline", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Engagement length is an estimate (33 to 39 weeks in total) because none was given; confirm it before quoting.",
+    "Implementation takes the middle of a 21 to 31 week estimate; more process areas or slower rollout waves would push it to the top.",
+    "The count of four process areas is assumed; five would add 5 to 8 weeks across Diagnostic and Implementation, so confirm it.",
+    "Implementation is added after the archetype's Diagnostic and Design, with the pilot site and rollout waves inside it, not in a separate Pilot phase.",
+    "No formal tender is planned; if Farmácias Lusas must run one, Design grows by 4 to 6 weeks."
+  ]
+}

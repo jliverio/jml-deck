@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "Workshop 2 (week 13) chooses the operating model from D8 without any estimate of its effect on settlement time or customer satisfaction, and W7 only tests the chosen model in weeks 14-17, leaving no meeting or time to revisit the choice if the test fails.",
+      "Workshop 1 (week 5) confirms the delay points to carry into the causes ranking before D6 settlement time by step exists (week 6), because W4 does not start measuring operational claims data until week 4.",
+      "W3 compares motor with property and health handling data and delivers D5 in week 4, before W4 has measured property and health settlement times (D6, week 6).",
+      "W4 is marked 'after W1' but starts in week 4 while W1 runs to week 5, and W8 is marked 'after W6' but starts in week 16 while W6 runs to week 16.",
+      "D11 and D12 are both due in week 17, the same week the final readout must approve them, and like every steering meeting it includes only the COO and Head of Claims, never the Board that receives the recommendations on March 15."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 3,
+      "workstreams": 4,
+      "deliverables": 4,
+      "governance": 3,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "The final readout in week 18 releases D9 only one week before the March 15 Board, and no meeting involves a Board member, so there is no time for revisions, a Board pre-read or pre-alignment.",
+      "The note to the partner says the brief excludes implementation support, but the brief only excludes replacing the claims IT system, so the stated reason for merging detailed design and roadmap into W6 is wrong.",
+      "D6 compares options 'on agreed criteria', but no steering meeting between the week 8 gate and Workshop 2 in week 14 agrees the design criteria, leaving six weeks of option work without a steering decision.",
+      "W2 carries the review of the 2024 motor lean program although its question is about handler and customer views, and no deliverable reports why the motor program did not reach property and health claims.",
+      "W6 answers two questions (detailed design and transition path) and must also draft D9, compressing the detailed design and roadmap into D8 by week 16, only two weeks after Workshop 2 chooses the model."
+    ]
+  },
+  "better": "Y",
+  "why": "Y sequences the work so each steering decision rests on evidence: the settlement-time baseline is ready before Workshop 1, and the options are assessed against settlement time and satisfaction before Workshop 2 chooses, whereas X picks the model first and tests it afterwards with no time to change course. Y's defects (a one-week buffer before the Board, a wrong note about implementation support, thin coverage of the motor program) are edits, while fixing X means resequencing Phase 2 and its diagnostic data work."
+}

@@ -1,0 +1,135 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Set access to pharmacy data and people",
+      "attendees": ["CEO", "Operations Director", "IT Manager"],
+      "presents": [],
+      "decision": "Confirm that the team can access pharmacy staff and current point-of-sale data?",
+      "agenda": [
+        "Present the Diagnostic objective and workstreams",
+        "Review the pharmacy process areas to be covered",
+        "Confirm access to pharmacy staff and point-of-sale data"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Check-in: first requirements",
+      "purpose": "Review interim requirements and progress",
+      "attendees": ["CEO", "Operations Director", "IT Manager"],
+      "presents": ["D1"],
+      "decision": "Is the detail in the interim requirements right for the remaining process areas?",
+      "agenda": [
+        "Present interim business requirements for the first process areas",
+        "Discuss gaps between current practice and requirements",
+        "Confirm the level of detail for the remaining areas"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Requirements sign-off",
+      "purpose": "Sign off business requirements and gaps",
+      "attendees": ["CEO", "Operations Director", "IT Manager"],
+      "presents": ["D1", "D2"],
+      "decision": "Go or no-go on starting vendor selection against the signed-off requirements?",
+      "agenda": [
+        "Present business requirements and practice gaps for sign-off",
+        "Review the interim requirements for the first process areas",
+        "Decide go or no-go on starting vendor selection"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Check-in: vendor shortlist",
+      "purpose": "Review the vendor shortlist",
+      "attendees": ["CEO", "Operations Director", "IT Manager"],
+      "presents": ["D3"],
+      "decision": "Confirm the vendor shortlist as the set taken to the selection gate?",
+      "agenda": [
+        "Present the vendor shortlist against signed-off requirements",
+        "Discuss open vendor questions before final scoring",
+        "Confirm the shortlist for the selection gate"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Vendor selection",
+      "purpose": "Select the vendor for implementation",
+      "attendees": ["CEO", "Operations Director", "IT Manager"],
+      "presents": ["D3", "D4", "D5"],
+      "decision": "Which vendor's point-of-sale system is taken forward into implementation?",
+      "agenda": [
+        "Present vendor scoring against signed-off requirements",
+        "Review the business case and vendor comparison",
+        "Decide which vendor goes into implementation"
+      ]
+    },
+    {
+      "id": "G6",
+      "label": "Check-in: system setup",
+      "purpose": "Review first two configured process areas",
+      "attendees": ["CEO", "Operations Director", "IT Manager"],
+      "presents": ["D6"],
+      "decision": "Confirm the tested first two process areas as the base for readiness testing?",
+      "agenda": [
+        "Present the configured and tested system for the first two process areas",
+        "Review test results and open issues",
+        "Confirm the base for readiness testing"
+      ]
+    },
+    {
+      "id": "G7",
+      "label": "Workshop 1: pilot readiness",
+      "purpose": "Review readiness before pilot go-live",
+      "attendees": ["CEO", "Operations Director", "IT Manager"],
+      "presents": ["D6", "D7"],
+      "decision": "Go or no-go on taking the pilot pharmacy live with the configured system?",
+      "agenda": [
+        "Present readiness results from configuration and data load rehearsal",
+        "Review the configured and tested system for the first two process areas",
+        "Decide whether the pilot pharmacy goes live"
+      ]
+    },
+    {
+      "id": "G8",
+      "label": "Check-in: pilot stability",
+      "purpose": "Review pilot record before waves 1 and 2",
+      "attendees": ["CEO", "Operations Director", "IT Manager"],
+      "presents": ["D8"],
+      "decision": "Go or no-go on starting rollout waves 1 and 2 from the pilot record?",
+      "agenda": [
+        "Present the pilot pharmacy go-live and stability record",
+        "Discuss open issues to resolve before waves 1 and 2",
+        "Decide whether waves 1 and 2 start"
+      ]
+    },
+    {
+      "id": "G9",
+      "label": "Workshop 2: waves 3 and 4",
+      "purpose": "Review waves 1 and 2 before final waves",
+      "attendees": ["CEO", "Operations Director", "IT Manager"],
+      "presents": ["D8", "D9", "D10"],
+      "decision": "Go or no-go on starting rollout waves 3 and 4 for the remaining pharmacies?",
+      "agenda": [
+        "Present the go-live and stability record for waves 1 and 2",
+        "Review the training materials used with pharmacy teams",
+        "Decide whether waves 3 and 4 start"
+      ]
+    },
+    {
+      "id": "G10",
+      "label": "Final readout",
+      "purpose": "Approve the rollout and close the engagement",
+      "attendees": ["CEO", "Operations Director", "IT Manager"],
+      "presents": ["D11"],
+      "decision": "Approve the system as running in all 40 pharmacies and close the engagement?",
+      "agenda": [
+        "Present the rollout record with stability check for all 40 pharmacies",
+        "Review open items after the final waves",
+        "Decide on approval and closing the engagement"
+      ]
+    }
+  ],
+  "notes": []
+}

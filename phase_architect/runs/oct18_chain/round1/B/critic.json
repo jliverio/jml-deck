@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 4,
+      "deliverables": 4,
+      "governance": 4,
+      "coherence": 4
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W5 is marked 'after W4' but starts in week 11, before D6 delivers the options in week 12, so impact is estimated on options that do not yet exist.",
+      "D9 (report and board presentation) is due in week 18, the same week as the Final readout that releases it, which leaves about one week before the March 15 Board to absorb steering feedback, and no Board member is engaged beforehand.",
+      "D6 compares options 'on agreed criteria', but no steering meeting between the week 8 gate and Workshop 2 in week 14 agrees those design criteria.",
+      "The third note to the partner says the brief excludes implementation support, but the brief only excludes replacing the claims IT system.",
+      "D1 (process map of both property and health claims) is due in week 2, only one week after the kickoff that confirms data and handler access, which is not realistic."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "Workshop 1 (week 5) decides which delay causes the root-cause analysis prioritizes without the settlement time baseline, because D3 is not due until week 6.",
+      "Four 'after' dependencies contradict the dates: W3 starts in week 3 before W1 ends in week 4, W4 starts in week 5 before W3 ends in week 6, W6 starts in week 11 before D5 is due in week 13, and W8 starts in week 16 before D7 and D8 are due in week 17.",
+      "D6 (settlement time and satisfaction effects by option) is due in week 14, the same week Workshop 2 reviews it to choose the option, so the steering group gets no time to read it first.",
+      "The week 18 Final readout reviews four deliverables (D7, D8, D9, D10) all due in weeks 17-18, so the report and Board presentation are drafted before the chosen model is tested, with one week left before the March 15 Board and no Board member engaged beforehand.",
+      "W1 ('where does time accumulate') and W3 ('how long do claims take to settle') answer overlapping questions, while W6 bundles two separate questions (effects by option, then the chosen-model test) across seven weeks."
+    ]
+  },
+  "better": "X",
+  "why": "X sequences its streams so that each steering meeting reviews deliverables finished before it, with only one dependency overlap (W5 against W4), and its customer interviews serve the satisfaction criterion directly. Y has better touches (separate report and presentation, option criteria set with the client, a test of the chosen model against both success criteria, a sharper note on how the success criteria can be measured), but its timeline breaks repeatedly, most seriously when Workshop 1 sets root-cause priorities before the settlement time baseline exists."
+}

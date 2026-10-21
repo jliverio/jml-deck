@@ -1,0 +1,37 @@
+{
+  "basis": {
+    "governing_question": "Why do property and health claims take too long to settle, and what claims operating model should Atlântico Seguros move to?",
+    "archetype_id": "operating_model_redesign"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 6, "max": 8 },
+      "duration_derived": false,
+      "objective_one_line": "Establish where and why property and health claims lose time on the way to settlement.",
+      "gate": {
+        "label": "Diagnostic readout",
+        "decision": "Do the COO and Head of Claims accept the diagnosed causes of slow settlement?"
+      },
+      "depends_on_assumptions": ["engagement_length"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 7, "max": 9 },
+      "duration_derived": false,
+      "objective_one_line": "Define the target claims operating model for property and health claims, and the roadmap to reach it.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Do the COO and Head of Claims approve the final report for the Board presentation?"
+      },
+      "depends_on_assumptions": ["engagement_length"]
+    }
+  ],
+  "architect_notes": [
+    "Length is an estimate (13 to 17 weeks) resting on the archetype's typical weeks, two claim lines and 19 weeks available.",
+    "Not covered by the phases: ASF, supervisor guidance on claims-handling response times. Confirm whether it is in scope.",
+    "No Measurement phase: the engagement is an assessment, so results against the settlement-time and satisfaction criteria are not tracked after launch."
+  ]
+}

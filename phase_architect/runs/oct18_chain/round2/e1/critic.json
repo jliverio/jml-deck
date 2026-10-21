@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 3,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 4,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "No stream has a design activity or deliverable even though the brief asks for a diagnostic and design program, so the note's claim that design sits inside the Diagnostic phase is not backed by anything in the plan.",
+      "W11 Sales and marketing and W12 Pricing finish in week 10, after Workshop 2 in week 9 decides which options go into the consolidated savings case, so D13 and D14 skip that decision and first reach the steering group at the week-12 sign-off.",
+      "W8 Real estate (weeks 2-5) sizes property savings before W2 Manufacturing and W7 Warehousing (to week 8) show what space those operations need.",
+      "W4 Legal (weeks 1-4) sizes and tests its savings options before Workshop 1 in week 4 confirms the service-level baseline they are supposed to be tested against.",
+      "W12 Pricing is framed as a cost stream ('which pricing practices add cost') although pricing changes act on revenue, and no rule says how its options count toward 8% of the cost base."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 3,
+      "workstreams": 2,
+      "deliverables": 2,
+      "governance": 3,
+      "coherence": 2
+    },
+    "verdict": "No",
+    "defects": [
+      "W1 Procurement, W3 Logistics, W7 HR and W9 Legal run to week 12 but their only deliverable is findings due in weeks 7-9, so they produce no savings design and have three to five weeks with no output, although Workshop 2 in week 8 confirms their findings 'as the base for the final savings design'.",
+      "W6 Finance builds the cost baseline but has no baseline deliverable, so the steering group never sees the denominator of the 8% target before D9 tests the savings against it in week 12.",
+      "The week-12 gate reviews twelve deliverables, re-reviews D1, D4 and D10 from week 8, and sees the savings designs D3, D6, D8 and D11 and the risk assessment D14 for the first time at sign-off, with no earlier meeting that chooses which options go forward.",
+      "Ten of the twelve streams run weeks 1-12 in parallel from week 1 with no staggering, which is not a realistic load or sequence for a 12-week team.",
+      "D14 service level risk assessment is due in week 11, the same week as the D3 and D6 savings designs it is meant to assess, so the risk test cannot shape those designs."
+    ]
+  },
+  "better": "X",
+  "why": "X staggers its streams, gives each a sized savings output, and holds a week-9 workshop that chooses which options go into the case, so the steering group sees most options before sign-off. Y leaves four streams without any savings output, never delivers the cost baseline behind the 8% target, and pushes every design to a twelve-deliverable final gate; X's main gap, the missing design work, is easier to fix."
+}

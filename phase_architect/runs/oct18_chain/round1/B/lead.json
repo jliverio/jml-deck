@@ -1,0 +1,37 @@
+{
+  "basis": {
+    "governing_question": "Why do property and health claims take too long to settle, and what claims operating model should Atlântico Seguros move to?",
+    "archetype_id": "operating_model_redesign"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 6, "max": 8 },
+      "duration_derived": false,
+      "objective_one_line": "Find why property and health claims take too long to settle, compared with the 2024 motor claims results.",
+      "gate": {
+        "label": "Diagnostic readout",
+        "decision": "Does the steering group accept the diagnostic findings on property and health claims?"
+      },
+      "depends_on_assumptions": ["engagement_length"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 8, "max": 10 },
+      "duration_derived": false,
+      "objective_one_line": "Define the claims operating model for property and health claims and the recommendations the Board will receive.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Are the report and Board presentation ready for the March 15, 2027 Board meeting?"
+      },
+      "depends_on_assumptions": ["engagement_length"]
+    }
+  ],
+  "architect_notes": [
+    "Length is an estimate of 14 to 18 weeks, resting on the archetype's typical phase lengths, two claim lines and the 19 weeks available.",
+    "Not covered by the phases: ASF, new guidance on claims-handling response times for non-life insurers. Confirm whether it is in scope.",
+    "The success criteria name a settlement-time reduction that an assessment cannot measure; confirm they become targets in the recommendations, not results to track."
+  ]
+}

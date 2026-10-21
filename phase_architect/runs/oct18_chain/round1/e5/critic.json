@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "D4, the overall findings on why export margins fell, sits in W2 (distributor terms) although no W2 activity combines the pricing and distributor analyses, so no stream does the synthesis that D4 requires.",
+      "W2 is labelled 'after W1' yet starts in week 2 while W1 runs to week 5, so the stated dependency contradicts the dates.",
+      "The week-5 workshop decides whether 'the remaining analysis' is focused on the right drivers, but W1 ends that same week, so the pricing work cannot be redirected and the decision only affects W2.",
+      "W1 and W2 both ask how net prices and margins by market moved, so the questions overlap and distributor discounts risk being counted in both the W1 margin bridge and the W2 term quantification.",
+      "The note on engagement type quotes the phrase 'a quick diagnostic', which does not appear in the brief, so the stated source of the assumption cannot be checked."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 4,
+      "governance": 4,
+      "coherence": 4
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W2 is labelled 'after W1' yet starts in week 2 while W1 runs to week 5, so the stated dependency contradicts the dates.",
+      "The synthesis activity 'Combine both sets of findings into one margin explanation' and D3 sit inside the distributor-terms stream, so the final findings on both levers are owned by a stream whose question covers only the distributor share.",
+      "W2 must say what share of the decline distributor terms explain, but the margin bridge it depends on (D1) is not due until week 5, so weeks 2-5 of W2 run without the baseline to quantify against.",
+      "The notes do not flag that margin drivers outside pricing and distributor terms are uncovered, even though D3 promises 'one margin explanation' of the 2025 decline.",
+      "The note on engagement type quotes the phrase 'a quick diagnostic', which does not appear in the brief, so the stated source of the assumption cannot be checked."
+    ]
+  },
+  "better": "Y",
+  "why": "Y's deliverables land exactly at the meetings that review them, its final findings are backed by an explicit synthesis activity, and its workshop asks a real choice about which drivers to detail rather than a yes/no check. X shares Y's 'after W1' contradiction and adds a final findings pack with no synthesis work behind it and a workshop that redirects pricing analysis that has already ended, although X's early D1 baseline and its note on drivers outside the two streams are better than Y's."
+}

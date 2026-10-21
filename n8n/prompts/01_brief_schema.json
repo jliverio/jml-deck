@@ -1,0 +1,689 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "hard_fields",
+    "required",
+    "soft_fields",
+    "contracting_parties",
+    "client_url",
+    "relationship_stage",
+    "brief_narrative",
+    "questions",
+    "routing",
+    "opt_in_offered"
+  ],
+  "properties": {
+    "hard_fields": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "client",
+        "problem_statement"
+      ],
+      "properties": {
+        "client": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "source",
+            "quote",
+            "assumption_text"
+          ],
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "source": {
+              "type": "string",
+              "enum": [
+                "stated",
+                "assumed"
+              ]
+            },
+            "quote": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "assumption_text": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "problem_statement": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "source",
+            "quote",
+            "assumption_text"
+          ],
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "source": {
+              "type": "string",
+              "enum": [
+                "stated",
+                "assumed"
+              ]
+            },
+            "quote": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "assumption_text": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "required": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "engagement_type",
+        "engagement_length",
+        "stakeholders"
+      ],
+      "properties": {
+        "engagement_type": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "source",
+            "quote",
+            "assumption_text"
+          ],
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "enum": [
+                "assessment",
+                "assessment_and_implementation",
+                null
+              ]
+            },
+            "source": {
+              "type": "string",
+              "enum": [
+                "stated",
+                "assumed"
+              ]
+            },
+            "quote": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "assumption_text": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "engagement_length": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "weeks_min",
+            "weeks_max",
+            "duration_derived",
+            "source",
+            "quote",
+            "assumption_text"
+          ],
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "weeks_min": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "weeks_max": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "duration_derived": {
+              "type": "boolean"
+            },
+            "source": {
+              "type": "string",
+              "enum": [
+                "stated",
+                "assumed"
+              ]
+            },
+            "quote": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "assumption_text": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "stakeholders": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "source",
+            "quote",
+            "assumption_text"
+          ],
+          "properties": {
+            "value": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "source": {
+              "type": "string",
+              "enum": [
+                "stated",
+                "assumed"
+              ]
+            },
+            "quote": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "assumption_text": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "soft_fields": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "deliverable_format",
+        "timeline",
+        "prior_attempts",
+        "success_criteria",
+        "out_of_scope",
+        "workstreams",
+        "budget_range"
+      ],
+      "properties": {
+        "deliverable_format": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "source",
+            "quote",
+            "assumption_text"
+          ],
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "source": {
+              "type": "string",
+              "enum": [
+                "stated",
+                "assumed"
+              ]
+            },
+            "quote": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "assumption_text": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "timeline": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "source",
+            "quote",
+            "assumption_text"
+          ],
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "source": {
+              "type": "string",
+              "enum": [
+                "stated",
+                "assumed"
+              ]
+            },
+            "quote": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "assumption_text": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "prior_attempts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "source",
+            "quote",
+            "assumption_text"
+          ],
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "source": {
+              "type": "string",
+              "enum": [
+                "stated",
+                "assumed"
+              ]
+            },
+            "quote": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "assumption_text": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "success_criteria": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "source",
+            "quote",
+            "assumption_text"
+          ],
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "source": {
+              "type": "string",
+              "enum": [
+                "stated",
+                "assumed"
+              ]
+            },
+            "quote": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "assumption_text": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "out_of_scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "source",
+            "quote",
+            "assumption_text"
+          ],
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "source": {
+              "type": "string",
+              "enum": [
+                "stated",
+                "assumed"
+              ]
+            },
+            "quote": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "assumption_text": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "budget_range": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "source",
+            "quote",
+            "assumption_text"
+          ],
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "source": {
+              "type": "string",
+              "enum": [
+                "stated",
+                "assumed"
+              ]
+            },
+            "quote": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "assumption_text": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "workstreams": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "count",
+            "source",
+            "quote",
+            "assumption_text"
+          ],
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "count": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "source": {
+              "type": "string",
+              "enum": [
+                "stated",
+                "assumed"
+              ]
+            },
+            "quote": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "assumption_text": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "contracting_parties": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "source",
+        "quote",
+        "assumption_text"
+      ],
+      "properties": {
+        "value": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "stated",
+            "assumed"
+          ]
+        },
+        "quote": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "assumption_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "client_url": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "source",
+        "quote",
+        "assumption_text"
+      ],
+      "properties": {
+        "value": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "stated",
+            "assumed"
+          ]
+        },
+        "quote": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "assumption_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "relationship_stage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "source",
+        "quote",
+        "assumption_text"
+      ],
+      "properties": {
+        "value": {
+          "type": "string",
+          "enum": [
+            "warm",
+            "cold"
+          ]
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "stated",
+            "assumed"
+          ]
+        },
+        "quote": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "assumption_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "brief_narrative": {
+      "type": "string"
+    },
+    "questions": {
+      "type": "array",
+      "maxItems": 11,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "field",
+          "text"
+        ],
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "client",
+              "problem_statement",
+              "engagement_type",
+              "engagement_length",
+              "stakeholders",
+              "deliverable_format",
+              "timeline",
+              "prior_attempts",
+              "success_criteria",
+              "out_of_scope",
+              "client_url"
+            ]
+          },
+          "text": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "routing": {
+      "type": "string",
+      "enum": [
+        "build",
+        "questions_only"
+      ]
+    },
+    "opt_in_offered": {
+      "type": "boolean"
+    }
+  }
+}

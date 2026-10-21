@@ -1,0 +1,190 @@
+{
+  "basis": {
+    "governing_question": "Which ERP should replace Farmácias Lusas's finance, purchasing and inventory systems, and how is it migrated and rolled out to 40 pharmacies and 2 warehouses?",
+    "archetype_id": "technology_selection_implementation"
+  },
+  "sizing": {
+    "length_basis": "estimated",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "What must the ERP do for finance, purchasing and inventory, and where do today's systems fall short?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "Which ERP fits the requirements, and does its business case support selecting it?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q3",
+        "question": "Can the ERP be configured, tested and loaded with migrated data for finance, purchasing and inventory?",
+        "phase_order": 3
+      },
+      {
+        "id": "Q4",
+        "question": "Can the ERP run live and stable at pilot sites, then in all 40 pharmacies and both warehouses?",
+        "phase_order": 3
+      }
+    ],
+    "drivers": [
+      {
+        "key": "process_areas",
+        "value": 3,
+        "source": "brief",
+        "evidence": "finance, purchasing and inventory systems"
+      },
+      {
+        "key": "sites",
+        "value": 42,
+        "source": "brief",
+        "evidence": "roll it out to its 40 pharmacies and 2 warehouses"
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Process area mapped with its requirements",
+            "from_library": true,
+            "driver": "process_areas",
+            "count": 3,
+            "weeks_each": { "min": 1, "max": 2 },
+            "at_once": 2
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": { "min": 4, "max": 6 },
+        "why": "Three process areas mapped two at a time, plus start-up and synthesis weeks; inside the archetype's typical 3 to 6 weeks."
+      },
+      {
+        "phase_order": 2,
+        "work": [
+          {
+            "unit": "Vendor shortlist, demonstrations and scoring",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 3, "max": 5 },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 1,
+        "estimate": { "min": 4, "max": 6 },
+        "why": "One shortlist, demonstration and scoring round, then a synthesis week; no formal tender assumed. Inside the archetype's typical 4 to 8 weeks."
+      },
+      {
+        "phase_order": 3,
+        "work": [
+          {
+            "unit": "System configured and tested for one process area",
+            "from_library": true,
+            "driver": "process_areas",
+            "count": 3,
+            "weeks_each": { "min": 4, "max": 6 },
+            "at_once": 2
+          },
+          {
+            "unit": "Data migration rehearsal",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 2, "max": 3 },
+            "at_once": 1
+          },
+          {
+            "unit": "Live data load and cutover at the pilot pharmacy and warehouse",
+            "from_library": false,
+            "driver": "sites",
+            "count": 2,
+            "weeks_each": { "min": 1, "max": 2 },
+            "at_once": 1
+          },
+          {
+            "unit": "Pilot site live and stable",
+            "from_library": true,
+            "driver": "sites",
+            "count": 2,
+            "weeks_each": { "min": 3, "max": 4 },
+            "at_once": 1
+          },
+          {
+            "unit": "Live data load and cutover per wave; second warehouse in wave 1",
+            "from_library": false,
+            "driver": "sites",
+            "count": 4,
+            "weeks_each": { "min": 1, "max": 1 },
+            "at_once": 1
+          },
+          {
+            "unit": "Rollout wave of up to 10 sites",
+            "from_library": true,
+            "driver": "sites",
+            "count": 4,
+            "weeks_each": { "min": 2, "max": 3 },
+            "at_once": 1
+          },
+          {
+            "unit": "Run-in with all pharmacies and warehouses live, including a month-end close",
+            "from_library": false,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 3, "max": 4 },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 0,
+        "estimate": { "min": 33, "max": 47 },
+        "why": "Areas configured two at a time, one rehearsal, a pilot at one pharmacy and one warehouse, four waves with cutover each, then a run-in."
+      }
+    ],
+    "levers": "Rollout waves two at a time would save 6 to 8 weeks; configuring all three process areas together would save 4 to 6 more."
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 4, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Map requirements and process fit for finance, purchasing and inventory across the pharmacies and warehouses.",
+      "gate": {
+        "label": "Requirements sign-off",
+        "decision": "Approve the requirements and go to vendor selection?"
+      },
+      "depends_on_assumptions": ["engagement_length", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 4, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Score ERP vendors against the requirements and build the business case for the vendor that fits best.",
+      "gate": {
+        "label": "Vendor selection",
+        "decision": "Which ERP vendor goes forward into implementation?"
+      },
+      "depends_on_assumptions": ["engagement_length"]
+    },
+    {
+      "name": "Implementation",
+      "order": 3,
+      "duration_weeks": { "min": 39, "max": 41 },
+      "duration_derived": false,
+      "objective_one_line": "Configure the ERP, migrate data, and take it live from a pilot pharmacy and warehouse to all sites.",
+      "gate": {
+        "label": "Final acceptance",
+        "decision": "Approve the ERP as running in all 40 pharmacies and both warehouses?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format", "timeline", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Engagement length is not given, so every duration is an estimate to confirm before quoting.",
+    "Implementation uses the middle of a 33 to 47 week estimate; the top needs areas, pilots, waves and run-in at their longest.",
+    "Implementation ends with a 3 to 4 week run-in after the last wave, covering a month-end close; confirm acceptance is judged on all sites live.",
+    "Length assumes one migration rehearsal plus live load and cutover at each pilot site and wave; a second rehearsal adds 2 to 3 weeks.",
+    "Implementation is added to the technology selection archetype's Diagnostic and Design because the brief includes data migration and rollout to 40 pharmacies and 2 warehouses.",
+    "Design assumes shortlist and demonstrations without a formal tender; a tender would add 4 to 6 weeks and should be confirmed."
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Waiting-time baseline",
+      "answers": "How long do patients wait at each of the three hospitals, and how do the waits vary?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "activities": [
+        "Collect operational data on waiting times at each hospital",
+        "Calculate waits by step, hospital and period",
+        "Check data quality with the people who record it"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Patient journey mapping",
+      "answers": "At which steps of the patient journey do patients queue at each hospital?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "activities": [
+        "Interview staff and patients on where waits occur",
+        "Observe patient flow at each hospital",
+        "Map the steps patients go through at each hospital"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Causes of waiting",
+      "answers": "Why do waits arise at those steps, and which operational factors explain them?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 3,
+      "duration": 2,
+      "follows": ["W1", "W2"],
+      "activities": [
+        "Test explanations for waits against operational data",
+        "Interview the people who schedule and deliver care",
+        "Review documents that set how care is scheduled"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 1,
+      "name": "Cross-hospital findings",
+      "answers": "How do waits and their causes compare across the three hospitals, and what do the findings show?",
+      "traces_to": ["gate:1", "problem_statement"],
+      "start_offset": 4,
+      "duration": 2,
+      "follows": ["W1", "W2", "W3"],
+      "activities": [
+        "Compare waits and causes across the three hospitals",
+        "Test findings with staff at each hospital",
+        "Prepare the final readout for the medical director"
+      ]
+    }
+  ],
+  "notes": [
+    "No success criteria were stated, so the streams trace to the problem statement and the gate decision."
+  ]
+}

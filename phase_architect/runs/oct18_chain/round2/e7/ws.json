@@ -1,0 +1,185 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Network water balance",
+      "answers": "How much treated water does the network lose today, and how much of that is leakage?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "activities": [
+        "Collect operational data on water supplied and consumed",
+        "Review network documents and existing loss reporting",
+        "Interview operations staff on how losses are measured"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Loss locations and causes",
+      "answers": "In which districts and parts of the network do the losses occur, and what drives them?",
+      "traces_to": ["problem_statement", "success_criteria:1", "gate:1"],
+      "start_offset": 2,
+      "duration": 4,
+      "follows": ["W1"],
+      "activities": [
+        "Compare supplied and consumed water district by district",
+        "Interview maintenance crews on where and why leaks occur",
+        "Review available repair records and network documents"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 2,
+      "name": "Program and routine design",
+      "answers": "What does the loss-reduction program consist of, and how should the new leak-detection routine work day to day?",
+      "traces_to": ["problem_statement", "success_criteria:2"],
+      "start_offset": 0,
+      "duration": 4,
+      "follows": [],
+      "activities": [
+        "Draft the leak-detection routine, its steps and roles",
+        "Define program targets and measures against the baseline",
+        "Test the draft routine with field crews"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 2,
+      "name": "Pilot plan",
+      "answers": "How will the two pilot districts be chosen, prepared and measured against their pre-pilot level of losses?",
+      "traces_to": ["success_criteria:1", "gate:2"],
+      "start_offset": 3,
+      "duration": 3,
+      "follows": ["W3"],
+      "activities": [
+        "Set selection criteria for the two pilot districts",
+        "Define how pilot losses are compared with pre-pilot levels",
+        "Plan the pilot schedule, crew needs and readiness checks"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 3,
+      "name": "Pilot readiness",
+      "answers": "Are the two pilot districts, their crews and their data ready for the new routine to start?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 4,
+      "follows": [],
+      "activities": [
+        "Train crews in the two pilot districts on the new routine",
+        "Set up district data collection for leak and loss records",
+        "Check readiness with the crews who will run the routine"
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 3,
+      "name": "Pilot loss measurement",
+      "answers": "How do water losses in the two pilot districts compare with their level before the pilot?",
+      "traces_to": ["success_criteria:1", "gate:3"],
+      "start_offset": 0,
+      "duration": 8,
+      "follows": [],
+      "activities": [
+        "Establish each pilot district's pre-pilot loss level",
+        "Track district water balance through the pilot weeks",
+        "Compare pilot results with pre-pilot levels for the gate"
+      ]
+    },
+    {
+      "id": "W7",
+      "phase_order": 3,
+      "name": "Pilot operation",
+      "answers": "What happens when crews run the new leak-detection routine in the two districts for several weeks?",
+      "traces_to": ["success_criteria:1", "gate:3"],
+      "start_offset": 4,
+      "duration": 4,
+      "follows": ["W5"],
+      "activities": [
+        "Run the routine in the two pilot districts",
+        "Log leaks found, repairs made and time to repair",
+        "Review progress weekly with district crews"
+      ]
+    },
+    {
+      "id": "W8",
+      "phase_order": 4,
+      "name": "Rollout readiness",
+      "answers": "How should the routine, training and district order be adjusted for rollout, based on the pilot findings?",
+      "traces_to": ["success_criteria:2"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "activities": [
+        "Review pilot findings with the crews who ran the routine",
+        "Sequence the remaining districts into rollout waves",
+        "Prepare training material for the remaining districts"
+      ]
+    },
+    {
+      "id": "W9",
+      "phase_order": 4,
+      "name": "Crew training and coaching",
+      "answers": "Can district crews run the routine on their own once each wave goes live?",
+      "traces_to": ["success_criteria:2"],
+      "start_offset": 3,
+      "duration": 10,
+      "follows": ["W8"],
+      "activities": [
+        "Train district crews before their wave goes live",
+        "Coach crews on site in the first weeks of each wave",
+        "Observe routine use and gather crew feedback"
+      ]
+    },
+    {
+      "id": "W10",
+      "phase_order": 4,
+      "name": "District rollout",
+      "answers": "How does the routine go live in each remaining district, and what do the first waves show?",
+      "traces_to": ["success_criteria:2", "gate:4"],
+      "start_offset": 4,
+      "duration": 9,
+      "follows": ["W8"],
+      "activities": [
+        "Bring the routine live in each wave of districts",
+        "Record leaks found and repairs made in each district",
+        "Review wave results and adjust the next wave"
+      ]
+    },
+    {
+      "id": "W11",
+      "phase_order": 5,
+      "name": "Loss and adoption tracking",
+      "answers": "What do water losses in the two pilot districts and routine use in all districts show against the baseline?",
+      "traces_to": ["success_criteria:1", "success_criteria:2"],
+      "start_offset": 0,
+      "duration": 4,
+      "follows": [],
+      "activities": [
+        "Track pilot district losses against their pre-pilot level",
+        "Check routine use in every district from operational data",
+        "Interview district crews on what changed in their work"
+      ]
+    },
+    {
+      "id": "W12",
+      "phase_order": 5,
+      "name": "Results readout",
+      "answers": "Do the measured results meet both success criteria, and what explains them?",
+      "traces_to": ["success_criteria:1", "success_criteria:2", "gate:5"],
+      "start_offset": 4,
+      "duration": 2,
+      "follows": ["W11"],
+      "activities": [
+        "Test results against both success criteria",
+        "Check results for other causes of changes in losses",
+        "Write the results report for the final readout"
+      ]
+    }
+  ],
+  "notes": []
+}

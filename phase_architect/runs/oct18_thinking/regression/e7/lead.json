@@ -1,0 +1,225 @@
+{
+  "basis": {
+    "governing_question": "How can Vale Verde reduce the treated water lost to network leaks, through a program piloted in two districts and then rolled out?",
+    "archetype_id": "performance_improvement"
+  },
+  "sizing": {
+    "length_basis": "stated",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "Where and why does the network lose treated water, and how much?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "Which leak-detection routine and loss-reduction program should the two pilot districts test?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q3",
+        "question": "Do water losses in the two pilot districts fall below their pre-pilot level?",
+        "phase_order": 3
+      },
+      {
+        "id": "Q4",
+        "question": "How do all remaining districts come to run the new leak-detection routine by the end of the rollout?",
+        "phase_order": 4
+      },
+      {
+        "id": "Q5",
+        "question": "Do water losses stay lower and the routine stay in use across all districts after rollout?",
+        "phase_order": 5
+      }
+    ],
+    "drivers": [
+      {
+        "key": "sites",
+        "value": 8,
+        "source": "assumed",
+        "evidence": ""
+      },
+      {
+        "key": "pilot_districts",
+        "value": 2,
+        "source": "brief",
+        "evidence": "piloted in two districts"
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Site diagnosed on the floor (cost baseline, line observation, loss analysis)",
+            "from_library": true,
+            "driver": "sites",
+            "count": 3,
+            "weeks_each": { "min": 2, "max": 3 },
+            "at_once": 2
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": { "min": 6, "max": 8 },
+        "why": "Three representative districts diagnosed two at a time, the rest extended from data; the maximum exceeds typical 3-6 weeks because the sample takes two rounds."
+      },
+      {
+        "phase_order": 2,
+        "work": [
+          {
+            "unit": "Loss-reduction program and leak-detection routine designed",
+            "from_library": false,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 3, "max": 4 },
+            "at_once": 1
+          },
+          {
+            "unit": "Pilot plan and loss baseline for each pilot district",
+            "from_library": false,
+            "driver": "pilot_districts",
+            "count": 2,
+            "weeks_each": { "min": 1, "max": 2 },
+            "at_once": 2
+          }
+        ],
+        "fixed_weeks": 1,
+        "estimate": { "min": 5, "max": 7 },
+        "why": "Routine design comes first, then one pilot plan covering both districts together; the archetype has no Design phase to compare against."
+      },
+      {
+        "phase_order": 3,
+        "work": [
+          {
+            "unit": "Leak-detection routine set up and crews briefed in a pilot district",
+            "from_library": false,
+            "driver": "pilot_districts",
+            "count": 2,
+            "weeks_each": { "min": 2, "max": 3 },
+            "at_once": 2
+          },
+          {
+            "unit": "Live run in a pilot district with losses tracked against baseline",
+            "from_library": false,
+            "driver": "pilot_districts",
+            "count": 2,
+            "weeks_each": { "min": 5, "max": 6 },
+            "at_once": 2
+          }
+        ],
+        "fixed_weeks": 0,
+        "estimate": { "min": 7, "max": 9 },
+        "why": "Both pilot districts run side by side: set-up, then a live run with losses tracked; phase not in the archetype, so weeks are estimated."
+      },
+      {
+        "phase_order": 4,
+        "work": [
+          {
+            "unit": "Rollout wave of up to 3 sites",
+            "from_library": true,
+            "driver": "sites",
+            "count": 2,
+            "weeks_each": { "min": 4, "max": 6 },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 0,
+        "estimate": { "min": 8, "max": 12 },
+        "why": "Six districts remain after the pilot, rolled out in two waves of three, one wave at a time."
+      },
+      {
+        "phase_order": 5,
+        "work": [
+          {
+            "unit": "Water losses tracked in all districts against the pre-pilot baseline",
+            "from_library": false,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 4, "max": 5 },
+            "at_once": 1
+          },
+          {
+            "unit": "Client review and sign-off cycle",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 1, "max": 2 },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 0,
+        "estimate": { "min": 5, "max": 7 },
+        "why": "Losses tracked in all districts for 4-5 weeks, then one client review; phase not in the archetype, so weeks are estimated."
+      }
+    ],
+    "levers": "Running two rollout waves side by side, or diagnosing two representative districts instead of three, would shorten the engagement most."
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 6, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Establish where and why Vale Verde loses treated water in its network and set the loss baseline.",
+      "gate": {
+        "label": "Findings sign-off",
+        "decision": "Which loss causes and districts should the program design target?"
+      },
+      "depends_on_assumptions": ["timeline", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 6, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Define the loss-reduction program and leak-detection routine, and plan the pilot in the two pilot districts.",
+      "gate": {
+        "label": "Go/no-go on pilot",
+        "decision": "Approve the program design and go ahead with the pilot in two districts?"
+      },
+      "depends_on_assumptions": []
+    },
+    {
+      "name": "Pilot",
+      "order": 3,
+      "duration_weeks": { "min": 8, "max": 8 },
+      "duration_derived": false,
+      "objective_one_line": "Run the new leak-detection routine in two districts and show whether their water losses fall below pre-pilot levels.",
+      "gate": {
+        "label": "Go/no-go on rollout",
+        "decision": "Go or no-go on rolling the routine out to the remaining districts?"
+      },
+      "depends_on_assumptions": []
+    },
+    {
+      "name": "Implementation",
+      "order": 4,
+      "duration_weeks": { "min": 13, "max": 13 },
+      "duration_derived": false,
+      "objective_one_line": "Roll out the leak-detection routine to the remaining districts so every district runs it by the end.",
+      "gate": {
+        "label": "Rollout sign-off",
+        "decision": "Accept the rollout as complete and start measuring results in all districts?"
+      },
+      "depends_on_assumptions": []
+    },
+    {
+      "name": "Measurement",
+      "order": 5,
+      "duration_weeks": { "min": 6, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Track water losses against the pre-pilot baseline and the success criteria across all districts after rollout.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the measured loss results and close the engagement?"
+      },
+      "depends_on_assumptions": ["deliverable_format", "timeline"]
+    }
+  ],
+  "architect_notes": [
+    "Phase lengths follow the brief's stage lengths (6, 6, 8, 13, 6) and sum to 39; the work estimates total 31-43 weeks.",
+    "District count is assumed at 8 (6 after the pilot); each extra rollout wave of three adds 4-6 weeks, so confirm it.",
+    "Diagnostic holds only if 3 representative districts are sampled; the work estimates at 6-8 weeks against the stated 6.",
+    "Archetype performance_improvement has only Diagnostic and Implementation, so Design, Pilot and Measurement are added because the brief names them."
+  ]
+}

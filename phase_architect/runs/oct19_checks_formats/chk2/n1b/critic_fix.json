@@ -1,0 +1,40 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 4,
+      "governance": 3,
+      "coherence": 3,
+      "sizing": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "The week 5 workshop asks which markets get the full demand and competition assessment, but W2 and W3 start on the shortlist in week 3 and D2 already covers two markets, so the sponsors are asked to decide work that is already under way.",
+      "D8 business cases are built in weeks 11-13 before the week 13 check-in picks the entry option per country they should rest on, so a different choice means rework with only W6's two weeks left.",
+      "W2, W3 and W4 run to week 9 though D3, D4 and D5 are due week 7, leaving two weeks of Research with no output, while the notes call the 9-week phase 'mid-estimate' when it is the top of the 7-9 week estimate.",
+      "W6 must deliver D9, the go/no-go and sequence pack, in week 14, its first week, so the entry order and roadmap get one week of work.",
+      "The week 15 final readout re-reviews D7 and D8, already reviewed at week 13, instead of focusing on what is new in D9."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3,
+      "sizing": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W7 runs only in week 15 and D10 and D11 are due the same week as the final readout, so the entry sequence and roadmap get one week of work and the sponsors get no pre-read for the go/no-go decision.",
+      "D9 business cases, the main evidence for each go/no-go, are first seen by the CEO and Commercial Director at the final readout, with no earlier review.",
+      "W2 and W3 start in week 3 on 'shortlisted' markets that no steering meeting approves, and the week 5 workshop decides only the capability shortlist, so the client never signs off which markets get the full demand and competition work.",
+      "W4 is marked 'after W3' but runs weeks 5-9 in parallel with W3, which ends in week 9.",
+      "D7, the findings pack for the shortlist decision, is due in week 9 together with D5, which it has to synthesize, and with the gate that uses it, leaving no time to integrate or pre-read."
+    ]
+  },
+  "better": "X",
+  "why": "X builds in buffer before both gates and shows the sponsors the business cases before the final go/no-go, while Y squeezes the sequence and roadmap into one week and delivers the decision pack the same week as the final readout, with business cases seen there for the first time. Both start the full assessment on a shortlist nobody has approved, but X's other main fault (business cases built before the option choice) is fixed by swapping meeting dates, while Y needs Phase 2 re-timed and its W4 dependency corrected."
+}

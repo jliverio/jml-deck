@@ -1,0 +1,72 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Start the diagnostic and agree access",
+      "attendees": ["CEO", "CFO", "Heads of the three acquired companies"],
+      "presents": [],
+      "decision": "Will each company open its sales, purchasing and finance data and staff to the team?",
+      "agenda": [
+        "Present the three phases and the diagnostic in weeks 1-3",
+        "Align on the data and people needed at each company",
+        "Decide on access to sales, purchasing and finance data and staff"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Go/no-go on design",
+      "purpose": "Decide whether to go ahead with design",
+      "attendees": ["CEO", "CFO", "Heads of the three acquired companies"],
+      "presents": ["D1", "D2"],
+      "decision": "Go ahead with design on the priority gaps in sales, purchasing and finance?",
+      "agenda": [
+        "Present the current-state baseline for the first two companies",
+        "Review the priority gaps to Grupo Vale across three companies",
+        "Decide on going ahead with design on the priority gaps"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Go/no-go on cutover",
+      "purpose": "Decide whether to start the first cutover",
+      "attendees": ["CEO", "CFO", "Heads of the three acquired companies"],
+      "presents": ["D3", "D4", "D5", "D6"],
+      "decision": "Go or no-go on moving the first company onto Grupo Vale's processes and systems?",
+      "agenda": [
+        "Present target processes and system mapping, all three companies",
+        "Review the readiness checks and the integration plan decision pack",
+        "Decide on the cutover of the first company"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Check-in: cutover progress",
+      "purpose": "Review readiness and cutover progress",
+      "attendees": ["CEO", "CFO", "Heads of the three acquired companies"],
+      "presents": ["D7"],
+      "decision": "Is cutover progress on track to start stabilization and the plan update in week 11?",
+      "agenda": [
+        "Present the cutover readiness and progress report, first two areas",
+        "Discuss open issues and early results that feed the plan update",
+        "Confirm progress before stabilization and the plan update begin"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Final readout",
+      "purpose": "Approve the result and plan for the board",
+      "attendees": ["CEO", "CFO", "Heads of the three acquired companies"],
+      "presents": ["D7", "D8", "D9", "D10", "D11"],
+      "decision": "Approve the first-company result and the integration plan to take to the board?",
+      "agenda": [
+        "Present first-company results, go-live records and the updated plan",
+        "Review the open-issues log and closure record",
+        "Decide on the plan to take to the board on 29 January 2027"
+      ]
+    }
+  ],
+  "notes": [
+    "The board's approval is a success criterion, but no board member is among the stakeholders; confirm who represents it at the final readout."
+  ]
+}

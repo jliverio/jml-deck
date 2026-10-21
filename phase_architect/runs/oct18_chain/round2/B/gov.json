@@ -1,0 +1,70 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Agree scope, team and calendar",
+      "attendees": ["COO", "Head of Claims"],
+      "presents": [],
+      "decision": "Do the COO and Head of Claims confirm the scope, team and calendar?",
+      "agenda": [
+        "Present the engagement objectives and scope for property and health claims",
+        "Align on the team, interview access and workplan",
+        "Confirm the steering calendar and the Board date of March 15, 2027"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Workshop 1: first findings",
+      "purpose": "Review first findings on claims handling",
+      "attendees": ["COO", "Head of Claims"],
+      "presents": ["D1", "D2", "D3", "D4", "D5"],
+      "decision": "Does the steering group confirm the delay points to carry into the causes ranking?",
+      "agenda": [
+        "Present the step map and the wait, loop and handover points",
+        "Review the satisfaction baseline, interview synthesis and motor comparison",
+        "Confirm the delay points to carry into the causes ranking"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Diagnostic readout",
+      "purpose": "Close the Diagnostic phase on ranked causes",
+      "attendees": ["COO", "Head of Claims"],
+      "presents": ["D6", "D7"],
+      "decision": "Do the COO and Head of Claims accept the diagnosed causes of slow settlement?",
+      "agenda": [
+        "Present settlement time by step for property and health claims",
+        "Review the ranked causes of delay in the diagnostic readout",
+        "Decide whether to accept the diagnosed causes of slow settlement"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Workshop 2: model options",
+      "purpose": "Review model options before detailed design",
+      "attendees": ["COO", "Head of Claims"],
+      "presents": ["D8"],
+      "decision": "Which operating model option should go into detailed design?",
+      "agenda": [
+        "Present the claims operating model options and their trade-offs",
+        "Discuss the trade-offs against the settlement time and satisfaction criteria",
+        "Decide which option goes into detailed design"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Final readout",
+      "purpose": "Approve the final report ahead of the Board",
+      "attendees": ["COO", "Head of Claims"],
+      "presents": ["D9", "D10", "D11", "D12"],
+      "decision": "Do the COO and Head of Claims approve the final report for the Board presentation?",
+      "agenda": [
+        "Present the detailed design and its test against the criteria",
+        "Review the transition roadmap and the final report",
+        "Decide whether to approve the report for the Board presentation"
+      ]
+    }
+  ],
+  "notes": []
+}

@@ -1,0 +1,100 @@
+{
+ "brief": {
+  "hard_fields": {
+   "client": {
+    "value": "Vale Verde Water Company, a regional water utility",
+    "source": "stated",
+    "quote": "Vale Verde Water Company, a regional water utility",
+    "assumption_text": null
+   },
+   "problem_statement": {
+    "value": "Vale Verde Water Company loses too much treated water through leaks in its network and wants a loss-reduction program designed, piloted in two districts, rolled out to the remaining districts and its results measured.",
+    "source": "stated",
+    "quote": "Vale Verde Water Company loses too much treated water through leaks in its network and wants a loss-reduction program designed, piloted in two districts, rolled out to the remaining districts and its results measured.",
+    "assumption_text": null
+   }
+  },
+  "required": {
+   "engagement_type": {
+    "value": "assessment_and_implementation",
+    "source": "stated",
+    "quote": "pilot it and then roll it out",
+    "assumption_text": null
+   },
+   "engagement_length": {
+    "value": "39 weeks: diagnostic 6, design 6, pilot 8, rollout 13, measurement 6",
+    "source": "stated",
+    "quote": "nine months in five stages",
+    "assumption_text": null,
+    "weeks_min": 39,
+    "weeks_max": 39,
+    "duration_derived": false
+   },
+   "stakeholders": {
+    "value": [
+     "CEO",
+     "Operations Director",
+     "Network Maintenance Manager"
+    ],
+    "source": "stated",
+    "quote": [
+     "CEO",
+     "Operations Director",
+     "Network Maintenance Manager"
+    ],
+    "assumption_text": null
+   }
+  },
+  "soft_fields": {
+   "deliverable_format": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "timeline": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "prior_attempts": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "success_criteria": {
+    "value": "Water losses in the two pilot districts lower than before the pilot; all districts running the new leak-detection routine by the end of the rollout",
+    "source": "stated",
+    "quote": "Water losses in the two pilot districts lower than before the pilot; all districts running the new leak-detection routine by the end of the rollout",
+    "assumption_text": null
+   },
+   "out_of_scope": {
+    "value": "Replacing pipes or buying new metering hardware",
+    "source": "stated",
+    "quote": "Replacing pipes or buying new metering hardware",
+    "assumption_text": null
+   },
+   "workstreams": {
+    "value": null,
+    "count": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   }
+  }
+ },
+ "success_criteria_list": [
+  "Water losses in the two pilot districts lower than before the pilot",
+  "all districts running the new leak-detection routine by the end of the rollout"
+ ],
+ "profile": {
+  "problem_focus": "topic",
+  "topic": null,
+  "current_state": null,
+  "market": null
+ },
+ "market_findings": [],
+ "weeks_available": null
+}

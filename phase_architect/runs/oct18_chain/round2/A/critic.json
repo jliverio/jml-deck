@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 4,
+      "governance": 4,
+      "coherence": 4
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W7 starts building the first marketplace version in week 9, but its readiness review (D10) is due in week 10 and Workshop 1 decides go-live in week 11, which leaves about two weeks to build a marketplace and is not credible unless the plan says the build extends the existing B2B portal.",
+      "Phase 2 has no deliverable that agrees the regional distributors' role and terms in the pilot before go-live, even though 'no distributor contract terminated' is a success criterion and Workshop 1 (week 11) reviews only D6, D7 and D10.",
+      "W8 is marked 'after W6' but starts in week 17 while W6 runs to week 19, and its D13 evidence synthesis (week 19) duplicates W6's D9 pilot record, which is due the same week.",
+      "Workshop 2 (week 16) only asks to 'confirm the first-wave evidence as the basis for the scale-up case' and the final gate asks whether the evidence is 'ready' instead of asking to approve the scale-up case, so neither meeting takes a real decision.",
+      "The partner notes raise an unbriefed 'European Commission, digital product passports under the Construction Products Regulation' scope item and say 'No Implementation phase' for an assessment_and_implementation engagement, and both will confuse the partner."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "Workshop 1 (week 11) decides whether the pilot can go live while reviewing only D6, D7 and D8; no readiness review or build deliverable covers the marketplace version, which W6 only starts building in week 9.",
+      "Workshop 2 (week 16) picks the scale-up options (D11) before any pilot evidence on repeat orders or distributors exists, because the only results deliverable (D10) arrives in week 19.",
+      "W7 is marked 'after W5, W6' but starts in week 15, while W5 runs to week 18 and W6 to week 19.",
+      "No W2 activity builds or tests the D3 wireframe prototype (week 5), and the prototype is produced before W3 turns the evidence into the blueprint it is meant to show.",
+      "W5 tracks distributor contracts until week 18 but its last deliverable is D8 in week 10, and no stream reviews existing distributor contract terms, so the 'no contract terminated' criterion has nothing tangible behind it until D10 in week 19."
+    ]
+  },
+  "better": "X",
+  "why": "X gives contractor demand and distributor overlap their own streams in Design, puts a readiness review in front of the go-live workshop, and delivers a first-wave report before the scale-up discussion, so every meeting decides on evidence that already exists. Y does better on two points, agreeing the distributors' pilot role (D8) and a sharper final approval, but it approves go-live without reviewing the build and picks scale-up options before any pilot results."
+}

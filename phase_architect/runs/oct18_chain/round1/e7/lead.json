@@ -1,0 +1,72 @@
+{
+  "basis": {
+    "governing_question": "How can Vale Verde Water Company reduce treated water lost through network leaks, starting with two pilot districts and then all remaining districts?",
+    "archetype_id": "performance_improvement"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 6, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Establish the baseline of treated water lost to network leaks and where losses concentrate across districts.",
+      "gate": {
+        "label": "Findings sign-off",
+        "decision": "Do the baseline loss findings stand as the basis for the program design?"
+      },
+      "depends_on_assumptions": ["timeline", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 6, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Define the loss-reduction program, including the new leak-detection routine, and plan its pilot in two districts.",
+      "gate": {
+        "label": "Go/no-go on pilot",
+        "decision": "Is the designed program ready to be piloted in the two pilot districts?"
+      },
+      "depends_on_assumptions": []
+    },
+    {
+      "name": "Pilot",
+      "order": 3,
+      "duration_weeks": { "min": 8, "max": 8 },
+      "duration_derived": false,
+      "objective_one_line": "Run the designed program in two districts and compare water losses with their pre-pilot level.",
+      "gate": {
+        "label": "Go/no-go on rollout",
+        "decision": "Do the pilot results justify rolling the program out to the remaining districts?"
+      },
+      "depends_on_assumptions": []
+    },
+    {
+      "name": "Implementation",
+      "order": 4,
+      "duration_weeks": { "min": 13, "max": 13 },
+      "duration_derived": false,
+      "objective_one_line": "Roll out the program to the remaining districts alongside the client until each runs the new leak-detection routine.",
+      "gate": {
+        "label": "Rollout acceptance",
+        "decision": "Is the leak-detection routine running in all districts and ready for measurement?"
+      },
+      "depends_on_assumptions": []
+    },
+    {
+      "name": "Measurement",
+      "order": 5,
+      "duration_weeks": { "min": 6, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Track water losses across districts against the success criteria and report the results.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Do the measured results meet the success criteria so the final report can be approved?"
+      },
+      "depends_on_assumptions": ["deliverable_format", "timeline"]
+    }
+  ],
+  "architect_notes": [
+    "The performance_improvement archetype has Diagnostic and Implementation only; Design, Pilot and Measurement were added because the brief names five stages.",
+    "The 13-week rollout is named Implementation; confirm the firm executes or staffs it alongside the client rather than only advising before quoting."
+  ]
+}

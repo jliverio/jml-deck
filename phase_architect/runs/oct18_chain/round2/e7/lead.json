@@ -1,0 +1,72 @@
+{
+  "basis": {
+    "governing_question": "How can Vale Verde Water Company lose less treated water through leaks in its network, starting with two pilot districts?",
+    "archetype_id": "performance_improvement"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 6, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Establish how much treated water the network loses and where, as the baseline for the loss-reduction program.",
+      "gate": {
+        "label": "Diagnostic sign-off",
+        "decision": "Does the steering group accept the loss baseline as the basis for the program design?"
+      },
+      "depends_on_assumptions": ["timeline", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 6, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Define the loss-reduction program and the new leak-detection routine, and plan the pilot in two districts.",
+      "gate": {
+        "label": "Go/no-go on pilot",
+        "decision": "Does the steering group approve the program design and the pilot in two districts?"
+      },
+      "depends_on_assumptions": []
+    },
+    {
+      "name": "Pilot",
+      "order": 3,
+      "duration_weeks": { "min": 8, "max": 8 },
+      "duration_derived": false,
+      "objective_one_line": "Run the new leak-detection routine in two districts and measure water losses against their pre-pilot level.",
+      "gate": {
+        "label": "Go/no-go on rollout",
+        "decision": "Do the pilot results in two districts justify rolling the program out to the others?"
+      },
+      "depends_on_assumptions": []
+    },
+    {
+      "name": "Implementation",
+      "order": 4,
+      "duration_weeks": { "min": 13, "max": 13 },
+      "duration_derived": false,
+      "objective_one_line": "Roll out the leak-detection routine to the remaining districts so every district runs it by the end.",
+      "gate": {
+        "label": "Rollout completion",
+        "decision": "Is the new routine running in every district, so measurement can start?"
+      },
+      "depends_on_assumptions": []
+    },
+    {
+      "name": "Measurement",
+      "order": 5,
+      "duration_weeks": { "min": 6, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Track water losses and routine adoption against the two success criteria, and report the results.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Does the steering group accept the measured results as the final result?"
+      },
+      "depends_on_assumptions": ["deliverable_format", "timeline"]
+    }
+  ],
+  "architect_notes": [
+    "The brief's 'rollout' stage is named Implementation as the closest fit; confirm whether the firm executes the rollout or the client does.",
+    "Departs from performance_improvement: adds Design, Pilot and Measurement phases because the brief names five stages."
+  ]
+}

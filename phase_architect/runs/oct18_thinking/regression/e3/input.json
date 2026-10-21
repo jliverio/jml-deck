@@ -1,0 +1,91 @@
+{
+ "brief": {
+  "hard_fields": {
+   "client": {
+    "value": "Norte Hospitals Group",
+    "source": "stated",
+    "quote": "Norte Hospitals Group",
+    "assumption_text": null
+   },
+   "problem_statement": {
+    "value": "Norte Hospitals Group wants a diagnostic of patient waiting times at its three hospitals.",
+    "source": "stated",
+    "quote": "Norte Hospitals Group wants a six-week diagnostic of patient waiting times at its three hospitals",
+    "assumption_text": null
+   }
+  },
+  "required": {
+   "engagement_type": {
+    "value": "assessment",
+    "source": "stated",
+    "quote": "Assessment only",
+    "assumption_text": null
+   },
+   "engagement_length": {
+    "value": "six-week",
+    "weeks_min": 6,
+    "weeks_max": 6,
+    "duration_derived": false,
+    "source": "stated",
+    "quote": "six-week",
+    "assumption_text": null
+   },
+   "stakeholders": {
+    "value": [
+     "Board's medical director (sponsor)"
+    ],
+    "source": "stated",
+    "quote": "The Board's medical director is the sponsor",
+    "assumption_text": null
+   }
+  },
+  "soft_fields": {
+   "deliverable_format": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "timeline": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "prior_attempts": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "success_criteria": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "out_of_scope": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "workstreams": {
+    "value": "four",
+    "count": 4,
+    "source": "stated",
+    "quote": "The client asked for four workstreams",
+    "assumption_text": null
+   }
+  }
+ },
+ "success_criteria_list": [],
+ "profile": {
+  "problem_focus": "topic",
+  "topic": null,
+  "current_state": null,
+  "market": null
+ },
+ "market_findings": [],
+ "weeks_available": null
+}

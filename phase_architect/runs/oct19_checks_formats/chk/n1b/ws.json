@@ -1,0 +1,126 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Market screen",
+      "question_id": "Q1",
+      "answers": "Which of the four countries look attractive enough on desk data to assess in full?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 0,
+      "duration": 2,
+      "follows": [],
+      "builds_on_meeting": null,
+      "activities": [
+        "Gather desk data on retail olive-oil demand per country",
+        "Screen the four markets on size, growth and access",
+        "Propose the markets to assess in full"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Market attractiveness",
+      "question_id": "Q1",
+      "answers": "How large, how fast-growing and how attractive is each shortlisted country's retail market for Quinta Azul's olive oil?",
+      "traces_to": ["problem_statement", "success_criteria:1", "gate:1"],
+      "start_offset": 2,
+      "duration": 6,
+      "follows": ["W1"],
+      "builds_on_meeting": null,
+      "activities": [
+        "Size retail demand and growth, two markets at a time",
+        "Review consumer purchase data and category reports",
+        "Compare the markets on agreed attractiveness criteria"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Competitors and access",
+      "question_id": "Q2",
+      "answers": "Which competitors, retail channels and regulations shape Quinta Azul's access to each shortlisted market?",
+      "traces_to": ["problem_statement", "success_criteria:1", "gate:1"],
+      "start_offset": 2,
+      "duration": 7,
+      "follows": ["W1"],
+      "builds_on_meeting": null,
+      "activities": [
+        "Map competitors and retail channels in each market",
+        "Review regulations that apply to olive-oil retail sales",
+        "Interview retail buyers on listing terms and rivals"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 1,
+      "name": "Capability to win",
+      "question_id": "Q3",
+      "answers": "Does Quinta Azul have the assets and capabilities to win in each shortlisted market?",
+      "traces_to": ["problem_statement", "success_criteria:1", "gate:1"],
+      "start_offset": 4,
+      "duration": 5,
+      "follows": ["W3"],
+      "builds_on_meeting": null,
+      "activities": [
+        "Interview Quinta Azul staff who run sales and production",
+        "Analyze Quinta Azul's volume, cost and price data",
+        "Assess the gaps to win in each shortlisted market"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 2,
+      "name": "Entry options",
+      "question_id": "Q4",
+      "answers": "Which ways of entering each shortlisted market are open to Quinta Azul, and how do they compare?",
+      "traces_to": ["success_criteria:1", "gate:2"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "builds_on_meeting": "G3",
+      "activities": [
+        "List the entry routes open to Quinta Azul in each market",
+        "Compare the routes on criteria agreed with the sponsors",
+        "Test the routes with retail buyers and Quinta Azul staff"
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 2,
+      "name": "Business cases",
+      "question_id": "Q4",
+      "answers": "What would entering each shortlisted market return and require, and does it support a go or no-go?",
+      "traces_to": ["success_criteria:1", "gate:2"],
+      "start_offset": 1,
+      "duration": 3,
+      "follows": ["W5"],
+      "builds_on_meeting": "G3",
+      "activities": [
+        "Build the business case for each market's preferred option",
+        "Model volumes, costs and returns from Quinta Azul's data",
+        "Set out the evidence for a go or no-go in each country"
+      ]
+    },
+    {
+      "id": "W7",
+      "phase_order": 2,
+      "name": "Entry sequence and roadmap",
+      "question_id": "Q5",
+      "answers": "In what order, and with what roadmap, should Quinta Azul enter the countries that are a go?",
+      "traces_to": ["problem_statement", "success_criteria:2", "gate:2"],
+      "start_offset": 4,
+      "duration": 2,
+      "follows": ["W6"],
+      "builds_on_meeting": null,
+      "activities": [
+        "Compare entry orders on timing, effort and risk",
+        "Draft the entry roadmap for the countries that are a go",
+        "Test the sequence with the CEO and Commercial Director"
+      ]
+    }
+  ],
+  "notes": [
+    "Go or no-go for any country stopped at the Research gate rests on the desk screen or full assessment, not a business case."
+  ]
+}

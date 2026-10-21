@@ -1,0 +1,40 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 4,
+      "deliverables": 4,
+      "governance": 3,
+      "coherence": 3,
+      "sizing": 4
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W5 builds the business case for 'the preferred entry option' from week 8, but no steering meeting ever chooses that option, because the week 8 check-in reviews nothing and only asks whether the work is on track.",
+      "D5 (entry options compared on agreed criteria, due week 7) is not seen by the client until the week 10 final readout, after the business case and roadmap have already been built on it, and no meeting agrees the criteria it uses.",
+      "W6 gets a single week (week 10) to draft the roadmap, define owners, check it with the people who would run it and produce D8, and D7 and D8 are due the same week as the final readout, so the client gets no time to read them.",
+      "The week 5 gate ('Is Spain attractive enough to justify designing entry options?') is in effect an early no-go point, but the plan does not say what happens to weeks 6-10 if the answer is no.",
+      "The total is stated as 7-10 weeks, but the schedule takes the 10-week top end of both phase estimates and never shows what the 7-week version would drop, which matters before quoting."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 4,
+      "deliverables": 3,
+      "governance": 4,
+      "coherence": 4,
+      "sizing": 4
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "D5 (the findings pack for sign-off) is due in week 4, but W2 and W3, whose findings it must carry, run until week 5, so either the pack is premature or the last week of both streams produces nothing.",
+      "W6 gets a single week (week 10) with only two activities, and D8 (entry plan and roadmap) names no owners or decisions per step, so the 'if go' entry plan the success criteria call for is thin, and D8 and D9 are due the same week as the final readout.",
+      "W5 starts in week 8, the same week the check-in picks the option it models, so there is no buffer if the steering committee does not settle the option at that meeting.",
+      "The week 5 gate ('Is Spain attractive enough to justify designing entry options?') is in effect an early no-go point, but the plan does not say what happens to weeks 6-10 if the answer is no.",
+      "The total is stated as 7-10 weeks, but the schedule takes the 10-week top end of both phase estimates and never shows what the 7-week version would drop, which matters before quoting."
+    ]
+  },
+  "better": "Y",
+  "why": "Each of Y's steering meetings settles a real choice that the next stream depends on: the segments at week 3 and the entry option at week 8. X, by contrast, builds its business case and roadmap on a 'preferred option' that no meeting ever chooses, and its week 8 check-in reviews nothing. Y's defects (a findings pack dated a week early and a thin roadmap) can be fixed by changing dates and content, whereas X's defect is a missing link in its chain of decisions."
+}

@@ -1,0 +1,697 @@
+{
+ "client": "Metalúrgica Norte",
+ "basis": {
+  "governing_question": "How can Metalúrgica Norte cut conversion cost across its six plants in Portugal and Spain and put the improvements in place in every plant?",
+  "archetype_id": "performance_improvement"
+ },
+ "total_duration_weeks": {
+  "min": 25,
+  "max": 29
+ },
+ "phases": [
+  {
+   "name": "Diagnostic",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 8,
+   "duration_weeks": {
+    "min": 6,
+    "max": 8
+   },
+   "duration_derived": false,
+   "objective_one_line": "Establish where conversion cost per part arises in each plant and size the improvements that would reduce it.",
+   "gate": {
+    "label": "Initiative go/no-go",
+    "decision": "Go or no-go on the sized improvements, and which plant pilots them first?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length",
+    "timeline",
+    "prior_attempts"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2",
+    "W3",
+    "W4"
+   ]
+  },
+  {
+   "name": "Implementation",
+   "order": 2,
+   "start_week": 9,
+   "end_week": 29,
+   "duration_weeks": {
+    "min": 19,
+    "max": 21
+   },
+   "duration_derived": false,
+   "objective_one_line": "Carry out the approved improvements at a pilot plant, roll them out to the other plants, and track savings.",
+   "gate": {
+    "label": "Final readout",
+    "decision": "Approve the final results and the running improvements in all six plants?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length",
+    "deliverable_format",
+    "timeline",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W5",
+    "W6",
+    "W7",
+    "W8"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Baseline: first two plants",
+   "answers": "Where does conversion cost per part sit in the first two plants diagnosed, and what causes it?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_week": 1,
+   "end_week": 3,
+   "follows": [],
+   "activities": [
+    "Build a conversion cost per part baseline from plant data",
+    "Observe the lines and interview the people who run them",
+    "Analyze the losses that raise cost per part by line"
+   ],
+   "deliverable_ids": [
+    "D1"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Baseline: third plant",
+   "answers": "Where does conversion cost per part sit in the third plant diagnosed, and what causes it?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_week": 4,
+   "end_week": 5,
+   "follows": [],
+   "activities": [
+    "Build the third plant's cost per part baseline",
+    "Observe the lines and interview the people who run them",
+    "Analyze the losses that raise cost per part by line"
+   ],
+   "deliverable_ids": [
+    "D2"
+   ]
+  },
+  {
+   "id": "W3",
+   "phase_order": 1,
+   "name": "Baseline: other three plants",
+   "answers": "Where does conversion cost per part sit in the other three plants, judged from their data?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_week": 4,
+   "end_week": 5,
+   "follows": [
+    "W1"
+   ],
+   "activities": [
+    "Collect cost and operational data from the other plants",
+    "Apply the drivers found in the first two plants to the data",
+    "Check the estimates with each Plant Director"
+   ],
+   "deliverable_ids": [
+    "D3"
+   ]
+  },
+  {
+   "id": "W4",
+   "phase_order": 1,
+   "name": "Improvement sizing by plant",
+   "answers": "Which improvements cut conversion cost per part by a measurable amount in each plant, and by how much?",
+   "traces_to": [
+    "success_criteria:1",
+    "gate:1"
+   ],
+   "start_week": 4,
+   "end_week": 8,
+   "follows": [
+    "W1"
+   ],
+   "activities": [
+    "Identify improvements for each plant's cost drivers",
+    "Size each improvement's cost per part reduction by plant",
+    "Compare plants as pilot candidates for the go/no-go"
+   ],
+   "deliverable_ids": [
+    "D4",
+    "D5"
+   ]
+  },
+  {
+   "id": "W5",
+   "phase_order": 2,
+   "name": "Pilot plant improvements",
+   "answers": "Do the approved improvements show savings in the cost data at the pilot plant?",
+   "traces_to": [
+    "success_criteria:1",
+    "success_criteria:2"
+   ],
+   "start_week": 9,
+   "end_week": 19,
+   "follows": [],
+   "activities": [
+    "Prepare the approved changes at the pilot plant",
+    "Put the changes live after the readiness workshop",
+    "Read savings in the plant's cost data against baseline"
+   ],
+   "deliverable_ids": [
+    "D6",
+    "D7",
+    "D8"
+   ]
+  },
+  {
+   "id": "W6",
+   "phase_order": 2,
+   "name": "Savings tracking by plant",
+   "answers": "What conversion cost per part does each plant show against its baseline once the improvements run?",
+   "traces_to": [
+    "success_criteria:1",
+    "gate:2"
+   ],
+   "start_week": 13,
+   "end_week": 29,
+   "follows": [],
+   "activities": [
+    "Set up a cost per part tracker against each baseline",
+    "Update the tracker from cost data as each plant goes live",
+    "Compare each plant's cost per part with its baseline"
+   ],
+   "deliverable_ids": [
+    "D9",
+    "D10"
+   ]
+  },
+  {
+   "id": "W7",
+   "phase_order": 2,
+   "name": "Plant rollout, wave 1",
+   "answers": "How are the improvements put in place in the first wave of the other plants?",
+   "traces_to": [
+    "success_criteria:2"
+   ],
+   "start_week": 19,
+   "end_week": 23,
+   "follows": [
+    "W5"
+   ],
+   "activities": [
+    "Adapt the changes tested at the pilot plant to each plant",
+    "Train the plant teams and put the changes live in wave 1",
+    "Track wave 1 results in each plant's cost data"
+   ],
+   "deliverable_ids": [
+    "D11",
+    "D12"
+   ]
+  },
+  {
+   "id": "W8",
+   "phase_order": 2,
+   "name": "Plant rollout, wave 2",
+   "answers": "How are the improvements put in place in the remaining plants so all six plants are running them?",
+   "traces_to": [
+    "success_criteria:2",
+    "gate:2"
+   ],
+   "start_week": 24,
+   "end_week": 29,
+   "follows": [
+    "W7"
+   ],
+   "activities": [
+    "Adjust the rollout approach using wave 1 results",
+    "Train the plant teams and put the changes live in wave 2",
+    "Confirm the improvements run in all six plants"
+   ],
+   "deliverable_ids": [
+    "D13",
+    "D14"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "Conversion cost per part baseline: first two plants",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 3,
+   "presented_at": "Workshop 1: plant baselines"
+  },
+  {
+   "id": "D2",
+   "name": "Conversion cost per part baseline: third plant",
+   "kind": "analysis",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 5,
+   "presented_at": "Workshop 1: plant baselines"
+  },
+  {
+   "id": "D3",
+   "name": "Conversion cost per part estimate: other three plants",
+   "kind": "analysis",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 5,
+   "presented_at": "Workshop 1: plant baselines"
+  },
+  {
+   "id": "D4",
+   "name": "Sized improvement list by plant",
+   "kind": "analysis",
+   "workstream_id": "W4",
+   "phase_order": 1,
+   "due_week": 6,
+   "presented_at": "Initiative go/no-go"
+  },
+  {
+   "id": "D5",
+   "name": "Go/no-go pack: baselines, sizing and pilot plant options",
+   "kind": "decision_pack",
+   "workstream_id": "W4",
+   "phase_order": 1,
+   "due_week": 7,
+   "presented_at": "Initiative go/no-go"
+  },
+  {
+   "id": "D6",
+   "name": "Pilot plant change plan and readiness checklist",
+   "kind": "design",
+   "workstream_id": "W5",
+   "phase_order": 2,
+   "due_week": 13,
+   "presented_at": "Workshop 2: pilot readiness"
+  },
+  {
+   "id": "D7",
+   "name": "Go-live record for the pilot plant",
+   "kind": "build",
+   "workstream_id": "W5",
+   "phase_order": 2,
+   "due_week": 16,
+   "presented_at": "Check-in: pilot results"
+  },
+  {
+   "id": "D8",
+   "name": "Pilot plant savings report against baseline",
+   "kind": "analysis",
+   "workstream_id": "W5",
+   "phase_order": 2,
+   "due_week": 18,
+   "presented_at": "Check-in: pilot results"
+  },
+  {
+   "id": "D9",
+   "name": "Conversion cost per part tracker against baselines",
+   "kind": "build",
+   "workstream_id": "W6",
+   "phase_order": 2,
+   "due_week": 15,
+   "presented_at": "Check-in: pilot results"
+  },
+  {
+   "id": "D10",
+   "name": "Final readout pack: results and running improvements",
+   "kind": "decision_pack",
+   "workstream_id": "W6",
+   "phase_order": 2,
+   "due_week": 28,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D11",
+   "name": "Wave 1 training and go-live record for each plant",
+   "kind": "build",
+   "workstream_id": "W7",
+   "phase_order": 2,
+   "due_week": 20,
+   "presented_at": "Workshop 3: wave 1 results"
+  },
+  {
+   "id": "D12",
+   "name": "Wave 1 results against baseline by plant",
+   "kind": "analysis",
+   "workstream_id": "W7",
+   "phase_order": 2,
+   "due_week": 22,
+   "presented_at": "Workshop 3: wave 1 results"
+  },
+  {
+   "id": "D13",
+   "name": "Wave 2 training and go-live record for each plant",
+   "kind": "build",
+   "workstream_id": "W8",
+   "phase_order": 2,
+   "due_week": 26,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D14",
+   "name": "Record of improvements running in all six plants",
+   "kind": "analysis",
+   "workstream_id": "W8",
+   "phase_order": 2,
+   "due_week": 27,
+   "presented_at": "Final readout"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 2,
+  "status_weeks": [
+   3,
+   7,
+   9,
+   11,
+   13,
+   15,
+   17,
+   21,
+   25,
+   27
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Agree access to plant data and people",
+    "attendees": [
+     "COO",
+     "Plant Directors of the six plants"
+    ],
+    "presents": [],
+    "decision": "Which two plants open their cost data and staff first for the baselines?",
+    "agenda": [
+     "Present the diagnostic approach and the plant baselines due by week 5",
+     "Align on the cost data and staff time each plant must provide",
+     "Decide which two plants open their data and staff first"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "workshop",
+    "phase_order": 1,
+    "week": 5,
+    "label": "Workshop 1: plant baselines",
+    "purpose": "Review plant cost baselines and estimates",
+    "attendees": [
+     "COO",
+     "Plant Directors of the six plants"
+    ],
+    "presents": [
+     "D1",
+     "D2",
+     "D3"
+    ],
+    "decision": "Which plants should the go/no-go pack put forward as pilot options?",
+    "agenda": [
+     "Present baselines for three plants and estimates for the other three",
+     "Review where conversion cost per part arises in each plant",
+     "Decide which plants the go/no-go pack puts forward as pilot options"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 8,
+    "label": "Initiative go/no-go",
+    "purpose": "Decide go/no-go and the pilot plant",
+    "attendees": [
+     "COO",
+     "Plant Directors of the six plants"
+    ],
+    "presents": [
+     "D4",
+     "D5"
+    ],
+    "decision": "Go or no-go on the sized improvements, and which plant pilots them first?",
+    "agenda": [
+     "Present the sized improvements by plant and the go/no-go pack",
+     "Review baselines, sizing and the pilot plant options",
+     "Decide go or no-go and which plant pilots first"
+    ]
+   },
+   {
+    "id": "G4",
+    "type": "workshop",
+    "phase_order": 2,
+    "week": 14,
+    "label": "Workshop 2: pilot readiness",
+    "purpose": "Review pilot readiness before go-live",
+    "attendees": [
+     "COO",
+     "Plant Directors of the six plants"
+    ],
+    "presents": [
+     "D6"
+    ],
+    "decision": "Go or no-go on taking the pilot plant live under the change plan?",
+    "agenda": [
+     "Present the pilot plant change plan and readiness checklist",
+     "Review checklist status before the pilot plant goes live",
+     "Decide whether the pilot plant goes live under the change plan"
+    ]
+   },
+   {
+    "id": "G5",
+    "type": "checkin",
+    "phase_order": 2,
+    "week": 19,
+    "label": "Check-in: pilot results",
+    "purpose": "Review pilot results and tracker",
+    "attendees": [
+     "COO",
+     "Plant Directors of the six plants"
+    ],
+    "presents": [
+     "D7",
+     "D8",
+     "D9"
+    ],
+    "decision": "Confirm the tracker and pilot savings as the measure for wave 2 results?",
+    "agenda": [
+     "Present the pilot go-live record and savings report against baseline",
+     "Review the conversion cost per part tracker against the baselines",
+     "Confirm how wave 2 results will be measured against baseline"
+    ]
+   },
+   {
+    "id": "G6",
+    "type": "workshop",
+    "phase_order": 2,
+    "week": 23,
+    "label": "Workshop 3: wave 1 results",
+    "purpose": "Review wave 1 results before final readout",
+    "attendees": [
+     "COO",
+     "Plant Directors of the six plants"
+    ],
+    "presents": [
+     "D7",
+     "D8",
+     "D9",
+     "D11",
+     "D12"
+    ],
+    "decision": "Go or no-go on starting wave 2 in the remaining plants, given wave 1 results?",
+    "agenda": [
+     "Present wave 1 results against baseline and go-live records by plant",
+     "Review pilot savings and the tracker as the basis for the final readout",
+     "Decide whether wave 2 starts in the remaining plants"
+    ]
+   },
+   {
+    "id": "G7",
+    "type": "gate",
+    "phase_order": 2,
+    "week": 29,
+    "label": "Final readout",
+    "purpose": "Approve final results and improvements",
+    "attendees": [
+     "COO",
+     "Plant Directors of the six plants"
+    ],
+    "presents": [
+     "D10",
+     "D13",
+     "D14"
+    ],
+    "decision": "Approve the final results and the running improvements in all six plants?",
+    "agenda": [
+     "Present the final readout pack with results by plant",
+     "Review the record of improvements running in all six plants",
+     "Decide whether to approve the results and running improvements"
+    ]
+   }
+  ]
+ },
+ "deadline": null,
+ "architect_notes": [
+  "The brief gives no engagement length, so the 25 to 29 weeks are an estimate from the work sizing, not a stated length.",
+  "Implementation takes the middle of a 16 to 24 week estimate; a 12-week pilot plant and 6-week waves would push it to the top.",
+  "Diagnostic assumes three representative plants are diagnosed on the floor and the other three extended from data; which plants is open.",
+  "No Measurement phase: results tracking runs inside Implementation, so post-launch tracking beyond the last wave needs the partner's decision."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Diagnostic",
+    "start": 1,
+    "end": 8
+   },
+   {
+    "phase": "Implementation",
+    "start": 9,
+    "end": 29
+   }
+  ]
+ },
+ "sizing": {
+  "length_basis": "estimated",
+  "sub_questions": [
+   {
+    "id": "Q1",
+    "question": "Where does conversion cost per part sit in each plant today, and what drives it?",
+    "phase_order": 1
+   },
+   {
+    "id": "Q2",
+    "question": "Which improvements, sized per plant, cut conversion cost per part by a measurable amount in every plant?",
+    "phase_order": 1
+   },
+   {
+    "id": "Q3",
+    "question": "Do the approved improvements show savings in the cost data at the pilot plant?",
+    "phase_order": 2
+   },
+   {
+    "id": "Q4",
+    "question": "How are the improvements put in place in the other plants so they are running in all six plants?",
+    "phase_order": 2
+   },
+   {
+    "id": "Q5",
+    "question": "What conversion cost per part does each plant show against its baseline once the improvements run?",
+    "phase_order": 2
+   }
+  ],
+  "drivers": [
+   {
+    "key": "sites",
+    "value": 6,
+    "source": "brief",
+    "evidence": "six plants in Portugal and Spain"
+   }
+  ],
+  "phases": [
+   {
+    "order": 1,
+    "name": "Diagnostic",
+    "planned_weeks": {
+     "min": 6,
+     "max": 8
+    },
+    "estimate": {
+     "min": 6,
+     "max": 8
+    },
+    "archetype_weeks": {
+     "min": 3,
+     "max": 6
+    },
+    "fixed_weeks": 2,
+    "work": [
+     {
+      "unit": "Site diagnosed on the floor (cost baseline, line observation, loss analysis)",
+      "from_library": true,
+      "driver": "sites",
+      "count": 3,
+      "at_once": 2,
+      "weeks_each": {
+       "min": 2,
+       "max": 3
+      }
+     }
+    ],
+    "why": "Three plants diagnosed two at a time, the other three extended from data; above typical 3-6 weeks because three plants need two rounds."
+   },
+   {
+    "order": 2,
+    "name": "Implementation",
+    "planned_weeks": {
+     "min": 19,
+     "max": 21
+    },
+    "estimate": {
+     "min": 16,
+     "max": 24
+    },
+    "archetype_weeks": {
+     "min": 8,
+     "max": 16
+    },
+    "fixed_weeks": 0,
+    "work": [
+     {
+      "unit": "Pilot site: changes made and savings shown in the cost data",
+      "from_library": true,
+      "driver": null,
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 8,
+       "max": 12
+      }
+     },
+     {
+      "unit": "Rollout wave of up to 3 sites",
+      "from_library": true,
+      "driver": "sites",
+      "count": 2,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 4,
+       "max": 6
+      }
+     }
+    ],
+    "why": "Pilot plant, then two rollout waves for the other five plants in sequence; above the typical 8-16 weeks because the work adds up."
+   }
+  ],
+  "estimate_total": {
+   "min": 22,
+   "max": 32
+  },
+  "planned_total": {
+   "min": 25,
+   "max": 29
+  },
+  "levers": "Running the two rollout waves side by side would cut the most; diagnosing two plants instead of three saves about two weeks."
+ }
+}

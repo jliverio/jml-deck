@@ -1,0 +1,124 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Floor diagnosis, two plants",
+      "question_id": "Q1",
+      "answers": "Where does conversion cost per part sit in the first two plants diagnosed, and what drives it?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "builds_on_meeting": null,
+      "activities": [
+        "Observe production lines and map conversion losses",
+        "Build cost-per-part baselines from operational data",
+        "Interview the people who run the lines on loss causes"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Remaining plants baseline",
+      "question_id": "Q1",
+      "answers": "Where does conversion cost per part sit in the third diagnosed plant and the three plants covered from data?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 3,
+      "duration": 2,
+      "follows": ["W1"],
+      "builds_on_meeting": null,
+      "activities": [
+        "Diagnose the third plant on the floor in a second round",
+        "Extend the baseline to the other three plants from data",
+        "Test extended baselines with the people who run each plant"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Improvement sizing by plant",
+      "question_id": "Q2",
+      "answers": "Which improvements, sized per plant, cut conversion cost per part measurably, and which plant pilots first?",
+      "traces_to": ["gate:1", "success_criteria:1"],
+      "start_offset": 3,
+      "duration": 5,
+      "follows": ["W1"],
+      "builds_on_meeting": null,
+      "activities": [
+        "Build the improvement list from loss and cost findings",
+        "Size each improvement per plant in conversion cost per part",
+        "Compare the plants as candidates to pilot first"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 2,
+      "name": "Pilot plant improvements",
+      "question_id": "Q3",
+      "answers": "Do the approved improvements show savings in the cost data at the pilot plant?",
+      "traces_to": ["success_criteria:1", "gate:2"],
+      "start_offset": 0,
+      "duration": 11,
+      "follows": [],
+      "builds_on_meeting": "G3",
+      "activities": [
+        "Prepare the pilot plant's changes for the readiness review",
+        "Make the approved changes on the lines with plant teams",
+        "Measure savings in the cost data against the baseline"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 2,
+      "name": "Cost per part tracking",
+      "question_id": "Q5",
+      "answers": "What conversion cost per part does each plant show against its baseline once the improvements run?",
+      "traces_to": ["success_criteria:1", "gate:2"],
+      "start_offset": 4,
+      "duration": 17,
+      "follows": [],
+      "builds_on_meeting": null,
+      "activities": [
+        "Set up the tracker on each plant's cost-per-part baseline",
+        "Report cost per part by plant as each wave goes live",
+        "Test each plant's result against the success criteria"
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 2,
+      "name": "Plant rollout, wave 1",
+      "question_id": "Q4",
+      "answers": "How are the improvements put in place in the first wave of plants so they run there?",
+      "traces_to": ["success_criteria:2", "gate:2"],
+      "start_offset": 11,
+      "duration": 4,
+      "follows": ["W4"],
+      "builds_on_meeting": null,
+      "activities": [
+        "Adapt the pilot's changes to each plant in the wave",
+        "Make the changes in the wave's plants with their teams",
+        "Train plant teams to run the changes themselves"
+      ]
+    },
+    {
+      "id": "W7",
+      "phase_order": 2,
+      "name": "Plant rollout, wave 2",
+      "question_id": "Q4",
+      "answers": "How are the improvements put in place in the remaining plants so they run in all six?",
+      "traces_to": ["success_criteria:2", "gate:2"],
+      "start_offset": 15,
+      "duration": 5,
+      "follows": ["W6"],
+      "builds_on_meeting": "G6",
+      "activities": [
+        "Adjust the rollout to what the first wave showed",
+        "Make the changes in the remaining plants with their teams",
+        "Train plant teams to run the changes themselves"
+      ]
+    }
+  ],
+  "notes": []
+}

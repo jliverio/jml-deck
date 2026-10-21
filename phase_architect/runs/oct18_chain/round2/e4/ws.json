@@ -1,0 +1,125 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Blueprint hypotheses",
+      "answers": "What must hold true about each component of the platform for small Iberian shippers to adopt it?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 1,
+      "follows": [],
+      "activities": [
+        "Frame the blueprint components of the platform",
+        "Write testable hypotheses for each blueprint component",
+        "Align on scope and hypotheses with key stakeholders"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Shipper and market evidence",
+      "answers": "How do small shippers in Iberia buy freight today, and does the evidence support each hypothesis?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 1,
+      "duration": 4,
+      "follows": ["W1"],
+      "activities": [
+        "Interview small shippers on how they arrange freight",
+        "Analyze market data and documents on Iberian freight demand",
+        "Test each hypothesis against the evidence gathered"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Platform prototype",
+      "answers": "What should a small shipper see and do on the platform to get freight matched?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 2,
+      "duration": 3,
+      "follows": ["W1"],
+      "activities": [
+        "Draft wireframes of the shipper journey",
+        "Build a clickable wireframe prototype",
+        "Test the prototype with small shippers"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 1,
+      "name": "Blueprint and pilot plan",
+      "answers": "What blueprint, tested against the hypotheses, and what plan for the pilot go to the go/no-go decision?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 5,
+      "duration": 3,
+      "follows": ["W2", "W3"],
+      "activities": [
+        "Assemble the blueprint from the tested hypotheses",
+        "Define pilot scope, milestones and launch criteria",
+        "Review the plan with the CEO, CTO and Head of Sales"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 2,
+      "name": "Pilot KPIs and enablement",
+      "answers": "What KPIs, internal roles and stakeholder agreements does the pilot need to track progress toward 200 active shippers?",
+      "traces_to": ["success_criteria:1"],
+      "start_offset": 0,
+      "duration": 15,
+      "follows": [],
+      "activities": [
+        "Agree pilot KPIs with the CEO, CTO and Head of Sales",
+        "Identify the internal hires the pilot needs",
+        "Report pilot KPI progress to the stakeholders"
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 2,
+      "name": "First shipper group",
+      "answers": "Which group of small shippers should the pilot launch to first?",
+      "traces_to": ["success_criteria:1"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "activities": [
+        "Analyze shipper segments using the Design phase evidence",
+        "Interview small shippers on whether they would join",
+        "Select the first target group for launch"
+      ]
+    },
+    {
+      "id": "W7",
+      "phase_order": 2,
+      "name": "Platform build and pilot",
+      "answers": "Can the first version be built, launched to the first shipper group and reach 200 active shippers?",
+      "traces_to": ["problem_statement", "success_criteria:1", "gate:2"],
+      "start_offset": 3,
+      "duration": 15,
+      "follows": ["W6"],
+      "activities": [
+        "Build the first version and prepare it for launch",
+        "Launch to the first group, then onboard more shippers",
+        "Collect usage data and shipper feedback during the pilot"
+      ]
+    },
+    {
+      "id": "W8",
+      "phase_order": 2,
+      "name": "Scale-up business case",
+      "answers": "What business case, implementation plan and roadmap does the pilot evidence support for scaling the platform?",
+      "traces_to": ["gate:2", "success_criteria:1"],
+      "start_offset": 12,
+      "duration": 6,
+      "follows": ["W7"],
+      "activities": [
+        "Analyze pilot usage data against the 200-shipper target",
+        "Build the business case and implementation plan",
+        "Draft the roadmap with the CEO, CTO and Head of Sales"
+      ]
+    }
+  ],
+  "notes": []
+}

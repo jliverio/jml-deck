@@ -1,0 +1,37 @@
+{
+  "basis": {
+    "governing_question": "How can MetalCo sell directly to small and mid-size contractors in Portugal and Spain through an online marketplace without losing its regional distributors?",
+    "archetype_id": "new_venture_build"
+  },
+  "phases": [
+    {
+      "name": "Design",
+      "order": 1,
+      "duration_weeks": { "min": 6, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Define the marketplace model and pilot plan, including how it works alongside the regional distributors.",
+      "gate": {
+        "label": "Go/no-go on pilot",
+        "decision": "Does the steering group approve the blueprint and pilot plan to start the pilot?"
+      },
+      "depends_on_assumptions": []
+    },
+    {
+      "name": "Pilot",
+      "order": 2,
+      "duration_weeks": { "min": 14, "max": 14 },
+      "duration_derived": false,
+      "objective_one_line": "Run the marketplace with contractors in one region and measure first repeat orders and distributor contract status.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Does the steering group sign off the pilot results to prepare the 2027 budget round?"
+      },
+      "depends_on_assumptions": ["deliverable_format", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "The 6-week Design and 14-week Pilot split of the stated 20 weeks is our estimate; confirm 14 weeks is enough for repeat orders.",
+    "The marketplace is new, so the plan stops at the pilot; rollout to other regions and markets is not in these phases.",
+    "Not covered by the phases: European Commission, digital product passports under Construction Products Regulation. Confirm whether it is in scope."
+  ]
+}

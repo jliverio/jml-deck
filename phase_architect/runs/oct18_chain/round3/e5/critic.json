@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 4,
+      "coherence": 4
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "No stream covers the cost side of export margins, so the plan can explain only price and distributor-term effects on a margin fall; the partner note flags this gap but the plan does not fix it.",
+      "D4, the findings pack that has to combine both streams, sits under W2 (distributor terms) instead of being a synthesis that draws on W1 and W2.",
+      "D1 is labelled 'interim', and no final price-and-margin-by-market deliverable follows it, because D2 is a pricing practice review, not the completed margin analysis.",
+      "W1 runs to week 8, but its last deliverable is D2 in week 6, so the stream has two weeks with no output.",
+      "D3 is due in week 5, the same week as the workshop that reviews it, which leaves no time for a pre-read before the steering meeting."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W2 is labelled 'after W1' but runs weeks 2-8 while W1 runs weeks 1-5, so the stated dependency is contradicted and W2 starts before the D1 baseline (week 3) it would depend on.",
+      "W1 ends in week 5, the same week as the workshop that decides where the remaining analysis should focus, so that decision can redirect only the distributor-terms work and not the pricing work.",
+      "D4 is due in week 8, the same week as the sign-off meeting that reviews it, which leaves no time for a pre-read or revisions before the gate.",
+      "D3 compares distributor terms across markets, but W2's question asks what changed in 2025, and no deliverable gives a year-on-year view of the terms.",
+      "The workshop decision 'Is the remaining analysis focused on the right drivers?' is a yes/no check, not a real choice of which markets or drivers to pursue."
+    ]
+  },
+  "better": "X",
+  "why": "X runs both streams in parallel and has a workshop decision on which markets and terms to detail while both streams are still active, and it delivers D4 a week before the readout. Y contradicts itself on W2's timing, ends the pricing work at the workshop that is supposed to refocus it, and delivers the findings pack in the same week as sign-off, although its margin bridge does reach the cost side that X leaves out."
+}

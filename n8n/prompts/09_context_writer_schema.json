@@ -1,0 +1,1 @@
+{"type": "object", "additionalProperties": false, "required": ["situation_title", "situation", "belief"], "properties": {"situation_title": {"type": "string"}, "situation": {"type": "array", "maxItems": 3, "items": {"type": "string"}}, "belief": {"type": "string"}}}

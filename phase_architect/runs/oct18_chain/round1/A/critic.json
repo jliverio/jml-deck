@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 4,
+      "deliverables": 4,
+      "governance": 4,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W6 sets the pilot KPIs (D8, week 8) and the distributor role (D9, week 10) only after the week-6 gate has approved the pilot plan, so the go/no-go approves a pilot whose success measures and distributor role are not yet fixed.",
+      "W7 starts reviewing the existing B2B portal for reuse in week 8, after the gate approved the blueprint and pilot plan, so the build scope and the four-week build to D10 in week 12 rest on a decision not yet made.",
+      "The week-16 workshop asks which scale-up options the final case should detail, but no deliverable sets out scale-up options before D12 in week 20 (D11 covers only interim results).",
+      "W7 is marked 'after W5' but starts in week 8 while W5 runs to week 9, and W8 is marked 'after W7' but starts in week 13 while W7 runs to week 18.",
+      "The third partner note on 'European Commission, digital product passports under Construction Products Regulation' has no basis in the brief and is garbled, so it needs to be rewritten or removed before the plan goes to the partner."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W7 is marked 'after W5, W6' but starts in week 15, and D11 (scale-up options) is due in week 16, three weeks after launch and before any pilot results exist (D10 is due week 19), so the week-16 workshop picks scale-up options without evidence and D12 follows the results by only one week.",
+      "The week-11 readiness workshop decides go-live by reviewing D6, D7 and D8 only, without reviewing the marketplace build (D9, due week 13) that is supposed to launch.",
+      "W2 combines contractor demand and distributor reaction in one stream with one evidence deliverable (D2), so distributor coexistence, the brief's main constraint, has no stream or deliverable of its own in the design phase.",
+      "W5 agrees the pilot KPIs again (D7) and the distributor role again (D8) after W3 has already detailed the success measures and aligned distributor roles with the council for the week-6 gate, which duplicates work and blurs what the gate approved.",
+      "No W2 activity builds or tests D3 (the wireframe prototype), yet D4 and the week-6 gate present the blueprint's hypotheses as 'tested'."
+    ]
+  },
+  "better": "X",
+  "why": "X gives distributor coexistence its own design stream, tests the wireframe with contractors, and puts interim pilot results (D11) in front of the week-16 workshop, so each scale-up and readiness decision has evidence behind it. Y builds its scale-up options before any pilot results, holds its go-live review without looking at the build, and has more ordering contradictions; X's defects are mostly sequencing and wording fixes."
+}

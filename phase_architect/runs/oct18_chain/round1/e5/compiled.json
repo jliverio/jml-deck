@@ -1,0 +1,207 @@
+{
+ "client": "Vinhos do Douro Lda",
+ "basis": {
+  "governing_question": "Why did export margins fall in 2025 at Vinhos do Douro Lda?",
+  "archetype_id": "performance_improvement"
+ },
+ "total_duration_weeks": {
+  "min": 8,
+  "max": 8
+ },
+ "phases": [
+  {
+   "name": "Diagnostic",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 8,
+   "duration_weeks": {
+    "min": 8,
+    "max": 8
+   },
+   "duration_derived": false,
+   "objective_one_line": "Establish why export margins fell in 2025, tracing the drivers through pricing by export market and distributor terms.",
+   "gate": {
+    "label": "Final readout",
+    "decision": "Do the CEO and Export Director accept the findings on the 2025 export margin decline?"
+   },
+   "depends_on_assumptions": [
+    "engagement_type",
+    "deliverable_format",
+    "timeline",
+    "prior_attempts",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Pricing by export market",
+   "answers": "How did realized prices and margins by export market change in 2025, and which markets explain the fall?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 5,
+   "follows": [],
+   "activities": [
+    "Extract export sales and cost data by market and year",
+    "Interview the people who set export prices in each market",
+    "Build a 2025 margin bridge by export market"
+   ],
+   "deliverable_ids": [
+    "D1"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Distributor terms",
+   "answers": "How do distributor terms differ across export markets, and what share of the 2025 margin decline do they explain?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 2,
+   "end_week": 8,
+   "follows": [
+    "W1"
+   ],
+   "activities": [
+    "Review distributor contracts and terms by export market",
+    "Interview the people who manage distributor relationships",
+    "Combine both sets of findings into one margin explanation"
+   ],
+   "deliverable_ids": [
+    "D2",
+    "D3"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "2025 export margin bridge by market",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 5,
+   "presented_at": "Workshop: first findings"
+  },
+  {
+   "id": "D2",
+   "name": "Distributor terms comparison by export market",
+   "kind": "analysis",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 5,
+   "presented_at": "Workshop: first findings"
+  },
+  {
+   "id": "D3",
+   "name": "Findings on the 2025 export margin decline",
+   "kind": "decision_pack",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 8,
+   "presented_at": "Final readout"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 1,
+  "status_weeks": [
+   2,
+   3,
+   4,
+   6,
+   7
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Confirm scope, team and calendar",
+    "attendees": [
+     "CEO",
+     "Export Director"
+    ],
+    "presents": [],
+    "decision": "Do the CEO and Export Director confirm scope, team and calendar for the diagnostic?",
+    "agenda": [
+     "Present the diagnostic objective and the 2025 export margin question",
+     "Review the two workstreams and the week 5 and week 8 deliverables",
+     "Confirm team, data access and meeting calendar"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "workshop",
+    "phase_order": 1,
+    "week": 5,
+    "label": "Workshop: first findings",
+    "purpose": "Review first findings on margin drivers",
+    "attendees": [
+     "CEO",
+     "Export Director"
+    ],
+    "presents": [
+     "D1",
+     "D2"
+    ],
+    "decision": "Which drivers of the margin decline should the final findings detail further?",
+    "agenda": [
+     "Present the 2025 export margin bridge by market",
+     "Review distributor terms by export market against the bridge",
+     "Discuss the drivers of the margin decline and what to detail next"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 8,
+    "label": "Final readout",
+    "purpose": "Close the diagnostic and accept the findings",
+    "attendees": [
+     "CEO",
+     "Export Director"
+    ],
+    "presents": [
+     "D3"
+    ],
+    "decision": "Do the CEO and Export Director accept the findings on the 2025 export margin decline?",
+    "agenda": [
+     "Present the findings on the 2025 export margin decline",
+     "Review how the findings address the workshop input",
+     "Decide whether the findings are accepted"
+    ]
+   }
+  ]
+ },
+ "deadline": null,
+ "architect_notes": [
+  "Engagement type is assumed assessment from the phrase 'a quick diagnostic'; confirm it before quoting, because an implementation scope would add phases.",
+  "Performance improvement archetype fits closest; its Implementation phase is dropped because the engagement is assessment only, leaving one Diagnostic phase.",
+  "The brief names no stages, so all eight weeks form one Diagnostic phase; confirm the client wants no later phase after the findings."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Diagnostic",
+    "start": 1,
+    "end": 8
+   }
+  ]
+ }
+}

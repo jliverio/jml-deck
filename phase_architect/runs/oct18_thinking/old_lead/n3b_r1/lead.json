@@ -1,0 +1,37 @@
+{
+  "basis": {
+    "governing_question": "How should Seguros Atlântida redesign the operating model of its claims, underwriting, sales, customer service and finance units, and plan the transition to it?",
+    "archetype_id": "operating_model_redesign"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 6, "max": 8 },
+      "duration_derived": false,
+      "objective_one_line": "Map how the five business units are organized and run today, and prioritize the areas the redesign must address.",
+      "gate": {
+        "label": "Diagnostic readout",
+        "decision": "Which prioritized improvement areas does the redesign take forward into Design?"
+      },
+      "depends_on_assumptions": ["engagement_length", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 8, "max": 10 },
+      "duration_derived": false,
+      "objective_one_line": "Define a target operating model for the five units and a transition plan by unit for executive committee approval.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the target model and transition plan by unit to take to the executive committee?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format", "timeline", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Engagement length is not given; 14-18 weeks is an estimate built on the archetype's typical weeks, extended for five business units.",
+    "No Implementation phase: the type is assessment, so the transition is planned in Design, not executed.",
+    "No Handover phase: the executive committee receiving the results is covered by the Design gate; confirm whether unit heads take over their plans."
+  ]
+}

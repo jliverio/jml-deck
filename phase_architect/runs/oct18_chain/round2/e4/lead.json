@@ -1,0 +1,37 @@
+{
+  "basis": {
+    "governing_question": "How should Atlas Logistics design and pilot a digital freight-matching platform for small shippers in Iberia?",
+    "archetype_id": "new_venture_build"
+  },
+  "phases": [
+    {
+      "name": "Design",
+      "order": 1,
+      "duration_weeks": { "min": 8, "max": 8 },
+      "duration_derived": false,
+      "objective_one_line": "Define the freight-matching platform blueprint and the pilot plan for small shippers in Iberia.",
+      "gate": {
+        "label": "Go/no-go on pilot",
+        "decision": "Is the blueprint approved and the pilot cleared to launch?"
+      },
+      "depends_on_assumptions": ["engagement_type", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Pilot",
+      "order": 2,
+      "duration_weeks": { "min": 18, "max": 18 },
+      "duration_derived": false,
+      "objective_one_line": "Launch a first version to a limited group of small shippers and track progress toward 200 active shippers.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Does the steering group accept the pilot results and the scale-up plan?"
+      },
+      "depends_on_assumptions": ["engagement_type", "deliverable_format", "timeline", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Engagement type is assumed from the pilot mention; confirm assessment and implementation before quoting, as it decides whether Pilot is in scope.",
+    "Design 8 and Pilot 18 weeks fill the stated 26; the split is an estimate, with Pilot longest so 200 active shippers can build up.",
+    "No Implementation or Measurement phase: the platform is new, so Pilot is the last phase and the rollout after it is not in these phases."
+  ]
+}

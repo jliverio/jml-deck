@@ -1,0 +1,35 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Pricing by export market",
+      "answers": "How did prices and margins in each export market change in 2025?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 0,
+      "duration": 4,
+      "follows": [],
+      "activities": [
+        "Analyze operational sales and cost data by export market",
+        "Compare price and margin movements across markets",
+        "Interview the people who set and negotiate prices"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Distributor terms",
+      "answers": "Which distributor terms changed, and how did they move export margins in 2025?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 0,
+      "duration": 4,
+      "follows": [],
+      "activities": [
+        "Review distributor contracts and agreed terms",
+        "Quantify the margin effect of each term using sales data",
+        "Interview staff who manage distributor relationships"
+      ]
+    }
+  ],
+  "notes": []
+}

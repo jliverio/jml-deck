@@ -1,0 +1,460 @@
+{
+  "basis": {
+    "governing_question": "How can Vale Verde Water Company reduce treated water lost through network leaks, tested in a two-district pilot and rolled out to all districts?",
+    "archetype_id": "performance_improvement"
+  },
+  "phases": [
+    {
+      "name": "Design",
+      "order": 1,
+      "duration_weeks": { "min": 12, "max": 12 },
+      "duration_derived": false,
+      "objective_one_line": "Define the loss-reduction program and its leak-detection routine, grounded in where and why the network loses water.",
+      "gate": {
+        "label": "Go/no-go on pilot",
+        "decision": "Approve the program design and pilot plan to start the pilot?"
+      },
+      "depends_on_assumptions": ["timeline", "prior_attempts"]
+    },
+    {
+      "name": "Pilot",
+      "order": 2,
+      "duration_weeks": { "min": 8, "max": 8 },
+      "duration_derived": false,
+      "objective_one_line": "Test the new leak-detection routine in two districts and measure its effect on water losses against the baseline.",
+      "gate": {
+        "label": "Go/no-go on rollout",
+        "decision": "Approve the rollout of the routine to the remaining districts?"
+      },
+      "depends_on_assumptions": []
+    },
+    {
+      "name": "Implementation",
+      "order": 3,
+      "duration_weeks": { "min": 13, "max": 13 },
+      "duration_derived": false,
+      "objective_one_line": "Roll out the leak-detection routine to the remaining districts so that all districts run it.",
+      "gate": {
+        "label": "Rollout sign-off",
+        "decision": "Confirm that all districts now run the new leak-detection routine?"
+      },
+      "depends_on_assumptions": []
+    },
+    {
+      "name": "Measurement",
+      "order": 4,
+      "duration_weeks": { "min": 6, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Track water losses against the success criteria and report whether the program delivered them.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Accept the final results against the two success criteria?"
+      },
+      "depends_on_assumptions": ["deliverable_format", "timeline"]
+    }
+  ],
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Water loss baseline",
+      "answers": "How much treated water does each district lose today, and where in the network?",
+      "traces_to": ["problem_statement", "success_criteria:1"],
+      "start_offset": 0,
+      "duration": 4,
+      "follows": [],
+      "activities": [
+        "Analyze operational data on water losses by district",
+        "Review network records and maintenance logs"
+      ],
+      "deliverables": [
+        { "id": "D1", "name": "Water loss baseline by district", "kind": "analysis", "due_week_in_phase": 4 }
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Current leak detection",
+      "answers": "How do crews find and fix leaks today, and where does that work break down?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 4,
+      "follows": [],
+      "activities": [
+        "Interview crews and staff who find and fix leaks",
+        "Review leak reports and repair records"
+      ],
+      "deliverables": [
+        { "id": "D2", "name": "Current practice and pain-point findings", "kind": "analysis", "due_week_in_phase": 4 }
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Program and routine design",
+      "answers": "What does the loss-reduction program consist of, and how will crews run the new leak-detection routine?",
+      "traces_to": ["problem_statement", "success_criteria:2"],
+      "start_offset": 4,
+      "duration": 6,
+      "follows": ["W1", "W2"],
+      "activities": [
+        "Compare program options on agreed criteria",
+        "Detail the chosen program and the crew routine",
+        "Test the routine design with the crews who will run it"
+      ],
+      "deliverables": [
+        { "id": "D3", "name": "Loss-reduction program design", "kind": "design", "due_week_in_phase": 8 },
+        { "id": "D4", "name": "Leak-detection routine for crews", "kind": "design", "due_week_in_phase": 10 }
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 1,
+      "name": "Pilot plan",
+      "answers": "How will the pilot run in two districts, and how will its effect on water losses be measured?",
+      "traces_to": ["success_criteria:1", "gate:1"],
+      "start_offset": 8,
+      "duration": 4,
+      "follows": ["W3"],
+      "activities": [
+        "Propose the two pilot districts for steering approval",
+        "Agree measures for pilot-district water losses",
+        "Plan crew training, data collection and pilot timing"
+      ],
+      "deliverables": [
+        { "id": "D5", "name": "Pilot plan for the two pilot districts", "kind": "design", "due_week_in_phase": 12 },
+        { "id": "D6", "name": "Agreed measures of pilot-district water losses", "kind": "enablement", "due_week_in_phase": 10 }
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 2,
+      "name": "Pilot readiness",
+      "answers": "Are crews and data in the two pilot districts ready for the new routine to go live?",
+      "traces_to": ["problem_statement", "success_criteria:1"],
+      "start_offset": 0,
+      "duration": 4,
+      "follows": [],
+      "activities": [
+        "Train crews in the two pilot districts on the routine",
+        "Confirm pre-pilot loss levels in the pilot districts",
+        "Prepare the data collection for pilot results"
+      ],
+      "deliverables": [
+        { "id": "D7", "name": "Trained crews in the two pilot districts", "kind": "enablement", "due_week_in_phase": 4 }
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 2,
+      "name": "Pilot operation",
+      "answers": "Does the new routine find and fix leaks in the two pilot districts, and does water loss fall?",
+      "traces_to": ["success_criteria:1"],
+      "start_offset": 4,
+      "duration": 4,
+      "follows": ["W5"],
+      "activities": [
+        "Run the leak-detection routine in the two pilot districts",
+        "Record water losses in the pilot districts",
+        "Collect crew feedback on how the routine works"
+      ],
+      "deliverables": [
+        { "id": "D8", "name": "Leak-detection routine running in the two pilot districts", "kind": "build", "due_week_in_phase": 6 }
+      ]
+    },
+    {
+      "id": "W7",
+      "phase_order": 2,
+      "name": "Pilot results, rollout plan",
+      "answers": "What did the pilot achieve against pre-pilot losses, and how should the remaining districts follow?",
+      "traces_to": ["success_criteria:1", "gate:2"],
+      "start_offset": 5,
+      "duration": 3,
+      "follows": ["W6"],
+      "activities": [
+        "Compare pilot-district losses with the pre-pilot baseline",
+        "Plan the rollout sequence for the remaining districts",
+        "Capture lessons from pilot crews for the rollout"
+      ],
+      "deliverables": [
+        { "id": "D9", "name": "Pilot results against pre-pilot water losses", "kind": "analysis", "due_week_in_phase": 8 },
+        { "id": "D10", "name": "Rollout plan for the remaining districts", "kind": "decision_pack", "due_week_in_phase": 8 }
+      ]
+    },
+    {
+      "id": "W8",
+      "phase_order": 3,
+      "name": "Rollout readiness",
+      "answers": "Which remaining districts start first, and are their crews and data ready for the new routine?",
+      "traces_to": ["problem_statement", "success_criteria:2"],
+      "start_offset": 0,
+      "duration": 4,
+      "follows": [],
+      "activities": [
+        "Train crews in the first rollout districts",
+        "Confirm the district sequence for the rollout",
+        "Adjust the routine with lessons from the pilot"
+      ],
+      "deliverables": [
+        { "id": "D11", "name": "Trained crews in the first rollout districts", "kind": "enablement", "due_week_in_phase": 4 }
+      ]
+    },
+    {
+      "id": "W9",
+      "phase_order": 3,
+      "name": "District rollout",
+      "answers": "How is the leak-detection routine put in place and kept running in every remaining district?",
+      "traces_to": ["success_criteria:2", "gate:3"],
+      "start_offset": 4,
+      "duration": 9,
+      "follows": ["W8"],
+      "activities": [
+        "Start the routine district by district in sequence",
+        "Coach crews on the routine as each district goes live",
+        "Resolve obstacles raised by district crews and managers"
+      ],
+      "deliverables": [
+        { "id": "D12", "name": "Routine running in the first rollout districts", "kind": "build", "due_week_in_phase": 9 },
+        { "id": "D13", "name": "Routine running in all districts", "kind": "build", "due_week_in_phase": 13 }
+      ]
+    },
+    {
+      "id": "W10",
+      "phase_order": 3,
+      "name": "Rollout tracking",
+      "answers": "Which districts run the routine, and are water losses falling where it is in place?",
+      "traces_to": ["success_criteria:1", "success_criteria:2"],
+      "start_offset": 5,
+      "duration": 8,
+      "follows": ["W9"],
+      "activities": [
+        "Track which districts run the routine and since when",
+        "Compare rolled-out district losses with the baseline"
+      ],
+      "deliverables": [
+        { "id": "D14", "name": "Rollout tracker by district", "kind": "analysis", "due_week_in_phase": 6 }
+      ]
+    },
+    {
+      "id": "W11",
+      "phase_order": 4,
+      "name": "Water loss tracking",
+      "answers": "How have water losses changed in the pilot districts and the rest of the network since launch?",
+      "traces_to": ["problem_statement", "success_criteria:1"],
+      "start_offset": 0,
+      "duration": 4,
+      "follows": [],
+      "activities": [
+        "Collect operational data on water losses by district",
+        "Compare pilot-district losses with pre-pilot levels",
+        "Interview district crews on how the routine runs"
+      ],
+      "deliverables": [
+        { "id": "D15", "name": "Interim water loss results by district", "kind": "analysis", "due_week_in_phase": 4 }
+      ]
+    },
+    {
+      "id": "W12",
+      "phase_order": 4,
+      "name": "Results against criteria",
+      "answers": "Do water losses in the pilot districts and routine use in all districts meet the success criteria?",
+      "traces_to": ["success_criteria:1", "success_criteria:2", "gate:4"],
+      "start_offset": 3,
+      "duration": 3,
+      "follows": ["W11"],
+      "activities": [
+        "Check routine use against the all-districts criterion",
+        "Assess water loss results against the pre-pilot baseline",
+        "Write the final results report for the steering group"
+      ],
+      "deliverables": [
+        { "id": "D16", "name": "Final results report against the success criteria", "kind": "decision_pack", "due_week_in_phase": 6 }
+      ]
+    }
+  ],
+  "governance": {
+    "status_cadence_weeks": 2,
+    "events": [
+      {
+        "id": "G1",
+        "type": "kickoff",
+        "phase_order": 1,
+        "week_in_phase": 1,
+        "label": "Kick-off",
+        "purpose": "Align on goals, scope and ways of working",
+        "presents": [],
+        "decision": "Confirm the scope and the steering group for the engagement?",
+        "agenda": [
+          "Present the scope and the plan of work",
+          "Align on access to network data and maintenance crews",
+          "Confirm how the steering group meets and decides"
+        ],
+        "attendees": ["CEO", "Operations Director", "Network Maintenance Manager"]
+      },
+      {
+        "id": "G2",
+        "type": "workshop",
+        "phase_order": 1,
+        "week_in_phase": 4,
+        "label": "Workshop 1: first findings",
+        "purpose": "Review loss baseline and current practice",
+        "presents": ["D1", "D2"],
+        "decision": "Which parts of the network should the program design focus on first?",
+        "agenda": [
+          "Present the water loss baseline by district",
+          "Review how crews find and fix leaks today",
+          "Decide where the program design focuses first"
+        ],
+        "attendees": ["CEO", "Operations Director", "Network Maintenance Manager"]
+      },
+      {
+        "id": "G3",
+        "type": "workshop",
+        "phase_order": 1,
+        "week_in_phase": 8,
+        "label": "Workshop 2: program design",
+        "purpose": "Review the program and routine design",
+        "presents": ["D3"],
+        "decision": "Confirm the program design as the basis for the pilot plan?",
+        "agenda": [
+          "Present the loss-reduction program design",
+          "Discuss how the routine fits crews' daily work",
+          "Confirm the basis for the pilot plan"
+        ],
+        "attendees": ["CEO", "Operations Director", "Network Maintenance Manager"]
+      },
+      {
+        "id": "G4",
+        "type": "gate",
+        "phase_order": 1,
+        "week_in_phase": 12,
+        "label": "Go/no-go on pilot",
+        "purpose": "Decide whether the pilot starts",
+        "presents": ["D4", "D5", "D6"],
+        "decision": "Approve the program design and pilot plan to start the pilot?",
+        "agenda": [
+          "Present the routine design and the pilot plan",
+          "Review the agreed pilot measures",
+          "Decide whether the pilot starts"
+        ],
+        "attendees": ["CEO", "Operations Director", "Network Maintenance Manager"]
+      },
+      {
+        "id": "G5",
+        "type": "workshop",
+        "phase_order": 2,
+        "week_in_phase": 4,
+        "label": "Workshop 3: pilot readiness",
+        "purpose": "Review readiness before the pilot goes live",
+        "presents": ["D7"],
+        "decision": "Is the pilot ready to go live in the two pilot districts?",
+        "agenda": [
+          "Present crew training in the pilot districts",
+          "Review starting water loss levels in those districts",
+          "Decide whether the routine goes live"
+        ],
+        "attendees": ["CEO", "Operations Director", "Network Maintenance Manager"]
+      },
+      {
+        "id": "G6",
+        "type": "gate",
+        "phase_order": 2,
+        "week_in_phase": 8,
+        "label": "Go/no-go on rollout",
+        "purpose": "Decide whether the rollout starts",
+        "presents": ["D8", "D9", "D10"],
+        "decision": "Approve the rollout of the routine to the remaining districts?",
+        "agenda": [
+          "Present the pilot results against pre-pilot losses",
+          "Review the rollout plan for the remaining districts",
+          "Decide whether the rollout starts"
+        ],
+        "attendees": ["CEO", "Operations Director", "Network Maintenance Manager"]
+      },
+      {
+        "id": "G7",
+        "type": "workshop",
+        "phase_order": 3,
+        "week_in_phase": 4,
+        "label": "Workshop 4: rollout start",
+        "purpose": "Review readiness before rollout goes live",
+        "presents": ["D11"],
+        "decision": "Are the first rollout districts ready to start the new routine?",
+        "agenda": [
+          "Present crew training and readiness by district",
+          "Review the district sequence for the rollout",
+          "Decide whether the first districts go live"
+        ],
+        "attendees": ["CEO", "Operations Director", "Network Maintenance Manager"]
+      },
+      {
+        "id": "G8",
+        "type": "workshop",
+        "phase_order": 3,
+        "week_in_phase": 9,
+        "label": "Workshop 5: rollout review",
+        "purpose": "Review rollout progress and early results",
+        "presents": ["D12", "D14"],
+        "decision": "Confirm or adjust the rollout sequence for the remaining districts?",
+        "agenda": [
+          "Present the districts now running the routine",
+          "Review the rollout tracker and early water loss results",
+          "Decide any change to the rollout sequence"
+        ],
+        "attendees": ["CEO", "Operations Director", "Network Maintenance Manager"]
+      },
+      {
+        "id": "G9",
+        "type": "gate",
+        "phase_order": 3,
+        "week_in_phase": 13,
+        "label": "Rollout sign-off",
+        "purpose": "Confirm the routine runs in all districts",
+        "presents": ["D13"],
+        "decision": "Confirm that all districts now run the new leak-detection routine?",
+        "agenda": [
+          "Present the routine running in all districts",
+          "Review the rollout tracker by district",
+          "Confirm the start of the measurement stage"
+        ],
+        "attendees": ["CEO", "Operations Director", "Network Maintenance Manager"]
+      },
+      {
+        "id": "G10",
+        "type": "checkin",
+        "phase_order": 4,
+        "week_in_phase": 4,
+        "label": "Check-in: interim results",
+        "purpose": "Review interim results against the baseline",
+        "presents": ["D15"],
+        "decision": "Confirm what the final report must show on each success criterion?",
+        "agenda": [
+          "Present water loss results against the baseline",
+          "Review which districts run the routine",
+          "Confirm what the final report must show"
+        ],
+        "attendees": ["CEO", "Operations Director", "Network Maintenance Manager"]
+      },
+      {
+        "id": "G11",
+        "type": "gate",
+        "phase_order": 4,
+        "week_in_phase": 6,
+        "label": "Final readout",
+        "purpose": "Present final results against the criteria",
+        "presents": ["D16"],
+        "decision": "Accept the final results against the two success criteria?",
+        "agenda": [
+          "Present the final results report",
+          "Review results against both success criteria",
+          "Decide whether the criteria are met"
+        ],
+        "attendees": ["CEO", "Operations Director", "Network Maintenance Manager"]
+      }
+    ]
+  },
+  "architect_notes": [
+    "Confirm merging diagnostic and design (6 + 6 weeks) into one Design phase: the brief lists five stages, plans allow four.",
+    "Departing from performance_improvement: a Pilot precedes the rollout and Measurement is its own phase after it."
+  ]
+}

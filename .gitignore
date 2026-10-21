@@ -1,3 +1,5 @@
 tests/*.pptx
 __pycache__/
 n8n/tests/out/
+out/
+phase_architect/tests/out_plan_size/

@@ -1,0 +1,96 @@
+{
+ "brief": {
+  "hard_fields": {
+   "client": {
+    "value": "Farmácias Lusas, a chain of 40 pharmacies",
+    "source": "stated",
+    "quote": "Farmácias Lusas, a chain of 40 pharmacies",
+    "assumption_text": null
+   },
+   "problem_statement": {
+    "value": "Farmácias Lusas wants to choose an ERP that replaces its finance, purchasing and inventory systems, migrate its data, and roll it out to its 40 pharmacies and 2 warehouses.",
+    "source": "stated",
+    "quote": "Farmácias Lusas wants to choose an ERP that replaces its finance, purchasing and inventory systems, migrate its data, and roll it out to its 40 pharmacies and 2 warehouses.",
+    "assumption_text": null
+   }
+  },
+  "required": {
+   "engagement_type": {
+    "value": "assessment_and_implementation",
+    "source": "stated",
+    "quote": "assessment_and_implementation",
+    "assumption_text": null
+   },
+   "engagement_length": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": "Not given; the Phase Architect estimates the duration.",
+    "weeks_min": null,
+    "weeks_max": null,
+    "duration_derived": false
+   },
+   "stakeholders": {
+    "value": [
+     "CEO",
+     "CFO",
+     "Operations Director",
+     "IT Manager"
+    ],
+    "source": "stated",
+    "quote": null,
+    "assumption_text": null
+   }
+  },
+  "soft_fields": {
+   "deliverable_format": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "timeline": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "prior_attempts": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "success_criteria": {
+    "value": "The new ERP running for finance, purchasing and inventory in all 40 pharmacies and both warehouses",
+    "source": "stated",
+    "quote": "The new ERP running for finance, purchasing and inventory in all 40 pharmacies and both warehouses",
+    "assumption_text": null
+   },
+   "out_of_scope": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "workstreams": {
+    "value": null,
+    "count": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   }
+  }
+ },
+ "success_criteria_list": [
+  "The new ERP running for finance, purchasing and inventory in all 40 pharmacies and both warehouses"
+ ],
+ "profile": {
+  "problem_focus": "topic",
+  "topic": "Pharmacy ERP",
+  "current_state": "40 pharmacies and 2 warehouses on three separate systems for finance, purchasing and inventory.",
+  "market": null
+ },
+ "market_findings": [],
+ "weeks_available": null
+}

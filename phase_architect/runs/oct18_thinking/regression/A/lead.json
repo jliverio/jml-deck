@@ -1,0 +1,176 @@
+{
+  "basis": {
+    "governing_question": "How can MetalCo sell directly to small and mid-size contractors in Portugal and Spain through an online marketplace without losing its regional distributors?",
+    "archetype_id": "new_venture_build"
+  },
+  "sizing": {
+    "length_basis": "stated",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "What do small and mid-size contractors need from a direct online marketplace to place and repeat orders?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "How can the marketplace sell directly to contractors while no regional distributor ends its contract?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q3",
+        "question": "What marketplace blueprint and pilot plan can MetalCo's leadership and the regional distributors council approve?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q4",
+        "question": "Do contractors in the pilot region place first repeat orders through the marketplace's first version?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q5",
+        "question": "Does any regional distributor terminate its contract because of the marketplace during the pilot?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q6",
+        "question": "What business case and scale-up plan do the pilot results support?",
+        "phase_order": 2
+      }
+    ],
+    "drivers": [
+      {
+        "key": "stakeholder_groups",
+        "value": 3,
+        "source": "brief",
+        "evidence": "the CEO, our Head of Sales and the regional distributors council"
+      },
+      {
+        "key": "customer_segments",
+        "value": 2,
+        "source": "assumed",
+        "evidence": ""
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Interview round with one stakeholder group",
+            "from_library": true,
+            "driver": "stakeholder_groups",
+            "count": 3,
+            "weeks_each": {
+              "min": 1,
+              "max": 2
+            },
+            "at_once": 3
+          },
+          {
+            "unit": "Customer segment tested with interviews and a prototype",
+            "from_library": true,
+            "driver": "customer_segments",
+            "count": 2,
+            "weeks_each": {
+              "min": 2,
+              "max": 3
+            },
+            "at_once": 2
+          },
+          {
+            "unit": "Blueprint and pilot plan",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": {
+              "min": 2,
+              "max": 3
+            },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": {
+          "min": 7,
+          "max": 10
+        },
+        "why": "Three interview rounds at once, two segments tested side by side, then the blueprint; above the typical 5-8 weeks because interviews are added."
+      },
+      {
+        "phase_order": 2,
+        "work": [
+          {
+            "unit": "First version built for a limited launch",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": {
+              "min": 6,
+              "max": 10
+            },
+            "at_once": 1
+          },
+          {
+            "unit": "Live test with a limited group of users",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": {
+              "min": 6,
+              "max": 10
+            },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 0,
+        "estimate": {
+          "min": 12,
+          "max": 20
+        },
+        "why": "The first version is built, then tested live with a limited group in one region, one after the other."
+      }
+    ],
+    "levers": "A narrower first version would shorten the engagement most; a shorter live test would too, but risks too few repeat orders to judge."
+  },
+  "phases": [
+    {
+      "name": "Design",
+      "order": 1,
+      "duration_weeks": {
+        "min": 7,
+        "max": 7
+      },
+      "duration_derived": false,
+      "objective_one_line": "Define the marketplace blueprint and pilot plan, tested with contractors and with the regional distributors council.",
+      "gate": {
+        "label": "Go/no-go on pilot",
+        "decision": "Approve the blueprint and go ahead with the pilot in one region?"
+      },
+      "depends_on_assumptions": []
+    },
+    {
+      "name": "Pilot",
+      "order": 2,
+      "duration_weeks": {
+        "min": 13,
+        "max": 13
+      },
+      "duration_derived": false,
+      "objective_one_line": "Build a first marketplace version, launch it to contractors in one region and track repeat orders and distributor contracts.",
+      "gate": {
+        "label": "Pilot readout",
+        "decision": "Approve the pilot results and scale-up case to take to the 2027 budget round?"
+      },
+      "depends_on_assumptions": [
+        "deliverable_format",
+        "out_of_scope"
+      ]
+    }
+  ],
+  "architect_notes": [
+    "Stated 20 weeks is split 7 Design and 13 Pilot in proportion to the estimates; the work adds up to 19 to 30 weeks.",
+    "No Implementation phase: the marketplace is new, so the plan stops at Pilot and the rollout after it is not in these phases.",
+    "Not covered by the phases: European Commission, digital product passports for construction products. Confirm whether it is in scope.",
+    "Customer segments are assumed at 2, small and mid-size contractors; a third segment would add 2 to 3 weeks to Design."
+  ]
+}

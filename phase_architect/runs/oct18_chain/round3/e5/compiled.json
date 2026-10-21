@@ -1,0 +1,216 @@
+{
+ "client": "Vinhos do Douro Lda",
+ "basis": {
+  "governing_question": "Why did Vinhos do Douro Lda's export margins fall in 2025?",
+  "archetype_id": "performance_improvement"
+ },
+ "total_duration_weeks": {
+  "min": 8,
+  "max": 8
+ },
+ "phases": [
+  {
+   "name": "Diagnostic",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 8,
+   "duration_weeks": {
+    "min": 8,
+    "max": 8
+   },
+   "duration_derived": false,
+   "objective_one_line": "Establish why export margins fell in 2025 by examining pricing in each export market and distributor terms.",
+   "gate": {
+    "label": "Final readout",
+    "decision": "Do the CEO and Export Director accept the findings on why export margins fell?"
+   },
+   "depends_on_assumptions": [
+    "engagement_type",
+    "deliverable_format",
+    "timeline",
+    "prior_attempts",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Pricing by export market",
+   "answers": "How did realized prices and margins move in each export market in 2025, and where did they fall most?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 8,
+   "follows": [],
+   "activities": [
+    "Analyze 2025 sales and margin data by export market",
+    "Interview the people who set and approve export prices",
+    "Review price lists and pricing documents by market"
+   ],
+   "deliverable_ids": [
+    "D1",
+    "D2"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Distributor terms",
+   "answers": "How did distributor terms affect export margins in 2025, and which terms weigh most on margin?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 8,
+   "follows": [],
+   "activities": [
+    "Review distributor contracts and agreed terms",
+    "Analyze invoice and payment data against agreed terms",
+    "Interview staff who manage distributor relationships"
+   ],
+   "deliverable_ids": [
+    "D3",
+    "D4"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "2025 price and margin by export market, interim",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Workshop: first findings"
+  },
+  {
+   "id": "D2",
+   "name": "Pricing practice and price list review by market",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 6,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D3",
+   "name": "Distributor terms against invoices and payments",
+   "kind": "analysis",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 5,
+   "presented_at": "Workshop: first findings"
+  },
+  {
+   "id": "D4",
+   "name": "Findings on why 2025 export margins fell",
+   "kind": "decision_pack",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 7,
+   "presented_at": "Final readout"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 1,
+  "status_weeks": [
+   2,
+   3,
+   4,
+   6,
+   7
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Start the diagnostic and secure data access",
+    "attendees": [
+     "CEO",
+     "Export Director"
+    ],
+    "presents": [],
+    "decision": "Will the CEO and Export Director open access to export pricing, invoice and payment data?",
+    "agenda": [
+     "Present the question on 2025 export margins and the 8-week diagnostic",
+     "Discuss the pricing, invoice and payment data the work needs",
+     "Confirm who supplies the data and who the team speaks with"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "workshop",
+    "phase_order": 1,
+    "week": 5,
+    "label": "Workshop: first findings",
+    "purpose": "Review first price and distributor findings",
+    "attendees": [
+     "CEO",
+     "Export Director"
+    ],
+    "presents": [
+     "D1",
+     "D3"
+    ],
+    "decision": "Which markets and distributor terms should the final findings detail?",
+    "agenda": [
+     "Present interim 2025 price and margin by export market",
+     "Present distributor terms checked against invoices and payments",
+     "Discuss which markets and terms the final findings should detail"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 8,
+    "label": "Final readout",
+    "purpose": "Present findings and close the diagnostic",
+    "attendees": [
+     "CEO",
+     "Export Director"
+    ],
+    "presents": [
+     "D2",
+     "D4"
+    ],
+    "decision": "Do the CEO and Export Director accept the findings on why export margins fell?",
+    "agenda": [
+     "Present the findings on why 2025 export margins fell",
+     "Review the pricing practice and price list review by market",
+     "Decide whether to accept the findings"
+    ]
+   }
+  ]
+ },
+ "deadline": null,
+ "architect_notes": [
+  "Engagement type is assumed from 'a quick diagnostic'; confirm assessment-only before quoting, because an implementation scope would add phases to the plan.",
+  "Departure from the performance_improvement archetype: Implementation dropped because the type is assessment, so one Diagnostic phase covers the stated eight weeks.",
+  "Neither stream covers the cost side of export margins; the plan examines only pricing by market and distributor terms."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Diagnostic",
+    "start": 1,
+    "end": 8
+   }
+  ]
+ }
+}

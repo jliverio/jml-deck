@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 2,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "The design half of the brief is missing: all twelve functional deliverables are 'analysis' baselines and options, and neither the phase objective nor any activity designs the program, although the note says design sits inside the Diagnostic phase.",
+      "D13 (sales and marketing) and D14 (pricing) are due in week 10, after Workshop 2 in week 9 has decided which options go into the consolidated savings case, so their options reach D4 and the week-12 sign-off without going through that selection decision.",
+      "W4 Legal delivers sized savings options (D5) in week 4, the same week Workshop 1 first confirms the service-level baseline those options are meant to be tested against.",
+      "No steering meeting falls between weeks 4 and 9 while eight deliverables land (D10 waits four weeks for review), and Workshop 2 then has to cover eight streams' options in one session.",
+      "Stream timing looks arbitrary: Legal starts in week 1 and ends in week 4 while HR starts in week 4 and Sales and marketing in week 5, and nine streams finish by week 8, so weeks 9-12 have no functional work that could carry the design."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 3,
+      "workstreams": 3,
+      "deliverables": 2,
+      "governance": 2,
+      "coherence": 2
+    },
+    "verdict": "No",
+    "defects": [
+      "All nine design deliverables (D2, D3, D4, D5, D10, D11, D12, D13, D15) are due in week 12, the week of the final readout, so the steering group is asked to approve savings options it has never reviewed.",
+      "D9 (service-level test of savings options) and D7 (reconciled savings) are also due in week 12, the same week as the options they test and reconcile, which leaves no time for either check or for closing any gap to 8%.",
+      "Workshop 2 in week 8 decides which cost areas to detail but reviews only D1 (procurement spend) and D14 (legal constraints), so it chooses with no evidence from the other ten streams (Manufacturing, Logistics and Warehousing deliver nothing before week 12), and all twelve streams keep designing to week 12 whatever it decides.",
+      "The 'after' dependencies contradict the timings: W7 starts in week 3 'after W3', W9 'after W2', W10 'after W5', W11 'after W1' and W12 'after W2, W7', yet every predecessor runs to week 12 and has no deliverable by the dependent stream's start, so nothing defines what each stream waits for.",
+      "The gate asks for approval of the 'program design', but the note admits no stream or deliverable owns the cross-stream program design, so it would be stitched together from twelve separate delivery plans in the final week."
+    ]
+  },
+  "better": "X",
+  "why": "X gives the steering group a staged view (cost and service baselines in week 4, most savings options in week 9) before it asks for sign-off, whereas Y holds nine of twelve streams' output until the final week and asks for approval of options nobody has reviewed. Y covers the design half of the brief better and gives Legal, Customer service and IT useful cross-stream roles, but its week-12 pile-up and contradictory dependencies are harder to fix than X's missing design deliverables and late Sales and marketing and Pricing timing."
+}

@@ -1,0 +1,36 @@
+{
+  "basis": {
+    "governing_question": "Should Quinta Azul enter the Spanish retail market and, if so, how?",
+    "archetype_id": "market_entry_assessment"
+  },
+  "phases": [
+    {
+      "name": "Research",
+      "order": 1,
+      "duration_weeks": { "min": 4, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Assess the Spanish retail market, its competitors and customer needs, and Quinta Azul's capability to win there.",
+      "gate": {
+        "label": "Go/no-go on Design",
+        "decision": "Go or no-go on designing an entry plan for the Spanish retail market?"
+      },
+      "depends_on_assumptions": ["engagement_length", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 3, "max": 5 },
+      "duration_derived": false,
+      "objective_one_line": "Define and compare entry options for Spain, and set out the entry plan if the answer is go.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the final go or no-go on Spain and, if go, the entry plan?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format", "timeline", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Length is not given; 7 to 11 weeks is an estimate from the archetype's typical weeks for one market and two stakeholders.",
+    "No Implementation phase: the engagement type is assessment and the success criteria end at the entry plan."
+  ]
+}

@@ -1,0 +1,163 @@
+{
+  "basis": {
+    "governing_question": "What strategy should Banco Horizonte follow for its digital channels?",
+    "archetype_id": null
+  },
+  "sizing": {
+    "length_basis": "estimated",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "How well do Banco Horizonte's digital channels serve its customers and the bank today?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "What do customers expect from digital banking channels, and what do peer banks offer?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q3",
+        "question": "Which strategic options exist for the digital channels, and how do they compare?",
+        "phase_order": 3
+      },
+      {
+        "id": "Q4",
+        "question": "What target strategy and roadmap does the bank need for its digital channels?",
+        "phase_order": 3
+      }
+    ],
+    "drivers": [
+      {
+        "key": "stakeholder_groups",
+        "value": 3,
+        "source": "assumed",
+        "evidence": ""
+      },
+      {
+        "key": "customer_segments",
+        "value": 3,
+        "source": "assumed",
+        "evidence": ""
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Interview round with one stakeholder group",
+            "from_library": true,
+            "driver": "stakeholder_groups",
+            "count": 3,
+            "weeks_each": { "min": 1, "max": 2 },
+            "at_once": 3
+          },
+          {
+            "unit": "Baseline of digital channel usage, journeys and cost to serve",
+            "from_library": false,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 2, "max": 3 },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": { "min": 5, "max": 7 },
+        "why": "All three interview groups run in one round, then the channel baseline is built; no archetype applies, so no typical range to check."
+      },
+      {
+        "phase_order": 2,
+        "work": [
+          {
+            "unit": "Customer segment researched on digital banking needs and behavior",
+            "from_library": false,
+            "driver": "customer_segments",
+            "count": 3,
+            "weeks_each": { "min": 2, "max": 3 },
+            "at_once": 3
+          },
+          {
+            "unit": "Peer banks' digital channels benchmarked on desk data",
+            "from_library": false,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 1, "max": 2 },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 1,
+        "estimate": { "min": 4, "max": 6 },
+        "why": "The three segments are researched side by side, then peers are benchmarked on desk data; no archetype applies, so no typical range."
+      },
+      {
+        "phase_order": 3,
+        "work": [
+          {
+            "unit": "Options, target strategy and roadmap for the digital channels",
+            "from_library": false,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 4, "max": 5 },
+            "at_once": 1
+          },
+          {
+            "unit": "Client review and sign-off cycle",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 1, "max": 2 },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 1,
+        "estimate": { "min": 6, "max": 8 },
+        "why": "Options, target strategy and roadmap are built in one block, then one sign-off cycle with the client; no archetype applies, so no typical range."
+      }
+    ],
+    "levers": "Running Diagnostic interviews alongside the baseline, and benchmarking peers alongside the customer research, would shorten the engagement most."
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 5, "max": 7 },
+      "duration_derived": false,
+      "objective_one_line": "Assess how Banco Horizonte's digital channels perform today for customers and the bank, and where they fall short.",
+      "gate": {
+        "label": "Baseline readout",
+        "decision": "Which gaps in today's digital channels go forward into the research phase?"
+      },
+      "depends_on_assumptions": ["engagement_length", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Research",
+      "order": 2,
+      "duration_weeks": { "min": 4, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Gather evidence on customer needs and peer bank practice in digital channels for the strategy to build on.",
+      "gate": {
+        "label": "Evidence readout",
+        "decision": "Which customer needs and peer practices should the strategy answer?"
+      },
+      "depends_on_assumptions": ["engagement_length"]
+    },
+    {
+      "name": "Design",
+      "order": 3,
+      "duration_weeks": { "min": 6, "max": 8 },
+      "duration_derived": false,
+      "objective_one_line": "Define the digital channel strategy and roadmap for Banco Horizonte, with the options compared.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the digital channel strategy and roadmap as the final result?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format", "timeline", "success_criteria", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Engagement length is not given: 15 to 21 weeks is an estimate summed from the three phase estimates; confirm the length before quoting.",
+    "Customer segments (3) and interview groups (3) are assumed; each further batch of three segments adds 2 to 3 weeks to Research.",
+    "No archetype fits a strategy-only assessment, so phases and sizing come from the work and no typical range was used as a check."
+  ]
+}

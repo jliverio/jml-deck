@@ -1,0 +1,83 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Align on scope, team and calendar",
+      "attendees": ["CEO", "Head of Sales", "Regional distributors council"],
+      "presents": [],
+      "decision": "Does the steering group confirm the scope, team and calendar for the engagement?",
+      "agenda": [
+        "Present the engagement objective and the two phases through week 20",
+        "Review the team, the steering meeting calendar and the success criteria",
+        "Confirm the scope, including how regional distributors are involved"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Check-in: design findings",
+      "purpose": "Share demand and distributor findings",
+      "attendees": ["CEO", "Head of Sales", "Regional distributors council"],
+      "presents": ["D2", "D3", "D4"],
+      "decision": "Which hypotheses and distributor role options does the blueprint detail?",
+      "agenda": [
+        "Present contractor demand evidence and the tested wireframe prototype",
+        "Review the distributor overlap map and the role options",
+        "Decide which options the blueprint and pilot plan detail"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Go/no-go on pilot",
+      "purpose": "Decide whether to start the pilot",
+      "attendees": ["CEO", "Head of Sales", "Regional distributors council"],
+      "presents": ["D1", "D2", "D3", "D4", "D5", "D6"],
+      "decision": "Does the steering group approve the blueprint and pilot plan to start the pilot?",
+      "agenda": [
+        "Present the marketplace blueprint and the pilot plan for one region",
+        "Review how the pilot works alongside the regional distributors",
+        "Decide on the go/no-go to start the pilot"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Workshop 1: pilot readiness",
+      "purpose": "Review readiness before the pilot goes live",
+      "attendees": ["CEO", "Head of Sales", "Regional distributors council"],
+      "presents": ["D7", "D8", "D9"],
+      "decision": "Is the pilot ready to go live with the target group, KPIs and distributor role?",
+      "agenda": [
+        "Present the target contractor group, the pilot KPIs and the distributor role",
+        "Review launch readiness of the first marketplace version",
+        "Decide whether the pilot is ready to go live"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Workshop 2: interim results",
+      "purpose": "Review interim results and the scale-up case",
+      "attendees": ["CEO", "Head of Sales", "Regional distributors council"],
+      "presents": ["D10", "D11"],
+      "decision": "Which scale-up options should the final readout case detail?",
+      "agenda": [
+        "Present interim results on repeat orders and distributor contracts",
+        "Review the first marketplace version launched to pilot contractors",
+        "Discuss the emerging scale-up case and roadmap ahead of the final readout"
+      ]
+    },
+    {
+      "id": "G6",
+      "label": "Final readout",
+      "purpose": "Sign off pilot results, prepare budget round",
+      "attendees": ["CEO", "Head of Sales", "Regional distributors council"],
+      "presents": ["D12"],
+      "decision": "Does the steering group sign off the pilot results to prepare the 2027 budget round?",
+      "agenda": [
+        "Present the pilot results and the scale-up case with roadmap",
+        "Review repeat orders and distributor contract status against the criteria",
+        "Decide the sign-off and what carries into the 2027 budget round preparation"
+      ]
+    }
+  ],
+  "notes": []
+}

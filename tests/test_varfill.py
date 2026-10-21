@@ -72,7 +72,9 @@ check("empty result line hidden (finding 2 has 2 lines)",
 src = [t for t in tx if t[0] == 6 and t[2].startswith("Sources:")]
 check("sources footer filled", src and "[1] Hierros" in src[0][2], src)
 check("no cut warnings on realistic input", not [w for w in warns if " cut to " in w], warns)
-check("every table row has a variable in the template", not any("table rows have no variable" in w for w in warns), warns)
+# the table also holds template 1.4's 10 rows (situation slide, footer, work-plan titles), absent from 1.2
+check("table rows beyond 1.2 are only 1.4's", not any("table rows have no variable" in w for w in warns)
+      or any(w.startswith("10 table rows have no variable") for w in warns), warns)
 
 # 3. empty action removes the whole finding row (remove_row)
 v = dict(METALCO)
@@ -192,7 +194,8 @@ check("1.3: Approach divider is 3, Next Steps divider is 4",
       any(t[0] == 7 and t[2] == "Approach" for t in tx13) and any(t[0] == 7 and t[2] == "3" for t in tx13)
       and any(t[0] == 11 and t[2] == "4" for t in tx13), [t[2] for t in tx13 if t[0] in (7, 11)])
 check("1.3: work-plan slides drawn in place with titles from the plan",
-      any(t[0] == 8 and t[2].startswith("The work runs") for t in tx13) and any(t[0] == 9 and "deliverables" in t[2] for t in tx13)
+      any(t[0] == 8 and t[2].startswith("Up to ") and "workstreams run in the same week" in t[2] for t in tx13)
+      and any(t[0] == 9 and "deliverables" in t[2] for t in tx13)
       and any(t[0] == 10 and "steering meetings" in t[2] for t in tx13))
 check("1.3: work-plan slides carry the Approach tracker", sum(1 for t in tx13 if t[0] in (8, 9, 10) and t[2] == "Approach") == 3)
 _, tx13n = texts(varfill.build_deck(v, RULES13, version="1.3")[0])
@@ -204,6 +207,48 @@ except varfill.TemplateRulesError:
     bad = True
 check("unknown template version is refused", bad)
 check("1.2 stays the default (9 slides, no Approach)", len(texts(varfill.build_deck(METALCO, RULES)[0])[0].slides) == 9)
+
+# 7. template 1.4 (Scenario 1): situation slide, approach overview; drop_slide (key-question slide removed Oct 18)
+NAV = json.load(open(os.path.join(HERE, "metalco_1_4.json")))
+tv14 = varfill.template_variables(varfill.TEMPLATES["1.4"])
+check("1.4: every template variable has a table row", tv14 <= table_names, sorted(tv14 - table_names))
+check("1.4: every table row has a variable in 1.4", table_names <= tv14, sorted(table_names - tv14))
+pptx, warns = varfill.build_deck(NAV["values"], NAV["rules"], workplan=NAV["workplan"], version="1.4")
+prs, tx = texts(pptx)
+left = [t for t in tx if re.search(r"(?<![A-Za-z0-9_])(situation|belief|key_question|criteria_basis|criterion)_[0-9a-z_]+", t[2])]
+n14 = len(prs.slides)  # 15, plus a steering continuation slide when a plan has more than 4 meetings
+check("1.4: 15 slides + steering continuation, no warnings", n14 == 16 and not warns, (n14, warns))
+check("1.4: no variable survives", not left, left[:3])
+check("1.4: situation slide 6 filled", any(t[0] == 6 and t[2].startswith("Spanish contractors moved") for t in tx))
+check("1.4: belief filled", any(t[0] == 6 and t[2].startswith("We believe") for t in tx))
+check("1.4: no key-question slide", not any(t[2] in ("The question this proposal answers", "What a good answer must achieve") for t in tx))
+check("1.4: approach overview drawn from the plan",
+      any(t[0] == 9 and t[2].startswith("MetalCo decides in week") and "goes ahead" in t[2] for t in tx)
+      and any(t[0] == 9 and t[2].startswith("Decision: ") for t in tx))
+check("1.4: market slide keeps its own title", any(t[0] == 7 and t[2] == "Market research findings" for t in tx))
+check("1.4: agenda lists the sections in variable order (Approach third, Next Steps fourth)",
+      [t[2] for t in tx if t[0] == 2 and t[2] in ("Executive Summary", "Context", "Approach", "Next Steps")]
+      == ["Executive Summary", "Context", "Approach", "Next Steps"], [t[2] for t in tx if t[0] == 2])
+check("1.4: no SAMPLE footer; the footer variable is filled on the masters",
+      "SAMPLE" not in "".join(sh.text_frame.text for m in prs.slide_masters for sh in m.shapes if sh.has_text_frame)
+      and any("MetalCo | Draft for discussion" in sh.text_frame.text for m in prs.slide_masters for sh in m.shapes if sh.has_text_frame))
+check("1.4: counts in words in the work-plan titles", not any(t[0] in (9, 10, 11, 12, 13) and re.search(r"\b[2-9] (phases|workstreams|deliverables|steering)", t[2]) for t in tx))
+check("1.4: overview says what each phase waits for, and when the first deliverable arrives",
+      any(t[0] == 9 and t[2].startswith("Starts after the ") for t in tx) and any(t[0] == 9 and "first deliverable in week" in t[2] for t in tx))
+v = dict(NAV["values"]); v["timeline_title_01"] = "A partner's own timeline title"
+_, txt = texts(varfill.build_deck(v, NAV["rules"], workplan=NAV["workplan"], version="1.4")[0])
+check("1.4: a title variable given in the payload replaces the composed title",
+      any(t[0] == 10 and t[2] == "A partner's own timeline title" for t in txt))
+check("1.4: section trackers read Context on slides 6-7, Approach on 8",
+      all(any(t[0] == n and t[2] == "Context" for t in tx) for n in (6, 7))
+      and any(t[0] == 8 and t[2] == "Approach" for t in tx))
+v = dict(NAV["values"]); v["situation_title_01"] = ""
+prs2, tx2 = texts(varfill.build_deck(v, NAV["rules"], workplan=NAV["workplan"], version="1.4")[0])
+check("1.4: no situation title -> slide dropped",
+      len(prs2.slides) == n14 - 1 and not any(t[2].startswith("Where things stand") for t in tx2), len(prs2.slides))
+prs5, tx5 = texts(varfill.build_deck(NAV["values"], NAV["rules"], workplan=None, version="1.4")[0])
+check("1.4 without a plan: overview marked [Firm to complete]",
+      any(t[0] == 9 and t[2].startswith("[Firm to complete] Approach overview") for t in tx5))
 
 failed = [r for r in results if not r[1]]
 for name, ok, detail in results:

@@ -1,0 +1,187 @@
+{
+  "basis": {
+    "governing_question": "Why do property and health claims take too long to settle, and what claims operating model should Atlântico Seguros move to?",
+    "archetype_id": "operating_model_redesign"
+  },
+  "sizing": {
+    "length_basis": "deadline",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "Where in the settlement process do property and health claims lose time, and why?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "What did the 2024 lean program change for motor claims, and what carries over to property and health?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q3",
+        "question": "What are current average settlement time and customer satisfaction for property and health claims?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q4",
+        "question": "Which claims operating model options fit property and health claims, and how do they compare?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q5",
+        "question": "Which option reduces average settlement time while keeping customer satisfaction at least at current levels?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q6",
+        "question": "What transition steps move the insurer to that option, and what must the Board decide?",
+        "phase_order": 2
+      }
+    ],
+    "drivers": [
+      {
+        "key": "stakeholder_groups",
+        "value": 3,
+        "source": "brief",
+        "evidence": "the COO and the Head of Claims, and the final answer goes to the Board"
+      },
+      {
+        "key": "business_units",
+        "value": 2,
+        "source": "brief",
+        "evidence": "property and health claims take too long to settle"
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Interview round with one stakeholder group",
+            "from_library": true,
+            "driver": "stakeholder_groups",
+            "count": 3,
+            "weeks_each": {
+              "min": 1,
+              "max": 2
+            },
+            "at_once": 3
+          },
+          {
+            "unit": "Unit diagnosed (interviews, process walk-throughs, workload and cost baseline)",
+            "from_library": true,
+            "driver": "business_units",
+            "count": 2,
+            "weeks_each": {
+              "min": 2,
+              "max": 3
+            },
+            "at_once": 2
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": {
+          "min": 5,
+          "max": 7
+        },
+        "why": "Interviews with the three groups run together, then both claims lines are diagnosed side by side; within the archetype's 4 to 8 weeks."
+      },
+      {
+        "phase_order": 2,
+        "work": [
+          {
+            "unit": "Target model for the whole organization (structure, roles, governance)",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": {
+              "min": 4,
+              "max": 6
+            },
+            "at_once": 1
+          },
+          {
+            "unit": "Unit-level design detailed with the unit's leaders",
+            "from_library": true,
+            "driver": "business_units",
+            "count": 2,
+            "weeks_each": {
+              "min": 1,
+              "max": 2
+            },
+            "at_once": 2
+          },
+          {
+            "unit": "Transition plan",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": {
+              "min": 1,
+              "max": 2
+            },
+            "at_once": 1
+          },
+          {
+            "unit": "Client review and sign-off cycle",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": {
+              "min": 1,
+              "max": 2
+            },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 1,
+        "estimate": {
+          "min": 8,
+          "max": 13
+        },
+        "why": "Target model, both lines together, transition plan and one review run in sequence, so the upper estimate passes the archetype's 6 to 10 weeks."
+      }
+    ],
+    "levers": "Run the stakeholder interviews alongside the unit diagnosis, saving 1 to 2 weeks, and narrow the target model to the claims function."
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": {
+        "min": 5,
+        "max": 7
+      },
+      "duration_derived": false,
+      "objective_one_line": "Measure current settlement time and customer satisfaction, and find where and why property and health claims lose time.",
+      "gate": {
+        "label": "Go/no-go on design",
+        "decision": "Go on to design, and which causes of delay must the target model address?"
+      },
+      "depends_on_assumptions": [
+        "engagement_length"
+      ]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": {
+        "min": 10,
+        "max": 12
+      },
+      "duration_derived": false,
+      "objective_one_line": "Define the target claims operating model and transition for property and health claims, with the report and Board presentation.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the final report and Board presentation for the 15 March 2027 Board?"
+      },
+      "depends_on_assumptions": [
+        "engagement_length"
+      ]
+    }
+  ],
+  "architect_notes": [
+    "Length is open; phases are planned to the 19 weeks available, and Design is cut to 10-12 weeks against an estimate of 8-13.",
+    "Not covered by the phases: ASF, new guidance on claims-handling response times. Confirm whether it is in scope.",
+    "No Handover phase: the Board receives the final report and presentation, so the last gate covers it."
+  ]
+}

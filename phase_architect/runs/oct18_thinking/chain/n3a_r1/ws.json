@@ -1,0 +1,117 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Claims organization today",
+      "question_id": "Q1",
+      "answers": "How is the claims department organized today, in structure, roles and handoffs?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "activities": [
+        "Walk through claims steps with the people who do the work",
+        "Map structure, roles and handoffs as they run today",
+        "Collect operational data on claims volumes and workload"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Leaders' needs for claims",
+      "question_id": "Q2",
+      "answers": "What do the Chief Operating Officer and Head of Claims need the new organization to fix and keep?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 3,
+      "follows": [],
+      "activities": [
+        "Interview the Chief Operating Officer and Head of Claims",
+        "Interview claims staff on what works and what does not",
+        "Record what the new organization must fix and must keep"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Problem areas and criteria",
+      "question_id": "Q1",
+      "answers": "Which problem areas in claims structure, roles and handoffs, and which design criteria, go into the Design phase?",
+      "traces_to": ["gate:1"],
+      "start_offset": 3,
+      "duration": 2,
+      "follows": ["W1", "W2"],
+      "activities": [
+        "Rank problem areas using the mapping, interviews and data",
+        "Draft design criteria and agree them with the leaders",
+        "Propose which problem areas the Design phase takes forward"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 2,
+      "name": "Claims model options",
+      "question_id": "Q3",
+      "answers": "Which options for claims structure, roles and handoffs should be compared, and against which design criteria?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 4,
+      "follows": [],
+      "activities": [
+        "Draft options for claims structure, roles and handoffs",
+        "Compare the options against the agreed design criteria",
+        "Present the options at the design workshop for a choice"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 2,
+      "name": "Target claims organization",
+      "question_id": "Q4",
+      "answers": "What does the chosen target claims organization look like in structure, roles, handoffs and governance?",
+      "traces_to": ["success_criteria:1", "gate:2"],
+      "start_offset": 4,
+      "duration": 4,
+      "follows": ["W4"],
+      "activities": [
+        "Detail structure, roles and governance of the chosen model",
+        "Design the handoffs between claims roles",
+        "Detail the design with the leaders of each claims unit"
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 2,
+      "name": "Claims transition plan",
+      "question_id": "Q5",
+      "answers": "What transition does the target claims organization need, and in what order do the changes happen?",
+      "traces_to": ["success_criteria:1"],
+      "start_offset": 8,
+      "duration": 2,
+      "follows": ["W5"],
+      "activities": [
+        "Identify what changes for each role and handoff",
+        "Sequence the changes needed to reach the target model",
+        "Test the sequence with the Head of Claims"
+      ]
+    },
+    {
+      "id": "W7",
+      "phase_order": 2,
+      "name": "Target model sign-off",
+      "question_id": "Q5",
+      "answers": "What must the executive committee see to approve the target claims organization?",
+      "traces_to": ["success_criteria:1", "gate:2"],
+      "start_offset": 10,
+      "duration": 2,
+      "follows": ["W5", "W6"],
+      "activities": [
+        "Review the target model and plan with both leaders",
+        "Resolve review comments in the design and plan",
+        "Assemble the material for executive committee approval"
+      ]
+    }
+  ],
+  "notes": []
+}

@@ -498,5 +498,105 @@
   "writing_rule": "Verb first, one action per step. Add who and when if known.",
   "if_empty": "remove_row",
   "example": ""
+ },
+ {
+  "variable": "situation_title_01",
+  "draft_chars": null,
+  "max_chars": 90,
+  "limit_basis": "estimated",
+  "fills_from": "context_writer:situation_title",
+  "writing_rule": "One sentence, present tense: what the market findings mean for the client's request. Figures only as the findings give them.",
+  "if_empty": "drop_slide",
+  "example": "Online selling is established in Iberia, opening a direct route to small paper buyers"
+ },
+ {
+  "variable": "situation_01",
+  "draft_chars": null,
+  "max_chars": 150,
+  "limit_basis": "estimated",
+  "fills_from": "context_writer:situation",
+  "writing_rule": "Where the market stands today, from the cited findings. Figures only as the findings give them, with unit and year. No reference numbers.",
+  "if_empty": "hide_line",
+  "example": ""
+ },
+ {
+  "variable": "situation_02",
+  "draft_chars": null,
+  "max_chars": 150,
+  "limit_basis": "estimated",
+  "fills_from": "context_writer:situation",
+  "writing_rule": "What is changing, from the cited findings. Figures only as the findings give them, with unit and year. No reference numbers.",
+  "if_empty": "hide_line",
+  "example": ""
+ },
+ {
+  "variable": "situation_03",
+  "draft_chars": null,
+  "max_chars": 150,
+  "limit_basis": "estimated",
+  "fills_from": "context_writer:situation",
+  "writing_rule": "What that means for the client's request; may say \"likely\"; adds no fact. Figures only as the findings give them, with unit and year. No reference numbers.",
+  "if_empty": "hide_line",
+  "example": ""
+ },
+ {
+  "variable": "belief_01",
+  "draft_chars": null,
+  "max_chars": 140,
+  "limit_basis": "estimated",
+  "fills_from": "context_writer:belief",
+  "writing_rule": "One sentence starting \"We believe\": the point of view the proposal acts on. No figures.",
+  "if_empty": "clear",
+  "example": "We believe a direct channel can win small buyers if it is designed with distributors, not against them."
+ },
+ {
+  "variable": "footer_01",
+  "draft_chars": null,
+  "max_chars": 60,
+  "limit_basis": "estimated",
+  "fills_from": "fixed:{client_name} | Draft for discussion",
+  "writing_rule": "Client short name, a vertical bar, then \"Draft for discussion\".",
+  "if_empty": "clear",
+  "example": "MetalCo | Draft for discussion"
+ },
+ {
+  "variable": "approach_title_01",
+  "draft_chars": null,
+  "max_chars": 110,
+  "limit_basis": "estimated",
+  "fills_from": "code:workplan_title",
+  "writing_rule": "Composed by the renderer from the plan. When the client decides: the week of each gate and whether the next phase goes ahead.",
+  "if_empty": "firm_todo",
+  "example": "MetalCo decides in week 6 whether Pilot goes ahead; the work closes in week 20"
+ },
+ {
+  "variable": "timeline_title_01",
+  "draft_chars": null,
+  "max_chars": 110,
+  "limit_basis": "estimated",
+  "fills_from": "code:workplan_title",
+  "writing_rule": "Composed by the renderer from the plan. How much runs at once: the most workstreams in one week, and the longest gap between steering meetings.",
+  "if_empty": "firm_todo",
+  "example": "Up to three workstreams run in the same week, with no more than 6 weeks between steering meetings"
+ },
+ {
+  "variable": "deliverables_title_01",
+  "draft_chars": null,
+  "max_chars": 110,
+  "limit_basis": "estimated",
+  "fills_from": "code:workplan_title",
+  "writing_rule": "Composed by the renderer from the plan. How many workstreams hand over how many deliverables, each reviewed at a meeting.",
+  "if_empty": "firm_todo",
+  "example": "The seven workstreams hand over eight deliverables, each reviewed at a steering meeting"
+ },
+ {
+  "variable": "steering_title_01",
+  "draft_chars": null,
+  "max_chars": 110,
+  "limit_basis": "estimated",
+  "fills_from": "code:workplan_title",
+  "writing_rule": "Composed by the renderer from the plan. How many steering meetings follow the kick-off, and how many close a phase.",
+  "if_empty": "firm_todo",
+  "example": "After the kick-off, five steering meetings review the work, two of them closing a phase with a decision"
  }
 ]

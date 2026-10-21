@@ -1,0 +1,32 @@
+{
+  "basis": {
+    "governing_question": "What is the current state of patient waiting times at Norte Hospitals Group's three hospitals?",
+    "archetype_id": "performance_improvement"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": {
+        "min": 6,
+        "max": 6
+      },
+      "duration_derived": false,
+      "objective_one_line": "Measure and explain patient waiting times across the three hospitals, and identify where and why delays occur.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Does the sponsor approve the waiting-time diagnostic as the final result?"
+      },
+      "depends_on_assumptions": [
+        "deliverable_format",
+        "timeline",
+        "prior_attempts",
+        "out_of_scope"
+      ]
+    }
+  ],
+  "architect_notes": [
+    "Archetype performance_improvement is used for its Diagnostic phase only; its Implementation phase is dropped because the brief is assessment-only.",
+    "Six weeks make one Diagnostic phase: a stage under three weeks belongs inside its neighbor, and the four workstreams run side by side."
+  ]
+}

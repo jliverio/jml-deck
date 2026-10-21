@@ -1,0 +1,705 @@
+{
+ "client": "Grupo Vale",
+ "basis": {
+  "governing_question": "How can Grupo Vale integrate sales, purchasing and finance of its three acquired regional food distributors into its own, starting with the first company?",
+  "archetype_id": "operating_model_redesign"
+ },
+ "total_duration_weeks": {
+  "min": 12,
+  "max": 12
+ },
+ "phases": [
+  {
+   "name": "Diagnostic",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 6,
+   "duration_weeks": {
+    "min": 6,
+    "max": 6
+   },
+   "duration_derived": false,
+   "objective_one_line": "Assess how sales, purchasing and finance run at each acquired company and where they differ from Grupo Vale.",
+   "gate": {
+    "label": "Go/no-go on design",
+    "decision": "Go ahead with design on the agreed priority gaps in sales, purchasing and finance?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length",
+    "prior_attempts"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2",
+    "W3"
+   ]
+  },
+  {
+   "name": "Design",
+   "order": 2,
+   "start_week": 7,
+   "end_week": 9,
+   "duration_weeks": {
+    "min": 3,
+    "max": 3
+   },
+   "duration_derived": false,
+   "objective_one_line": "Define how each acquired company moves onto Grupo Vale's processes and systems, and the integration plan for all three.",
+   "gate": {
+    "label": "Go/no-go on cutover",
+    "decision": "Go or no-go on moving the first company onto Grupo Vale's processes and systems?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length",
+    "deliverable_format"
+   ],
+   "workstream_ids": [
+    "W4",
+    "W5"
+   ]
+  },
+  {
+   "name": "Implementation",
+   "order": 3,
+   "start_week": 10,
+   "end_week": 12,
+   "duration_weeks": {
+    "min": 3,
+    "max": 3
+   },
+   "duration_derived": false,
+   "objective_one_line": "Move the first company's sales, purchasing and finance onto Grupo Vale's processes and systems and confirm they run.",
+   "gate": {
+    "label": "Final readout",
+    "decision": "Approve the first-company result and the integration plan to take to the board?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length",
+    "deliverable_format",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W6",
+    "W7",
+    "W8"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Current state, two companies",
+   "answers": "How do sales, purchasing and finance run today at two acquired companies, and how do they differ from Grupo Vale?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 2,
+   "follows": [],
+   "activities": [
+    "Interview the people who run sales, purchasing and finance",
+    "Review operational data and documents for each process",
+    "Compare each process with Grupo Vale's own way of working"
+   ],
+   "deliverable_ids": [
+    "D1"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Current state, third company",
+   "answers": "How do sales, purchasing and finance run today at the third acquired company, compared with Grupo Vale?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 3,
+   "end_week": 4,
+   "follows": [],
+   "activities": [
+    "Interview the people who run sales, purchasing and finance",
+    "Review operational data and documents for each process",
+    "Compare each process with Grupo Vale and the first two"
+   ],
+   "deliverable_ids": [
+    "D2"
+   ]
+  },
+  {
+   "id": "W3",
+   "phase_order": 1,
+   "name": "Gap ranking and alignment",
+   "answers": "Which gaps between the acquired companies and Grupo Vale come first, and do the stakeholders agree?",
+   "traces_to": [
+    "gate:1"
+   ],
+   "start_week": 5,
+   "end_week": 6,
+   "follows": [
+    "W1",
+    "W2"
+   ],
+   "activities": [
+    "Rank the differences from Grupo Vale by effect and effort",
+    "Agree the priority gaps with the CEO, CFO and company heads"
+   ],
+   "deliverable_ids": [
+    "D3"
+   ]
+  },
+  {
+   "id": "W4",
+   "phase_order": 2,
+   "name": "Move design by company",
+   "answers": "How should each acquired company's sales, purchasing and finance move onto Grupo Vale's processes and systems?",
+   "traces_to": [
+    "success_criteria:2",
+    "gate:2"
+   ],
+   "start_week": 7,
+   "end_week": 8,
+   "follows": [],
+   "activities": [
+    "Detail each company's move with its leaders, two at a time",
+    "Map each process and system gap to the change it needs",
+    "Check each design with the people who will run it"
+   ],
+   "deliverable_ids": [
+    "D4"
+   ]
+  },
+  {
+   "id": "W5",
+   "phase_order": 2,
+   "name": "Integration plan and risks",
+   "answers": "What integration plan for the three companies, with sequence and risks, can the board approve?",
+   "traces_to": [
+    "success_criteria:1",
+    "gate:2"
+   ],
+   "start_week": 9,
+   "end_week": 9,
+   "follows": [
+    "W4"
+   ],
+   "activities": [
+    "Set the sequence for moving the three companies",
+    "Log the integration risks with owners and actions",
+    "Review the plan with the CEO, CFO and company heads"
+   ],
+   "deliverable_ids": [
+    "D5"
+   ]
+  },
+  {
+   "id": "W6",
+   "phase_order": 3,
+   "name": "Cutover readiness",
+   "answers": "Are the first company's data, test results and trained users ready for cutover?",
+   "traces_to": [
+    "success_criteria:2"
+   ],
+   "start_week": 10,
+   "end_week": 10,
+   "follows": [],
+   "activities": [
+    "Rehearse and reconcile the data migration for each system",
+    "Run integrated test and user acceptance by process area",
+    "Train each process area team on Grupo Vale's processes"
+   ],
+   "deliverable_ids": [
+    "D6"
+   ]
+  },
+  {
+   "id": "W7",
+   "phase_order": 3,
+   "name": "First-company cutover",
+   "answers": "Do the first company's sales, purchasing and finance run on Grupo Vale's processes and systems after cutover?",
+   "traces_to": [
+    "success_criteria:2",
+    "gate:3"
+   ],
+   "start_week": 11,
+   "end_week": 12,
+   "follows": [
+    "W6"
+   ],
+   "activities": [
+    "Cut over the first company's process areas, two at a time",
+    "Train and coach area teams; close issues after cutover",
+    "Confirm each area runs on Grupo Vale's systems"
+   ],
+   "deliverable_ids": [
+    "D7"
+   ]
+  },
+  {
+   "id": "W8",
+   "phase_order": 3,
+   "name": "Integration plan check",
+   "answers": "What does the first company's cutover change in the integration plan the board will be asked to approve?",
+   "traces_to": [
+    "success_criteria:1",
+    "gate:3"
+   ],
+   "start_week": 11,
+   "end_week": 12,
+   "follows": [],
+   "activities": [
+    "Update the plan's sequence and risks with cutover results",
+    "Review the updated plan with the CEO, CFO and company heads"
+   ],
+   "deliverable_ids": [
+    "D8"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "Current-state comparison with Grupo Vale, two companies",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 2,
+   "presented_at": "Check-in: current state"
+  },
+  {
+   "id": "D2",
+   "name": "Current-state comparison with Grupo Vale, third company",
+   "kind": "analysis",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Check-in: current state"
+  },
+  {
+   "id": "D3",
+   "name": "Ranked gaps and agreed priorities for design go/no-go",
+   "kind": "decision_pack",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 5,
+   "presented_at": "Go/no-go on design"
+  },
+  {
+   "id": "D4",
+   "name": "Move design for each acquired company",
+   "kind": "design",
+   "workstream_id": "W4",
+   "phase_order": 2,
+   "due_week": 8,
+   "presented_at": "Go/no-go on cutover"
+  },
+  {
+   "id": "D5",
+   "name": "Integration plan with risks and company move designs",
+   "kind": "decision_pack",
+   "workstream_id": "W5",
+   "phase_order": 2,
+   "due_week": 9,
+   "presented_at": "Go/no-go on cutover"
+  },
+  {
+   "id": "D6",
+   "name": "Cutover readiness record for the first company",
+   "kind": "analysis",
+   "workstream_id": "W6",
+   "phase_order": 3,
+   "due_week": 10,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D7",
+   "name": "Go-live record and run confirmation by process area",
+   "kind": "build",
+   "workstream_id": "W7",
+   "phase_order": 3,
+   "due_week": 12,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D8",
+   "name": "First-company result and updated integration plan",
+   "kind": "decision_pack",
+   "workstream_id": "W8",
+   "phase_order": 3,
+   "due_week": 12,
+   "presented_at": "Final readout"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 2,
+  "status_weeks": [
+   3,
+   5,
+   7,
+   11
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Start the work and secure data access",
+    "attendees": [
+     "CEO",
+     "CFO",
+     "Heads of the three acquired companies"
+    ],
+    "presents": [],
+    "decision": "Confirm access to each company's sales, purchasing and finance data and people?",
+    "agenda": [
+     "Present the three phases and the dates of each meeting",
+     "Discuss the data and people needed from each company",
+     "Confirm access and one contact per company"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "checkin",
+    "phase_order": 1,
+    "week": 4,
+    "label": "Check-in: current state",
+    "purpose": "Review current state of all three companies",
+    "attendees": [
+     "CEO",
+     "CFO",
+     "Heads of the three acquired companies"
+    ],
+    "presents": [
+     "D1",
+     "D2"
+    ],
+    "decision": "Which differences from Grupo Vale should the gap ranking cover?",
+    "agenda": [
+     "Present the current-state comparisons for all three companies",
+     "Discuss where each company differs from Grupo Vale",
+     "Align on what the gap ranking covers in weeks 5-6"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 6,
+    "label": "Go/no-go on design",
+    "purpose": "Decide whether to start design",
+    "attendees": [
+     "CEO",
+     "CFO",
+     "Heads of the three acquired companies"
+    ],
+    "presents": [
+     "D1",
+     "D2",
+     "D3"
+    ],
+    "decision": "Go ahead with design on the agreed priority gaps in sales, purchasing and finance?",
+    "agenda": [
+     "Present the ranked gaps and agreed priorities",
+     "Review the current-state comparisons behind the ranking",
+     "Decide whether design starts on the priority gaps"
+    ]
+   },
+   {
+    "id": "G4",
+    "type": "gate",
+    "phase_order": 2,
+    "week": 9,
+    "label": "Go/no-go on cutover",
+    "purpose": "Decide whether to move the first company",
+    "attendees": [
+     "CEO",
+     "CFO",
+     "Heads of the three acquired companies"
+    ],
+    "presents": [
+     "D4",
+     "D5"
+    ],
+    "decision": "Go or no-go on moving the first company onto Grupo Vale's processes and systems?",
+    "agenda": [
+     "Present the move design for each acquired company",
+     "Review the integration plan and its risks",
+     "Decide go or no-go on moving the first company"
+    ]
+   },
+   {
+    "id": "G5",
+    "type": "gate",
+    "phase_order": 3,
+    "week": 12,
+    "label": "Final readout",
+    "purpose": "Approve the result, prepare for the board",
+    "attendees": [
+     "CEO",
+     "CFO",
+     "Heads of the three acquired companies"
+    ],
+    "presents": [
+     "D6",
+     "D7",
+     "D8"
+    ],
+    "decision": "Approve the first-company result and the integration plan to take to the board?",
+    "agenda": [
+     "Present the go-live record and run confirmation by process area",
+     "Review the cutover readiness record and the updated integration plan",
+     "Decide whether to take the result and plan to the board"
+    ]
+   }
+  ]
+ },
+ "deadline": {
+  "text": "Before the board meeting on 29 January 2027",
+  "weeks_available": 12
+ },
+ "architect_notes": [
+  "The work counted needs 24-37 weeks, more than the 12 planned: cut scope, run more at once, or extend.",
+  "Engagement length is assumed: phases are cut to the 12 weeks before the 29 January 2027 board meeting, but the work sizes at 24-37 weeks.",
+  "Shortfall against 12 weeks: Design gets 3 of 5-9 sized weeks, Implementation 3 of 13-20, so first-company cutover cannot finish by the board meeting.",
+  "Conflict: the board approves the plan after these phases, yet Implementation moves the first company onto Grupo Vale's systems before it; confirm that order.",
+  "Implementation units are the architect's estimates, including three assumed first-company systems to migrate; confirm 3-4 weeks per process area and the system count.",
+  "Implementation is sized for the first company only, as the brief states; which company goes first is not named and must be confirmed."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Diagnostic",
+    "start": 1,
+    "end": 6
+   },
+   {
+    "phase": "Design",
+    "start": 7,
+    "end": 9
+   },
+   {
+    "phase": "Implementation",
+    "start": 10,
+    "end": 12
+   }
+  ]
+ },
+ "sizing": {
+  "length_basis": "deadline",
+  "sub_questions": [
+   {
+    "id": "Q1",
+    "question": "How do sales, purchasing and finance work today at each acquired company, compared with Grupo Vale?",
+    "phase_order": 1
+   },
+   {
+    "id": "Q2",
+    "question": "How should each acquired company's sales, purchasing and finance move onto Grupo Vale's processes and systems?",
+    "phase_order": 2
+   },
+   {
+    "id": "Q3",
+    "question": "What integration plan for the three companies, with sequence and risks, can the board approve?",
+    "phase_order": 2
+   },
+   {
+    "id": "Q4",
+    "question": "Do the first company's sales, purchasing and finance run on Grupo Vale's processes and systems after cutover?",
+    "phase_order": 3
+   }
+  ],
+  "drivers": [
+   {
+    "key": "business_units",
+    "value": 3,
+    "source": "brief",
+    "evidence": "Grupo Vale has bought three regional food distributors"
+   },
+   {
+    "key": "process_areas",
+    "value": 3,
+    "source": "brief",
+    "evidence": "sales, purchasing and finance"
+   },
+   {
+    "key": "systems",
+    "value": 3,
+    "source": "assumed",
+    "evidence": ""
+   }
+  ],
+  "phases": [
+   {
+    "order": 1,
+    "name": "Diagnostic",
+    "planned_weeks": {
+     "min": 6,
+     "max": 6
+    },
+    "estimate": {
+     "min": 6,
+     "max": 8
+    },
+    "archetype_weeks": {
+     "min": 4,
+     "max": 8
+    },
+    "fixed_weeks": 2,
+    "work": [
+     {
+      "unit": "Unit diagnosed (interviews, process walk-throughs, workload and cost baseline)",
+      "from_library": true,
+      "driver": "business_units",
+      "count": 3,
+      "at_once": 2,
+      "weeks_each": {
+       "min": 2,
+       "max": 3
+      }
+     }
+    ],
+    "why": "Two companies are diagnosed side by side, then the third before gaps are ranked; sales, purchasing and finance are covered in each walk-through."
+   },
+   {
+    "order": 2,
+    "name": "Design",
+    "planned_weeks": {
+     "min": 3,
+     "max": 3
+    },
+    "estimate": {
+     "min": 5,
+     "max": 9
+    },
+    "archetype_weeks": {
+     "min": 6,
+     "max": 10
+    },
+    "fixed_weeks": 1,
+    "work": [
+     {
+      "unit": "Unit-level design detailed with the unit's leaders",
+      "from_library": true,
+      "driver": "business_units",
+      "count": 3,
+      "at_once": 2,
+      "weeks_each": {
+       "min": 1,
+       "max": 2
+      }
+     },
+     {
+      "unit": "Transition plan",
+      "from_library": true,
+      "driver": null,
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 1,
+       "max": 2
+      }
+     },
+     {
+      "unit": "Client review and sign-off cycle",
+      "from_library": true,
+      "driver": null,
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 1,
+       "max": 2
+      }
+     }
+    ],
+    "why": "Units designed two at a time, then plan and review. Minimum is below typical 6-10: no new target model, Grupo Vale's own is the target."
+   },
+   {
+    "order": 3,
+    "name": "Implementation",
+    "planned_weeks": {
+     "min": 3,
+     "max": 3
+    },
+    "estimate": {
+     "min": 13,
+     "max": 20
+    },
+    "archetype_weeks": null,
+    "fixed_weeks": 0,
+    "work": [
+     {
+      "unit": "Data migration rehearsed and reconciled for one first-company system",
+      "from_library": false,
+      "driver": "systems",
+      "count": 3,
+      "at_once": 2,
+      "weeks_each": {
+       "min": 1,
+       "max": 2
+      }
+     },
+     {
+      "unit": "Integrated test and user acceptance across the first company's process areas",
+      "from_library": false,
+      "driver": null,
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 2,
+       "max": 3
+      }
+     },
+     {
+      "unit": "User training for one first-company process area team",
+      "from_library": false,
+      "driver": "process_areas",
+      "count": 3,
+      "at_once": 3,
+      "weeks_each": {
+       "min": 1,
+       "max": 2
+      }
+     },
+     {
+      "unit": "First-company process area cut over to Grupo Vale's processes and systems",
+      "from_library": false,
+      "driver": "process_areas",
+      "count": 3,
+      "at_once": 2,
+      "weeks_each": {
+       "min": 3,
+       "max": 4
+      }
+     },
+     {
+      "unit": "First-company stabilization after cutover, with open issues closed",
+      "from_library": false,
+      "driver": null,
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 2,
+       "max": 3
+      }
+     }
+    ],
+    "why": "No Implementation phase in the archetype. Migration, testing and training first, then areas cut over two at a time at the first company, then stabilization."
+   }
+  ],
+  "estimate_total": {
+   "min": 24,
+   "max": 37
+  },
+  "planned_total": {
+   "min": 12,
+   "max": 12
+  },
+  "levers": "Moving first-company cutover and stabilization after the board meeting saves 8-11 weeks; running all three process areas at once or diagnosing two companies saves less."
+ }
+}

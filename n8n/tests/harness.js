@@ -76,7 +76,7 @@ const topic = {
 
 // ---------- 1. Template rules ----------
 const tr = run("template_rules.js", { nodes: { checkProfiler }, input: RULES })[0].json;
-check("rules: all 50 rows kept", tr._rules.length === RULES.length && RULES.length === 50, tr._rules.length);
+check("rules: all 60 rows kept (50 + 10 for template 1.4: situation, footer, work-plan titles)", tr._rules.length === RULES.length && RULES.length === 60, tr._rules.length);
 check("rules: 5 finding slots", tr._research.finding_slots === 5, tr._research.finding_slots);
 check("rules: both researchers -> 3 rows each", tr._research.max_rows === 3, tr._research.max_rows);
 check("rules: field_rules carry draft_chars 2x", tr._research.field_rules.find(f => f.field === "context").draft_chars === 180, tr._research.field_rules);
@@ -102,7 +102,7 @@ check("assemble: sources renumbered across both researchers", A.sources.length =
 check("assemble: refs point at the merged list", JSON.stringify(A.refs.finding_02_action_taken) === "[4]", A.refs);
 check("assemble: footer built without URLs", A.values.sources_market_01 && !/https?:/.test(A.values.sources_market_01), A.values.sources_market_01);
 check("assemble: footer fits its limit", A.values.sources_market_01.length <= 204, A.values.sources_market_01.length);
-check("assemble: fixed text and client name", A.values.cover_subtitle_01 === "A proposal for MetalCo" && A.values.section_02 === "Market Research", A.values.cover_subtitle_01);
+check("assemble: fixed text and client name; 1.4 section names", A.values.cover_subtitle_01 === "A proposal for MetalCo" && A.values.section_01 === "Executive Summary" && A.values.section_02 === "Context", [A.values.cover_subtitle_01, A.values.section_01, A.values.section_02]);
 check("assemble: copy budget leaves room for the citation", A.items.find(i => i.variable === "finding_01_context").max_chars === 90 - " [1]".length, A.items.find(i => i.variable === "finding_01_context").max_chars);
 check("assemble: headlines carry no citation budget", A.items.find(i => i.variable === "finding_01_headline").max_chars === 80);
 const Aempty = run("assemble_drafts.js", { nodes: { ...nodesA, "Assemble market": { market_slides: [] } }, json: {} }).json;
@@ -229,7 +229,7 @@ const CP = run("check_copy.js", { nodes: { "Assemble drafts": AP }, json: cleanP
 const PP = run("build_render_payload.js", { nodes: { "Assemble drafts": AP, "Template rules": trOn }, json: CP }).json;
 fs.writeFileSync(path.join(OUT, "payload_workplan.json"), JSON.stringify(PP, null, 1));
 check("payload: workplan sent to the renderer", PP.workplan && PP.workplan.deliverables.length > 0);
-check("payload: template 1.3 requested and Approach section named", PP.template === "1.3" && PP.values.section_04 === "Approach", [PP.template, PP.values.section_04]);
+check("payload: template 1.4 requested; Approach is section_03, Next Steps section_04", PP.template === "1.4" && PP.values.section_03 === "Approach" && PP.values.section_04 === "Next Steps", [PP.template, PP.values.section_03, PP.values.section_04]);
 }
 // ---------- Summary Writer chain (slide 4) ----------
 const FX = f => JSON.parse(fs.readFileSync(path.join(__dirname, "fixtures", f), "utf8"));

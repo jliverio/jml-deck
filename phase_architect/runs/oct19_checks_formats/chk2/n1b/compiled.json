@@ -1,0 +1,623 @@
+{
+ "client": "Quinta Azul",
+ "basis": {
+  "governing_question": "Should Quinta Azul enter the retail markets of Spain, France, Germany and Poland, and in which order?",
+  "archetype_id": "market_entry_assessment"
+ },
+ "total_duration_weeks": {
+  "min": 11,
+  "max": 15
+ },
+ "phases": [
+  {
+   "name": "Research",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 9,
+   "duration_weeks": {
+    "min": 7,
+    "max": 9
+   },
+   "duration_derived": false,
+   "objective_one_line": "Assess each retail market's attractiveness and Quinta Azul's ability to win there, and shortlist the markets for entry design.",
+   "gate": {
+    "label": "Findings sign-off",
+    "decision": "Which markets go forward into entry design, and which stop here?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length",
+    "timeline",
+    "prior_attempts"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2",
+    "W3",
+    "W4"
+   ]
+  },
+  {
+   "name": "Design",
+   "order": 2,
+   "start_week": 10,
+   "end_week": 15,
+   "duration_weeks": {
+    "min": 4,
+    "max": 6
+   },
+   "duration_derived": false,
+   "objective_one_line": "Define entry options and business cases per shortlisted market, and set the entry sequence and roadmap.",
+   "gate": {
+    "label": "Final readout",
+    "decision": "Approve the go/no-go per country and the entry sequence?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length",
+    "deliverable_format",
+    "timeline",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W5",
+    "W6",
+    "W7"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Market screen",
+   "answers": "Which of the four countries look attractive enough on desk data to assess in full?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 2,
+   "follows": [],
+   "activities": [
+    "Gather desk data on retail olive-oil demand per country",
+    "Screen the four markets on size, growth and access",
+    "Propose the markets to assess in full"
+   ],
+   "deliverable_ids": [
+    "D1"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Market attractiveness",
+   "answers": "How large, how fast-growing and how attractive is each shortlisted country's retail market for Quinta Azul's olive oil?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1",
+    "gate:1"
+   ],
+   "start_week": 3,
+   "end_week": 8,
+   "follows": [
+    "W1"
+   ],
+   "activities": [
+    "Size retail demand and growth, two markets at a time",
+    "Review consumer purchase data and category reports",
+    "Compare the markets on agreed attractiveness criteria"
+   ],
+   "deliverable_ids": [
+    "D2",
+    "D3"
+   ]
+  },
+  {
+   "id": "W3",
+   "phase_order": 1,
+   "name": "Competitors and access",
+   "answers": "Which competitors, retail channels and regulations shape Quinta Azul's access to each shortlisted market?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1",
+    "gate:1"
+   ],
+   "start_week": 3,
+   "end_week": 9,
+   "follows": [
+    "W1"
+   ],
+   "activities": [
+    "Map competitors and retail channels in each market",
+    "Review regulations that apply to olive-oil retail sales",
+    "Interview retail buyers on listing terms and rivals"
+   ],
+   "deliverable_ids": [
+    "D4",
+    "D5"
+   ]
+  },
+  {
+   "id": "W4",
+   "phase_order": 1,
+   "name": "Capability to win",
+   "answers": "Does Quinta Azul have the assets and capabilities to win in each shortlisted market?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1",
+    "gate:1"
+   ],
+   "start_week": 5,
+   "end_week": 9,
+   "follows": [
+    "W3"
+   ],
+   "activities": [
+    "Interview Quinta Azul staff who run sales and production",
+    "Analyze Quinta Azul's volume, cost and price data",
+    "Assess the gaps to win in each shortlisted market"
+   ],
+   "deliverable_ids": [
+    "D6",
+    "D7"
+   ]
+  },
+  {
+   "id": "W5",
+   "phase_order": 2,
+   "name": "Entry options",
+   "answers": "Which ways of entering each shortlisted market are open to Quinta Azul, and how do they compare?",
+   "traces_to": [
+    "success_criteria:1",
+    "gate:2"
+   ],
+   "start_week": 10,
+   "end_week": 12,
+   "follows": [],
+   "activities": [
+    "List the entry routes open to Quinta Azul in each market",
+    "Compare the routes on criteria agreed with the sponsors",
+    "Test the routes with retail buyers and Quinta Azul staff"
+   ],
+   "deliverable_ids": [
+    "D8"
+   ]
+  },
+  {
+   "id": "W6",
+   "phase_order": 2,
+   "name": "Business cases",
+   "answers": "What would entering each shortlisted market return and require, and does it support a go or no-go?",
+   "traces_to": [
+    "success_criteria:1",
+    "gate:2"
+   ],
+   "start_week": 13,
+   "end_week": 14,
+   "follows": [
+    "W5"
+   ],
+   "activities": [
+    "Build the business case for each market's preferred option",
+    "Model volumes, costs and returns from Quinta Azul's data",
+    "Set out the evidence for a go or no-go in each country"
+   ],
+   "deliverable_ids": [
+    "D9"
+   ]
+  },
+  {
+   "id": "W7",
+   "phase_order": 2,
+   "name": "Entry sequence and roadmap",
+   "answers": "In what order, and with what roadmap, should Quinta Azul enter the countries that are a go?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:2",
+    "gate:2"
+   ],
+   "start_week": 15,
+   "end_week": 15,
+   "follows": [
+    "W6"
+   ],
+   "activities": [
+    "Compare entry orders on timing, effort and risk",
+    "Draft the entry roadmap for the countries that are a go",
+    "Test the sequence with the CEO and Commercial Director"
+   ],
+   "deliverable_ids": [
+    "D10",
+    "D11"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "Desk screen of the four retail markets",
+   "kind": "analysis",
+   "format": "presentation",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 2,
+   "presented_at": "Workshop: first findings"
+  },
+  {
+   "id": "D2",
+   "name": "Interim retail demand and growth sizing",
+   "kind": "analysis",
+   "format": "presentation",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 5,
+   "presented_at": "Workshop: first findings"
+  },
+  {
+   "id": "D3",
+   "name": "Market attractiveness comparison by country",
+   "kind": "analysis",
+   "format": "presentation",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 8,
+   "presented_at": "Findings sign-off"
+  },
+  {
+   "id": "D4",
+   "name": "Competitor and retail channel map by market",
+   "kind": "analysis",
+   "format": "presentation",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Workshop: first findings"
+  },
+  {
+   "id": "D5",
+   "name": "Retail regulation and buyer listing findings",
+   "kind": "analysis",
+   "format": "presentation",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 9,
+   "presented_at": "Findings sign-off"
+  },
+  {
+   "id": "D6",
+   "name": "Capability gap assessment by market",
+   "kind": "analysis",
+   "format": "presentation",
+   "workstream_id": "W4",
+   "phase_order": 1,
+   "due_week": 8,
+   "presented_at": "Findings sign-off"
+  },
+  {
+   "id": "D7",
+   "name": "Findings pack for the shortlist decision",
+   "kind": "decision_pack",
+   "format": "presentation",
+   "workstream_id": "W4",
+   "phase_order": 1,
+   "due_week": 9,
+   "presented_at": "Findings sign-off"
+  },
+  {
+   "id": "D8",
+   "name": "Entry options compared by market",
+   "kind": "design",
+   "format": "presentation",
+   "workstream_id": "W5",
+   "phase_order": 2,
+   "due_week": 12,
+   "presented_at": "Check-in: entry options"
+  },
+  {
+   "id": "D9",
+   "name": "Business case by market",
+   "kind": "design",
+   "format": "presentation",
+   "workstream_id": "W6",
+   "phase_order": 2,
+   "due_week": 14,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D10",
+   "name": "Entry roadmap for the countries that are a go",
+   "kind": "design",
+   "format": "presentation",
+   "workstream_id": "W7",
+   "phase_order": 2,
+   "due_week": 15,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D11",
+   "name": "Go/no-go and entry sequence decision pack",
+   "kind": "decision_pack",
+   "format": "presentation",
+   "workstream_id": "W7",
+   "phase_order": 2,
+   "due_week": 15,
+   "presented_at": "Final readout"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 2,
+  "status_weeks": [
+   3,
+   7,
+   11
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Start the research with access in place",
+    "attendees": [
+     "CEO",
+     "Commercial Director"
+    ],
+    "presents": [],
+    "decision": "Can the team access Quinta Azul's sales data and retail contacts from week 1?",
+    "agenda": [
+     "Present the two phases, gates and meeting calendar",
+     "Align on the scope boundary across the four countries",
+     "Confirm access to company data and retail contacts"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "workshop",
+    "phase_order": 1,
+    "week": 5,
+    "label": "Workshop: first findings",
+    "purpose": "Review early market and competitor evidence",
+    "attendees": [
+     "CEO",
+     "Commercial Director"
+    ],
+    "presents": [
+     "D1",
+     "D2",
+     "D4"
+    ],
+    "decision": "Which markets get the full capability assessment after the first findings?",
+    "agenda": [
+     "Present the desk screen and interim demand and growth sizing",
+     "Review the competitor and retail channel map by market",
+     "Decide which markets get the full capability assessment"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 9,
+    "label": "Findings sign-off",
+    "purpose": "Decide which markets enter design",
+    "attendees": [
+     "CEO",
+     "Commercial Director"
+    ],
+    "presents": [
+     "D3",
+     "D5",
+     "D6",
+     "D7"
+    ],
+    "decision": "Which markets go forward into entry design, and which stop here?",
+    "agenda": [
+     "Present the attractiveness comparison and capability gaps",
+     "Review the retail regulation and buyer listing findings",
+     "Decide which markets go forward into entry design"
+    ]
+   },
+   {
+    "id": "G4",
+    "type": "checkin",
+    "phase_order": 2,
+    "week": 13,
+    "label": "Check-in: entry options",
+    "purpose": "Review entry options before roadmap work",
+    "attendees": [
+     "CEO",
+     "Commercial Director"
+    ],
+    "presents": [
+     "D8"
+    ],
+    "decision": "Which entry option per shortlisted market should the roadmap and sequence build on?",
+    "agenda": [
+     "Present the entry options compared by market",
+     "Discuss the trade-offs ahead of the final readout",
+     "Decide which entry option the roadmap details per market"
+    ]
+   },
+   {
+    "id": "G5",
+    "type": "gate",
+    "phase_order": 2,
+    "week": 15,
+    "label": "Final readout",
+    "purpose": "Approve go/no-go and entry sequence",
+    "attendees": [
+     "CEO",
+     "Commercial Director"
+    ],
+    "presents": [
+     "D9",
+     "D10",
+     "D11"
+    ],
+    "decision": "Approve the go/no-go per country and the entry sequence?",
+    "agenda": [
+     "Present the business case by market",
+     "Review the entry roadmap for the countries that are a go",
+     "Decide the go/no-go per country and the entry sequence"
+    ]
+   }
+  ]
+ },
+ "deadline": null,
+ "architect_notes": [
+  "Length is not given, so the 11 to 15 weeks are an estimate (work sizes at 11 to 17); confirm it before quoting.",
+  "Research and Design sit mid-estimate; slow buyer-interview access or client review rounds would push them to 10 and 7 weeks.",
+  "Assumes three of the four markets are assessed in full after the desk screen; assessing two would cut Research by 2 to 3 weeks.",
+  "A market dropped at the desk screen gets its no-go on desk evidence only; confirm that meets the go/no-go criterion.",
+  "Go or no-go for any country stopped at the Research gate rests on the desk screen or full assessment, not a business case."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Research",
+    "start": 1,
+    "end": 9
+   },
+   {
+    "phase": "Design",
+    "start": 10,
+    "end": 15
+   }
+  ]
+ },
+ "sizing": {
+  "length_basis": "estimated",
+  "sub_questions": [
+   {
+    "id": "Q1",
+    "question": "How large and attractive is each country's retail market for Quinta Azul's olive oil?",
+    "phase_order": 1
+   },
+   {
+    "id": "Q2",
+    "question": "Which competitors, retail channels and regulations shape Quinta Azul's access to each market?",
+    "phase_order": 1
+   },
+   {
+    "id": "Q3",
+    "question": "Does Quinta Azul have the assets and capabilities to win in each market?",
+    "phase_order": 1
+   },
+   {
+    "id": "Q4",
+    "question": "Which entry option and business case support a go or no-go for each of the four countries?",
+    "phase_order": 2
+   },
+   {
+    "id": "Q5",
+    "question": "In what order, and with what roadmap, should Quinta Azul enter the countries that are a go?",
+    "phase_order": 2
+   }
+  ],
+  "drivers": [
+   {
+    "key": "markets",
+    "value": 4,
+    "source": "brief",
+    "evidence": "retail markets of Spain, France, Germany and Poland"
+   }
+  ],
+  "phases": [
+   {
+    "order": 1,
+    "name": "Research",
+    "planned_weeks": {
+     "min": 7,
+     "max": 9
+    },
+    "estimate": {
+     "min": 7,
+     "max": 10
+    },
+    "archetype_weeks": {
+     "min": 4,
+     "max": 8
+    },
+    "fixed_weeks": 2,
+    "work": [
+     {
+      "unit": "Market screened on desk data",
+      "from_library": true,
+      "driver": "markets",
+      "count": 4,
+      "at_once": 4,
+      "weeks_each": {
+       "min": 1,
+       "max": 2
+      }
+     },
+     {
+      "unit": "Market assessed in full (demand, channels, competitors, regulation, buyer interviews)",
+      "from_library": true,
+      "driver": "markets",
+      "count": 3,
+      "at_once": 2,
+      "weeks_each": {
+       "min": 2,
+       "max": 3
+      }
+     }
+    ],
+    "why": "Four screened at once, three assessed in full two at a time; the desk screen before full work exceeds typical 4 to 8 weeks."
+   },
+   {
+    "order": 2,
+    "name": "Design",
+    "planned_weeks": {
+     "min": 4,
+     "max": 6
+    },
+    "estimate": {
+     "min": 4,
+     "max": 7
+    },
+    "archetype_weeks": {
+     "min": 3,
+     "max": 6
+    },
+    "fixed_weeks": 1,
+    "work": [
+     {
+      "unit": "Entry option and business case for one market",
+      "from_library": true,
+      "driver": "markets",
+      "count": 3,
+      "at_once": 2,
+      "weeks_each": {
+       "min": 1,
+       "max": 2
+      }
+     },
+     {
+      "unit": "Entry sequence and roadmap across markets",
+      "from_library": true,
+      "driver": null,
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 1,
+       "max": 2
+      }
+     }
+    ],
+    "why": "Three business cases built two at a time, then one sequence and roadmap; top of the range exceeds typical 3 to 6 weeks."
+   }
+  ],
+  "estimate_total": {
+   "min": 11,
+   "max": 17
+  },
+  "planned_total": {
+   "min": 11,
+   "max": 15
+  },
+  "levers": "Assessing two markets in full instead of three, or running all three at once, would shorten Research most."
+ }
+}

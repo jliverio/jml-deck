@@ -1,0 +1,133 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Baseline, first two plants",
+      "question_id": "Q1",
+      "answers": "Where does conversion cost per part sit in the first two plants diagnosed, and what drives it?",
+      "traces_to": ["problem_statement", "success_criteria:1"],
+      "start_offset": 0,
+      "duration": 2,
+      "follows": [],
+      "activities": [
+        "Build the cost per part baseline from operational data",
+        "Observe lines and interview the people who run them",
+        "Trace conversion cost losses to their causes by line"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Baseline, third plant",
+      "question_id": "Q1",
+      "answers": "Where does conversion cost per part sit in the third plant diagnosed, and what drives it?",
+      "traces_to": ["problem_statement", "success_criteria:1"],
+      "start_offset": 2,
+      "duration": 2,
+      "follows": ["W1"],
+      "activities": [
+        "Apply the first-round method to the third plant",
+        "Observe the lines and interview the people who run them",
+        "Compare its loss causes with those of the first two plants"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 1,
+      "name": "Baseline, other three plants",
+      "question_id": "Q1",
+      "answers": "Where does conversion cost per part sit in the other three plants, estimated from their data?",
+      "traces_to": ["problem_statement", "success_criteria:1"],
+      "start_offset": 2,
+      "duration": 2,
+      "follows": ["W1"],
+      "activities": [
+        "Collect cost and production data for these plants",
+        "Extend the loss patterns found on the floor to their data",
+        "Test the estimates with the people who run each plant"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 1,
+      "name": "Cost improvement sizing",
+      "question_id": "Q2",
+      "answers": "Which improvements, sized per plant, cut conversion cost per part by a measurable amount in every plant?",
+      "traces_to": ["problem_statement", "success_criteria:1", "gate:1"],
+      "start_offset": 4,
+      "duration": 4,
+      "follows": ["W1", "W2", "W3"],
+      "activities": [
+        "List improvement options from loss causes with plant teams",
+        "Size the cost per part saving of each option by plant",
+        "Set out the go/no-go case and the pilot plant options"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 2,
+      "name": "Pilot plant improvements",
+      "question_id": "Q3",
+      "answers": "Do the approved improvements show savings in the cost data at the pilot plant?",
+      "traces_to": ["problem_statement", "success_criteria:1"],
+      "start_offset": 0,
+      "duration": 12,
+      "follows": [],
+      "activities": [
+        "Prepare the changes for go-live at the pilot plant",
+        "Launch the changes after the readiness workshop",
+        "Show the savings in cost data against the baseline"
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 2,
+      "name": "Improvement rollout, wave 1",
+      "question_id": "Q4",
+      "answers": "How are the improvements put in place in the first wave of plants?",
+      "traces_to": ["problem_statement", "success_criteria:1", "success_criteria:2"],
+      "start_offset": 12,
+      "duration": 4,
+      "follows": ["W5"],
+      "activities": [
+        "Adapt the piloted changes to each plant in the wave",
+        "Put the changes in place and train each plant's own teams",
+        "Track cost per part in each plant against its baseline"
+      ]
+    },
+    {
+      "id": "W7",
+      "phase_order": 2,
+      "name": "Improvement rollout, wave 2",
+      "question_id": "Q4",
+      "answers": "How are the improvements put in place in the remaining plants, so all six run them?",
+      "traces_to": ["problem_statement", "success_criteria:1", "success_criteria:2"],
+      "start_offset": 16,
+      "duration": 4,
+      "follows": ["W6"],
+      "activities": [
+        "Apply wave 1 lessons to the changes for each plant",
+        "Put the changes in place and train each plant's own teams",
+        "Track cost per part in each plant against its baseline"
+      ]
+    },
+    {
+      "id": "W8",
+      "phase_order": 2,
+      "name": "Cost per part results",
+      "question_id": "Q5",
+      "answers": "What conversion cost per part does each plant show against its baseline once the improvements run?",
+      "traces_to": ["problem_statement", "success_criteria:1", "success_criteria:2", "gate:2"],
+      "start_offset": 20,
+      "duration": 6,
+      "follows": ["W5", "W6", "W7"],
+      "activities": [
+        "Measure cost per part from plant data after wave 2",
+        "Compare each of the six plants with its baseline",
+        "Prepare the final readout with the COO and Plant Directors"
+      ]
+    }
+  ],
+  "notes": []
+}

@@ -1,0 +1,136 @@
+{
+  "basis": {
+    "governing_question": "Where can Iberia Foods identify savings of 8% of the cost base without cutting service levels?",
+    "archetype_id": "performance_improvement"
+  },
+  "sizing": {
+    "length_basis": "stated",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "What does the cost base look like today across the twelve workstreams?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "Which service levels must the savings protect, and how are they measured today?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q3",
+        "question": "Where are the savings opportunities, and how large is each?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q4",
+        "question": "Which opportunities hold the service levels, and do they add up to 8% of the cost base?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q5",
+        "question": "What savings program should the CFO and COO sign off, and in what sequence?",
+        "phase_order": 1
+      }
+    ],
+    "drivers": [
+      {
+        "key": "workstreams",
+        "value": 12,
+        "source": "brief",
+        "evidence": "They want it run as twelve workstreams"
+      },
+      {
+        "key": "stakeholder_groups",
+        "value": 12,
+        "source": "assumed",
+        "evidence": ""
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Interview round with one stakeholder group",
+            "from_library": true,
+            "driver": "stakeholder_groups",
+            "count": 12,
+            "weeks_each": {
+              "min": 1,
+              "max": 2
+            },
+            "at_once": 3
+          },
+          {
+            "unit": "Function savings opportunities sized against service levels",
+            "from_library": false,
+            "driver": "workstreams",
+            "count": 12,
+            "weeks_each": {
+              "min": 1,
+              "max": 2
+            },
+            "at_once": 4
+          },
+          {
+            "unit": "Savings program built and tested against the 8% target",
+            "from_library": false,
+            "driver": null,
+            "count": 1,
+            "weeks_each": {
+              "min": 1,
+              "max": 2
+            },
+            "at_once": 1
+          },
+          {
+            "unit": "Client review and sign-off cycle",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": {
+              "min": 1,
+              "max": 2
+            },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": {
+          "min": 11,
+          "max": 20
+        },
+        "why": "Interviews run three at a time, sizing four at a time; twelve functions put it above the archetype's 3 to 6 weeks."
+      }
+    ],
+    "levers": "Interview and size the largest cost functions in depth and cover the rest from data; running more functions at once would also shorten it."
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": {
+        "min": 12,
+        "max": 12
+      },
+      "duration_derived": false,
+      "objective_one_line": "Baseline costs and service levels across twelve functions, then design the savings program toward the 8% target.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the sized savings program as the final result?"
+      },
+      "depends_on_assumptions": [
+        "deliverable_format",
+        "timeline",
+        "prior_attempts",
+        "out_of_scope"
+      ]
+    }
+  ],
+  "architect_notes": [
+    "One Diagnostic phase, the closest fit, with design inside it: twelve workstreams across two phases would need 24 rows, over the 12 allowed.",
+    "The stated 12 weeks all go to the one phase; the work estimate runs 11 to 20 weeks.",
+    "Assumed driver: twelve stakeholder groups to interview, one per function, which sets 4 to 8 weeks of the estimate; confirm with the client.",
+    "No Implementation phase: the brief is an assessment only, so the performance improvement archetype stops after its Diagnostic."
+  ]
+}

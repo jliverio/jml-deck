@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 5,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W4 starts in week 3 although it is declared to run after W2 and W3, which end in week 4, so D4 (long list of causes) is due the same week as the D2 and D3 analyses it is meant to consolidate.",
+      "W3 starts in week 2 although it is declared to run after W1, whose D1 baseline is not due until week 3.",
+      "W2 and W3 both ask why patients wait and both interview hospital staff, with W4 validating with staff again, so the streams overlap on causes and staff get three rounds of interviews.",
+      "W4 ranks improvement areas 'against agreed criteria', but no steering meeting or deliverable ever sets those criteria, so the week-6 gate asks the sponsor to accept a ranking whose basis was never agreed.",
+      "The governing question covers only current state and drivers, yet the phase objective, W4, D5 and the gate decision all hinge on prioritized improvement areas, and the gate asks whether 'the steering group' accepts when the medical director is the only attendee."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 5,
+      "workstreams": 3,
+      "deliverables": 4,
+      "governance": 4,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W3 (causes of delay) starts in week 3, but the week-4 check-in is where the sponsor decides which pathway steps it should examine, so the stream runs a week before it is scoped.",
+      "W2 is declared to run after W1 but starts in week 2, a week before the D1 baseline is due, and W3 is declared after W2 but starts in week 3 while W2 runs to week 4.",
+      "W4 'Diagnostic synthesis' only restates the governing question instead of answering a distinct question, so it packages W1-W3 rather than being a fourth workstream.",
+      "D3 (causes of delay) is due in week 5 but no meeting reviews it before the week-6 gate, so the sponsor first sees the core 'why' findings at the same meeting where approval is asked.",
+      "The governing question asks only for the current state of waiting times, while the objective, W3 and D3 also explain why delays occur, and the partner note says the four workstreams 'run side by side' although W2-W4 are sequenced."
+    ]
+  },
+  "better": "Y",
+  "why": "Y's streams form a clean how-long, where, why chain with one staggered deliverable each and a week-4 check-in that asks a real steering decision, whereas X bunches D2-D4 into week 4, starts prioritization before its inputs exist, and asks only a validation question at the check-in. Y's main flaws (W3 starting a week before the meeting that scopes it, a filler synthesis stream) are smaller retiming fixes than X's overlapping cause streams and ranking criteria that are never agreed."
+}

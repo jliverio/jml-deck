@@ -1,0 +1,132 @@
+{
+  "basis": {
+    "governing_question": "How can Metalúrgica Norte cut conversion cost at its Braga plant and put the improvements in place?",
+    "archetype_id": "performance_improvement"
+  },
+  "sizing": {
+    "length_basis": "estimated",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "What is conversion cost per part at the Braga plant today, and where does it build up?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "Which improvements can lower conversion cost per part by a measurable amount, and how much is each worth?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q3",
+        "question": "How are the chosen improvements put in place at the plant, and in what order?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q4",
+        "question": "Do the improvements keep running at the plant, and does cost per part fall against the baseline?",
+        "phase_order": 2
+      }
+    ],
+    "drivers": [
+      {
+        "key": "sites",
+        "value": 1,
+        "source": "brief",
+        "evidence": "its plant in Braga"
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Site diagnosed on the floor (cost baseline, line observation, loss analysis)",
+            "from_library": true,
+            "driver": "sites",
+            "count": 1,
+            "weeks_each": {
+              "min": 2,
+              "max": 3
+            },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": {
+          "min": 4,
+          "max": 5
+        },
+        "why": "One plant, so one site diagnosed on the floor; interviews run alongside. Estimate sits inside the archetype's typical 3 to 6 weeks."
+      },
+      {
+        "phase_order": 2,
+        "work": [
+          {
+            "unit": "Pilot site: changes made and savings shown in the cost data",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": {
+              "min": 8,
+              "max": 12
+            },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 0,
+        "estimate": {
+          "min": 8,
+          "max": 12
+        },
+        "why": "The single plant is the pilot site; no rollout wave is needed. Estimate sits inside the archetype's typical 8 to 16 weeks."
+      }
+    ],
+    "levers": "Carry only the largest sized improvements into Implementation, which holds most of the weeks; running changes side by side would also shorten it."
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": {
+        "min": 4,
+        "max": 5
+      },
+      "duration_derived": false,
+      "objective_one_line": "Establish conversion cost per part at the Braga plant and size the improvements that could lower it.",
+      "gate": {
+        "label": "Initiatives go/no-go",
+        "decision": "Which sized initiatives go into implementation at the plant, and which stop here?"
+      },
+      "depends_on_assumptions": [
+        "engagement_length",
+        "timeline",
+        "prior_attempts"
+      ]
+    },
+    {
+      "name": "Implementation",
+      "order": 2,
+      "duration_weeks": {
+        "min": 9,
+        "max": 11
+      },
+      "duration_derived": false,
+      "objective_one_line": "Put the agreed improvements in place at the plant and show their effect on conversion cost per part.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the results against the baseline and the handover to the plant team?"
+      },
+      "depends_on_assumptions": [
+        "engagement_length",
+        "deliverable_format",
+        "timeline",
+        "out_of_scope"
+      ]
+    }
+  ],
+  "architect_notes": [
+    "Engagement length is not given; the 13 to 16 weeks are an estimate to confirm before this plan becomes a quote.",
+    "Implementation takes the middle of its 8 to 12 week estimate; savings slow to show in the cost data would push it to 12.",
+    "No Measurement phase: tracking against the baseline stays inside Implementation; confirm whether the client wants tracking after the engagement ends."
+  ]
+}

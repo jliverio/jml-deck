@@ -1,0 +1,57 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Confirm scope, team and calendar",
+      "attendees": ["Marta Ruiz, CFO", "COO"],
+      "presents": [],
+      "decision": "Confirm the scope, team and calendar for the 12-week cost diagnostic?",
+      "agenda": [
+        "Present the diagnostic scope, workstreams and deliverables",
+        "Confirm the team and the steering calendar",
+        "Align on the 8% savings goal and the service-level condition"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Workshop 1: cost base",
+      "purpose": "Review cost base and service levels",
+      "attendees": ["Marta Ruiz, CFO", "COO"],
+      "presents": ["D6", "D8"],
+      "decision": "Confirm the verified cost base and service levels as the baseline for savings options?",
+      "agenda": [
+        "Present the verified cost base from financial records",
+        "Review the service levels customers rely on",
+        "Align on how savings options will be tested against service levels"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Workshop 2: spend, limits",
+      "purpose": "Review spend baseline and contract limits",
+      "attendees": ["Marta Ruiz, CFO", "COO"],
+      "presents": ["D1", "D14"],
+      "decision": "Which cost areas should the team detail into savings options and delivery plans?",
+      "agenda": [
+        "Present the spend baseline by category and supplier",
+        "Review contractual commitments that limit savings",
+        "Discuss emerging savings areas against the 8% target"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Final readout",
+      "purpose": "Close the diagnostic and approve the result",
+      "attendees": ["Marta Ruiz, CFO", "COO"],
+      "presents": ["D2", "D3", "D4", "D5", "D7", "D9", "D10", "D11", "D12", "D13", "D15"],
+      "decision": "Approve the savings findings and program design as the final result?",
+      "agenda": [
+        "Present savings options and delivery plans by workstream",
+        "Review reconciled savings against the cost base and service levels",
+        "Decide whether to approve the findings and program design"
+      ]
+    }
+  ],
+  "notes": []
+}

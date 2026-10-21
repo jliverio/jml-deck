@@ -1,0 +1,49 @@
+{
+  "basis": {
+    "governing_question": "Which new point-of-sale system should Farmácias Lusas choose, and how can it be rolled out to its 40 pharmacies?",
+    "archetype_id": "technology_selection_implementation"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 4, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Define the business requirements a new point-of-sale system must meet by assessing how the pharmacies work today.",
+      "gate": {
+        "label": "Requirements sign-off",
+        "decision": "Go ahead with vendor evaluation against these mandatory requirements?"
+      },
+      "depends_on_assumptions": ["engagement_length", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 5, "max": 7 },
+      "duration_derived": false,
+      "objective_one_line": "Compare vendors against the requirements, choose one system, and plan its rollout across the 40 pharmacies.",
+      "gate": {
+        "label": "Vendor selection",
+        "decision": "Which system do we select, and go or no-go on its rollout to the pharmacies?"
+      },
+      "depends_on_assumptions": ["engagement_length"]
+    },
+    {
+      "name": "Implementation",
+      "order": 3,
+      "duration_weeks": { "min": 14, "max": 16 },
+      "duration_derived": false,
+      "objective_one_line": "Roll out the chosen point-of-sale system to all 40 pharmacies and prepare their staff to use it.",
+      "gate": {
+        "label": "Rollout acceptance",
+        "decision": "Approve the rollout as complete, with the system running in all 40 pharmacies?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format", "timeline", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Engagement length is not stated, so 23 to 29 weeks is an estimate built on the archetype's phase lengths and a 40-pharmacy rollout.",
+    "The archetype stops at Design; I added Implementation because the brief asks to roll the chosen system out to the pharmacies.",
+    "Implementation is the largest estimate: 14 to 16 weeks for 40 pharmacies has no archetype benchmark and needs the client's rollout capacity confirmed."
+  ]
+}

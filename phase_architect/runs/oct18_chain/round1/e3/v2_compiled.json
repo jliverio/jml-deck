@@ -1,0 +1,269 @@
+{
+ "client": "Norte Hospitals Group",
+ "basis": {
+  "governing_question": "What is the current state of patient waiting times at Norte Hospitals Group's three hospitals, and what drives it?",
+  "archetype_id": "performance_improvement"
+ },
+ "total_duration_weeks": {
+  "min": 6,
+  "max": 6
+ },
+ "phases": [
+  {
+   "name": "Diagnostic",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 6,
+   "duration_weeks": {
+    "min": 6,
+    "max": 6
+   },
+   "duration_derived": false,
+   "objective_one_line": "Establish where and why patients wait at the three hospitals and which improvement areas matter most.",
+   "gate": {
+    "label": "Final readout",
+    "decision": "Does the steering group accept the findings and prioritized improvement areas?"
+   },
+   "depends_on_assumptions": [
+    "deliverable_format",
+    "timeline",
+    "prior_attempts",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2",
+    "W3",
+    "W4"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Waiting-time baseline",
+   "answers": "How long do patients wait today at each of the three hospitals, and how do waits compare?",
+   "traces_to": [
+    "problem_statement"
+   ],
+   "start_week": 1,
+   "end_week": 3,
+   "follows": [],
+   "activities": [
+    "Agree how waiting time is measured with the sponsor",
+    "Collect operational data on waiting times by hospital",
+    "Compare waiting times across hospitals and patient groups"
+   ],
+   "deliverable_ids": [
+    "D1"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Staff and patient input",
+   "answers": "What do the people who work in and use the hospitals see as the causes of long waits?",
+   "traces_to": [
+    "problem_statement"
+   ],
+   "start_week": 1,
+   "end_week": 4,
+   "follows": [],
+   "activities": [
+    "Interview clinical and admin staff at each hospital",
+    "Gather patient feedback on their waiting experience",
+    "Synthesize recurring pain points across hospitals"
+   ],
+   "deliverable_ids": [
+    "D2"
+   ]
+  },
+  {
+   "id": "W3",
+   "phase_order": 1,
+   "name": "Patient flow bottlenecks",
+   "answers": "Where along the patient journey do waits build up at each hospital, and why?",
+   "traces_to": [
+    "problem_statement"
+   ],
+   "start_week": 2,
+   "end_week": 4,
+   "follows": [
+    "W1"
+   ],
+   "activities": [
+    "Map patient journeys through each hospital",
+    "Analyze operational data to locate where waits build up",
+    "Test emerging causes with hospital staff"
+   ],
+   "deliverable_ids": [
+    "D3"
+   ]
+  },
+  {
+   "id": "W4",
+   "phase_order": 1,
+   "name": "Improvement priorities",
+   "answers": "Which causes of long waits matter most, and where should improvement effort focus first?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 3,
+   "end_week": 6,
+   "follows": [
+    "W1",
+    "W2",
+    "W3"
+   ],
+   "activities": [
+    "Consolidate findings into a long list of causes",
+    "Rank improvement areas against agreed criteria",
+    "Validate the ranking with staff and the sponsor"
+   ],
+   "deliverable_ids": [
+    "D4",
+    "D5"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "Waiting-time baseline by hospital",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 3,
+   "presented_at": "Check-in: findings so far"
+  },
+  {
+   "id": "D2",
+   "name": "Synthesis of staff and patient views on waiting",
+   "kind": "analysis",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Check-in: findings so far"
+  },
+  {
+   "id": "D3",
+   "name": "Patient journey map with wait points by hospital",
+   "kind": "analysis",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Check-in: findings so far"
+  },
+  {
+   "id": "D4",
+   "name": "Long list of causes and improvement areas",
+   "kind": "analysis",
+   "workstream_id": "W4",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Check-in: findings so far"
+  },
+  {
+   "id": "D5",
+   "name": "Diagnostic findings and prioritized improvement areas",
+   "kind": "decision_pack",
+   "workstream_id": "W4",
+   "phase_order": 1,
+   "due_week": 6,
+   "presented_at": "Final readout"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 1,
+  "status_weeks": [
+   2,
+   3,
+   5
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Align on scope, measures and access",
+    "attendees": [
+     "Board's medical director (sponsor)"
+    ],
+    "presents": [],
+    "decision": "Are the scope and waiting-time measures for the diagnostic confirmed?",
+    "agenda": [
+     "Align on the goal and scope of the diagnostic",
+     "Review the work plan for the four workstreams",
+     "Confirm access to hospital data and staff"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "checkin",
+    "phase_order": 1,
+    "week": 4,
+    "label": "Check-in: findings so far",
+    "purpose": "Review findings and long list of causes",
+    "attendees": [
+     "Board's medical director (sponsor)"
+    ],
+    "presents": [
+     "D1",
+     "D2",
+     "D3",
+     "D4"
+    ],
+    "decision": "Do the findings so far cover the right causes of long waits?",
+    "agenda": [
+     "Present the waiting-time baseline and patient journey map",
+     "Discuss staff and patient views on the causes of long waits",
+     "Review the long list of improvement areas"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 6,
+    "label": "Final readout",
+    "purpose": "Present final findings and priority areas",
+    "attendees": [
+     "Board's medical director (sponsor)"
+    ],
+    "presents": [
+     "D1",
+     "D2",
+     "D3",
+     "D4",
+     "D5"
+    ],
+    "decision": "Does the steering group accept the findings and prioritized improvement areas?",
+    "agenda": [
+     "Present the diagnostic findings and prioritized improvement areas",
+     "Review how priorities were ranked and checked with staff",
+     "Decide on acceptance of the diagnostic findings"
+    ]
+   }
+  ]
+ },
+ "deadline": null,
+ "architect_notes": [
+  "The archetype's Implementation phase is dropped because the engagement is assessment only; acting on the improvement areas is not in this plan.",
+  "The archetype's Diagnostic has two workstreams; the plan uses four, as the client asked, adding staff and patient input and patient flow bottlenecks."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Diagnostic",
+    "start": 1,
+    "end": 6
+   }
+  ]
+ }
+}

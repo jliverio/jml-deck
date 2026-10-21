@@ -1,0 +1,329 @@
+{
+ "client": "Banco Atlântico",
+ "basis": {
+  "governing_question": "How does Banco Atlântico get its new branch operating model running in all 120 branches by week 24?",
+  "archetype_id": "operating_model_redesign"
+ },
+ "total_duration_weeks": {
+  "min": 24,
+  "max": 24
+ },
+ "phases": [
+  {
+   "name": "Implementation",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 24,
+   "duration_weeks": {
+    "min": 24,
+    "max": 24
+   },
+   "duration_derived": false,
+   "objective_one_line": "Roll out the new branch operating model to all 120 branches, with staff training and performance tracking running alongside.",
+   "gate": {
+    "label": "Final readout",
+    "decision": "Do all 120 branches run the new model, and is the rollout accepted as complete?"
+   },
+   "depends_on_assumptions": [
+    "deliverable_format",
+    "timeline",
+    "prior_attempts",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2",
+    "W3"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Branch rollout",
+   "answers": "In what order do the 120 branches move onto the new branch operating model, and when is each live?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 24,
+   "follows": [],
+   "activities": [
+    "Agree wave sequence and readiness checks for each branch",
+    "Launch the model wave by wave after the readiness review",
+    "Collect issues from branch staff and managers at each wave"
+   ],
+   "deliverable_ids": [
+    "D1",
+    "D2",
+    "D3"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Staff training",
+   "answers": "How do branch staff get ready to work in the new model before their branch goes live?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_week": 3,
+   "end_week": 24,
+   "follows": [
+    "W1"
+   ],
+   "activities": [
+    "Prepare training content for each role in the new model",
+    "Train branch staff in each wave ahead of go-live",
+    "Coach staff after go-live using feedback from branch teams"
+   ],
+   "deliverable_ids": [
+    "D4",
+    "D5"
+   ]
+  },
+  {
+   "id": "W3",
+   "phase_order": 1,
+   "name": "Performance tracking",
+   "answers": "Which measures show a branch is running the new model, and how do branches perform as each goes live?",
+   "traces_to": [
+    "success_criteria:1",
+    "gate:1"
+   ],
+   "start_week": 3,
+   "end_week": 24,
+   "follows": [
+    "W1"
+   ],
+   "activities": [
+    "Define the measures that show a branch runs the new model",
+    "Track each wave on those measures using operational data",
+    "Check in branches that work follows the new model"
+   ],
+   "deliverable_ids": [
+    "D6",
+    "D7",
+    "D8"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "Wave sequence and readiness checks for 120 branches",
+   "kind": "design",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 2,
+   "presented_at": "Workshop 1: readiness"
+  },
+  {
+   "id": "D2",
+   "name": "First-wave go-live record by branch",
+   "kind": "build",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 12,
+   "presented_at": "Check-in: first wave live"
+  },
+  {
+   "id": "D3",
+   "name": "Final go-live record and rollout acceptance pack",
+   "kind": "decision_pack",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 24,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D4",
+   "name": "Role-based training materials for the new model",
+   "kind": "enablement",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 6,
+   "presented_at": "Workshop 1: readiness"
+  },
+  {
+   "id": "D5",
+   "name": "Training attendance and post-go-live coaching record",
+   "kind": "enablement",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 22,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D6",
+   "name": "Branch performance measures for the new model",
+   "kind": "enablement",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 5,
+   "presented_at": "Workshop 1: readiness"
+  },
+  {
+   "id": "D7",
+   "name": "Interim performance report by wave",
+   "kind": "analysis",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 17,
+   "presented_at": "Workshop 2: wave progress"
+  },
+  {
+   "id": "D8",
+   "name": "Performance tracking report for all 120 branches",
+   "kind": "analysis",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 23,
+   "presented_at": "Final readout"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 2,
+  "status_weeks": [
+   3,
+   5,
+   9,
+   11,
+   15,
+   17,
+   19,
+   21,
+   23
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Agree scope, team and calendar",
+    "attendees": [
+     "COO",
+     "Head of Branch Network"
+    ],
+    "presents": [],
+    "decision": "Confirm scope, team and calendar for the 24-week rollout?",
+    "agenda": [
+     "Present the rollout objective and the 120-branch scope",
+     "Confirm the team roles and the meeting calendar",
+     "Align on the week-24 target: all 120 branches running the new model"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "workshop",
+    "phase_order": 1,
+    "week": 7,
+    "label": "Workshop 1: readiness",
+    "purpose": "Review readiness before first go-live",
+    "attendees": [
+     "COO",
+     "Head of Branch Network"
+    ],
+    "presents": [
+     "D1",
+     "D4",
+     "D6"
+    ],
+    "decision": "Approve the first wave to go live based on the readiness checks?",
+    "agenda": [
+     "Present wave sequence and readiness checks for the 120 branches",
+     "Review role-based training materials and branch performance measures",
+     "Decide on first-wave go-live based on the readiness checks"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "checkin",
+    "phase_order": 1,
+    "week": 13,
+    "label": "Check-in: first wave live",
+    "purpose": "Check first-wave results and next waves",
+    "attendees": [
+     "COO",
+     "Head of Branch Network"
+    ],
+    "presents": [
+     "D2"
+    ],
+    "decision": "Confirm first-wave go-live results so the next waves can proceed?",
+    "agenda": [
+     "Present the first-wave go-live record by branch",
+     "Discuss issues found in the first wave and their effect on the next waves",
+     "Confirm first-wave results before the next waves proceed"
+    ]
+   },
+   {
+    "id": "G4",
+    "type": "workshop",
+    "phase_order": 1,
+    "week": 18,
+    "label": "Workshop 2: wave progress",
+    "purpose": "Review progress toward all 120 branches",
+    "attendees": [
+     "COO",
+     "Head of Branch Network"
+    ],
+    "presents": [
+     "D2",
+     "D7"
+    ],
+    "decision": "Confirm any wave adjustments needed for all 120 branches to be live by week 24?",
+    "agenda": [
+     "Review the first-wave go-live record and the interim performance by wave",
+     "Discuss progress toward all 120 branches and the remaining waves",
+     "Confirm wave adjustments and the evidence the final readout will need"
+    ]
+   },
+   {
+    "id": "G5",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 24,
+    "label": "Final readout",
+    "purpose": "Decide on rollout acceptance",
+    "attendees": [
+     "COO",
+     "Head of Branch Network"
+    ],
+    "presents": [
+     "D3",
+     "D5",
+     "D8"
+    ],
+    "decision": "Do all 120 branches run the new model, and is the rollout accepted as complete?",
+    "agenda": [
+     "Present the final go-live record and rollout acceptance pack",
+     "Review training attendance, coaching and performance for all 120 branches",
+     "Decide whether the rollout is accepted as complete"
+    ]
+   }
+  ]
+ },
+ "deadline": null,
+ "architect_notes": [
+  "No Change & Training or Measurement phase: the brief names one 24-week rollout phase, so training and tracking run as workstreams inside Implementation.",
+  "Archetype departure: Diagnostic and Design from operating_model_redesign are dropped because the brief says the model is already designed; Implementation is added."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Implementation",
+    "start": 1,
+    "end": 24
+   }
+  ]
+ }
+}

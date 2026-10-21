@@ -1,0 +1,40 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 4,
+      "deliverables": 3,
+      "governance": 4,
+      "coherence": 4,
+      "sizing": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W7 wave 2 goes live only in week 28 (D12) and the week 29 final readout carries no cost-per-part result for those plants, so the success criterion of a measurable reduction in every plant cannot be shown for them.",
+      "Workshop 3 (week 23) decides go/no-go on wave 2 from the go-live record D11 alone because the wave 1 cost report D9 is not due until week 25, so its agenda item to discuss cost-per-part results has nothing to discuss.",
+      "D7 pilot savings (week 19) is read only three weeks after pilot go-live (D6, week 16), too short for conversion cost per part to show in the cost data before the week 19 check-in confirms the wave 1 rollout.",
+      "W6 and W7 never say which or how many plants sit in each wave, and adapting, launching and training across the wave 1 plants in four weeks (weeks 20-23) looks squeezed.",
+      "The week 1 kickoff never chooses the two plants W1 diagnoses in weeks 1-3, and its decision (whether each plant grants data and floor access) is a compliance check, not a real choice."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3,
+      "sizing": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W7 wave 1 starts in week 19, the same week the check-in reviews pilot results and while W5 is still running despite being marked after W5, and no steering meeting ever approves rolling the pilot changes out to wave 1.",
+      "W8 wave 2 goes live in week 26 and is followed only by a record that the improvements are running (D14), so the week 29 final readout has no cost-per-part result for wave 2 plants against the success criterion.",
+      "The week 19 check-in asks to confirm the measure for wave 2 results instead of deciding the wave 1 rollout that starts that same week.",
+      "D11 wave 1 go-live (week 20) lands one week after W7 starts and D12 wave 1 results (week 22) only two weeks after go-live, too fast to adapt, train and show savings in cost data across several plants.",
+      "Workshop 3 (week 23) re-reviews D7, D8 and D9 already reviewed in week 19, and its stated purpose (review before final readout) does not match its decision on starting wave 2."
+    ]
+  },
+  "better": "X",
+  "why": "X sequences Phase 2 cleanly: wave 1 starts only after the week 19 check-in confirms the pilot changes, and each steering meeting reviews only new deliverables against one rollout decision. Y lets wave 1 begin without any approval, asks a misdirected measurement question at week 19, re-reviews old deliverables at week 23 and splits the diagnostic into near-duplicate per-plant streams; its one advantage, wave 1 results before the wave 2 decision, is undercut by measuring them two weeks after go-live."
+}

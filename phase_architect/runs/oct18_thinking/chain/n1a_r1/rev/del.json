@@ -1,0 +1,68 @@
+{
+  "deliverables": [
+    {
+      "id": "D1",
+      "workstream_id": "W1",
+      "name": "Spanish retail market and channel assessment",
+      "kind": "analysis",
+      "due_week_in_phase": 4
+    },
+    {
+      "id": "D2",
+      "workstream_id": "W2",
+      "name": "Competitor profiles for Spanish olive-oil retail",
+      "kind": "analysis",
+      "due_week_in_phase": 5
+    },
+    {
+      "id": "D3",
+      "workstream_id": "W3",
+      "name": "Buyer interview findings on listing criteria",
+      "kind": "analysis",
+      "due_week_in_phase": 6
+    },
+    {
+      "id": "D4",
+      "workstream_id": "W3",
+      "name": "Buyer and shopper needs by channel",
+      "kind": "analysis",
+      "due_week_in_phase": 9
+    },
+    {
+      "id": "D5",
+      "workstream_id": "W4",
+      "name": "Gap assessment of Quinta Azul's assets for Spain",
+      "kind": "analysis",
+      "due_week_in_phase": 8
+    },
+    {
+      "id": "D6",
+      "workstream_id": "W4",
+      "name": "Findings pack for the Spain attractiveness decision",
+      "kind": "decision_pack",
+      "due_week_in_phase": 9
+    },
+    {
+      "id": "D7",
+      "workstream_id": "W5",
+      "name": "Entry options for Spain compared on agreed criteria",
+      "kind": "design",
+      "due_week_in_phase": 2
+    },
+    {
+      "id": "D8",
+      "workstream_id": "W5",
+      "name": "Business case for the Spain go or no-go decision",
+      "kind": "decision_pack",
+      "due_week_in_phase": 3
+    },
+    {
+      "id": "D9",
+      "workstream_id": "W6",
+      "name": "Entry plan and roadmap for Spain",
+      "kind": "design",
+      "due_week_in_phase": 4
+    }
+  ],
+  "notes": []
+}

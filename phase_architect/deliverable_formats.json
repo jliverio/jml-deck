@@ -1,0 +1,35 @@
+{
+  "_note": "What the client physically receives for each deliverable (José, Oct 19). One source for the Deliverable agent's checks; workplan.py keeps the same ids, labels and defaults for the slide icons (tests/test_formats.py keeps them in step). A workshop is not a format: it is how work is done, and its output is a presentation, report or playbook.",
+  "formats": [
+    { "id": "presentation", "label": "Presentation", "what": "slides presented at a meeting", "icon": "presentation" },
+    { "id": "report", "label": "Report", "what": "a written document read on its own", "icon": "file-text" },
+    { "id": "model", "label": "Model", "what": "a spreadsheet the client can rerun: a business case, cost or sizing model", "icon": "sheet" },
+    { "id": "dashboard", "label": "Dashboard", "what": "a tracker the client keeps updating: KPIs, savings, progress", "icon": "chart-column-increasing" },
+    { "id": "playbook", "label": "Playbook", "what": "procedures, roles and rules the client's people follow", "icon": "book-open-text" },
+    { "id": "training", "label": "Training", "what": "sessions with their materials", "icon": "graduation-cap" },
+    { "id": "solution", "label": "Working solution", "what": "something running: a prototype, a configured system, a pilot in operation", "icon": "settings" }
+  ],
+  "allowed_by_kind": {
+    "analysis": ["presentation", "report", "model", "dashboard"],
+    "design": ["presentation", "report", "model", "playbook"],
+    "build": ["solution", "model", "dashboard", "playbook"],
+    "decision_pack": ["presentation", "report"],
+    "enablement": ["training", "playbook", "dashboard", "report"]
+  },
+  "default_by_kind": {
+    "analysis": "presentation",
+    "design": "presentation",
+    "build": "solution",
+    "decision_pack": "presentation",
+    "enablement": "training"
+  },
+  "brief_words": {
+    "presentation": ["presentation", "deck", "slides", "powerpoint", "ppt"],
+    "report": ["report", "written", "document", "word", "memo"],
+    "model": ["model", "excel", "spreadsheet"],
+    "dashboard": ["dashboard", "tracker", "power bi"],
+    "playbook": ["playbook", "manual", "handbook", "guide", "procedures"],
+    "training": ["training", "course"],
+    "solution": ["prototype", "working system", "configured system"]
+  }
+}

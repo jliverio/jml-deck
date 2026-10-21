@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 4,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "D2 'New operating model live in all 120 branches' and D4 'Branch staff trained ahead of each wave' are outcomes, not tangible deliverables the client receives.",
+      "The week 13 check-in reviews nothing yet asks whether any waves need to change, so the decision has no evidence behind it because D6 is not due until week 18.",
+      "The week 24 gate agenda reviews 'staff training ahead of the final waves', which contradicts a close-out meeting at which all waves should already be complete.",
+      "D5 (definition of a running branch and starting position) is due in week 7, the same week Workshop 1 reviews it to clear the first wave, leaving no time to circulate it beforehand.",
+      "W3 is labelled 'after W1' but starts in week 5 while W1 runs weeks 1-24, so the stated dependency contradicts the timing."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 4,
+      "coherence": 4
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W3 has no deliverable after D6 in week 12 although tracking runs to week 24, so the week 24 gate's 'final results against the KPIs' has no tracking document behind it (D2 is W1's completion report).",
+      "D4 'Trained staff in all 120 branches' is an outcome rather than a tangible deliverable, and W2 ends in week 18 while waves go live until week 24, with no training for the late waves after that.",
+      "Workshop 2 in week 19 re-reviews D6, already reviewed at the week 13 check-in, instead of an updated tracker with the later-wave results.",
+      "W3's activities set the baseline from branch data before the KPIs are agreed with the COO and Head of Branch Network, which is the wrong order.",
+      "W3 is labelled 'after W1' but starts in week 2 while W1 runs weeks 1-24, so the stated dependency contradicts the timing."
+    ]
+  },
+  "better": "Y",
+  "why": "Plan Y has every steering meeting review a deliverable due just before it, so the decisions, including the week 13 check-in, rest on evidence, and its notes flag the open scope questions on readiness assessment and post-week-24 tracking. Plan X better turns the success criterion into a working definition (D5), but it has two outcome-only deliverables, a check-in with nothing to review and a close-out agenda that contradicts itself."
+}

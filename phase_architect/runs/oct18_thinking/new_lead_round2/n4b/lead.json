@@ -1,0 +1,169 @@
+{
+  "basis": {
+    "governing_question": "How does Farmácias Lusas choose an ERP, migrate its data and roll it out to its 40 pharmacies and 2 warehouses?",
+    "archetype_id": "technology_selection_implementation"
+  },
+  "sizing": {
+    "length_basis": "estimated",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "What must the new ERP do for finance, purchasing and inventory in the pharmacies and warehouses?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "Where do the current processes and systems fit a standard ERP, and where are the gaps?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q3",
+        "question": "Which ERP vendor best meets the requirements, and does the business case support selecting it?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q4",
+        "question": "How can data from the current finance, purchasing and inventory systems be migrated reliably into the new ERP?",
+        "phase_order": 3
+      },
+      {
+        "id": "Q5",
+        "question": "Is the new ERP running for finance, purchasing and inventory in all 40 pharmacies and both warehouses?",
+        "phase_order": 3
+      }
+    ],
+    "drivers": [
+      {
+        "key": "process_areas",
+        "value": 3,
+        "source": "brief",
+        "evidence": "finance, purchasing and inventory systems"
+      },
+      {
+        "key": "sites",
+        "value": 42,
+        "source": "brief",
+        "evidence": "40 pharmacies and 2 warehouses"
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Process area mapped with its requirements",
+            "from_library": true,
+            "driver": "process_areas",
+            "count": 3,
+            "weeks_each": { "min": 1, "max": 2 },
+            "at_once": 2
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": { "min": 4, "max": 6 },
+        "why": "Three process areas mapped two at a time, then one; leader interviews run alongside the mapping. Within the typical 3-6 weeks."
+      },
+      {
+        "phase_order": 2,
+        "work": [
+          {
+            "unit": "Vendor shortlist, demonstrations and scoring",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 3, "max": 5 },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 1,
+        "estimate": { "min": 4, "max": 6 },
+        "why": "One shortlist, demonstration and scoring cycle, with the business case built alongside its second half. Within the typical 4-8 weeks."
+      },
+      {
+        "phase_order": 3,
+        "work": [
+          {
+            "unit": "System configured and tested for one process area",
+            "from_library": true,
+            "driver": "process_areas",
+            "count": 3,
+            "weeks_each": { "min": 4, "max": 6 },
+            "at_once": 2
+          },
+          {
+            "unit": "Data migration rehearsal",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 2, "max": 3 },
+            "at_once": 1
+          },
+          {
+            "unit": "Pilot site live and stable",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 3, "max": 4 },
+            "at_once": 1
+          },
+          {
+            "unit": "Rollout wave of up to 10 sites",
+            "from_library": true,
+            "driver": "sites",
+            "count": 5,
+            "weeks_each": { "min": 2, "max": 3 },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 0,
+        "estimate": { "min": 23, "max": 34 },
+        "why": "Three areas configured two at a time, one migration rehearsal, one pilot site, then five waves for the remaining sites."
+      }
+    ],
+    "levers": "Running all three process areas at once, or larger rollout waves, would shorten the engagement most; a narrower first scope would also help."
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 4, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Map finance, purchasing and inventory processes in the pharmacies and warehouses and define what the new ERP must do.",
+      "gate": {
+        "label": "Requirements sign-off",
+        "decision": "Go ahead with vendor selection on the signed-off requirements and process fit?"
+      },
+      "depends_on_assumptions": ["engagement_length", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 4, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Score ERP vendors against the agreed requirements and build the business case for the selection decision.",
+      "gate": {
+        "label": "Go/no-go on selection",
+        "decision": "Which ERP vendor goes forward, and is the case strong enough to start implementation?"
+      },
+      "depends_on_assumptions": ["engagement_length"]
+    },
+    {
+      "name": "Implementation",
+      "order": 3,
+      "duration_weeks": { "min": 28, "max": 30 },
+      "duration_derived": false,
+      "objective_one_line": "Configure the ERP, migrate data and bring it live in all 40 pharmacies and both warehouses.",
+      "gate": {
+        "label": "Final acceptance",
+        "decision": "Approve the ERP as running in all 40 pharmacies and both warehouses?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format", "timeline", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Length is an estimate (36-42 weeks); Implementation takes the middle of 23-34, and 3-week waves with 6-week configuration would push it to the top.",
+    "Design assumes no formal tender; one would add 4 to 6 weeks, so confirm whether Farmácias Lusas must run a tender.",
+    "No Change & Training phase: the brief does not name it; confirm whether staff training and adoption need their own phase.",
+    "Implementation added to the archetype's Diagnostic and Design phases because the brief asks for data migration and rollout to all sites."
+  ]
+}

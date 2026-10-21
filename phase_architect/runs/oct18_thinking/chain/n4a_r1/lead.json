@@ -1,0 +1,164 @@
+{
+  "basis": {
+    "governing_question": "Which new point-of-sale system should Farmácias Lusas choose, and how can it be rolled out to run in all 40 pharmacies?",
+    "archetype_id": "technology_selection_implementation"
+  },
+  "sizing": {
+    "length_basis": "estimated",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "What do the pharmacies' process areas require from a new point-of-sale system?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "Which point-of-sale system best meets those requirements and holds up in a business case?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q3",
+        "question": "Can the chosen system be configured, loaded with the pharmacies' data and run stably at a pilot pharmacy?",
+        "phase_order": 3
+      },
+      {
+        "id": "Q4",
+        "question": "How is the system rolled out in waves until it runs in all 40 pharmacies?",
+        "phase_order": 3
+      }
+    ],
+    "drivers": [
+      {
+        "key": "sites",
+        "value": 40,
+        "source": "brief",
+        "evidence": "a chain of 40 pharmacies"
+      },
+      {
+        "key": "process_areas",
+        "value": 4,
+        "source": "assumed",
+        "evidence": ""
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Process area mapped with its requirements",
+            "from_library": true,
+            "driver": "process_areas",
+            "count": 4,
+            "weeks_each": { "min": 1, "max": 2 },
+            "at_once": 2
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": { "min": 4, "max": 6 },
+        "why": "Process areas mapped two at a time, in two rounds, between a start-up week and a synthesis week. Within typical 3 to 6 weeks."
+      },
+      {
+        "phase_order": 2,
+        "work": [
+          {
+            "unit": "Vendor shortlist, demonstrations and scoring",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 3, "max": 5 },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 1,
+        "estimate": { "min": 4, "max": 6 },
+        "why": "Vendor shortlist, demonstrations and scoring run once, with one week at the end to synthesize for the gate; no formal tender assumed."
+      },
+      {
+        "phase_order": 3,
+        "work": [
+          {
+            "unit": "System configured and tested for one process area",
+            "from_library": true,
+            "driver": "process_areas",
+            "count": 4,
+            "weeks_each": { "min": 4, "max": 6 },
+            "at_once": 2
+          },
+          {
+            "unit": "Data migration rehearsal",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 2, "max": 3 },
+            "at_once": 1
+          },
+          {
+            "unit": "Pilot site live and stable",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 3, "max": 4 },
+            "at_once": 1
+          },
+          {
+            "unit": "Rollout wave of up to 10 sites",
+            "from_library": true,
+            "driver": "sites",
+            "count": 4,
+            "weeks_each": { "min": 2, "max": 3 },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 0,
+        "estimate": { "min": 21, "max": 31 },
+        "why": "Four process areas configured two at a time, then migration rehearsal, pilot site, and four rollout waves of up to 10 sites, one after another."
+      }
+    ],
+    "levers": "Running two rollout waves at once would shorten the engagement most; configuring fewer process areas before the pilot site is the next lever."
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 4, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Establish what each pharmacy process area requires from a new point-of-sale system and where current practice falls short.",
+      "gate": {
+        "label": "Requirements sign-off",
+        "decision": "Go or no-go on starting vendor selection against the signed-off requirements?"
+      },
+      "depends_on_assumptions": ["engagement_length", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 4, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Score vendors against the signed-off requirements and build the business case for the selection decision.",
+      "gate": {
+        "label": "Vendor selection",
+        "decision": "Which vendor's point-of-sale system is taken forward into implementation?"
+      },
+      "depends_on_assumptions": ["engagement_length"]
+    },
+    {
+      "name": "Implementation",
+      "order": 3,
+      "duration_weeks": { "min": 25, "max": 27 },
+      "duration_derived": false,
+      "objective_one_line": "Configure the chosen system, prove it at one pilot pharmacy, and roll it out in waves to all 40.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Approve the system as running in all 40 pharmacies and close the engagement?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format", "timeline", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Engagement length is not given, so every duration is an estimate, about 33 to 39 weeks in total, to confirm before quoting.",
+    "Implementation is estimated at 21 to 31 weeks and planned at the middle, 25 to 27; more process areas or slower waves push it higher.",
+    "Process areas are assumed at 4; each extra pair adds 5 to 8 weeks across Diagnostic and Implementation, so confirm the count with the client.",
+    "No formal tender is planned in Design; if the client must run one or the contract is large, Design grows by 4 to 6 weeks."
+  ]
+}

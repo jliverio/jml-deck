@@ -1,0 +1,816 @@
+{
+ "client": "Farmácias Lusas",
+ "basis": {
+  "governing_question": "Which new point-of-sale system should Farmácias Lusas choose, and how can it be rolled out to run in all 40 pharmacies?",
+  "archetype_id": "technology_selection_implementation"
+ },
+ "total_duration_weeks": {
+  "min": 33,
+  "max": 39
+ },
+ "phases": [
+  {
+   "name": "Diagnostic",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 6,
+   "duration_weeks": {
+    "min": 4,
+    "max": 6
+   },
+   "duration_derived": false,
+   "objective_one_line": "Establish what each pharmacy process area requires from a new point-of-sale system and where current practice falls short.",
+   "gate": {
+    "label": "Requirements sign-off",
+    "decision": "Go or no-go on starting vendor selection against the signed-off requirements?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length",
+    "timeline",
+    "prior_attempts"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2"
+   ]
+  },
+  {
+   "name": "Design",
+   "order": 2,
+   "start_week": 7,
+   "end_week": 12,
+   "duration_weeks": {
+    "min": 4,
+    "max": 6
+   },
+   "duration_derived": false,
+   "objective_one_line": "Score vendors against the signed-off requirements and build the business case for the selection decision.",
+   "gate": {
+    "label": "Vendor selection",
+    "decision": "Which vendor's point-of-sale system is taken forward into implementation?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length"
+   ],
+   "workstream_ids": [
+    "W3",
+    "W4"
+   ]
+  },
+  {
+   "name": "Implementation",
+   "order": 3,
+   "start_week": 13,
+   "end_week": 39,
+   "duration_weeks": {
+    "min": 25,
+    "max": 27
+   },
+   "duration_derived": false,
+   "objective_one_line": "Configure the chosen system, prove it at one pilot pharmacy, and roll it out in waves to all 40.",
+   "gate": {
+    "label": "Final readout",
+    "decision": "Approve the system as running in all 40 pharmacies and close the engagement?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length",
+    "deliverable_format",
+    "timeline",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W5",
+    "W6",
+    "W7",
+    "W8"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Process area requirements",
+   "answers": "What does each pharmacy process area require from a new point-of-sale system?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 6,
+   "follows": [],
+   "activities": [
+    "Interview pharmacy staff on four process areas, two at once",
+    "Review operational data and documents on current practice",
+    "Consolidate requirements for sign-off at the gate"
+   ],
+   "deliverable_ids": [
+    "D1",
+    "D2"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Current practice gaps",
+   "answers": "Where does current practice in each process area fall short of what a new point-of-sale system requires?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 4,
+   "end_week": 6,
+   "follows": [
+    "W1"
+   ],
+   "activities": [
+    "Compare current practice with the requirements by area",
+    "Observe daily work in pharmacies and note workarounds",
+    "Review findings with CEO, Operations Director, IT Manager"
+   ],
+   "deliverable_ids": [
+    "D3"
+   ]
+  },
+  {
+   "id": "W3",
+   "phase_order": 2,
+   "name": "Vendor shortlist and scoring",
+   "answers": "Which point-of-sale systems meet the signed-off requirements, and how do they score against them?",
+   "traces_to": [
+    "problem_statement",
+    "gate:2"
+   ],
+   "start_week": 7,
+   "end_week": 11,
+   "follows": [],
+   "activities": [
+    "Shortlist vendors against the signed-off requirements",
+    "Run vendor demonstrations with pharmacy staff and IT",
+    "Score each vendor against the signed-off requirements"
+   ],
+   "deliverable_ids": [
+    "D4",
+    "D5"
+   ]
+  },
+  {
+   "id": "W4",
+   "phase_order": 2,
+   "name": "Business case for selection",
+   "answers": "Does any shortlisted point-of-sale system hold up in a business case for the selection decision?",
+   "traces_to": [
+    "problem_statement",
+    "gate:2"
+   ],
+   "start_week": 10,
+   "end_week": 12,
+   "follows": [
+    "W3"
+   ],
+   "activities": [
+    "Estimate costs and benefits of each shortlisted system",
+    "Test cost assumptions against operational data",
+    "Prepare the evidence for the selection decision"
+   ],
+   "deliverable_ids": [
+    "D6"
+   ]
+  },
+  {
+   "id": "W5",
+   "phase_order": 3,
+   "name": "System setup and data load",
+   "answers": "Can the chosen system be configured for each process area and loaded with the pharmacies' data?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_week": 13,
+   "end_week": 21,
+   "follows": [],
+   "activities": [
+    "Configure and test four process areas, two at a time",
+    "Rehearse loading pharmacy data into the configured system",
+    "Document readiness results for the workshop review"
+   ],
+   "deliverable_ids": [
+    "D7",
+    "D8"
+   ]
+  },
+  {
+   "id": "W6",
+   "phase_order": 3,
+   "name": "Pilot pharmacy go-live",
+   "answers": "Does the configured system run stably in daily use at one pilot pharmacy?",
+   "traces_to": [
+    "success_criteria:1"
+   ],
+   "start_week": 22,
+   "end_week": 25,
+   "follows": [
+    "W5"
+   ],
+   "activities": [
+    "Go live at one pilot pharmacy after the readiness workshop",
+    "Track incidents and stability through daily use",
+    "Collect feedback from pilot pharmacy staff and customers"
+   ],
+   "deliverable_ids": [
+    "D9"
+   ]
+  },
+  {
+   "id": "W7",
+   "phase_order": 3,
+   "name": "Rollout, waves 1 and 2",
+   "answers": "How does the system go live in the first two waves of up to 10 pharmacies each?",
+   "traces_to": [
+    "success_criteria:1"
+   ],
+   "start_week": 26,
+   "end_week": 33,
+   "follows": [
+    "W6"
+   ],
+   "activities": [
+    "Train pharmacy teams before each wave goes live",
+    "Go live in two waves of up to 10 pharmacies each",
+    "Track stability and resolve issues after each go-live"
+   ],
+   "deliverable_ids": [
+    "D10"
+   ]
+  },
+  {
+   "id": "W8",
+   "phase_order": 3,
+   "name": "Rollout, waves 3 and 4",
+   "answers": "How does the system go live in the last two waves until all 40 pharmacies run it?",
+   "traces_to": [
+    "success_criteria:1",
+    "gate:3"
+   ],
+   "start_week": 34,
+   "end_week": 39,
+   "follows": [
+    "W7"
+   ],
+   "activities": [
+    "Train pharmacy teams before each wave goes live",
+    "Go live in two waves of up to 10 pharmacies each",
+    "Confirm the system runs in all 40 pharmacies"
+   ],
+   "deliverable_ids": [
+    "D11"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "Interim requirements for first process areas",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 3,
+   "presented_at": "Check-in: requirements"
+  },
+  {
+   "id": "D2",
+   "name": "Business requirements by process area",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 5,
+   "presented_at": "Requirements sign-off"
+  },
+  {
+   "id": "D3",
+   "name": "Requirements and gap findings for sign-off",
+   "kind": "decision_pack",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 5,
+   "presented_at": "Requirements sign-off"
+  },
+  {
+   "id": "D4",
+   "name": "Vendor shortlist against signed-off requirements",
+   "kind": "analysis",
+   "workstream_id": "W3",
+   "phase_order": 2,
+   "due_week": 9,
+   "presented_at": "Check-in: vendor scoring"
+  },
+  {
+   "id": "D5",
+   "name": "Vendor scoring against signed-off requirements",
+   "kind": "analysis",
+   "workstream_id": "W3",
+   "phase_order": 2,
+   "due_week": 10,
+   "presented_at": "Check-in: vendor scoring"
+  },
+  {
+   "id": "D6",
+   "name": "Business case for the vendor selection decision",
+   "kind": "decision_pack",
+   "workstream_id": "W4",
+   "phase_order": 2,
+   "due_week": 11,
+   "presented_at": "Vendor selection"
+  },
+  {
+   "id": "D7",
+   "name": "First configured process areas with test record",
+   "kind": "build",
+   "workstream_id": "W5",
+   "phase_order": 3,
+   "due_week": 17,
+   "presented_at": "Check-in: first build"
+  },
+  {
+   "id": "D8",
+   "name": "Readiness report with data load rehearsal results",
+   "kind": "analysis",
+   "workstream_id": "W5",
+   "phase_order": 3,
+   "due_week": 20,
+   "presented_at": "Workshop 1: pilot readiness"
+  },
+  {
+   "id": "D9",
+   "name": "Pilot pharmacy go-live record and stability report",
+   "kind": "build",
+   "workstream_id": "W6",
+   "phase_order": 3,
+   "due_week": 25,
+   "presented_at": "Check-in: pilot results"
+  },
+  {
+   "id": "D10",
+   "name": "Go-live record for waves 1 and 2",
+   "kind": "build",
+   "workstream_id": "W7",
+   "phase_order": 3,
+   "due_week": 32,
+   "presented_at": "Workshop 2: waves 3 and 4"
+  },
+  {
+   "id": "D11",
+   "name": "Final readout with go-live record for all 40 pharmacies",
+   "kind": "decision_pack",
+   "workstream_id": "W8",
+   "phase_order": 3,
+   "due_week": 38,
+   "presented_at": "Final readout"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 2,
+  "status_weeks": [
+   3,
+   5,
+   7,
+   9,
+   11,
+   13,
+   15,
+   19,
+   23,
+   25,
+   29,
+   31,
+   35,
+   37
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Secure access for the diagnostic work",
+    "attendees": [
+     "CEO",
+     "Operations Director",
+     "IT Manager"
+    ],
+    "presents": [],
+    "decision": "Is access to pharmacy staff and process data confirmed for the requirements work?",
+    "agenda": [
+     "Present the diagnostic approach and the first six weeks",
+     "Discuss the pharmacy staff and process data the work needs",
+     "Confirm access to those people and data"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "checkin",
+    "phase_order": 1,
+    "week": 4,
+    "label": "Check-in: requirements",
+    "purpose": "Review progress on early requirements",
+    "attendees": [
+     "Operations Director",
+     "IT Manager"
+    ],
+    "presents": [
+     "D1"
+    ],
+    "decision": "Do the interim requirements stand as the basis for the remaining process areas?",
+    "agenda": [
+     "Present the interim requirements for the first process areas",
+     "Discuss open questions for the remaining process areas",
+     "Confirm whether the interim requirements stand"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 6,
+    "label": "Requirements sign-off",
+    "purpose": "Sign off requirements and gap findings",
+    "attendees": [
+     "CEO",
+     "Operations Director",
+     "IT Manager"
+    ],
+    "presents": [
+     "D1",
+     "D2",
+     "D3"
+    ],
+    "decision": "Go or no-go on starting vendor selection against the signed-off requirements?",
+    "agenda": [
+     "Present the business requirements by process area",
+     "Review the requirements and gap findings for sign-off",
+     "Decide on starting vendor selection"
+    ]
+   },
+   {
+    "id": "G4",
+    "type": "checkin",
+    "phase_order": 2,
+    "week": 10,
+    "label": "Check-in: vendor scoring",
+    "purpose": "Check vendor shortlist and scoring",
+    "attendees": [
+     "Operations Director",
+     "IT Manager"
+    ],
+    "presents": [
+     "D4",
+     "D5"
+    ],
+    "decision": "Do the shortlist and scoring hold as the basis for the selection gate?",
+    "agenda": [
+     "Present the vendor shortlist against signed-off requirements",
+     "Review the vendor scoring against the requirements",
+     "Confirm the shortlist and scoring as the basis for the gate"
+    ]
+   },
+   {
+    "id": "G5",
+    "type": "gate",
+    "phase_order": 2,
+    "week": 12,
+    "label": "Vendor selection",
+    "purpose": "Select the vendor for implementation",
+    "attendees": [
+     "CEO",
+     "Operations Director",
+     "IT Manager"
+    ],
+    "presents": [
+     "D4",
+     "D5",
+     "D6"
+    ],
+    "decision": "Which vendor's point-of-sale system is taken forward into implementation?",
+    "agenda": [
+     "Present the business case for the vendor selection decision",
+     "Review the vendor shortlist and scoring against requirements",
+     "Decide which vendor goes into implementation"
+    ]
+   },
+   {
+    "id": "G6",
+    "type": "checkin",
+    "phase_order": 3,
+    "week": 17,
+    "label": "Check-in: first build",
+    "purpose": "Check the first configured process areas",
+    "attendees": [
+     "Operations Director",
+     "IT Manager"
+    ],
+    "presents": [
+     "D7"
+    ],
+    "decision": "Does the test record support continuing with the remaining process areas?",
+    "agenda": [
+     "Present the first configured process areas",
+     "Review the test record and any open issues",
+     "Confirm the approach for the remaining process areas"
+    ]
+   },
+   {
+    "id": "G7",
+    "type": "workshop",
+    "phase_order": 3,
+    "week": 21,
+    "label": "Workshop 1: pilot readiness",
+    "purpose": "Review readiness before pilot go-live",
+    "attendees": [
+     "CEO",
+     "Operations Director",
+     "IT Manager"
+    ],
+    "presents": [
+     "D7",
+     "D8"
+    ],
+    "decision": "Go or no-go on starting the pilot pharmacy go-live?",
+    "agenda": [
+     "Present the readiness report with data load rehearsal results",
+     "Review the first configured process areas and their test record",
+     "Decide on go or no-go for the pilot pharmacy go-live"
+    ]
+   },
+   {
+    "id": "G8",
+    "type": "checkin",
+    "phase_order": 3,
+    "week": 27,
+    "label": "Check-in: pilot results",
+    "purpose": "Review pilot stability and wave plans",
+    "attendees": [
+     "Operations Director",
+     "IT Manager"
+    ],
+    "presents": [
+     "D9"
+    ],
+    "decision": "Which pilot findings change how waves 3 and 4 are prepared?",
+    "agenda": [
+     "Present the pilot go-live record and stability report",
+     "Discuss the pilot findings that bear on waves 3 and 4",
+     "Confirm the changes to apply to the coming waves"
+    ]
+   },
+   {
+    "id": "G9",
+    "type": "workshop",
+    "phase_order": 3,
+    "week": 33,
+    "label": "Workshop 2: waves 3 and 4",
+    "purpose": "Review go-live of waves 1 and 2",
+    "attendees": [
+     "CEO",
+     "Operations Director",
+     "IT Manager"
+    ],
+    "presents": [
+     "D9",
+     "D10"
+    ],
+    "decision": "Go or no-go on starting rollout waves 3 and 4 as planned?",
+    "agenda": [
+     "Present the go-live record for waves 1 and 2",
+     "Review pilot and wave results against the plan for waves 3 and 4",
+     "Decide whether waves 3 and 4 start as planned"
+    ]
+   },
+   {
+    "id": "G10",
+    "type": "gate",
+    "phase_order": 3,
+    "week": 39,
+    "label": "Final readout",
+    "purpose": "Approve completion of the rollout",
+    "attendees": [
+     "CEO",
+     "Operations Director",
+     "IT Manager"
+    ],
+    "presents": [
+     "D11"
+    ],
+    "decision": "Approve the system as running in all 40 pharmacies and close the engagement?",
+    "agenda": [
+     "Present the final readout and go-live record for all 40 pharmacies",
+     "Review results against the goal of running in all 40 pharmacies",
+     "Decide on approval and closing the engagement"
+    ]
+   }
+  ]
+ },
+ "deadline": null,
+ "architect_notes": [
+  "Engagement length is not given, so every duration is an estimate, about 33 to 39 weeks in total, to confirm before quoting.",
+  "Implementation is estimated at 21 to 31 weeks and planned at the middle, 25 to 27; more process areas or slower waves push it higher.",
+  "Process areas are assumed at 4; each extra pair adds 5 to 8 weeks across Diagnostic and Implementation, so confirm the count with the client.",
+  "No formal tender is planned in Design; if the client must run one or the contract is large, Design grows by 4 to 6 weeks.",
+  "Configuration and data migration rehearsal share one stream, and rollout waves run as two paired streams, to keep four streams in Implementation.",
+  "No finance owner is listed, yet the vendor selection gate rests on a business case; confirm who signs off the figures."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Diagnostic",
+    "start": 1,
+    "end": 6
+   },
+   {
+    "phase": "Design",
+    "start": 7,
+    "end": 12
+   },
+   {
+    "phase": "Implementation",
+    "start": 13,
+    "end": 39
+   }
+  ]
+ },
+ "sizing": {
+  "length_basis": "estimated",
+  "sub_questions": [
+   {
+    "id": "Q1",
+    "question": "What do the pharmacies' process areas require from a new point-of-sale system?",
+    "phase_order": 1
+   },
+   {
+    "id": "Q2",
+    "question": "Which point-of-sale system best meets those requirements and holds up in a business case?",
+    "phase_order": 2
+   },
+   {
+    "id": "Q3",
+    "question": "Can the chosen system be configured, loaded with the pharmacies' data and run stably at a pilot pharmacy?",
+    "phase_order": 3
+   },
+   {
+    "id": "Q4",
+    "question": "How is the system rolled out in waves until it runs in all 40 pharmacies?",
+    "phase_order": 3
+   }
+  ],
+  "drivers": [
+   {
+    "key": "sites",
+    "value": 40,
+    "source": "brief",
+    "evidence": "a chain of 40 pharmacies"
+   },
+   {
+    "key": "process_areas",
+    "value": 4,
+    "source": "assumed",
+    "evidence": ""
+   }
+  ],
+  "phases": [
+   {
+    "order": 1,
+    "name": "Diagnostic",
+    "planned_weeks": {
+     "min": 4,
+     "max": 6
+    },
+    "estimate": {
+     "min": 4,
+     "max": 6
+    },
+    "archetype_weeks": {
+     "min": 3,
+     "max": 6
+    },
+    "fixed_weeks": 2,
+    "work": [
+     {
+      "unit": "Process area mapped with its requirements",
+      "from_library": true,
+      "driver": "process_areas",
+      "count": 4,
+      "at_once": 2,
+      "weeks_each": {
+       "min": 1,
+       "max": 2
+      }
+     }
+    ],
+    "why": "Process areas mapped two at a time, in two rounds, between a start-up week and a synthesis week. Within typical 3 to 6 weeks."
+   },
+   {
+    "order": 2,
+    "name": "Design",
+    "planned_weeks": {
+     "min": 4,
+     "max": 6
+    },
+    "estimate": {
+     "min": 4,
+     "max": 6
+    },
+    "archetype_weeks": {
+     "min": 4,
+     "max": 8
+    },
+    "fixed_weeks": 1,
+    "work": [
+     {
+      "unit": "Vendor shortlist, demonstrations and scoring",
+      "from_library": true,
+      "driver": null,
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 3,
+       "max": 5
+      }
+     }
+    ],
+    "why": "Vendor shortlist, demonstrations and scoring run once, with one week at the end to synthesize for the gate; no formal tender assumed."
+   },
+   {
+    "order": 3,
+    "name": "Implementation",
+    "planned_weeks": {
+     "min": 25,
+     "max": 27
+    },
+    "estimate": {
+     "min": 21,
+     "max": 31
+    },
+    "archetype_weeks": null,
+    "fixed_weeks": 0,
+    "work": [
+     {
+      "unit": "System configured and tested for one process area",
+      "from_library": true,
+      "driver": "process_areas",
+      "count": 4,
+      "at_once": 2,
+      "weeks_each": {
+       "min": 4,
+       "max": 6
+      }
+     },
+     {
+      "unit": "Data migration rehearsal",
+      "from_library": true,
+      "driver": null,
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 2,
+       "max": 3
+      }
+     },
+     {
+      "unit": "Pilot site live and stable",
+      "from_library": true,
+      "driver": null,
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 3,
+       "max": 4
+      }
+     },
+     {
+      "unit": "Rollout wave of up to 10 sites",
+      "from_library": true,
+      "driver": "sites",
+      "count": 4,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 2,
+       "max": 3
+      }
+     }
+    ],
+    "why": "Four process areas configured two at a time, then migration rehearsal, pilot site, and four rollout waves of up to 10 sites, one after another."
+   }
+  ],
+  "estimate_total": {
+   "min": 29,
+   "max": 43
+  },
+  "planned_total": {
+   "min": 33,
+   "max": 39
+  },
+  "levers": "Running two rollout waves at once would shorten the engagement most; configuring fewer process areas before the pilot site is the next lever."
+ }
+}

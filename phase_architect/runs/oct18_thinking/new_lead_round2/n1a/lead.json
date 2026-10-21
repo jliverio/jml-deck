@@ -1,0 +1,152 @@
+{
+  "basis": {
+    "governing_question": "Should Quinta Azul enter the Spanish retail market and, if so, how?",
+    "archetype_id": "market_entry_assessment"
+  },
+  "sizing": {
+    "length_basis": "estimated",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "How large and attractive is the Spanish retail market for olive oil?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "Who competes in Spanish retail, and what do its buyers and shoppers need from an olive-oil supplier?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q3",
+        "question": "Does Quinta Azul have the assets and capabilities to win in Spanish retail?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q4",
+        "question": "Which ways of entering Spanish retail are open to Quinta Azul, and how do they compare?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q5",
+        "question": "On the evidence and the business case, should Quinta Azul go or not go into Spain?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q6",
+        "question": "If go, what entry plan sequences the steps from first contact with buyers to the first listing?",
+        "phase_order": 2
+      }
+    ],
+    "drivers": [
+      {
+        "key": "markets",
+        "value": 1,
+        "source": "brief",
+        "evidence": "enter the Spanish retail market"
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Market assessed in full (demand, channels, competitors, regulation, buyer interviews)",
+            "from_library": true,
+            "driver": "markets",
+            "count": 1,
+            "weeks_each": {
+              "min": 2,
+              "max": 3
+            },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": {
+          "min": 4,
+          "max": 5
+        },
+        "why": "Spain is the only market named, so it is assessed in full with no desk screen; capability gap work runs alongside."
+      },
+      {
+        "phase_order": 2,
+        "work": [
+          {
+            "unit": "Entry option and business case for one market",
+            "from_library": true,
+            "driver": "markets",
+            "count": 1,
+            "weeks_each": {
+              "min": 1,
+              "max": 2
+            },
+            "at_once": 1
+          },
+          {
+            "unit": "Entry sequence and roadmap across markets",
+            "from_library": true,
+            "driver": null,
+            "count": 1,
+            "weeks_each": {
+              "min": 1,
+              "max": 2
+            },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 1,
+        "estimate": {
+          "min": 3,
+          "max": 5
+        },
+        "why": "Business case for the one market first, then the roadmap that carries the entry plan; both fit the typical 3 to 6 weeks."
+      }
+    ],
+    "levers": "Narrowing buyer interviews in Research to a few Spanish chains, and keeping the entry roadmap to an outline, would shorten the engagement most."
+  },
+  "phases": [
+    {
+      "name": "Research",
+      "order": 1,
+      "duration_weeks": {
+        "min": 4,
+        "max": 5
+      },
+      "duration_derived": false,
+      "objective_one_line": "Assess the Spanish retail market, its competitors and buyers, and Quinta Azul's capability to win there.",
+      "gate": {
+        "label": "Go/no-go on design",
+        "decision": "Go or no-go on designing an entry plan for the Spanish retail market?"
+      },
+      "depends_on_assumptions": [
+        "engagement_length",
+        "timeline",
+        "prior_attempts"
+      ]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": {
+        "min": 3,
+        "max": 5
+      },
+      "duration_derived": false,
+      "objective_one_line": "Compare entry options, test the business case, and set out an entry plan if the answer is go.",
+      "gate": {
+        "label": "Final decision",
+        "decision": "Approve the go or no-go call on Spain and, if go, the entry plan?"
+      },
+      "depends_on_assumptions": [
+        "engagement_length",
+        "deliverable_format",
+        "timeline",
+        "out_of_scope"
+      ]
+    }
+  ],
+  "architect_notes": [
+    "No engagement length was given; the 7 to 10 weeks is an estimate from the sizing, to be confirmed before quoting.",
+    "Design runs only on a go at the Research gate, so a no-go there ends the engagement after 4 to 5 weeks."
+  ]
+}

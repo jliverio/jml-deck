@@ -1,0 +1,33 @@
+{
+  "basis": {
+    "governing_question": "Why did Vinhos do Douro's export margins fall in 2025, looking at pricing by export market and distributor terms?",
+    "archetype_id": "performance_improvement"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": {
+        "min": 4,
+        "max": 4
+      },
+      "duration_derived": false,
+      "objective_one_line": "Identify what drove the 2025 export margin decline by comparing pricing by export market and distributor terms.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Does the steering group accept the findings on the 2025 export margin decline?"
+      },
+      "depends_on_assumptions": [
+        "deliverable_format",
+        "timeline",
+        "prior_attempts",
+        "out_of_scope"
+      ]
+    }
+  ],
+  "architect_notes": [
+    "Four weeks leaves room for one phase only, because a second phase would run under three weeks; confirm one phase with one closing gate.",
+    "Performance improvement is the closest archetype; its Implementation phase is dropped because the engagement type is assessment, so no fix is planned.",
+    "The two parallel workstreams, pricing by export market and distributor terms, run side by side inside the single Diagnostic phase."
+  ]
+}

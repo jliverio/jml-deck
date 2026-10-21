@@ -1,0 +1,32 @@
+{
+  "basis": {
+    "governing_question": "How does Banco Atlântico get its new, already designed branch operating model running in all 120 branches within one 24-week rollout phase?",
+    "archetype_id": "performance_improvement"
+  },
+  "phases": [
+    {
+      "name": "Implementation",
+      "order": 1,
+      "duration_weeks": {
+        "min": 24,
+        "max": 24
+      },
+      "duration_derived": false,
+      "objective_one_line": "Roll out the designed branch operating model to all 120 branches, with staff training and performance tracking running alongside.",
+      "gate": {
+        "label": "Rollout close-out",
+        "decision": "Is the new model running in all 120 branches, ready for close-out?"
+      },
+      "depends_on_assumptions": [
+        "deliverable_format",
+        "timeline",
+        "prior_attempts",
+        "out_of_scope"
+      ]
+    }
+  ],
+  "architect_notes": [
+    "The brief says the operating model is already designed, so the archetype's Diagnostic phase is dropped and only Implementation is kept.",
+    "The brief names one 24-week rollout phase, so the plan holds one phase with branch rollout, staff training and performance tracking side by side."
+  ]
+}

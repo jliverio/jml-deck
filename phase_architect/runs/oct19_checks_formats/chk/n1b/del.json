@@ -1,0 +1,82 @@
+{
+  "deliverables": [
+    {
+      "id": "D1",
+      "workstream_id": "W1",
+      "name": "Desk screen of the four retail markets",
+      "kind": "analysis",
+      "due_week_in_phase": 2
+    },
+    {
+      "id": "D2",
+      "workstream_id": "W2",
+      "name": "Interim retail demand and growth sizing",
+      "kind": "analysis",
+      "due_week_in_phase": 5
+    },
+    {
+      "id": "D3",
+      "workstream_id": "W2",
+      "name": "Market attractiveness comparison by country",
+      "kind": "analysis",
+      "due_week_in_phase": 8
+    },
+    {
+      "id": "D4",
+      "workstream_id": "W3",
+      "name": "Competitor and retail channel map by market",
+      "kind": "analysis",
+      "due_week_in_phase": 4
+    },
+    {
+      "id": "D5",
+      "workstream_id": "W3",
+      "name": "Retail regulation and buyer listing findings",
+      "kind": "analysis",
+      "due_week_in_phase": 9
+    },
+    {
+      "id": "D6",
+      "workstream_id": "W4",
+      "name": "Capability gap assessment by market",
+      "kind": "analysis",
+      "due_week_in_phase": 8
+    },
+    {
+      "id": "D7",
+      "workstream_id": "W4",
+      "name": "Findings pack for the shortlist decision",
+      "kind": "decision_pack",
+      "due_week_in_phase": 9
+    },
+    {
+      "id": "D8",
+      "workstream_id": "W5",
+      "name": "Entry options compared by market",
+      "kind": "design",
+      "due_week_in_phase": 3
+    },
+    {
+      "id": "D9",
+      "workstream_id": "W6",
+      "name": "Business case by market",
+      "kind": "design",
+      "due_week_in_phase": 5
+    },
+    {
+      "id": "D10",
+      "workstream_id": "W7",
+      "name": "Entry roadmap for the countries that are a go",
+      "kind": "design",
+      "due_week_in_phase": 6
+    },
+    {
+      "id": "D11",
+      "workstream_id": "W7",
+      "name": "Go/no-go and entry sequence decision pack",
+      "kind": "decision_pack",
+      "due_week_in_phase": 6
+    }
+  ],
+  "notes": []
+}

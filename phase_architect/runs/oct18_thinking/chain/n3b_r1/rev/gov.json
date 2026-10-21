@@ -1,0 +1,85 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Start the diagnostic and secure data access",
+      "attendees": ["Chief Executive Officer", "Chief Operating Officer", "Heads of the five business units"],
+      "presents": [],
+      "decision": "Do the unit heads give access to the data and people the baselines need?",
+      "agenda": [
+        "Present the diagnostic approach and the unit baselines",
+        "Align on the data and people each baseline needs",
+        "Confirm data and people access for the claims and underwriting baseline"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Workshop 1: first baselines",
+      "purpose": "Review first baselines and set gap focus",
+      "attendees": ["Chief Executive Officer", "Chief Operating Officer", "Heads of the five business units"],
+      "presents": ["D1", "D2"],
+      "decision": "Which gaps in the first two baselines should the prioritization cover first?",
+      "agenda": [
+        "Present the claims, underwriting, sales and customer service baselines",
+        "Discuss the gaps visible so far across the two baselines",
+        "Decide which gaps the prioritization covers first"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Go/no-go on design",
+      "purpose": "Decide whether to move into design",
+      "attendees": ["Chief Executive Officer", "Chief Operating Officer", "Heads of the five business units"],
+      "presents": ["D3", "D4"],
+      "decision": "Go or no-go on designing the target model for the areas prioritized in the diagnostic?",
+      "agenda": [
+        "Review the finance work, process and cost baseline",
+        "Present the diagnostic readout and prioritized redesign areas",
+        "Decide whether to design the target model for the prioritized areas"
+      ]
+    },
+    {
+      "id": "G4",
+      "label": "Workshop 2: model options",
+      "purpose": "Review model options for the five units",
+      "attendees": ["Chief Executive Officer", "Chief Operating Officer", "Heads of the five business units"],
+      "presents": ["D5"],
+      "decision": "Which target operating model option goes forward into unit-level design?",
+      "agenda": [
+        "Present the target operating model options for the five units",
+        "Discuss how the options differ across the five units",
+        "Decide which option goes forward into unit-level design"
+      ]
+    },
+    {
+      "id": "G5",
+      "label": "Workshop 3: unit designs",
+      "purpose": "Review unit designs before the final gate",
+      "attendees": ["Chief Executive Officer", "Chief Operating Officer", "Heads of the five business units"],
+      "presents": ["D6"],
+      "decision": "Go or no-go on building the transition plan by unit on these unit-level designs?",
+      "agenda": [
+        "Present the unit-level design of structure, roles and governance",
+        "Review how the designs fit together across the five units",
+        "Decide whether to build the transition plan by unit on these designs"
+      ]
+    },
+    {
+      "id": "G6",
+      "label": "Final readout",
+      "purpose": "Approve the model and transition plans",
+      "attendees": ["Chief Executive Officer", "Chief Operating Officer", "Heads of the five business units"],
+      "presents": ["D7", "D8"],
+      "decision": "Approve the final target model and transition plan by unit?",
+      "agenda": [
+        "Present the approval pack: target model and transition plans",
+        "Review the transition plan by unit and the open points",
+        "Decide on approval of the target model and transition plans"
+      ]
+    }
+  ],
+  "notes": [
+    "The executive committee's approval is a success criterion, but it is not among the stakeholders; confirm its seat at the final readout."
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "n1a": {
+    "X": {"realism": 4, "partner_notes": 3},
+    "Y": {"realism": 3, "partner_notes": 3},
+    "better": "X",
+    "own_estimate_weeks": "6-9",
+    "why": "One market, one product category and two decision-makers is a standard 6-9 week entry assessment, so X's 4-5 week Research fits while Y's 5-7 weeks pads it, although Y's note that a no-go ends the work after Research is the more useful gate for pricing."
+  },
+  "n1b": {
+    "X": {"realism": 4, "partner_notes": 2},
+    "Y": {"realism": 4, "partner_notes": 5},
+    "better": "Y",
+    "own_estimate_weeks": "10-14",
+    "why": "Four markets plus sequencing fits in 10-14 weeks if a desk screen narrows the field, and Y is the only plan that states that assumption, its effect on weeks, and the risk that a desk-only no-go may not meet the per-country go/no-go criterion, while X's notes give the partner nothing to confirm."
+  },
+  "n2a": {
+    "X": {"realism": 4, "partner_notes": 4},
+    "Y": {"realism": 3, "partner_notes": 3},
+    "better": "X",
+    "own_estimate_weeks": "12-16",
+    "why": "One plant with three lines needs about 3-5 weeks of diagnostic and 8-12 weeks for improvements to show up in cost per part, which matches X, while Y's 12-14 week Implementation is padded for a site this size and its notes do not say what drives it."
+  },
+  "n2b": {
+    "X": {"realism": 2, "partner_notes": 2},
+    "Y": {"realism": 4, "partner_notes": 5},
+    "better": "Y",
+    "own_estimate_weeks": "24-32",
+    "why": "Six plants in two countries with 19 lines need a pilot plant and then rollout waves before cost per part moves in every plant, so X's 14-16 week Implementation is squeezed, while Y's 25-29 weeks follows from a stated pilot and wave sizing and flags the open choice of which three plants to diagnose on the floor."
+  },
+  "n3a": {
+    "X": {"realism": 4, "partner_notes": 2},
+    "Y": {"realism": 2, "partner_notes": 3},
+    "better": "X",
+    "own_estimate_weeks": "8-12",
+    "why": "A 140-person claims department redesign normally reaches executive committee approval in 8-12 weeks, so Y's 10-12 week Design is padded, but X's single note does not tell the partner what to confirm, and Y wrongly calls the headcount public research when the brief gives it."
+  },
+  "n3b": {
+    "X": {"realism": 4, "partner_notes": 3},
+    "Y": {"realism": 3, "partner_notes": 3},
+    "better": "X",
+    "own_estimate_weeks": "16-20",
+    "why": "A target operating model and transition plan for five units and 1,800 people across 14 locations is typically 16-20 weeks, so X's 14-week low end is slightly tight and Y's 22-26 weeks, with a 9-11 week Diagnostic, is hard to justify to a CFO, and neither set of notes names what drives the length beyond the unit count."
+  },
+  "n4a": {
+    "X": {"realism": 4, "partner_notes": 4},
+    "Y": {"realism": 3, "partner_notes": 4},
+    "better": "X",
+    "own_estimate_weeks": "22-30",
+    "why": "Requirements, vendor choice and a configured, piloted rollout to 40 pharmacies at 5-8 stores a week fit in 22-30 weeks, so X is about right (its 14-16 week Implementation is lean if it must cover configuration and a pilot) and Y's 25-27 week Implementation is long, although Y's tender caveat is the most useful note on either plan."
+  },
+  "n4b": {
+    "X": {"realism": 2, "partner_notes": 2},
+    "Y": {"realism": 4, "partner_notes": 4},
+    "better": "Y",
+    "own_estimate_weeks": "38-50",
+    "why": "Selecting an ERP and taking three modules live, with data migration, across 42 sites usually means 8-12 weeks of selection and 6-9 months of implementation, so X's 22-24 weeks leaves no room for testing or a pilot, while Y is closer and its notes name the drivers (weeks per area, wave length, tender) that would move it."
+  },
+  "n5": {
+    "X": {"realism": 4, "partner_notes": 2},
+    "Y": {"realism": 2, "partner_notes": 3},
+    "better": "X",
+    "own_estimate_weeks": "8-12",
+    "why": "A digital channels strategy for one bank is usually 8-12 weeks, so Y's 16-22 weeks is padded, but neither plan flags the missing success criteria, which is the biggest sizing risk, and only Y names the assumed channel and segment counts to confirm."
+  },
+  "n6": {
+    "X": {"realism": 2, "partner_notes": 5},
+    "Y": {"realism": 1, "partner_notes": 3},
+    "better": "X",
+    "own_estimate_weeks": "20-28",
+    "why": "A board-ready plan for three companies fits in the 12 weeks, but moving one company's sales, purchasing and finance onto new processes and systems does not fit in 3-5 weeks, and only X says the work sizes at 19-28 weeks and flags that cutover would start before the board approves the plan."
+  }
+}

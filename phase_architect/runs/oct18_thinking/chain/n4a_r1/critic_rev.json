@@ -1,0 +1,40 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 2,
+      "coherence": 3,
+      "sizing": 4
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W7 wave 1 starts in week 26 with no steering review of the pilot record D9 (due week 25), so the first 10 pharmacies go live without a go/no-go on the pilot.",
+      "The week 27 check-in comes after waves 1 and 2 have started yet asks which pilot findings change waves 3 and 4, so pilot learnings never formally reach waves 1 and 2.",
+      "No step for vendor contract negotiation, hardware procurement or vendor mobilisation sits between the week 12 vendor selection gate and W5 configuration starting in week 13.",
+      "D11 final readout claims a go-live record for all 40 pharmacies but is due week 38 while W8 waves run to week 39, and no stabilisation period follows the last wave before the engagement closes.",
+      "W7 and W8 train pharmacy teams before each wave, yet no training materials or cutover/rollout plan appear as deliverables, and W2 and W4 are labelled 'after' W1 and W3 while overlapping them."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3,
+      "sizing": 4
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "Workshop 1 takes the pilot go/no-go in week 21 while W5 setup runs to week 23 and reviews only D6 covering the first two process areas, so the pilot is approved before the configured system is complete.",
+      "No step for vendor contract negotiation, hardware procurement or vendor mobilisation sits between the week 12 vendor selection gate and W5 configuration starting in week 13.",
+      "D9 training materials are due week 29, after wave 1 training starts in week 28 and after the pilot pharmacy went live in week 24 without them, and are only reviewed at Workshop 2 after both waves have used them.",
+      "W1 runs to week 6 but has no final deliverable, with the consolidated requirements folded into W2's D2 due week 5, and the week 6 gate re-reviews the superseded interim D1.",
+      "D5 business case is due week 11, the same week as the D4 scoring it should build on, and its 'vendor comparison' duplicates D4."
+    ]
+  },
+  "better": "Y",
+  "why": "Y puts a go/no-go on waves 1 and 2 straight after the pilot record and gives the client training materials, whereas X lets the first 10 pharmacies go live with no steering review of the pilot, the most consequential gap in either plan. X is cleaner on attendance tiering, pilot-readiness timing and its finance-owner note, but those strengths do not outweigh starting the scale rollout without reviewing the pilot."
+}

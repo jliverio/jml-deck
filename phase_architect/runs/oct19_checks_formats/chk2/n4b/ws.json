@@ -1,0 +1,141 @@
+{
+  "workstreams": [
+    {
+      "id": "W1",
+      "phase_order": 1,
+      "name": "Process area requirements",
+      "question_id": "Q1",
+      "answers": "What must the ERP do for finance, purchasing and inventory in the pharmacies and warehouses?",
+      "traces_to": ["problem_statement", "gate:1"],
+      "start_offset": 0,
+      "duration": 6,
+      "follows": [],
+      "builds_on_meeting": null,
+      "activities": [
+        "Interview the people who run each process area",
+        "Map finance and purchasing together, then inventory",
+        "Consolidate the requirements for sign-off"
+      ]
+    },
+    {
+      "id": "W2",
+      "phase_order": 1,
+      "name": "Current systems fit-gap",
+      "question_id": "Q1",
+      "answers": "Where do today's finance, purchasing and inventory systems fall short of those requirements?",
+      "traces_to": ["gate:1"],
+      "start_offset": 2,
+      "duration": 4,
+      "follows": ["W1"],
+      "builds_on_meeting": null,
+      "activities": [
+        "Walk through today's systems with the people who use them",
+        "Review system documents and operational data",
+        "Compare each requirement with what today's systems do"
+      ]
+    },
+    {
+      "id": "W3",
+      "phase_order": 2,
+      "name": "ERP vendor scoring",
+      "question_id": "Q2",
+      "answers": "Which ERP vendors fit the signed-off requirements, and how do they score against them?",
+      "traces_to": ["gate:2"],
+      "start_offset": 0,
+      "duration": 4,
+      "follows": [],
+      "builds_on_meeting": "G3",
+      "activities": [
+        "Shortlist ERP vendors against the signed-off requirements",
+        "Run vendor demonstrations with process owners",
+        "Score each vendor against the requirements"
+      ]
+    },
+    {
+      "id": "W4",
+      "phase_order": 2,
+      "name": "ERP business case",
+      "question_id": "Q2",
+      "answers": "Does the business case for the best-fitting vendor support selecting it?",
+      "traces_to": ["gate:2"],
+      "start_offset": 3,
+      "duration": 3,
+      "follows": ["W3"],
+      "builds_on_meeting": null,
+      "activities": [
+        "Estimate costs and benefits of the best-fitting vendor",
+        "Check cost assumptions against operational data",
+        "Set out the case for the selection decision"
+      ]
+    },
+    {
+      "id": "W5",
+      "phase_order": 3,
+      "name": "ERP configuration",
+      "question_id": "Q3",
+      "answers": "Can the chosen ERP be configured and tested for finance, purchasing and inventory?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 0,
+      "duration": 11,
+      "follows": [],
+      "builds_on_meeting": "G5",
+      "activities": [
+        "Configure finance and purchasing together",
+        "Configure inventory once the first two areas are tested",
+        "Test each area with the people who run the process"
+      ]
+    },
+    {
+      "id": "W6",
+      "phase_order": 3,
+      "name": "Data migration",
+      "question_id": "Q3",
+      "answers": "Can data from today's systems be migrated and loaded into the ERP in a rehearsal?",
+      "traces_to": ["problem_statement"],
+      "start_offset": 6,
+      "duration": 6,
+      "follows": ["W5"],
+      "builds_on_meeting": "G5",
+      "activities": [
+        "Map data from today's systems to the ERP",
+        "Clean and load data, finance and purchasing first",
+        "Run a migration rehearsal and check the results"
+      ]
+    },
+    {
+      "id": "W7",
+      "phase_order": 3,
+      "name": "Pilot site go-live",
+      "question_id": "Q4",
+      "answers": "Does the ERP run live and stable at a pilot site?",
+      "traces_to": ["problem_statement", "success_criteria:1"],
+      "start_offset": 12,
+      "duration": 6,
+      "follows": ["W5", "W6"],
+      "builds_on_meeting": "G7",
+      "activities": [
+        "Launch the ERP at a pilot site after the readiness review",
+        "Track stability with the site's staff and operational data",
+        "Log and fix issues before the rollout decision"
+      ]
+    },
+    {
+      "id": "W8",
+      "phase_order": 3,
+      "name": "Site rollout waves",
+      "question_id": "Q4",
+      "answers": "Can the ERP go live in all 40 pharmacies and both warehouses, wave by wave?",
+      "traces_to": ["success_criteria:1", "gate:3"],
+      "start_offset": 18,
+      "duration": 12,
+      "follows": ["W7"],
+      "builds_on_meeting": "G8",
+      "activities": [
+        "Roll out the ERP wave by wave to pharmacies and warehouses",
+        "Support each wave until it is stable",
+        "Confirm the ERP runs in all pharmacies and warehouses"
+      ]
+    }
+  ],
+  "notes": []
+}

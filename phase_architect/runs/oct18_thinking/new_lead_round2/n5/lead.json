@@ -1,0 +1,167 @@
+{
+  "basis": {
+    "governing_question": "What strategy should Banco Horizonte adopt for its digital channels?",
+    "archetype_id": null
+  },
+  "sizing": {
+    "length_basis": "estimated",
+    "sub_questions": [
+      {
+        "id": "Q1",
+        "question": "How do customers use Banco Horizonte's digital channels today, and how well do those channels perform?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q2",
+        "question": "What do the CEO and Head of Digital need the digital channels to deliver?",
+        "phase_order": 1
+      },
+      {
+        "id": "Q3",
+        "question": "What do Portuguese retail banking customers expect from digital channels, and what do competitors offer?",
+        "phase_order": 2
+      },
+      {
+        "id": "Q4",
+        "question": "Which role and priorities should each digital channel have in Banco Horizonte's strategy?",
+        "phase_order": 3
+      },
+      {
+        "id": "Q5",
+        "question": "What roadmap sequences the strategy's initiatives, and who owns each one?",
+        "phase_order": 3
+      }
+    ],
+    "drivers": [
+      {
+        "key": "stakeholder_groups",
+        "value": 2,
+        "source": "assumed",
+        "evidence": ""
+      },
+      {
+        "key": "customer_segments",
+        "value": 3,
+        "source": "assumed",
+        "evidence": ""
+      }
+    ],
+    "phase_work": [
+      {
+        "phase_order": 1,
+        "work": [
+          {
+            "unit": "Interview round with one stakeholder group",
+            "from_library": true,
+            "driver": "stakeholder_groups",
+            "count": 2,
+            "weeks_each": { "min": 1, "max": 2 },
+            "at_once": 2
+          },
+          {
+            "unit": "Digital channel baseline: usage, customer journeys and performance",
+            "from_library": false,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 2, "max": 3 },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 2,
+        "estimate": { "min": 5, "max": 7 },
+        "why": "Both stakeholder groups are interviewed in one round, then usage and journey data is analyzed; one week of start-up and one of synthesis."
+      },
+      {
+        "phase_order": 2,
+        "work": [
+          {
+            "unit": "Customer segment researched on digital needs and behavior",
+            "from_library": false,
+            "driver": "customer_segments",
+            "count": 3,
+            "weeks_each": { "min": 1, "max": 2 },
+            "at_once": 3
+          },
+          {
+            "unit": "Benchmark of competitor digital channel offers",
+            "from_library": false,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 1, "max": 2 },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 1,
+        "estimate": { "min": 3, "max": 5 },
+        "why": "The three segments are researched side by side, then competitors are benchmarked; one synthesis week closes the phase."
+      },
+      {
+        "phase_order": 3,
+        "work": [
+          {
+            "unit": "Digital channel strategy and priorities defined",
+            "from_library": false,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 2, "max": 3 },
+            "at_once": 1
+          },
+          {
+            "unit": "Roadmap with sequence and owners",
+            "from_library": false,
+            "driver": null,
+            "count": 1,
+            "weeks_each": { "min": 1, "max": 2 },
+            "at_once": 1
+          }
+        ],
+        "fixed_weeks": 1,
+        "estimate": { "min": 4, "max": 6 },
+        "why": "The strategy and priorities are defined first, then sequenced into a roadmap with owners; one synthesis week closes the phase."
+      }
+    ],
+    "levers": "Running customer research and the competitor benchmark side by side, or baselining only the most-used channels, would shorten the engagement most."
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 5, "max": 7 },
+      "duration_derived": false,
+      "objective_one_line": "Establish how customers use Banco Horizonte's digital channels today, where journeys break down, and how the channels perform.",
+      "gate": {
+        "label": "Gaps to pursue",
+        "decision": "Which digital channel gaps go forward into the customer and competitor research?"
+      },
+      "depends_on_assumptions": ["engagement_length", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Research",
+      "order": 2,
+      "duration_weeks": { "min": 3, "max": 5 },
+      "duration_derived": false,
+      "objective_one_line": "Gather evidence on what retail banking customers expect from digital channels and what competitors offer in Portugal.",
+      "gate": {
+        "label": "Options to design",
+        "decision": "Which customer segments and channel options go forward into the strategy design?"
+      },
+      "depends_on_assumptions": ["engagement_length"]
+    },
+    {
+      "name": "Design",
+      "order": 3,
+      "duration_weeks": { "min": 4, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Define the digital channel strategy for Banco Horizonte, with priorities, target role of each channel and a sequenced roadmap.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Does the steering group approve the final digital channel strategy and roadmap?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format", "timeline", "success_criteria", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Engagement length is not given: the 12 to 18 weeks are an estimate summed from the work in each phase, to confirm before quoting.",
+    "No library archetype fits a digital channel strategy; only the stakeholder interview round comes from the library, all other work units are estimates."
+  ]
+}

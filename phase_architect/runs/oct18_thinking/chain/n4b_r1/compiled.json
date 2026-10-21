@@ -1,0 +1,921 @@
+{
+ "client": "Farmácias Lusas",
+ "basis": {
+  "governing_question": "Which ERP should replace Farmácias Lusas's finance, purchasing and inventory systems, and how is it migrated and rolled out to 40 pharmacies and 2 warehouses?",
+  "archetype_id": "technology_selection_implementation"
+ },
+ "total_duration_weeks": {
+  "min": 36,
+  "max": 42
+ },
+ "phases": [
+  {
+   "name": "Diagnostic",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 6,
+   "duration_weeks": {
+    "min": 4,
+    "max": 6
+   },
+   "duration_derived": false,
+   "objective_one_line": "Map requirements and process fit for finance, purchasing and inventory across the pharmacies and warehouses.",
+   "gate": {
+    "label": "Requirements sign-off",
+    "decision": "Approve the requirements and go to vendor selection?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length",
+    "timeline",
+    "prior_attempts"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2",
+    "W3",
+    "W4"
+   ]
+  },
+  {
+   "name": "Design",
+   "order": 2,
+   "start_week": 7,
+   "end_week": 12,
+   "duration_weeks": {
+    "min": 4,
+    "max": 6
+   },
+   "duration_derived": false,
+   "objective_one_line": "Score ERP vendors against the requirements and build the business case for the vendor that fits best.",
+   "gate": {
+    "label": "Vendor selection",
+    "decision": "Which ERP vendor goes forward into implementation?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length"
+   ],
+   "workstream_ids": [
+    "W5",
+    "W6"
+   ]
+  },
+  {
+   "name": "Implementation",
+   "order": 3,
+   "start_week": 13,
+   "end_week": 42,
+   "duration_weeks": {
+    "min": 28,
+    "max": 30
+   },
+   "duration_derived": false,
+   "objective_one_line": "Configure the ERP, migrate data, and take it live from a pilot site to all pharmacies and warehouses.",
+   "gate": {
+    "label": "Final acceptance",
+    "decision": "Approve the ERP as running in all 40 pharmacies and both warehouses?"
+   },
+   "depends_on_assumptions": [
+    "engagement_length",
+    "deliverable_format",
+    "timeline",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W7",
+    "W8",
+    "W9",
+    "W10"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Finance requirements",
+   "answers": "What must the ERP do for finance at the pharmacies and warehouses?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 2,
+   "follows": [],
+   "activities": [
+    "Interview finance staff and the CFO about today's work",
+    "Analyze finance data and documents from the current systems",
+    "Write the finance requirements for sign-off"
+   ],
+   "deliverable_ids": [
+    "D1"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Purchasing requirements",
+   "answers": "What must the ERP do for purchasing, from ordering to supplier handling, across pharmacies and warehouses?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 2,
+   "follows": [],
+   "activities": [
+    "Interview purchasing staff and pharmacy teams on ordering",
+    "Analyze purchasing data and documents from current systems",
+    "Write the purchasing requirements for sign-off"
+   ],
+   "deliverable_ids": [
+    "D2"
+   ]
+  },
+  {
+   "id": "W3",
+   "phase_order": 1,
+   "name": "Inventory requirements",
+   "answers": "What must the ERP do for inventory in the pharmacies and both warehouses?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 3,
+   "end_week": 4,
+   "follows": [],
+   "activities": [
+    "Interview pharmacy and warehouse staff on stock handling",
+    "Analyze stock data and documents from current systems",
+    "Write the inventory requirements for sign-off"
+   ],
+   "deliverable_ids": [
+    "D3"
+   ]
+  },
+  {
+   "id": "W4",
+   "phase_order": 1,
+   "name": "Process fit-gap",
+   "answers": "Where do today's finance, purchasing and inventory systems fall short of the requirements?",
+   "traces_to": [
+    "gate:1"
+   ],
+   "start_week": 3,
+   "end_week": 6,
+   "follows": [
+    "W1",
+    "W2"
+   ],
+   "activities": [
+    "Compare each requirement with how current systems perform",
+    "Check gaps in pharmacy and warehouse processes with staff",
+    "Consolidate all requirements and gaps for sign-off"
+   ],
+   "deliverable_ids": [
+    "D4",
+    "D5"
+   ]
+  },
+  {
+   "id": "W5",
+   "phase_order": 2,
+   "name": "Vendor shortlist and scoring",
+   "answers": "Which ERP vendors fit the signed-off requirements for finance, purchasing and inventory?",
+   "traces_to": [
+    "problem_statement",
+    "gate:2"
+   ],
+   "start_week": 7,
+   "end_week": 10,
+   "follows": [],
+   "activities": [
+    "Shortlist ERP vendors against the signed-off requirements",
+    "Hold ERP demonstrations with pharmacy and warehouse users",
+    "Score vendors and check their references with customers"
+   ],
+   "deliverable_ids": [
+    "D6",
+    "D7"
+   ]
+  },
+  {
+   "id": "W6",
+   "phase_order": 2,
+   "name": "Business case",
+   "answers": "Does the business case support selecting the ERP vendor that fits the requirements best?",
+   "traces_to": [
+    "gate:2"
+   ],
+   "start_week": 10,
+   "end_week": 12,
+   "follows": [
+    "W5"
+   ],
+   "activities": [
+    "Estimate costs and benefits for the vendors in contention",
+    "Test the case with the CFO and the Operations Director",
+    "Assemble the evidence for the vendor selection decision"
+   ],
+   "deliverable_ids": [
+    "D8"
+   ]
+  },
+  {
+   "id": "W7",
+   "phase_order": 3,
+   "name": "Configuration and testing",
+   "answers": "Can the ERP be configured and tested for finance, purchasing and inventory in the pharmacies and both warehouses?",
+   "traces_to": [
+    "problem_statement",
+    "success_criteria:1"
+   ],
+   "start_week": 13,
+   "end_week": 20,
+   "follows": [],
+   "activities": [
+    "Configure finance and purchasing to the requirements",
+    "Configure inventory for pharmacies and warehouses",
+    "Test each area with the people who run it and fix defects"
+   ],
+   "deliverable_ids": [
+    "D9",
+    "D10"
+   ]
+  },
+  {
+   "id": "W8",
+   "phase_order": 3,
+   "name": "Data migration",
+   "answers": "Can the data from today's systems be migrated into the ERP and checked as complete?",
+   "traces_to": [
+    "problem_statement"
+   ],
+   "start_week": 21,
+   "end_week": 24,
+   "follows": [
+    "W7"
+   ],
+   "activities": [
+    "Map and clean data from today's systems for loading",
+    "Rehearse the data load and reconcile it with source records",
+    "Report rehearsal results for the readiness review"
+   ],
+   "deliverable_ids": [
+    "D11"
+   ]
+  },
+  {
+   "id": "W9",
+   "phase_order": 3,
+   "name": "Pilot site go-live",
+   "answers": "Does the ERP run live and stable at a pilot site for finance, purchasing and inventory?",
+   "traces_to": [
+    "success_criteria:1",
+    "gate:3"
+   ],
+   "start_week": 25,
+   "end_week": 30,
+   "follows": [
+    "W7",
+    "W8"
+   ],
+   "activities": [
+    "Prepare the pilot site and train its staff for go-live",
+    "Run the pilot site live and track stability and issues",
+    "Report pilot results for review at the workshop"
+   ],
+   "deliverable_ids": [
+    "D12",
+    "D13"
+   ]
+  },
+  {
+   "id": "W10",
+   "phase_order": 3,
+   "name": "Site rollout in waves",
+   "answers": "Can the ERP go live wave by wave in all 40 pharmacies and both warehouses?",
+   "traces_to": [
+    "success_criteria:1",
+    "gate:3"
+   ],
+   "start_week": 31,
+   "end_week": 42,
+   "follows": [
+    "W9"
+   ],
+   "activities": [
+    "Train staff and prepare the sites in each wave",
+    "Take each wave of pharmacies and warehouses live",
+    "Track use in each live site against the success criterion"
+   ],
+   "deliverable_ids": [
+    "D14",
+    "D15"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "Finance requirements document",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 2,
+   "presented_at": "Check-in: requirements"
+  },
+  {
+   "id": "D2",
+   "name": "Purchasing requirements document",
+   "kind": "analysis",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 2,
+   "presented_at": "Check-in: requirements"
+  },
+  {
+   "id": "D3",
+   "name": "Inventory requirements document",
+   "kind": "analysis",
+   "workstream_id": "W3",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Check-in: requirements"
+  },
+  {
+   "id": "D4",
+   "name": "Fit-gap findings for finance and purchasing",
+   "kind": "analysis",
+   "workstream_id": "W4",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Check-in: requirements"
+  },
+  {
+   "id": "D5",
+   "name": "Consolidated requirements and fit-gap for sign-off",
+   "kind": "decision_pack",
+   "workstream_id": "W4",
+   "phase_order": 1,
+   "due_week": 5,
+   "presented_at": "Requirements sign-off"
+  },
+  {
+   "id": "D6",
+   "name": "Vendor shortlist against the requirements",
+   "kind": "analysis",
+   "workstream_id": "W5",
+   "phase_order": 2,
+   "due_week": 9,
+   "presented_at": "Check-in: vendor scoring"
+  },
+  {
+   "id": "D7",
+   "name": "Vendor scoring and customer reference checks",
+   "kind": "analysis",
+   "workstream_id": "W5",
+   "phase_order": 2,
+   "due_week": 10,
+   "presented_at": "Check-in: vendor scoring"
+  },
+  {
+   "id": "D8",
+   "name": "Business case and vendor scoring for selection decision",
+   "kind": "decision_pack",
+   "workstream_id": "W6",
+   "phase_order": 2,
+   "due_week": 11,
+   "presented_at": "Vendor selection"
+  },
+  {
+   "id": "D9",
+   "name": "Configured finance and purchasing with test results",
+   "kind": "build",
+   "workstream_id": "W7",
+   "phase_order": 3,
+   "due_week": 18,
+   "presented_at": "Check-in: test results"
+  },
+  {
+   "id": "D10",
+   "name": "Tested ERP configuration for all process areas",
+   "kind": "build",
+   "workstream_id": "W7",
+   "phase_order": 3,
+   "due_week": 20,
+   "presented_at": "Workshop 1: pilot readiness"
+  },
+  {
+   "id": "D11",
+   "name": "Data migration rehearsal and reconciliation results",
+   "kind": "analysis",
+   "workstream_id": "W8",
+   "phase_order": 3,
+   "due_week": 23,
+   "presented_at": "Workshop 1: pilot readiness"
+  },
+  {
+   "id": "D12",
+   "name": "Pilot site go-live record",
+   "kind": "build",
+   "workstream_id": "W9",
+   "phase_order": 3,
+   "due_week": 27,
+   "presented_at": "Workshop 2: pilot results"
+  },
+  {
+   "id": "D13",
+   "name": "Pilot stability and issues report",
+   "kind": "analysis",
+   "workstream_id": "W9",
+   "phase_order": 3,
+   "due_week": 29,
+   "presented_at": "Workshop 2: pilot results"
+  },
+  {
+   "id": "D14",
+   "name": "First rollout wave go-live record",
+   "kind": "build",
+   "workstream_id": "W10",
+   "phase_order": 3,
+   "due_week": 35,
+   "presented_at": "Check-in: rollout wave 1"
+  },
+  {
+   "id": "D15",
+   "name": "Final acceptance pack for all pharmacies and warehouses",
+   "kind": "decision_pack",
+   "workstream_id": "W10",
+   "phase_order": 3,
+   "due_week": 41,
+   "presented_at": "Final acceptance"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 2,
+  "status_weeks": [
+   3,
+   5,
+   7,
+   9,
+   11,
+   13,
+   15,
+   17,
+   19,
+   21,
+   23,
+   25,
+   27,
+   29,
+   31,
+   33,
+   35,
+   37,
+   39,
+   41
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Agree the access the diagnostic needs",
+    "attendees": [
+     "CEO",
+     "CFO",
+     "Operations Director",
+     "IT Manager"
+    ],
+    "presents": [],
+    "decision": "Confirm access to finance, purchasing and inventory data and process owners?",
+    "agenda": [
+     "Present the engagement objective, phases and gates",
+     "Review the data and process owners the diagnostic needs",
+     "Confirm who gives access to each from week 1"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "checkin",
+    "phase_order": 1,
+    "week": 4,
+    "label": "Check-in: requirements",
+    "purpose": "Review requirements and early fit-gap",
+    "attendees": [
+     "CFO",
+     "Operations Director",
+     "IT Manager"
+    ],
+    "presents": [
+     "D1",
+     "D2",
+     "D3",
+     "D4"
+    ],
+    "decision": "Which fit-gap findings need more detail before requirements sign-off?",
+    "agenda": [
+     "Present the finance, purchasing and inventory requirements",
+     "Review the fit-gap findings for finance and purchasing",
+     "Discuss which findings need more detail before sign-off"
+    ]
+   },
+   {
+    "id": "G3",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 6,
+    "label": "Requirements sign-off",
+    "purpose": "Sign off requirements and fit-gap",
+    "attendees": [
+     "CEO",
+     "CFO",
+     "Operations Director",
+     "IT Manager"
+    ],
+    "presents": [
+     "D1",
+     "D2",
+     "D3",
+     "D4",
+     "D5"
+    ],
+    "decision": "Approve the requirements and go to vendor selection?",
+    "agenda": [
+     "Present the consolidated requirements and fit-gap",
+     "Review open gaps by process area",
+     "Decide whether to move to vendor selection"
+    ]
+   },
+   {
+    "id": "G4",
+    "type": "checkin",
+    "phase_order": 2,
+    "week": 10,
+    "label": "Check-in: vendor scoring",
+    "purpose": "Review vendor scores and references",
+    "attendees": [
+     "CFO",
+     "Operations Director",
+     "IT Manager"
+    ],
+    "presents": [
+     "D6",
+     "D7"
+    ],
+    "decision": "Which scored vendors go into the final comparison at the selection gate?",
+    "agenda": [
+     "Present the vendor shortlist and scoring",
+     "Review the customer reference check results",
+     "Discuss which vendors enter the final comparison"
+    ]
+   },
+   {
+    "id": "G5",
+    "type": "gate",
+    "phase_order": 2,
+    "week": 12,
+    "label": "Vendor selection",
+    "purpose": "Select the vendor to take forward",
+    "attendees": [
+     "CEO",
+     "CFO",
+     "Operations Director",
+     "IT Manager"
+    ],
+    "presents": [
+     "D6",
+     "D7",
+     "D8"
+    ],
+    "decision": "Which ERP vendor goes forward into implementation?",
+    "agenda": [
+     "Present the business case and vendor scoring",
+     "Review reference checks and the shortlist",
+     "Decide which vendor goes into implementation"
+    ]
+   },
+   {
+    "id": "G6",
+    "type": "checkin",
+    "phase_order": 3,
+    "week": 18,
+    "label": "Check-in: test results",
+    "purpose": "Review finance and purchasing test results",
+    "attendees": [
+     "CFO",
+     "Operations Director",
+     "IT Manager"
+    ],
+    "presents": [
+     "D9"
+    ],
+    "decision": "Which open test issues in finance and purchasing must close before data migration?",
+    "agenda": [
+     "Present configured finance and purchasing with test results",
+     "Review open test issues by process area",
+     "Discuss which issues must close before migration"
+    ]
+   },
+   {
+    "id": "G7",
+    "type": "workshop",
+    "phase_order": 3,
+    "week": 24,
+    "label": "Workshop 1: pilot readiness",
+    "purpose": "Review readiness before pilot go-live",
+    "attendees": [
+     "CEO",
+     "CFO",
+     "Operations Director",
+     "IT Manager"
+    ],
+    "presents": [
+     "D9",
+     "D10",
+     "D11"
+    ],
+    "decision": "Go or no-go on starting the pilot site go-live given readiness results?",
+    "agenda": [
+     "Present the tested configuration and migration reconciliation",
+     "Review open issues that could affect go-live",
+     "Decide whether the pilot site goes live"
+    ]
+   },
+   {
+    "id": "G8",
+    "type": "workshop",
+    "phase_order": 3,
+    "week": 30,
+    "label": "Workshop 2: pilot results",
+    "purpose": "Review pilot results before rollout",
+    "attendees": [
+     "CEO",
+     "CFO",
+     "Operations Director",
+     "IT Manager"
+    ],
+    "presents": [
+     "D12",
+     "D13"
+    ],
+    "decision": "Start the first rollout wave, or extend the pilot to close open issues?",
+    "agenda": [
+     "Present the pilot go-live record and stability report",
+     "Review open pilot issues and their effect on rollout",
+     "Decide whether to start the first wave or extend the pilot"
+    ]
+   },
+   {
+    "id": "G9",
+    "type": "checkin",
+    "phase_order": 3,
+    "week": 36,
+    "label": "Check-in: rollout wave 1",
+    "purpose": "Review wave 1 against final acceptance",
+    "attendees": [
+     "CEO",
+     "CFO",
+     "Operations Director",
+     "IT Manager"
+    ],
+    "presents": [
+     "D14"
+    ],
+    "decision": "What must change in the remaining waves to reach acceptance in all sites?",
+    "agenda": [
+     "Present the first rollout wave go-live record",
+     "Review wave 1 results against the acceptance criterion",
+     "Discuss what the remaining waves need to reach all sites"
+    ]
+   },
+   {
+    "id": "G10",
+    "type": "gate",
+    "phase_order": 3,
+    "week": 42,
+    "label": "Final acceptance",
+    "purpose": "Accept the ERP across all sites",
+    "attendees": [
+     "CEO",
+     "CFO",
+     "Operations Director",
+     "IT Manager"
+    ],
+    "presents": [
+     "D14",
+     "D15"
+    ],
+    "decision": "Approve the ERP as running in all 40 pharmacies and both warehouses?",
+    "agenda": [
+     "Present the final acceptance pack",
+     "Review go-live results across all pharmacies and warehouses",
+     "Decide whether to approve the ERP as running in all sites"
+    ]
+   }
+  ]
+ },
+ "deadline": null,
+ "architect_notes": [
+  "Engagement length is not given, so every duration is an estimate to confirm before quoting.",
+  "Implementation takes the middle of a 23 to 34 week estimate; it reaches the top if areas take 6 weeks and waves 3 weeks.",
+  "Implementation is added to the technology selection archetype's Diagnostic and Design because the brief includes data migration and rollout to 40 pharmacies and 2 warehouses.",
+  "Design assumes shortlist and demonstrations without a formal tender; a tender would add 4 to 6 weeks and should be confirmed."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Diagnostic",
+    "start": 1,
+    "end": 6
+   },
+   {
+    "phase": "Design",
+    "start": 7,
+    "end": 12
+   },
+   {
+    "phase": "Implementation",
+    "start": 13,
+    "end": 42
+   }
+  ]
+ },
+ "sizing": {
+  "length_basis": "estimated",
+  "sub_questions": [
+   {
+    "id": "Q1",
+    "question": "What must the ERP do for finance, purchasing and inventory, and where do today's systems fall short?",
+    "phase_order": 1
+   },
+   {
+    "id": "Q2",
+    "question": "Which ERP fits the requirements, and does its business case support selecting it?",
+    "phase_order": 2
+   },
+   {
+    "id": "Q3",
+    "question": "Can the ERP be configured, tested and loaded with migrated data for finance, purchasing and inventory?",
+    "phase_order": 3
+   },
+   {
+    "id": "Q4",
+    "question": "Can the ERP run live and stable at a pilot site, then in all 40 pharmacies and both warehouses?",
+    "phase_order": 3
+   }
+  ],
+  "drivers": [
+   {
+    "key": "process_areas",
+    "value": 3,
+    "source": "brief",
+    "evidence": "finance, purchasing and inventory systems"
+   },
+   {
+    "key": "sites",
+    "value": 42,
+    "source": "brief",
+    "evidence": "roll it out to its 40 pharmacies and 2 warehouses"
+   }
+  ],
+  "phases": [
+   {
+    "order": 1,
+    "name": "Diagnostic",
+    "planned_weeks": {
+     "min": 4,
+     "max": 6
+    },
+    "estimate": {
+     "min": 4,
+     "max": 6
+    },
+    "archetype_weeks": {
+     "min": 3,
+     "max": 6
+    },
+    "fixed_weeks": 2,
+    "work": [
+     {
+      "unit": "Process area mapped with its requirements",
+      "from_library": true,
+      "driver": "process_areas",
+      "count": 3,
+      "at_once": 2,
+      "weeks_each": {
+       "min": 1,
+       "max": 2
+      }
+     }
+    ],
+    "why": "Three process areas mapped two at a time, plus start-up and synthesis weeks; inside the archetype's typical 3 to 6 weeks."
+   },
+   {
+    "order": 2,
+    "name": "Design",
+    "planned_weeks": {
+     "min": 4,
+     "max": 6
+    },
+    "estimate": {
+     "min": 4,
+     "max": 6
+    },
+    "archetype_weeks": {
+     "min": 4,
+     "max": 8
+    },
+    "fixed_weeks": 1,
+    "work": [
+     {
+      "unit": "Vendor shortlist, demonstrations and scoring",
+      "from_library": true,
+      "driver": null,
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 3,
+       "max": 5
+      }
+     }
+    ],
+    "why": "One shortlist, demonstration and scoring round, then a synthesis week; no formal tender assumed. Inside the archetype's typical 4 to 8 weeks."
+   },
+   {
+    "order": 3,
+    "name": "Implementation",
+    "planned_weeks": {
+     "min": 28,
+     "max": 30
+    },
+    "estimate": {
+     "min": 23,
+     "max": 34
+    },
+    "archetype_weeks": null,
+    "fixed_weeks": 0,
+    "work": [
+     {
+      "unit": "System configured and tested for one process area",
+      "from_library": true,
+      "driver": "process_areas",
+      "count": 3,
+      "at_once": 2,
+      "weeks_each": {
+       "min": 4,
+       "max": 6
+      }
+     },
+     {
+      "unit": "Data migration rehearsal",
+      "from_library": true,
+      "driver": null,
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 2,
+       "max": 3
+      }
+     },
+     {
+      "unit": "Pilot site live and stable",
+      "from_library": true,
+      "driver": null,
+      "count": 1,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 3,
+       "max": 4
+      }
+     },
+     {
+      "unit": "Rollout wave of up to 10 sites",
+      "from_library": true,
+      "driver": "sites",
+      "count": 5,
+      "at_once": 1,
+      "weeks_each": {
+       "min": 2,
+       "max": 3
+      }
+     }
+    ],
+    "why": "Areas configured two at a time, then one migration rehearsal, one pilot site and five rollout waves of up to 10 sites, in sequence."
+   }
+  ],
+  "estimate_total": {
+   "min": 31,
+   "max": 46
+  },
+  "planned_total": {
+   "min": 36,
+   "max": 42
+  },
+  "levers": "Rollout waves two at a time would save 4 to 6 weeks; configuring all three process areas together would save 4 to 6 more."
+ }
+}

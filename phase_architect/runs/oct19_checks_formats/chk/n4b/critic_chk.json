@@ -1,0 +1,40 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 4,
+      "governance": 4,
+      "coherence": 4,
+      "sizing": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W7 configures and tests finance, purchasing and inventory in only 8 weeks, and W8 data migration starts only after W7 ends, so mapping, cleaning and a single rehearsal for 42 sites are squeezed into weeks 21-24 when they could run alongside configuration.",
+      "Phase 3 starts W7 configuration in week 13, the week after the vendor selection gate, with no time to contract the vendor or integrator and no solution design step between the signed-off requirements and configuration.",
+      "W9 runs a single 'pilot site' without saying whether it is a pharmacy or a warehouse, so one of the two site types first goes live in a rollout wave untested.",
+      "D15 Final acceptance pack is due week 41 while W10 rollout runs to week 42, so the week 42 gate accepts the last wave of sites with no stabilization period after go-live.",
+      "D6 Vendor shortlist is due week 9, leaving only week 10 for the demonstrations, scoring and customer reference checks that D7 reports."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 2,
+      "sizing": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W7 Pilot site go-live and W8 Site rollout waves contain no staff training, so no pharmacy or warehouse user is prepared before go-live at any of the 42 sites.",
+      "W4 ERP business case covers only the best-fitting vendor, contradicting the week 10 decision on which vendors go into the business case and the week 12 agenda item on results by vendor, so the vendor selection gate has nothing to choose between.",
+      "W1 delivers no inventory requirements until D2 in week 6, the gate week itself, yet W2 (marked 'after W1' while W1 still runs to week 6) issues D3 fit-gap against all requirements in week 5, and D2 in W1 also carries W2's fit-gap.",
+      "Phase 3 starts W5 configuration in week 13, the week after the vendor selection gate, with no time to contract the vendor or integrator and no solution design step, and W7 pilots a single unspecified site for two different site types.",
+      "W6 is marked after W5 but starts week 19 while W5 runs to week 23, and D9 migration rehearsal is due the same week as D8 inventory configuration, so the rehearsal cannot cover inventory data on the tested setup."
+    ]
+  },
+  "better": "X",
+  "why": "X builds each process area's requirements before the fit-gap, lands the sign-off pack a week ahead of the gate, and includes staff training and reference checks, leaving mainly sizing problems (squeezed configuration, sequential migration, no contracting time) that are shared or easy to fix. Y has the more realistic overlap of configuration and migration, but it omits training entirely, contradicts its own dependencies in W2 and W6, leaves inventory requirements unwritten until gate week, and builds a one-vendor business case under a gate that is supposed to choose between vendors."
+}

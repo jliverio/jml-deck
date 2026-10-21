@@ -1,0 +1,94 @@
+{
+ "brief": {
+  "hard_fields": {
+   "client": {
+    "value": "Iberia Foods, a Spanish frozen-food manufacturer",
+    "source": "stated",
+    "quote": "Iberia Foods, a Spanish frozen-food manufacturer",
+    "assumption_text": null
+   },
+   "problem_statement": {
+    "value": "Iberia Foods wants a cost diagnostic and design program to identify savings of 8% of the cost base without cutting service levels.",
+    "source": "stated",
+    "quote": "Iberia Foods, a Spanish frozen-food manufacturer, wants a 12-week cost diagnostic and design program.",
+    "assumption_text": null
+   }
+  },
+  "required": {
+   "engagement_type": {
+    "value": "assessment",
+    "source": "stated",
+    "quote": "It is an assessment only, no implementation support.",
+    "assumption_text": null
+   },
+   "engagement_length": {
+    "value": "12-week",
+    "weeks_min": 12,
+    "weeks_max": 12,
+    "duration_derived": false,
+    "source": "stated",
+    "quote": "12-week cost diagnostic and design program",
+    "assumption_text": null
+   },
+   "stakeholders": {
+    "value": [
+     "Marta Ruiz, CFO",
+     "COO"
+    ],
+    "source": "stated",
+    "quote": "The CFO, Marta Ruiz, and the COO sponsor it.",
+    "assumption_text": null
+   }
+  },
+  "soft_fields": {
+   "deliverable_format": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "timeline": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "prior_attempts": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "success_criteria": {
+    "value": "Identify savings of 8% of the cost base without cutting service levels",
+    "source": "stated",
+    "quote": "Their goal is to identify savings of 8% of the cost base without cutting service levels.",
+    "assumption_text": null
+   },
+   "out_of_scope": {
+    "value": null,
+    "source": "assumed",
+    "quote": null,
+    "assumption_text": null
+   },
+   "workstreams": {
+    "value": "procurement; manufacturing; logistics; warehousing; sales and marketing; pricing; finance; HR; IT; legal; real estate; customer service",
+    "count": 12,
+    "source": "stated",
+    "quote": "They want it run as twelve workstreams: procurement, manufacturing, logistics, warehousing, sales and marketing, pricing, finance, HR, IT, legal, real estate and customer service.",
+    "assumption_text": null
+   }
+  }
+ },
+ "success_criteria_list": [
+  "Identify savings of 8% of the cost base without cutting service levels"
+ ],
+ "profile": {
+  "problem_focus": "topic",
+  "topic": null,
+  "current_state": null,
+  "market": null
+ },
+ "market_findings": [],
+ "weeks_available": null
+}

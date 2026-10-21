@@ -1,0 +1,40 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 4,
+      "governance": 3,
+      "coherence": 3,
+      "sizing": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W2 and W3 start the full assessment of 'shortlisted' countries in week 3, and D2 (interim findings for the first two markets) is due week 5, yet the markets that get the full assessment are only decided at the week 5 workshop.",
+      "W5 builds the business cases (D8, weeks 11-13) before any meeting chooses the entry option per country, because that choice is only made at the week 13 check-in after the cases are finished.",
+      "W2, W3 and W4 run to week 9 but their last analyses (D3, D4, D5) are due week 7, so two idle weeks pad Research to the top of its 7-9 week estimate.",
+      "The notes say Research and Design 'sit mid-estimate', but the plan schedules both at the top of their estimates (9 of 7-9 and 6 of 4-6 weeks), which means the full 15 weeks of the 11-15 range.",
+      "W6 has one week before D9 (due week 14) to compare entry orders, draft the roadmap and review the sequence with the CEO and Commercial Director, no meeting is set for that review, and the final readout re-reviews D7 and D8 instead of focusing on what is new."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 2,
+      "coherence": 2,
+      "sizing": 3
+    },
+    "verdict": "No",
+    "defects": [
+      "The week 13 check-in reviews nothing and only asks whether the work is on track, so no meeting chooses the 'preferred option' per market that W6 builds its business cases on, even though D8 (entry options) is ready in week 12.",
+      "W2 and W3 start the full assessment of 'shortlisted' markets in week 3, but the markets for full assessment are only chosen at the week 5 workshop.",
+      "D5 and D7 are due in week 9 and D10 and D11 in week 15, the same weeks as the gates that review them, which leaves no pre-read time and no room for the findings pack D7 to take in D5.",
+      "W4 is set 'after W3' but runs weeks 5-9 while W3 runs weeks 3-9, so the stated dependency contradicts the timing.",
+      "W7 gets a single week (week 15) to compare entry orders, draft the roadmap, test the sequence with the CEO and Commercial Director and deliver both D10 and D11 in the week of the final readout, while the kickoff already presents a '15-week plan' that the notes say must be confirmed before quoting."
+    ]
+  },
+  "better": "X",
+  "why": "Both plans share the same phase frame, the same shortlist-sequencing flaw and the same padded 15-week length, but X gives every steering meeting a real decision and delivers its gate packs ahead of the meetings that review them. Y leaves the week 13 check-in empty with no choice of entry option, lands four deliverables in the same weeks as the gates, squeezes the roadmap into one week and states a W4 dependency its own timing contradicts."
+}

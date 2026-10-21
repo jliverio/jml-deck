@@ -1,0 +1,49 @@
+{
+  "basis": {
+    "governing_question": "What strategy should Banco Horizonte adopt for its digital channels?",
+    "archetype_id": null
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 3, "max": 4 },
+      "duration_derived": false,
+      "objective_one_line": "Assess the current state of Banco Horizonte's digital channels and identify the gaps the strategy must close.",
+      "gate": {
+        "label": "Focus areas sign-off",
+        "decision": "Which gaps in the digital channels does the strategy address first?"
+      },
+      "depends_on_assumptions": ["engagement_length", "timeline", "prior_attempts"]
+    },
+    {
+      "name": "Research",
+      "order": 2,
+      "duration_weeks": { "min": 3, "max": 5 },
+      "duration_derived": false,
+      "objective_one_line": "Analyze customer needs and competitor moves in digital retail banking to set the options for the strategy.",
+      "gate": {
+        "label": "Option selection",
+        "decision": "Which digital channel options does the steering group take into Design?"
+      },
+      "depends_on_assumptions": ["engagement_length"]
+    },
+    {
+      "name": "Design",
+      "order": 3,
+      "duration_weeks": { "min": 4, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Define Banco Horizonte's digital channels strategy and the plan to put it into action.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Does the steering group approve the digital channels strategy as the final result?"
+      },
+      "depends_on_assumptions": ["engagement_length", "deliverable_format", "timeline", "success_criteria", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "Engagement length is not stated; 10-15 weeks is an estimate resting on one bank, two named stakeholders and no stated channel scope or timeline.",
+    "The brief names no stages, so the split into Diagnostic, Research and Design is an estimate of the stages needing separate decisions.",
+    "No method archetype fits a digital channels strategy, so archetype_id is null and the three phases are built from the brief."
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "basis": {
+    "governing_question": "How should Seguros Atlântida organize its claims department, roles and handoffs included, to reach a target organization the executive committee approves?",
+    "archetype_id": "operating_model_redesign"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": {
+        "min": 4,
+        "max": 6
+      },
+      "duration_derived": false,
+      "objective_one_line": "Document how the claims department is organized today, roles and handoffs included, and where it falls short.",
+      "gate": {
+        "label": "Go/no-go on design",
+        "decision": "Proceed to design with the agreed priority problem areas?"
+      },
+      "depends_on_assumptions": [
+        "engagement_length",
+        "timeline",
+        "prior_attempts"
+      ]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": {
+        "min": 6,
+        "max": 8
+      },
+      "duration_derived": false,
+      "objective_one_line": "Define the target organization for claims, roles and handoffs included, in a form the executive committee can approve.",
+      "gate": {
+        "label": "Target model sign-off",
+        "decision": "Approve the target claims organization to take to the executive committee?"
+      },
+      "depends_on_assumptions": [
+        "engagement_length",
+        "deliverable_format",
+        "timeline",
+        "out_of_scope"
+      ]
+    }
+  ],
+  "architect_notes": [
+    "Length is an estimate of 10 to 14 weeks, based on the operating-model archetype's typical weeks, shortened for one department; confirm before quoting."
+  ]
+}

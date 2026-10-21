@@ -1,0 +1,49 @@
+{
+  "basis": {
+    "governing_question": "Why did prepaid churn rise in 2025 at Lusitania Telecom, and how can it be brought down?",
+    "archetype_id": "performance_improvement"
+  },
+  "phases": [
+    {
+      "name": "Diagnostic",
+      "order": 1,
+      "duration_weeks": { "min": 4, "max": 4 },
+      "duration_derived": false,
+      "objective_one_line": "Establish why prepaid churn rose in 2025 across customer behavior, retention offers and store operations.",
+      "gate": {
+        "label": "Findings sign-off",
+        "decision": "Accept the causes found for the 2025 prepaid churn rise as the basis for design?"
+      },
+      "depends_on_assumptions": ["timeline", "prior_attempts"]
+    },
+    {
+      "name": "Design",
+      "order": 2,
+      "duration_weeks": { "min": 3, "max": 3 },
+      "duration_derived": false,
+      "objective_one_line": "Define the retention program for prepaid customers, with its offers, store actions and rollout plan.",
+      "gate": {
+        "label": "Program approval",
+        "decision": "Approve the retention program and its rollout plan?"
+      },
+      "depends_on_assumptions": ["success_criteria"]
+    },
+    {
+      "name": "Implementation",
+      "order": 3,
+      "duration_weeks": { "min": 6, "max": 6 },
+      "duration_derived": false,
+      "objective_one_line": "Roll out the approved retention program with Lusitania Telecom's teams and measure early churn movement against the diagnostic baseline.",
+      "gate": {
+        "label": "Final readout",
+        "decision": "Accept the rollout results and the next steps for the retention program?"
+      },
+      "depends_on_assumptions": ["deliverable_format", "timeline", "out_of_scope"]
+    }
+  ],
+  "architect_notes": [
+    "The 4, 3 and 6 week split of the stated 13 weeks is an estimate; rollout falls below the archetype's eight-week minimum.",
+    "Design was added to the performance improvement archetype because the brief asks how to bring churn down, not only why it rose.",
+    "Measurement after launch is not planned; churn results beyond the 13 weeks are not covered, so confirm whether tracking is expected."
+  ]
+}

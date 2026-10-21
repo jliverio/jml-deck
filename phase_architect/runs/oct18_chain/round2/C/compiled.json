@@ -1,0 +1,191 @@
+{
+ "client": "Vinhos do Douro Lda",
+ "basis": {
+  "governing_question": "Why did Vinhos do Douro's export margins fall in 2025?",
+  "archetype_id": "performance_improvement"
+ },
+ "total_duration_weeks": {
+  "min": 4,
+  "max": 4
+ },
+ "phases": [
+  {
+   "name": "Diagnostic",
+   "order": 1,
+   "start_week": 1,
+   "end_week": 4,
+   "duration_weeks": {
+    "min": 4,
+    "max": 4
+   },
+   "duration_derived": false,
+   "objective_one_line": "Establish why export margins fell in 2025 by comparing pricing across export markets and distributor terms.",
+   "gate": {
+    "label": "Final readout",
+    "decision": "Do the CEO and Export Director accept the findings on the 2025 margin fall?"
+   },
+   "depends_on_assumptions": [
+    "deliverable_format",
+    "timeline",
+    "prior_attempts",
+    "out_of_scope"
+   ],
+   "workstream_ids": [
+    "W1",
+    "W2"
+   ]
+  }
+ ],
+ "workstreams": [
+  {
+   "id": "W1",
+   "phase_order": 1,
+   "name": "Pricing by export market",
+   "answers": "How did prices and margins in each export market change in 2025?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 4,
+   "follows": [],
+   "activities": [
+    "Analyze operational sales and cost data by export market",
+    "Compare price and margin movements across markets",
+    "Interview the people who set and negotiate prices"
+   ],
+   "deliverable_ids": [
+    "D1",
+    "D2"
+   ]
+  },
+  {
+   "id": "W2",
+   "phase_order": 1,
+   "name": "Distributor terms",
+   "answers": "Which distributor terms changed, and how did they move export margins in 2025?",
+   "traces_to": [
+    "problem_statement",
+    "gate:1"
+   ],
+   "start_week": 1,
+   "end_week": 4,
+   "follows": [],
+   "activities": [
+    "Review distributor contracts and agreed terms",
+    "Quantify the margin effect of each term using sales data",
+    "Interview staff who manage distributor relationships"
+   ],
+   "deliverable_ids": [
+    "D3",
+    "D4"
+   ]
+  }
+ ],
+ "deliverables": [
+  {
+   "id": "D1",
+   "name": "Price and margin movement by export market",
+   "kind": "analysis",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 3,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D2",
+   "name": "Pricing findings on the 2025 export margin fall",
+   "kind": "decision_pack",
+   "workstream_id": "W1",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D3",
+   "name": "Register of distributor terms and changes",
+   "kind": "analysis",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 2,
+   "presented_at": "Final readout"
+  },
+  {
+   "id": "D4",
+   "name": "Distributor terms findings on the 2025 margin fall",
+   "kind": "decision_pack",
+   "workstream_id": "W2",
+   "phase_order": 1,
+   "due_week": 4,
+   "presented_at": "Final readout"
+  }
+ ],
+ "governance": {
+  "status_cadence_weeks": 1,
+  "status_weeks": [
+   2,
+   3
+  ],
+  "events": [
+   {
+    "id": "G1",
+    "type": "kickoff",
+    "phase_order": 1,
+    "week": 1,
+    "label": "Kick-off",
+    "purpose": "Agree scope, team and calendar",
+    "attendees": [
+     "CEO",
+     "Export Director"
+    ],
+    "presents": [],
+    "decision": "Confirm the scope, team and calendar for the four-week diagnostic?",
+    "agenda": [
+     "Present the diagnostic scope and the two parallel workstreams",
+     "Align on the team and the four-week calendar",
+     "Confirm the client data needed for both workstreams"
+    ]
+   },
+   {
+    "id": "G2",
+    "type": "gate",
+    "phase_order": 1,
+    "week": 4,
+    "label": "Final readout",
+    "purpose": "Review findings on the 2025 margin fall",
+    "attendees": [
+     "CEO",
+     "Export Director"
+    ],
+    "presents": [
+     "D1",
+     "D2",
+     "D3",
+     "D4"
+    ],
+    "decision": "Do the CEO and Export Director accept the findings on the 2025 margin fall?",
+    "agenda": [
+     "Present the pricing and distributor terms findings on the margin fall",
+     "Review price and margin movement by market and the terms register",
+     "Decide whether the findings are accepted"
+    ]
+   }
+  ]
+ },
+ "deadline": null,
+ "architect_notes": [
+  "Performance_improvement used for its Diagnostic phase only; Implementation dropped because the brief states an assessment that asks why margins fell.",
+  "One Diagnostic phase of four weeks: a second phase would run under three weeks, so the two named streams run side by side inside it."
+ ],
+ "sequencing": "sequential",
+ "timeline_slide": {
+  "unit": "weeks",
+  "bars": [
+   {
+    "phase": "Diagnostic",
+    "start": 1,
+    "end": 4
+   }
+  ]
+ }
+}

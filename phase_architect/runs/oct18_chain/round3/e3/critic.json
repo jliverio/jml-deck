@@ -1,0 +1,38 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 2,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 2
+    },
+    "verdict": "No",
+    "defects": [
+      "W4 is marked 'after W1, W2, W3' yet starts in week 3, while W2 and W3 run to week 4, so prioritization starts before the causes it ranks are known.",
+      "W3 is marked 'after W1' yet starts in week 2, while W1 and D1 do not finish until week 3.",
+      "W2 and W3 both answer why waits arise (W2 collects staff and patient views on causes, W3 asks where and why waits build up and again tests causes with staff), so they overlap instead of each answering a distinct question.",
+      "D4 (long list of causes) is due in week 4, the same week as D2 and D3 that feed it, and goes to the week-4 check-in before it can have been properly consolidated.",
+      "W4 ranks improvement areas 'against agreed criteria', but no steering meeting agrees those criteria, and the week-4 decision ('do the findings so far cover the right causes?') is a soft confirmation, not a real choice."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 3,
+      "deliverables": 3,
+      "governance": 4,
+      "coherence": 4
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "D4 (the decision pack) is due in week 5, although W4 runs to week 6 and includes testing findings with staff at each hospital, so the readout is locked before it has been validated.",
+      "W4's question ('how do waits and their causes compare across the three hospitals, and what do the findings show?') repeats W1's comparison across hospitals and W3's causes, which makes it a synthesis step, not a distinct workstream.",
+      "W1 and W2 fit data collection, data-quality checks, staff and patient interviews and on-site flow observation at three hospitals into weeks 1-2, which is tight because access is only decided at the week-1 kick-off.",
+      "The kick-off decides only on access, and no meeting confirms how waiting time is measured, so the definitions behind W1's baseline are never agreed with the sponsor.",
+      "The week-6 final readout reviews D1-D3 again, although the week-4 check-in already covered them, instead of concentrating on D4, the only new item."
+    ]
+  },
+  "better": "Y",
+  "why": "In Y the streams run in an order that matches their stated dependencies, and each steering meeting asks a real decision that shapes the next piece of work. In X, W3 and W4 start before the streams they depend on finish and W2 and W3 overlap on causes, so X needs its stream logic reworked while Y needs only targeted edits."
+}

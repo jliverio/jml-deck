@@ -12,9 +12,15 @@ and tested here first.
 | code/check_copy.js | Check copy (= _checker.js + its own tail) |
 | code/check_retry.js | Check retry (= _checker.js + its own tail) |
 | code/build_render_payload.js | Build render payload |
+| prompts/01_brief_organizer.txt | Brief Organizer (system message) |
+| prompts/01_brief_schema.json | Brief schema |
 | code/validate_brief.js | Validate brief |
 | code/architect_input.js | Architect input |
-| code/validate_plan.js | Validate plan (generated from phase_architect/validate_plan_v2.js) |
+| code/prepare_context.js | Prepare context (template 1.4) |
+| prompts/09_context_writer.txt | Context Writer (system message) |
+| prompts/09_context_writer_schema.json | Context schema |
+| code/check_context.js | Check context |
+| code/validate_plan.js | Validate plan (generated from phase_architect/validate_plan_v2.js by `python3 phase_architect/build_n8n_validator.py`) |
 | ../phase_architect/prompt_v2.md | Phase Architect (system message) |
 | ../phase_architect/schema_v2.json | Phases schema |
 | prompts/02b_offering_researcher.txt | Offering researcher (system message) |
@@ -39,7 +45,8 @@ The variable rules live in the n8n data table `template_variables`
 (id oEGx7TvhjZ2X6HeB). `variables/` at the repo root is its seed.
 
 Flow: Gmail → Config → Brief Organizer → Client Profiler → Read template
-variables → Template rules → researchers (rules injected) → Architect input → Phase
+variables → Template rules → researchers (rules injected) → Assemble market → Prepare context →
+Context Writer → Check context (template 1.4) → Architect input → Phase
 Architect → Validate plan → Plan valid? [once back to Phase Architect with the violations] → Assemble drafts →
 Copywriter (one call, whole deck) → Check copy → [Copywriter retry → Check
 retry] → Prepare summary → Summary Writer → Check summary → Summary OK? →
@@ -65,9 +72,20 @@ Phase Architect model: claude-sonnet-5-5, output cap 32,000 with streaming on
 (the Anthropic SDK refuses non-streaming calls above ~21k tokens). Long
 engagements need it: a 40-week plan with 10 workstreams retried once and used
 the room (execution 555). Streaming hides the token count in the run log.
-Plan size limits (prompt + validator): up to 12 workstreams (more than 8 only
-past 16 weeks) and 16 deliverables; the schema tolerates 16 workstreams so an
-oversized plan reaches the validator and gets a retry instead of a parser error.
+Plan size limits (prompt + validator): up to 12 workstreams and 16 deliverables;
+the schema tolerates 16 workstreams so an oversized plan reaches the validator
+and gets a retry instead of a parser error. When the partner's email names or
+counts the workstreams, the Brief Organizer records them in
+`soft_fields.workstreams` (`value`, `count`) and the Phase Architect plans
+exactly those streams at any length, with any number per phase; a stream that
+runs in several phases repeats its name in each, and fewer phases are planned
+when streams times phases would pass 12 (Oct 18). Without stated streams the
+default stays 2 to 4 per phase, more than 8 only past 16 weeks. Phases of 16
+weeks or more may add check-ins so no 6-week gap is left; before Oct 18 a phase
+of 20 weeks or more could never pass the checker.
+Tests: `node phase_architect/tests/plan_size_test.js` (84 rule-following plans,
+2 to 52 weeks, 1 to 12 workstreams) and `python3 tests/workplan_render_size.py`
+(renders each and checks the layout).
 
 ## Phase Architect wiring tests (in n8n, agents pinned)
 
@@ -116,3 +134,51 @@ Source: `workflows/run_logger.sdk.js`; parsing logic: `code/log_runs.js` (testab
 - **Page-read credits** come from `credits_used`, which the read-page tool returns since 17 Oct (version 1f0d1def).
 - **Phase Architect tokens** under streaming are rebuilt as 11,553 input per call and model time × 156.2 output tokens/s.
 - Needs two credentials: an **n8n API** key (Settings → n8n API) and **Google Sheets OAuth2** for the sheet owner.
+
+## Template 1.4 (Scenario 1, October 17, 2026): in the workflow draft, not published
+
+Two slides added to the 13 of template 1.3 (15 in all). A third, "The question this proposal
+answers" (governing question plus success criteria), was built on Oct 17 and removed on Oct 18
+at José's decision: the summary slide already carries the objectives, solution and outcomes.
+The Context Writer no longer writes criteria.
+
+- Situation (after the Context divider): written by the Context Writer from the cited
+  market findings only, and only when at least three passed Assemble market's citation
+  gate. Check context drops any line whose figure the findings do not hold, and the
+  "We believe" line if it holds a figure. Empty title -> the renderer drops the slide
+  (`if_empty: drop_slide`).
+- Approach overview (first Approach slide): drawn by workplan.py from the plan (phases,
+  what each answers, the decision that closes each, a governance strip). No model writes it.
+
+Sections become Executive Summary, Context, Approach, Next Steps (set in Assemble drafts,
+not in the shared table, so the published 1.3 workflow is unchanged). Since Oct 18 the 1.4
+variables follow the slide order: section_03 is Approach (third), section_04 Next Steps
+(fourth); 1.3 keeps section_04 Approach. When 1.4 replaces 1.3, put these names in the table
+and remove the override.
+
+Also since Oct 18 (template 1.4 only):
+- Footer: `footer_01` on the slide masters, fixed text "{client_name} | Draft for discussion"
+  (was "JML Operations SAMPLE" on every slide). The renderer now fills masters and layouts.
+- The four code-drawn work-plan slides have title variables (`approach_title_01`,
+  `timeline_title_01`, `deliverables_title_01`, `steering_title_01`, fills_from
+  `code:workplan_title`). The renderer composes them from the plan unless the payload gives a
+  value. Each says something the summary slide does not: when the client decides (overview),
+  how much runs at once and the longest gap between steering meetings (timeline), deliverable
+  and meeting counts. The overview also shows what each phase starts after and the week of the
+  first deliverable.
+- Number style in code-written text: counts up to nine in words, weeks in digits, ranges with an
+  en dash ("two phases", "12 workstreams", "12–16 weeks"), as the Summary Writer already writes.
+- The 5 new rows (footer and titles) are in the n8n `template_variables` table; 1.3 renders only
+  warn that they are unused. Tests: `python3 tests/roadmap_stress.py` (overview layout on 158
+  plans). The 5 situation rows
+are in the `template_variables` data table; 1.3 renders only warn that they are unused. Rows
+56-61 of that table (key_question_01, criteria_basis_01, criterion_01-04) belong to the removed
+slide; the n8n tools here cannot delete rows, so they stay until deleted by hand, and 1.4
+renders warn "6 table rows have no variable".
+
+Tests: `python3 tests/test_varfill.py` (51 checks, 1.4 included);
+`node n8n/tests/context_test.js <nodes.json> <plan.json> <writer.json> <name>` replays a
+Context Writer answer through Prepare context, Check context and Assemble drafts;
+`node n8n/tests/make_pins.js s1` builds the pin data for the in-n8n wiring test
+(execution 623: all new nodes ran, payload rendered locally to 16 slides, before the
+key-question slide was removed).

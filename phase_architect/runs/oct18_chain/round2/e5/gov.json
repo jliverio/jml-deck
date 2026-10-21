@@ -1,0 +1,44 @@
+{
+  "events": [
+    {
+      "id": "G1",
+      "label": "Kick-off",
+      "purpose": "Confirm scope, team and calendar",
+      "attendees": ["CEO", "Export Director"],
+      "presents": [],
+      "decision": "Does the steering group confirm the diagnostic scope, team and calendar?",
+      "agenda": [
+        "Present the diagnostic objective and the two workstreams",
+        "Align on the pricing and distributor data needed from the client",
+        "Confirm the dates of the workshop and the final readout"
+      ]
+    },
+    {
+      "id": "G2",
+      "label": "Workshop: first findings",
+      "purpose": "Review interim findings and set focus",
+      "attendees": ["CEO", "Export Director"],
+      "presents": ["D1", "D3"],
+      "decision": "Which markets and distributor terms should the final findings detail further?",
+      "agenda": [
+        "Present interim findings on 2025 export margins by market",
+        "Present interim findings on distributor terms and margin",
+        "Decide which markets and terms the final findings detail further"
+      ]
+    },
+    {
+      "id": "G3",
+      "label": "Final readout",
+      "purpose": "Decide on the findings on export margins",
+      "attendees": ["CEO", "Export Director"],
+      "presents": ["D2", "D4"],
+      "decision": "Do the CEO and Export Director accept the findings on why export margins fell?",
+      "agenda": [
+        "Present findings on pricing by export market",
+        "Present findings on distributor terms and export margins",
+        "Decide whether the findings on why export margins fell are accepted"
+      ]
+    }
+  ],
+  "notes": []
+}

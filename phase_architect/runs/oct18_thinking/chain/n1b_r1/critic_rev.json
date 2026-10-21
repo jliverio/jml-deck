@@ -1,0 +1,40 @@
+{
+  "X": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 4,
+      "deliverables": 3,
+      "governance": 2,
+      "coherence": 3,
+      "sizing": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "W2, W3 and W4 start in weeks 3-4 on 'shortlisted' countries, but the client only decides which markets get the full assessment at the week 5 workshop, so the work runs ahead of the decision that defines it.",
+      "The week 1 kickoff spends its one decision on data and people access, and no meeting ever agrees the criteria for shortlisting and for go/no-go, although the success criterion needs them and W5 compares entry options 'on agreed criteria'.",
+      "D8 business cases (due week 13) are built before the week 13 check-in chooses the entry option per country they should rest on, and D7 (due week 11) waits two weeks for review.",
+      "The notes say Research and Design 'sit mid-estimate', but the plan schedules both at the top of their ranges (9 of 7-9 and 6 of 4-6 weeks), so the laid-out plan is the 15-week top of the 11-15 headline.",
+      "D3, D4 and D5 are due week 7 while W2-W4 run to week 9, leaving weeks 8-9 with no stated output except D6, a cross-stream findings pack that sits under W4 alone; the week 15 readout also re-reviews D7 and D8 already reviewed at week 13."
+    ]
+  },
+  "Y": {
+    "scores": {
+      "structure": 4,
+      "workstreams": 4,
+      "deliverables": 3,
+      "governance": 3,
+      "coherence": 3,
+      "sizing": 3
+    },
+    "verdict": "Yes with edits",
+    "defects": [
+      "No meeting approves the desk-screen shortlist (D1, week 2) before W2, W3 and W4 start on 'shortlisted' countries in weeks 3-4, and the week 5 workshop only picks the demand stream's next market, leaving W3 and W4 without a matching decision.",
+      "D8 business cases (due week 13) are built before the week 13 check-in chooses the entry option per country they should rest on, and D7 (due week 11) waits two weeks for review.",
+      "The notes say Research and Design 'sit mid-estimate', but the plan schedules both at the top of their ranges (9 of 7-9 and 6 of 4-6 weeks), so the laid-out plan is the 15-week top of the 11-15 headline.",
+      "D3, D4 and D5 are due week 7 while W2-W4 run to week 9, leaving weeks 8-9 with no stated output except D6, a cross-stream findings pack that sits under W4 alone.",
+      "The week 15 readout re-reviews D7 and D8, which the week 13 check-in already reviewed, instead of only the new D9, and the week 13 agenda ends on 'Discuss' rather than the decision it states."
+    ]
+  },
+  "better": "Y",
+  "why": "The plans are identical except for the first two meetings: Y's kickoff fixes the shortlisting and go/no-go criteria that the success criterion and W5's 'agreed criteria' depend on, while X spends its kickoff on an access question. X's week 5 workshop picks the shortlist after the streams that depend on it have already started, while Y's week 5 decision fits the two-at-a-time demand work, although Y still lacks a client sign-off on the desk-screen shortlist."
+}
