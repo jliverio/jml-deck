@@ -79,7 +79,12 @@ os.makedirs(dst, exist_ok=True)
 for stage, (p, s) in {"lead": ("prompt_lead.md", "schema_lead.json"), "workstreams": ("prompt_workstreams.md", "schema_workstreams.json"),
                       "deliverables": ("prompt_deliverables.md", "schema_deliverables.json"),
                       "governance": ("prompt_governance.md", "schema_governance.json")}.items():
-    shutil.copyfile(os.path.join(PA, "v3", p), os.path.join(dst, f"{stage}_system.md"))
+    text = rd(PA, "v3", p)
+    if stage == "lead":
+        # no output parser on the Phase Architect node (Oct 21): the schema goes in its system message and
+        # Chain check parses the text
+        text = text.rstrip("\n") + "\n\nSCHEMA\nThe JSON object you return validates against this JSON Schema. Return the object itself: no code fence, no text before or after it, and never the object as a string.\n" + json.dumps(json.loads(rd(PA, "v3", s)), ensure_ascii=False) + "\n"
+    open(os.path.join(dst, f"{stage}_system.md"), "w", encoding="utf-8").write(text)
     # the parser node takes the schema as one compact string
     open(os.path.join(dst, f"{stage}_schema.json"), "w", encoding="utf-8").write(json.dumps(json.loads(rd(PA, "v3", s)), ensure_ascii=False))
 print("copied prompts and schemas to n8n/prompts/10_chain")

@@ -17,7 +17,26 @@ const input = $('Architect input').first().json.architect_input;
 // which agent just answered, and on which pass (0 = first answer, 1 = retry)
 let prevName = null, prevRun = null;
 try { prevName = $prevNode.name; prevRun = $prevNode.runIndex; } catch (e) { /* not available */ }
-const out0 = ($json && $json.output) || null;
+// The Phase Architect answers as text (no output parser since Oct 21: its first answers came back as
+// {"output": "<JSON as a string>"} and the parser, even with a fixer, rejected them). Parse it here: strip a code
+// fence, take the outermost {...}, unwrap {"output": ...}, parse a JSON string inside it. Parsed answers pass through.
+function parseAnswer(j) {
+  if (!j || j.error) return j || {};
+  let o = j.output;
+  for (let k = 0; k < 3; k++) {
+    if (typeof o === 'string') {
+      const s = o.trim().replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '');
+      const a = s.indexOf('{'), b = s.lastIndexOf('}');
+      if (a < 0 || b < a) return { error: 'format: the answer holds no JSON object' };
+      try { o = JSON.parse(s.slice(a, b + 1)); } catch (e) { return { error: 'format: invalid JSON (' + e.message + ')' }; }
+    }
+    if (o && typeof o === 'object' && !Array.isArray(o) && Object.keys(o).length === 1 && 'output' in o) { o = o.output; continue; }
+    break;
+  }
+  return o && typeof o === 'object' && !Array.isArray(o) ? { output: o } : { error: 'format: the answer is not a JSON object' };
+}
+const cur = parseAnswer($json);
+const out0 = cur.output || null;
 let stage = ORDER.find(s => AGENT[s] === prevName);
 if (!stage) stage = out0 && out0.events ? 'gov' : out0 && out0.deliverables ? 'del' : out0 && out0.workstreams ? 'ws' : 'lead';
 // $prevNode.runIndex is the agent's run (Oct 21 probe, execution 827). The fallback counts the agent's runs; it is not
@@ -26,7 +45,7 @@ const runsOf = name => { let k = 0; try { while (k < 5) { const a = $(name).all(
 const pass = Number.isInteger(prevRun) ? prevRun : Math.max(0, runsOf(AGENT[stage]) - 1);
 
 // the state so far: the Phase Architect input plus each agent's latest answer up to this one
-const latest = s => { if (s === stage) return $json || {}; try { return $(AGENT[s]).first().json || {}; } catch (e) { return null; } };
+const latest = s => { if (s === stage) return cur; try { return parseAnswer($(AGENT[s]).first().json || {}); } catch (e) { return null; } };
 const state = { input };
 for (const s of ORDER) {
   const j = latest(s);
@@ -37,7 +56,7 @@ for (const s of ORDER) {
   if (s === stage) break;
 }
 
-const agentError = $json && $json.error ? String($json.error.message || $json.error) : (out0 ? '' : 'no answer');
+const agentError = cur.error ? String(cur.error.message || cur.error) : (out0 ? '' : 'no answer');
 let violations;
 if (agentError) violations = ['agent_error: ' + agentError];
 else {

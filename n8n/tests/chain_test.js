@@ -111,6 +111,31 @@ const fullInput = dir => ({ ...rd(path.join(dir, "input.json")), method_library:
   check("B without a report -> del retry", c2.route === "del" && c2.violations.some(v => /brief_asks_for_report/.test(v)), JSON.stringify(c2.violations));
 }
 
+// 6. the Phase Architect answers as text (no parser since Oct 21): a JSON string inside {output}, a code fence,
+//    an {"output": "<string>"} wrapper (live runs 830, 831, 872), or broken JSON
+{
+  const dir = path.join(RUNS, "fmt", "n2b");
+  const lead = rd(path.join(dir, "lead.json"));
+  const forms = {
+    "plain string": JSON.stringify(lead),
+    "code fence": "```json\n" + JSON.stringify(lead) + "\n```",
+    "output-wrapped string": JSON.stringify({ output: JSON.stringify(lead) }),
+    "output-wrapped object": JSON.stringify({ output: lead }),
+  };
+  for (const [name, text] of Object.entries(forms)) {
+    const a = chainRun(fullInput(dir))("Phase Architect", { output: text });
+    check(`lead as ${name} -> ws`, a.route === "ws" && a.agent_input && a.agent_input.sub_questions, a.route + " " + JSON.stringify(a.violations));
+  }
+  const ans = chainRun(fullInput(dir));
+  const b1 = ans("Phase Architect", { output: '{"basis": {"governing_question": "x"' });
+  check("broken JSON -> lead retry with a format violation", b1.route === "lead" && /^agent_error: format:/.test(b1.violations[0]), JSON.stringify(b1.violations));
+  const b2 = ans("Phase Architect", { output: JSON.stringify(lead) });
+  check("then a good answer -> ws", b2.route === "ws" && b2.pass === 1, b2.route);
+  // the next stages read the lead's parsed answer back from the node (string in its run data)
+  const c = ans("Workstream agent", { output: rd(path.join(dir, "ws.json")) });
+  check("ws reads the parsed lead -> del", c.route === "del", JSON.stringify(c.violations));
+}
+
 const bad = results.filter(r => !r.ok);
 results.forEach(r => console.log(`${r.ok ? "ok  " : "FAIL"} ${r.name}${r.ok ? "" : "  " + r.detail}`));
 console.log(`${results.length - bad.length}/${results.length} passed`);
