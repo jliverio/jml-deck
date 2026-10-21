@@ -1,0 +1,594 @@
+{
+ "note": "Chain section of \"Proposal request -> scoping deck reply\" (Id8uRq0GgHDg7NBV) as saved on Oct 21, 2026; long texts point to the repo files they were pasted from.",
+ "versionId": "9599dcd5-bef5-4b67-8538-2588a70fd9d8",
+ "nodes": [
+  {
+   "name": "Phase Architect",
+   "type": "@n8n/n8n-nodes-langchain.agent",
+   "typeVersion": 3.1,
+   "position": [
+    2580,
+    -300
+   ],
+   "parameters": {
+    "hasOutputParser": true,
+    "options": {
+     "systemMessage": "<see repo prompt: 14990 chars>"
+    },
+    "promptType": "define",
+    "text": "={{ JSON.stringify($json.agent_input || $json.architect_input) }}"
+   },
+   "disabled": false,
+   "onError": "continueRegularOutput"
+  },
+  {
+   "name": "Model: Phase Architect",
+   "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+   "typeVersion": 1.6,
+   "position": [
+    2560,
+    -80
+   ],
+   "parameters": {
+    "model": {
+     "__rl": true,
+     "cachedResultName": "Claude Sonnet 5.5",
+     "mode": "list",
+     "value": "claude-sonnet-5-5"
+    },
+    "options": {
+     "maxTokensToSample": 32000,
+     "streaming": true
+    }
+   }
+  },
+  {
+   "name": "Phases schema",
+   "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+   "typeVersion": 1.3,
+   "position": [
+    2700,
+    -80
+   ],
+   "parameters": {
+    "inputSchema": "<see repo file: 3358 chars>",
+    "schemaType": "manual",
+    "autoFix": true,
+    "customizeRetryPrompt": true,
+    "prompt": "The text in COMPLETION was meant to be one JSON object that follows INSTRUCTIONS, but it failed with ERROR.\nReturn the s..."
+   }
+  },
+  {
+   "name": "Architect input",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    2360,
+    -300
+   ],
+   "parameters": {
+    "jsCode": "<see repo file: 11934 chars>",
+    "language": "javaScript",
+    "mode": "runOnceForEachItem"
+   },
+   "notes": "Builds the Phase Architect v2 input; method library embedded."
+  },
+  {
+   "name": "Route",
+   "type": "n8n-nodes-base.switch",
+   "typeVersion": 3.2,
+   "position": [
+    3120,
+    -300
+   ],
+   "parameters": {
+    "mode": "expression",
+    "numberOutputs": 5,
+    "output": "={{ ({ lead: 0, ws: 1, del: 2, gov: 3, done: 4 })[$json.route] }}"
+   },
+   "notes": "Chain check's route: 0 Phase Architect (retry), 1 Workstream agent, 2 Deliverable agent, 3 Governance agent, 4 Assemble drafts."
+  },
+  {
+   "name": "Workstream agent",
+   "type": "@n8n/n8n-nodes-langchain.agent",
+   "typeVersion": 3.1,
+   "position": [
+    3400,
+    -700
+   ],
+   "parameters": {
+    "hasOutputParser": true,
+    "options": {
+     "systemMessage": "<see repo prompt: 8444 chars>"
+    },
+    "promptType": "define",
+    "text": "={{ JSON.stringify($json.agent_input) }}"
+   },
+   "onError": "continueRegularOutput"
+  },
+  {
+   "name": "Model: Workstream agent",
+   "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+   "typeVersion": 1.6,
+   "position": [
+    3380,
+    -480
+   ],
+   "parameters": {
+    "model": {
+     "__rl": true,
+     "cachedResultName": "Claude Sonnet 5.5",
+     "mode": "list",
+     "value": "claude-sonnet-5-5"
+    },
+    "options": {
+     "effort": "medium",
+     "maxTokensToSample": 20000,
+     "thinkingMode": "adaptive"
+    }
+   }
+  },
+  {
+   "name": "Workstreams schema",
+   "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+   "typeVersion": 1.3,
+   "position": [
+    3520,
+    -480
+   ],
+   "parameters": {
+    "inputSchema": "<see repo file: 926 chars>",
+    "schemaType": "manual",
+    "autoFix": true,
+    "customizeRetryPrompt": true,
+    "prompt": "The text in COMPLETION was meant to be one JSON object that follows INSTRUCTIONS, but it failed with ERROR.\nReturn the s..."
+   }
+  },
+  {
+   "name": "Deliverable agent",
+   "type": "@n8n/n8n-nodes-langchain.agent",
+   "typeVersion": 3.1,
+   "position": [
+    3800,
+    -700
+   ],
+   "parameters": {
+    "hasOutputParser": true,
+    "options": {
+     "systemMessage": "<see repo prompt: 8252 chars>"
+    },
+    "promptType": "define",
+    "text": "={{ JSON.stringify($json.agent_input) }}"
+   },
+   "onError": "continueRegularOutput"
+  },
+  {
+   "name": "Model: Deliverable agent",
+   "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+   "typeVersion": 1.6,
+   "position": [
+    3780,
+    -480
+   ],
+   "parameters": {
+    "model": {
+     "__rl": true,
+     "cachedResultName": "Claude Sonnet 5.5",
+     "mode": "list",
+     "value": "claude-sonnet-5-5"
+    },
+    "options": {
+     "effort": "medium",
+     "maxTokensToSample": 20000,
+     "thinkingMode": "adaptive"
+    }
+   }
+  },
+  {
+   "name": "Deliverables schema",
+   "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+   "typeVersion": 1.3,
+   "position": [
+    3920,
+    -480
+   ],
+   "parameters": {
+    "inputSchema": "<see repo file: 744 chars>",
+    "schemaType": "manual",
+    "autoFix": true,
+    "customizeRetryPrompt": true,
+    "prompt": "The text in COMPLETION was meant to be one JSON object that follows INSTRUCTIONS, but it failed with ERROR.\nReturn the s..."
+   }
+  },
+  {
+   "name": "Governance agent",
+   "type": "@n8n/n8n-nodes-langchain.agent",
+   "typeVersion": 3.1,
+   "position": [
+    4200,
+    -700
+   ],
+   "parameters": {
+    "hasOutputParser": true,
+    "options": {
+     "systemMessage": "<see repo prompt: 6208 chars>"
+    },
+    "promptType": "define",
+    "text": "={{ JSON.stringify($json.agent_input) }}"
+   },
+   "onError": "continueRegularOutput"
+  },
+  {
+   "name": "Model: Governance agent",
+   "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+   "typeVersion": 1.6,
+   "position": [
+    4180,
+    -480
+   ],
+   "parameters": {
+    "model": {
+     "__rl": true,
+     "cachedResultName": "Claude Sonnet 5.5",
+     "mode": "list",
+     "value": "claude-sonnet-5-5"
+    },
+    "options": {
+     "effort": "medium",
+     "maxTokensToSample": 20000,
+     "thinkingMode": "adaptive"
+    }
+   }
+  },
+  {
+   "name": "Governance schema",
+   "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+   "typeVersion": 1.3,
+   "position": [
+    4320,
+    -480
+   ],
+   "parameters": {
+    "inputSchema": "<see repo file: 654 chars>",
+    "schemaType": "manual",
+    "autoFix": true,
+    "customizeRetryPrompt": true,
+    "prompt": "The text in COMPLETION was meant to be one JSON object that follows INSTRUCTIONS, but it failed with ERROR.\nReturn the s..."
+   }
+  },
+  {
+   "name": "Chain check",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    2900,
+    -300
+   ],
+   "parameters": {
+    "jsCode": "<see repo file: 68619 chars>",
+    "language": "javaScript",
+    "mode": "runOnceForEachItem"
+   },
+   "notes": "n8n/code/chain_check.js (generated). Runs after every agent of the chain; Route reads its `route`."
+  },
+  {
+   "name": "Model: Phase Architect fixer",
+   "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+   "typeVersion": 1.6,
+   "position": [
+    2700,
+    140
+   ],
+   "parameters": {
+    "model": {
+     "__rl": true,
+     "cachedResultName": "Claude Sonnet 5.5",
+     "mode": "list",
+     "value": "claude-sonnet-5-5"
+    },
+    "options": {
+     "maxTokensToSample": 16384
+    }
+   }
+  },
+  {
+   "name": "Model: Workstream fixer",
+   "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+   "typeVersion": 1.6,
+   "position": [
+    3520,
+    -260
+   ],
+   "parameters": {
+    "model": {
+     "__rl": true,
+     "cachedResultName": "Claude Sonnet 5.5",
+     "mode": "list",
+     "value": "claude-sonnet-5-5"
+    },
+    "options": {
+     "maxTokensToSample": 16384
+    }
+   }
+  },
+  {
+   "name": "Model: Deliverable fixer",
+   "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+   "typeVersion": 1.6,
+   "position": [
+    3920,
+    -260
+   ],
+   "parameters": {
+    "model": {
+     "__rl": true,
+     "cachedResultName": "Claude Sonnet 5.5",
+     "mode": "list",
+     "value": "claude-sonnet-5-5"
+    },
+    "options": {
+     "maxTokensToSample": 16384
+    }
+   }
+  },
+  {
+   "name": "Model: Governance fixer",
+   "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+   "typeVersion": 1.6,
+   "position": [
+    4320,
+    -260
+   ],
+   "parameters": {
+    "model": {
+     "__rl": true,
+     "cachedResultName": "Claude Sonnet 5.5",
+     "mode": "list",
+     "value": "claude-sonnet-5-5"
+    },
+    "options": {
+     "maxTokensToSample": 16384
+    }
+   }
+  }
+ ],
+ "connections": {
+  "Model: Phase Architect": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Phase Architect",
+      "type": "ai_languageModel",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Phases schema": {
+   "ai_outputParser": [
+    [
+     {
+      "node": "Phase Architect",
+      "type": "ai_outputParser",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Architect input": {
+   "main": [
+    [
+     {
+      "node": "Phase Architect",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Route": {
+   "main": [
+    [
+     {
+      "node": "Phase Architect",
+      "type": "main",
+      "index": 0
+     }
+    ],
+    [
+     {
+      "node": "Workstream agent",
+      "type": "main",
+      "index": 0
+     }
+    ],
+    [
+     {
+      "node": "Deliverable agent",
+      "type": "main",
+      "index": 0
+     }
+    ],
+    [
+     {
+      "node": "Governance agent",
+      "type": "main",
+      "index": 0
+     }
+    ],
+    [
+     {
+      "node": "Assemble drafts",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Model: Workstream agent": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Workstream agent",
+      "type": "ai_languageModel",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Workstreams schema": {
+   "ai_outputParser": [
+    [
+     {
+      "node": "Workstream agent",
+      "type": "ai_outputParser",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Model: Deliverable agent": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Deliverable agent",
+      "type": "ai_languageModel",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Deliverables schema": {
+   "ai_outputParser": [
+    [
+     {
+      "node": "Deliverable agent",
+      "type": "ai_outputParser",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Model: Governance agent": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Governance agent",
+      "type": "ai_languageModel",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Governance schema": {
+   "ai_outputParser": [
+    [
+     {
+      "node": "Governance agent",
+      "type": "ai_outputParser",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Phase Architect": {
+   "main": [
+    [
+     {
+      "node": "Chain check",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Workstream agent": {
+   "main": [
+    [
+     {
+      "node": "Chain check",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Deliverable agent": {
+   "main": [
+    [
+     {
+      "node": "Chain check",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Governance agent": {
+   "main": [
+    [
+     {
+      "node": "Chain check",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Chain check": {
+   "main": [
+    [
+     {
+      "node": "Route",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Model: Phase Architect fixer": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Phases schema",
+      "type": "ai_languageModel",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Model: Workstream fixer": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Workstreams schema",
+      "type": "ai_languageModel",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Model: Deliverable fixer": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Deliverables schema",
+      "type": "ai_languageModel",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Model: Governance fixer": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Governance schema",
+      "type": "ai_languageModel",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

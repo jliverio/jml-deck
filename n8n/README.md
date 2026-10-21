@@ -107,6 +107,11 @@ The single Phase Architect call and its Validate plan / Plan valid? loop are rep
   the run log through Assemble drafts). An agent that fails twice ends the chain with no plan, as v2 did.
 - **Route** (Switch, expression mode): 0 Phase Architect, 1 Workstream agent, 2 Deliverable agent, 3 Governance
   agent, 4 Assemble drafts.
+- The four parsers auto-fix the format with their own fixer model (`Model: ... fixer`, same fix-format-only prompt as the
+  research parsers). Live runs 830 and 831 (Oct 21): the lead's first answer came back as `{"output": "<JSON as a
+  string>"}` both times, the parser rejected it and the lead's one retry was spent on format, not content.
+- Context Writer: output cap 2,000 -> 8,000. Run 831 spent all 2,000 tokens thinking and returned nothing, so the
+  situation slide was dropped.
 
 Tests: `node n8n/tests/chain_test.js` replays saved answers through chain_check.js with n8n-like lookups (18 checks);
 `node n8n/tests/make_pins.js chain|chain_error` builds the in-n8n wiring test (execution 826 ran the whole loop).
