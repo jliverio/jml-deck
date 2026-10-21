@@ -20,8 +20,10 @@ try { prevName = $prevNode.name; prevRun = $prevNode.runIndex; } catch (e) { /* 
 const out0 = ($json && $json.output) || null;
 let stage = ORDER.find(s => AGENT[s] === prevName);
 if (!stage) stage = out0 && out0.events ? 'gov' : out0 && out0.deliverables ? 'del' : out0 && out0.workstreams ? 'ws' : 'lead';
+// $prevNode.runIndex is the agent's run (Oct 21 probe, execution 827). The fallback counts the agent's runs; it is not
+// used when $prevNode works, because a pinned node returns its pin data for any run index.
 const runsOf = name => { let k = 0; try { while (k < 5) { const a = $(name).all(0, k); if (!a || !a.length) break; k++; } } catch (e) { } return k; };
-const pass = Math.max(Number.isInteger(prevRun) ? prevRun : 0, runsOf(AGENT[stage]) - 1);
+const pass = Number.isInteger(prevRun) ? prevRun : Math.max(0, runsOf(AGENT[stage]) - 1);
 
 // the state so far: the Phase Architect input plus each agent's latest answer up to this one
 const latest = s => { if (s === stage) return $json || {}; try { return $(AGENT[s]).first().json || {}; } catch (e) { return null; } };
