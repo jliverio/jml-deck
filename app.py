@@ -6,7 +6,10 @@ POST /render   header X-API-Key: <secret>
     {"values": {variable: text}, "rules": [table rows], "meta": {"filename": "..."},
      "workplan": compiled Phase Architect plan (optional; draws the timeline, deliverables, steering slides),
      "template": "1.1", "1.2" (default), "1.3" (1.2 + Approach section and work-plan slides)
-               or "1.4" (1.3 + situation slide, approach overview)}
+               or "1.4" (1.3 + situation slide, approach overview)
+               or "1.5" (1.4 filled, then the S3 layout: no dividers, summary after the situation,
+                         one-page roadmap, assumptions slide, "[Firm to complete] Fees" slide),
+     "s3": {"assumptions": [{"id", "text", "if_wrong"}], "deadline_weeks": n} (template 1.5 only)}
     -> 200 .pptx, header X-Render-Warnings (JSON list, may be empty)
     -> 422 {"error": ...} when the template, the table and the values disagree
   Legacy payload ({"cover": ..., "context": ...}) -> previous renderer.
@@ -37,7 +40,8 @@ PPTX = "application/vnd.openxmlformats-officedocument.presentationml.presentatio
 def health():
     return jsonify(ok=True, service="jml-deck", auth=bool(API_KEY),
                    renderer="variables-1.2", legacy=LEGACY,
-                   template=os.path.exists(varfill.TEMPLATE))
+                   template=os.path.exists(varfill.TEMPLATE),
+                   templates=sorted(varfill.TEMPLATES))
 
 
 @app.post("/render")
@@ -58,7 +62,8 @@ def render():
         if "values" in data:
             pptx, warnings = varfill.build_deck(data.get("values") or {}, data.get("rules"),
                                                 workplan=data.get("workplan"),
-                                                version=data.get("template"))
+                                                version=data.get("template"),
+                                                s3=data.get("s3"))
         else:
             pptx = legacy_build(data)
     except (varfill.TemplateCapacityError, varfill.TemplateRulesError,
