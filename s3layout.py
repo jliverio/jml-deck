@@ -2,9 +2,10 @@
 
 - Section dividers are left out.
 - The executive summary moves after the situation slide (problem first, then our answer).
-- The timeline pages ("Plan by workstream") and "Deliverables by workstream" give way to a one-page roadmap:
-  phases as blocks, each phase's decision as a diamond, workstreams as bars, the client's deadline as a red line.
-  When the workstreams do not fit on one page, the roadmap shows phases only and those pages move to an appendix.
+- The timeline pages ("Plan by workstream") give way to a one-page roadmap: phases as blocks, each phase's
+  decision as a diamond, workstreams as bars, the client's deadline as a red line. When the workstreams do not
+  fit on one page, the roadmap shows phases only and the timeline pages move to an appendix.
+- "Deliverables by workstream" moves to the appendix (the steering-meetings slide refers readers to it).
 - New slides before Next Steps: the assumptions the draft rests on (payload s3.assumptions) and a
   "[Firm to complete] Fees" placeholder. No team slide and no price: the firm completes both.
 - The agenda follows the new order; the situation slide's box reads "Hypothesis to test".
@@ -226,7 +227,9 @@ def apply(prs, values, plan, s3):
             kinds[el] = "summary"
         elif "Where things stand" in tx:
             kinds[el] = "situation"
-        elif "Plan by workstream" in tx or "Deliverables by workstream" in tx:
+        elif "Deliverables by workstream" in tx:
+            kinds[el] = "deliverables"
+        elif "Plan by workstream" in tx:
             kinds[el] = "workplan"
         elif lay == "Default" and t and t == (sec[3] or "Next Steps"):
             kinds[el] = "next"
@@ -258,11 +261,13 @@ def apply(prs, values, plan, s3):
             continue
         if k == "summary" and has_situation:
             continue                                  # placed after the situation slide
-        if k == "workplan" and has_plan:
+        if k in ("workplan", "deliverables") and has_plan:
             if not placed_road:
                 order.append(by_kind["roadmap"])
                 placed_road = True
-            if not show_ws:
+            # the steering-meetings slide sends readers to the deliverables page ("+2 more (see deliverables
+            # page)"), so it always stays, in the appendix; timeline pages only when the roadmap drops workstreams
+            if k == "deliverables" or not show_ws:
                 appendix.append(e)
             continue
         if k == "next":
@@ -280,7 +285,8 @@ def apply(prs, values, plan, s3):
         warnings.append("S3: no timeline pages found; the roadmap is left out")
     if appendix:
         order = order[:-1] + appendix + order[-1:]    # before the closing slide
-        warnings.append("S3: workstreams did not fit the roadmap; the timeline pages moved to the appendix")
+        if not show_ws:
+            warnings.append("S3: workstreams did not fit the roadmap; the timeline pages moved to the appendix")
 
     for e in list(lst):
         lst.remove(e)
