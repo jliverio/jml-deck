@@ -40,7 +40,8 @@ PPTX = "application/vnd.openxmlformats-officedocument.presentationml.presentatio
 def health():
     return jsonify(ok=True, service="jml-deck", auth=bool(API_KEY),
                    renderer="variables-1.2", legacy=LEGACY,
-                   template=os.path.exists(varfill.TEMPLATE))
+                   template=os.path.exists(varfill.TEMPLATE),
+                   templates=sorted(varfill.TEMPLATES))
 
 
 @app.post("/render")
