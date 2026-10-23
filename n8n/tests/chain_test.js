@@ -109,6 +109,15 @@ const fullInput = dir => ({ ...rd(path.join(dir, "input.json")), method_library:
   ans2("Workstream agent", { output: rd(path.join(dir, "ws.json")) });
   const c2 = ans2("Deliverable agent", { output: bad });
   check("B without a report -> del retry", c2.route === "del" && c2.violations.some(v => /brief_asks_for_report/.test(v)), JSON.stringify(c2.violations));
+  // a medium the brief turns down is not asked for (live run 1381: 'A written report rather than slides')
+  const declined = rd(path.join(dir, "del.json")); declined.deliverables.forEach(d => { if (d.format === "presentation") d.format = "report"; });
+  const inp3 = fullInput(dir);
+  inp3.brief.soft_fields.deliverable_format = { value: "A written report rather than slides", source: "stated", quote: "They want a written report rather than slides.", assumption_text: null };
+  const ans3 = chainRun(inp3);
+  ans3("Phase Architect", { output: rd(path.join(dir, "lead.json")) });
+  ans3("Workstream agent", { output: rd(path.join(dir, "ws.json")) });
+  const c3 = ans3("Deliverable agent", { output: declined });
+  check("B 'report rather than slides', no presentation -> gov", c3.route === "gov" && !c3.violations.some(v => /brief_asks_for_presentation/.test(v)), JSON.stringify(c3.violations));
 }
 
 // 6. the Phase Architect answers as text (no parser since Oct 21): a JSON string inside {output}, a code fence,

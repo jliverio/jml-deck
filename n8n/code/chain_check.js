@@ -705,10 +705,14 @@ function noteNumbers(notes, state) {
 // Violations for one stage only. `calendar` reports calendar errors, which are code bugs, never the agent's.
 // Formats (José, Oct 19): what the client physically receives, allowed per kind; a format the brief names must appear,
 // and the final phase's decision pack takes the medium the brief names.
+// A medium the brief turns down ('a written report rather than slides', 'no deck') is not asked for (Oct 23: run 1381
+// forced a presentation the client had declined): the words from a negation to the next punctuation are dropped first.
+// A limit ('no more than 20 slides') is not a negation.
+const NOT_ASKED = /\b(?:rather than|instead of|in place of|other than|not|no|without)\b(?!\s+(?:more|less|fewer|longer|shorter|later|earlier|over|under|above|below)\b)[^,;.]*/g;
 function briefFormats(inp) {
   const f = ((((inp || {}).brief || {}).soft_fields || {}).deliverable_format) || {};
   if (f.source !== 'stated' || !f.value) return [];
-  const t = norm(typeof f.value === 'string' ? f.value : JSON.stringify(f.value));
+  const t = norm(typeof f.value === 'string' ? f.value : JSON.stringify(f.value)).replace(NOT_ASKED, ' ');
   return FORMAT_IDS.filter(id => (FORMATS.brief_words[id] || []).some(w => new RegExp(`\\b${w}\\b`).test(t)));
 }
 function checkFormats(state, r) {
