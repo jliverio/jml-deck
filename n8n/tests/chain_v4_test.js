@@ -160,6 +160,7 @@ const check = (name, cond, detail) => results.push({ name, ok: !!cond, detail })
   // the fixtures were scheduled to the old weeks, so del and gov retry once each, as the chain allows
   let c2 = ans("Deliverable agent", { output: v.del }); if (c2.route === "del") c2 = ans("Deliverable agent", { output: v.del });
   let d = ans("Governance agent", { output: v.gov }); if (d.route === "gov") d = ans("Governance agent", { output: v.gov });
+  check("v4.1 re-split: the final sweep repeats no fit violation", d.output && !(d.violations || []).some(x => /^fit:/.test(x)), JSON.stringify((d.violations || []).filter(x => /^fit:/.test(x))));
   check("v4.1 re-split: the compiled plan carries the re-split weeks", d.output && JSON.stringify(d.output.phases.map(p => p.duration_weeks)) !== JSON.stringify(v.lead.phases.map(p => p.duration_weeks)) && d.output.total_duration_weeks.max === v.lead.phases.reduce((a, p) => a + p.duration_weeks.max, 0), d.output && JSON.stringify(d.output.phases.map(p => p.duration_weeks)));
   const note = (d.output && d.output.architect_notes || [])[0] || "";
   check("v4 fit note: plan fits, work would benefit from more weeks", /^The plan fits the \d+ weeks given; the work listed takes \d+-\d+ weeks, so we think it would benefit from \d+ more\.$/.test(note), note);

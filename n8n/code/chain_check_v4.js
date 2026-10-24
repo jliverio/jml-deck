@@ -884,7 +884,7 @@ function checkStage(stage, state, ctx) {
     v.push(...checkSizing(state, ctx));
     // v4.1: the sizing re-splits the phase weeks; the streams were scheduled to the lead's weeks, so one more pass
     // reschedules them to the new ones (the retry input carries the new phases and meetings)
-    if ((ctx.pass || 0) === 0 && resplitChanged(state)) v.push(`fit:phase_weeks_${weeksOf((state.lead || {}).phases)}_resplit_to_${weeksOf(effectivePhases(state))}_reschedule_the_streams`);
+    if (ctx.pass === 0 && resplitChanged(state)) v.push(`fit:phase_weeks_${weeksOf((state.lead || {}).phases)}_resplit_to_${weeksOf(effectivePhases(state))}_reschedule_the_streams`);
     v.push(...agentNotes('ws', state.ws, state));
   }
   if (stage === 'del') {
@@ -1135,7 +1135,7 @@ let r;
 try { r = C.compile(state, { jargon_never: JARGON }); }
 catch (e) { return { json: { ...base, route: 'done', output: null, valid: false, agent_error: 'compile: ' + e.message } }; }
 const all = [...r.violations];
-for (const s of ORDER) { try { all.push(...C.checkStage(s, state, { jargon_never: JARGON }).violations); } catch (e) { all.push(`check_error ${s}: ${e.message}`); } }
+for (const s of ORDER) { try { all.push(...C.checkStage(s, state, { jargon_never: JARGON, pass: 1 }).violations); }   // the final sweep is never a first pass (v4.1: the fit check fires on pass 0 only) catch (e) { all.push(`check_error ${s}: ${e.message}`); } }
 const uniq = [...new Set(all)];
 const left = uniq.filter(x => !SOFT.test(x));
 return { json: {

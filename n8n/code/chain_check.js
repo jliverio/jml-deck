@@ -1046,7 +1046,7 @@ let r;
 try { r = C.compile(state, { jargon_never: JARGON }); }
 catch (e) { return { json: { ...base, route: 'done', output: null, valid: false, agent_error: 'compile: ' + e.message } }; }
 const all = [...r.violations];
-for (const s of ORDER) { try { all.push(...C.checkStage(s, state, { jargon_never: JARGON }).violations); } catch (e) { all.push(`check_error ${s}: ${e.message}`); } }
+for (const s of ORDER) { try { all.push(...C.checkStage(s, state, { jargon_never: JARGON, pass: 1 }).violations); }   // the final sweep is never a first pass (v4.1: the fit check fires on pass 0 only) catch (e) { all.push(`check_error ${s}: ${e.message}`); } }
 const uniq = [...new Set(all)];
 const left = uniq.filter(x => !SOFT.test(x));
 return { json: {
