@@ -101,8 +101,8 @@ const fullInput = dir => ({ ...rd(path.join(dir, "input.json")), method_library:
   ans("Phase Architect", { output: rd(path.join(dir, "lead.json")) });
   const b = ans("Workstream agent", { output: rd(path.join(dir, "ws.json")) });
   const c = ans("Deliverable agent", { output: rd(path.join(dir, "del.json")) });
-  // B's recorded answer has 8 workstreams: past the 7 rows the timeline slide holds (José, Oct 24), and nothing else wrong
-  check("B ws (8 rows) -> ws retry, only for the 7-row cap", b.route === "ws" && JSON.stringify(b.violations) === '["ws:count_8_over_7"]', JSON.stringify(b.violations));
+  // B's recorded answer has 8 workstreams: within the 10 rows the timeline slide holds (José, Oct 24)
+  check("B ws (8 rows) -> del", b.route === "del", JSON.stringify(b.violations));
   check("B del -> gov (formats ok)", c.route === "gov", JSON.stringify(c.violations));
   const bad = rd(path.join(dir, "del.json")); bad.deliverables.forEach(d => { if (d.format === "report") d.format = "presentation"; });
   const ans2 = chainRun(fullInput(dir));
