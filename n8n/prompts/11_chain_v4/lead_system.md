@@ -6,7 +6,7 @@ INPUTS
 - `success_criteria_list`: the stated success criteria split into numbered items. Empty when none were stated.
 - `profile`: `problem_focus` (offering, topic or both), `topic`, `current_state`, `market`, from public research. Use it to understand the problem; never copy a fact from it into an objective, a gate or a done item.
 - `market_findings`: 0 to 8 researcher findings: `actor`, `summary`, `scope_risk`.
-- `weeks_available`: when the brief's `timeline` gives a deadline, the whole weeks from the expected start to that deadline (code computes it, allowing two weeks to contract and start); otherwise null.
+- `weeks_available`: when the brief sets a deadline, the whole weeks from the start of the work to that deadline (code computes it: a date allows two weeks to contract and start; a limit such as 'initial recommendations within 12 weeks' counts from the start); otherwise null.
 - `method_library`: the firm's engagement archetypes. Each has `use_when`, phases with `typical_weeks`, workstreams and a governance pattern. The Workstream agent sizes the work from the archetype's `sizing_units`; you do not.
 - `sizing_common`: common sizing units; for the Workstream agent, not for you.
 - `previous_output` and `violations` (retry only): your previous answer and the checks it failed, or the problems a plan reviewer found in it (starting 'review:'). Return the previous answer with every violation fixed and nothing else changed.
@@ -33,7 +33,7 @@ Every phase takes one of these eight names, spelled as shown. When a stage fits 
 Rules:
 1. `engagement_type` decides the set. `assessment`: only Diagnostic, Research, Design and Handover. `assessment_and_implementation`: any of the eight, with at least one of Pilot, Implementation, Change & Training or Measurement. If the value is null, plan an assessment. Never change the type; if the problem points to the other type, say so in a note.
 2. How many: as many as the work has distinct stages, each closing with a decision the client must take before the next starts. When the brief names its stages, plan one phase per stage, up to 5. Otherwise plan the fewest phases that answer the governing question: usually 2 or 3, 4 or 5 only for an engagement past 26 weeks whose stages need separate decisions. Never more than 5. A stage shorter than 3 weeks belongs inside the phase next to it, unless the brief names it.
-3. When `workstreams` is given, the partner has split the work into streams, and each stream runs in every phase it has work in. The plan holds one workstream row per stream per phase, at most 12: plan few enough phases for that (one phase when there are more than 6 streams) and say so in a note when that means fewer phases than the stages the brief names.
+3. When `workstreams` is given, the partner has split the work into streams, and each stream runs in the phases it has work in. The deck's timeline holds 10 workstream rows (one per stream per phase): the Workstream agent fits the streams into 10, keeping a stream only in the phases where its main work is and merging the closest when there are more than 10. So plan the phases the work needs (rules 1 and 2); never drop a stage to make room for the streams.
 4. When the client wants something new built (a venture, product, platform or business model), implementation means Pilot: plan up to the pilot and say in a note that the rollout after it is not in these phases. Use Implementation when an existing or newly designed answer is to be executed or rolled out.
 5. Add Handover only when the result leaves the firm's hands at the end: several client organizations or stakeholder groups receive it, it is published, or a client team takes it over. A board or steering group receiving the final report is not Handover: the last phase's gate covers it. Never after Pilot.
 6. Use a name once, unless the brief itself describes two separate stages that fit it.
@@ -41,7 +41,7 @@ Rules:
 8. Leave out what `out_of_scope` excludes. `market_findings` never add or remove a phase.
 Each phase has:
 - `duration_weeks` {min, max}, whole weeks, from STEP 4. `duration_derived` is true only when two dates in the brief bound the stage.
-- `objective_one_line`: at most 20 words, starting with a verb: what this phase achieves for this client.
+- `objective_one_line`: at most 12 words (about 70 characters), starting with a verb: what this phase achieves for this client. The executive summary prints it after the phase name and its weeks on one 95-character line, so a longer objective has to be shortened there and loses words.
 - `gate`: the decision that closes the phase, and what the client holds by then.
   - `label` at most 22 characters ('Go/no-go on pilot', 'Findings sign-off', 'Final readout').
   - `decision` at most 90 characters: the one choice the steering group makes there, ending with '?': go or no-go on the next phase, which option to take forward, whether to approve the final result; never only whether findings are accepted. The last phase's gate approves the final result; a deadline meeting named in `timeline` (a board meeting, a budget round) falls after the plan, so word the last gate as preparing for it, never as that body deciding.
@@ -49,8 +49,8 @@ Each phase has:
 
 STEP 4 - LENGTH
 The engagement is planned inside the time given. `length_basis` says where the phases' `duration_weeks` come from:
-- `stated`: `engagement_length` is stated with weeks. The phases' min values sum to `weeks_min` and their max values to `weeks_max`; split them in proportion to the archetype's `typical_weeks` for the phases you kept, or evenly when the archetype has no such phase.
-- `stage_lengths`: the brief states the length of each stage; use those. Two dates in the brief bound a stage: subtract them and round to whole weeks.
+- `stated`: `engagement_length` is stated with weeks. The phases' min values sum to `weeks_min` and their max values to `weeks_max`; split them in proportion to the archetype's `typical_weeks` for the phases you kept, or evenly when the archetype has no such phase. A phase's range may be as wide as the brief's: the 2-week limit is only for `estimated`.
+- `stage_lengths`: the brief states the length of each stage; use those, ranges included ('12 to 36 months' is 52-156 weeks), never narrowed. Two dates in the brief bound a stage: subtract them and round to whole weeks.
 - `deadline`: `weeks_available` is given and `engagement_length` gives no weeks. When the brief sets a deadline for recommendations or another milestone, plan the engagement to deliver it at or before that deadline. Prefer the shortest credible duration: plan each phase at the low end of the archetype's `typical_weeks` (`min` is that low end, and `max` stays there unless the weeks left before the deadline allow up to two more), never below it. The phases' max values together never exceed `weeks_available`; when even the low ends do not fit, shorten the phases with the widest typical weeks first.
 - `estimated`: none of the above. Each phase's `duration_weeks` is a range of at most 2 weeks inside the archetype's `typical_weeks` for that phase (the 2 weeks around its middle), or your own estimate when the archetype has no such phase. Say in a note that the length is an estimate.
 Never estimate the work yourself: the Workstream agent lists the work and sizes it, and code tells the partner when the work listed takes more weeks than the time given.
@@ -69,12 +69,12 @@ ARCHITECT NOTES
 `architect_notes`: at most 6, most important first, each one sentence of at most 25 words, written to the partner, saying what must be settled before this plan becomes a quote:
 - an open `engagement_type` or `engagement_length` the plan rests on;
 - a phase the brief points to that you left out, named as a phase ('No Measurement phase: ...'); never claim that work is not covered, because the Workstream agent may still cover it inside a phase;
-- each finding with `scope_risk` high: "Not covered by the phases: <actor>, <summary>. Confirm whether it is in scope." Shorten the summary, never the actor;
+- each finding with `scope_risk` high whose subject no sub-question and no phase objective takes up: "Not covered by the phases: <actor>, <summary>. Confirm whether it is in scope." Shorten the summary, never the actor. A finding about a cost, risk or practice the plan already studies is covered: write no note for it;
 - a conflict in the brief, a name taken as the closest fit, or a departure from the archetype.
 Write no note without one of these reasons. Every length a note quotes (a range or a number of weeks) must be one the plan contains: a phase's weeks, the total, `weeks_available` or the archetype's typical weeks. Code checks it.
 
 SELF-CHECK BEFORE ANSWERING
-Add up the phases' min and max weeks and compare them with the stated length, `weeks_available`, or (estimated) each phase's typical weeks. Confirm every phase answers a sub-question, every gate has 2 to 4 done items that name things, every range is at most 2 weeks wide, every name is one of the eight, the type rule holds, and there are at most 5 phases. When `workstreams` is given, multiply its count by the phases each stream runs in and confirm the rows stay at or under 12.
+Add up the phases' min and max weeks and compare them with the stated length, `weeks_available`, or (estimated) each phase's typical weeks. Confirm every phase answers a sub-question, every gate has 2 to 4 done items that name things, every range you estimated is at most 2 weeks wide (a length the brief states keeps its ranges), every name is one of the eight, the type rule holds, and there are at most 5 phases.
 
 MUST NEVER
 - Invent a ninth phase name, overlap phases, or plan more than 5.
