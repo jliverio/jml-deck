@@ -8,6 +8,8 @@
 - The appendix comes after the closing slide, for an executive reader (José, 24 Oct): "Deliverables by
   workstream" (the steering-meetings slide refers readers to it), then the assumptions the draft rests on
   (payload s3.assumptions), which explain our rationale to readers who want it.
+- The timeline uses at most 24 boxes of one unit (week, month, bi-month, quarter, four-month period, semester;
+  workplan.time_unit). A plan longer than 24 semesters gets no plan slides at all (José, 24 Oct).
 - New slide: a "[Firm to complete] Fees" placeholder before Next Steps (no team slide and no price: the firm
   completes both).
 - The agenda follows the new order; the situation slide's box reads "Hypothesis to test".
@@ -19,6 +21,8 @@ from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.oxml.ns import qn
 from pptx.util import Emu, Pt
+
+import workplan as wp
 
 NAVY = RGBColor(0x14, 0x2B, 0x4C)
 TEAL = RGBColor(0x2E, 0x86, 0x8C)
@@ -167,6 +171,10 @@ def apply(prs, values, plan, s3):
             kinds[el] = "deliverables"
         elif "Plan by workstream" in tx:
             kinds[el] = "workplan"
+        elif "Approach overview" in tx:
+            kinds[el] = "overview"
+        elif "Steering meetings" in tx:
+            kinds[el] = "steering"
         elif lay == "Default" and t and t == (sec[3] or "Next Steps"):
             kinds[el] = "next"
         else:
@@ -176,6 +184,12 @@ def apply(prs, values, plan, s3):
 
     # new slides (appended; placed below)
     has_plan = bool(plan.get("phases"))
+    # José, 24 Oct: a plan longer than 24 semesters sells nothing for the short term. Every other slide is
+    # produced; the Phase Architect's slides are not, and the reply email says why (Build render payload).
+    weeks = int((plan.get("total_duration_weeks") or {}).get("max") or 0)
+    too_long = has_plan and weeks > wp.MAX_WEEKS
+    if too_long:
+        warnings.append(f"S3: the plan runs {weeks} weeks, more than 24 semesters; the plan slides are left out")
     items = [a for a in (s3.get("assumptions") or []) if str(a.get("text", "")).strip()]
     assum = b.assumptions(items[:5], "Appendix") if items else None
     fees = b.fees(plan, label_next)
@@ -190,6 +204,8 @@ def apply(prs, values, plan, s3):
     for e in ids:
         k = kinds[e]
         if k == "divider":
+            continue
+        if too_long and k in ("overview", "workplan", "deliverables", "steering"):
             continue
         if k == "deliverables" and has_plan:
             # appendix (José, 24 Oct: executive level); the steering-meetings slide sends readers to it

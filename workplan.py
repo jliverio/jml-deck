@@ -325,9 +325,94 @@ def _timeline_capacity(plan):
     return avail, max(1, int(avail // MIN_ROW))
 
 
+# ------------------------------------------------------------------ time units (template 1.5)
+# José, 24 Oct: the grid is 26 cm wide and holds at most 24 boxes (about 1.09 cm each). One box is one unit and
+# every box is the same unit: weeks while the plan fits 24 of them, then months, bi-months, quarters, four-month
+# periods and semesters. Workstreams, phases, deliverables and meetings snap to whole units: in a first draft it
+# does not matter whether a workstream takes 6 weeks or 2 months. Past 24 semesters there is no unit (the S3
+# layout then leaves the plan slides out).
+MAX_BOXES = 24
+MAX_WEEKS = MAX_BOXES * 26                   # 24 semesters (12 years): past this the S3 deck has no plan slides
+UNITS = (  # units per year, header, singular, plural
+    (52, "Week", "week", "weeks"), (12, "Month", "month", "months"), (6, "Bi-month", "bi-month", "bi-months"),
+    (4, "Quarter", "quarter", "quarters"), (3, "Four-month", "four-month period", "four-month periods"),
+    (2, "Semester", "semester", "semesters"))
+
+
+def _rnd(x):
+    return int(x + 0.5)                       # round half up, so week 6 of a 52-week year is month 1 (1.38)
+
+
+def _box_end(week, k):
+    return max(1, _rnd(week * k / 52))
+
+
+def _span(s, e, k):
+    a = 1 if s <= 1 else _rnd((s - 1) * k / 52) + 1
+    return a, max(a, _rnd(e * k / 52))
+
+
+def _to_units(plan, k):
+    """The plan with every week turned into a box number at k units per year (k=52: unchanged)."""
+    import copy
+    g = copy.deepcopy(plan)
+    prev = 0
+    pspan = {}
+    for p in sorted(g["phases"], key=lambda p: p["order"]):
+        a, b = _span(p["start_week"], p["end_week"], k)
+        a = max(a, prev + 1)
+        b = max(a, b)
+        p["start_week"], p["end_week"] = a, b
+        pspan[p["order"]] = (a, b)
+        prev = b
+    wspan = {}
+    for w in g["workstreams"]:
+        ps, pe = pspan.get(w["phase_order"], (1, prev))
+        a, b = _span(w["start_week"], w["end_week"], k)
+        a = min(max(a, ps), pe)
+        b = min(max(b, a), pe)
+        w["start_week"], w["end_week"] = a, b
+        wspan[w["id"]] = (a, b)
+    for d in g["deliverables"]:
+        if d.get("due_week"):
+            a, b = wspan.get(d.get("workstream_id"), (1, prev))
+            d["due_week"] = min(max(_box_end(d["due_week"], k), a), b)
+    # one marker per box: a decision gate wins, then a workshop, the kick-off, a check-in
+    rank = {"gate": 0, "workshop": 1, "kickoff": 2, "checkin": 3}
+    best = {}
+    for e in g["governance"]["events"]:
+        if e["type"] == "gate" and e.get("phase_order") in pspan:
+            e["week"] = pspan[e["phase_order"]][1]
+        else:
+            e["week"] = min(_box_end(e["week"], k), prev)
+        cur = best.get(e["week"])
+        if cur is None or rank.get(e["type"], 9) < rank.get(cur["type"], 9):
+            best[e["week"]] = e
+    g["governance"]["events"] = sorted(best.values(), key=lambda e: e["week"])
+    taken = set(best)
+    g["governance"]["status_weeks"] = sorted({min(_box_end(wk, k), prev) for wk in g["governance"].get("status_weeks") or []}
+                                             - taken)
+    g["total_duration_weeks"] = {"min": prev, "max": prev}
+    return g
+
+
+def time_unit(plan):
+    """(units per year, header, singular, plural, the plan in those units), or None past 24 semesters."""
+    total = plan["total_duration_weeks"]["max"]
+    for k, head, one, many in UNITS:
+        if _span(1, total, k)[1] > MAX_BOXES:
+            continue
+        g = _to_units(plan, k)
+        if g["total_duration_weeks"]["max"] <= MAX_BOXES:
+            return k, head, one, many, g
+    return None
+
+
 # ------------------------------------------------------------------ slide 1: timeline
-def timeline_slides(prs, plan, section, client, slide=None):
-    """One or more timeline pages (each holds whole phases where possible)."""
+def timeline_slides(prs, plan, section, client, slide=None, unit_scale=False):
+    """One or more timeline pages (each holds whole phases where possible). unit_scale: template 1.5's
+    rule, at most 24 boxes of one unit (time_unit); otherwise one column per week, as in 1.4."""
+    unit = time_unit(plan) if unit_scale else None
     avail, cap = _timeline_capacity(plan)
     order = _ws_order(plan)
     numbering = {w["id"]: i + 1 for i, w in enumerate(order)}
@@ -337,23 +422,28 @@ def timeline_slides(prs, plan, section, client, slide=None):
     for i, rows in enumerate(pages):
         out.append(timeline_slide(prs, plan, section, client, rows=rows, numbering=numbering, avail=avail,
                                   page=(i, len(pages)), slide=slide if i == 0 else None,
-                                  after=(out[-1] if (i and slide is not None) else None)))
+                                  after=(out[-1] if (i and slide is not None) else None), unit=unit))
     return out
 
 
 def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=None, avail=None,
-                   page=(0, 1), after=None):
+                   page=(0, 1), after=None, unit=None):
     T = titles(plan)
     ranged = any(p["duration_weeks"]["min"] != p["duration_weeks"]["max"] for p in plan["phases"])
     title = T["timeline"] + (" (continued)" if page[0] else "")
-    sub = "Plan by workstream and week" + (" (drawn on the longer estimate)" if ranged else "")
+    head, one, many = ("Week", "week", "weeks") if unit is None else unit[1:4]
+    sub = f"Plan by workstream and {one}" + (" (drawn on the longer estimate)" if ranged else "")
     if page[1] > 1:
         sub += f" – page {page[0] + 1} of {page[1]}"
     s = _new_slide(prs, title, sub, section, slide=slide, after=after)
-    total = plan["total_duration_weeks"]["max"]
-    phases = plan["phases"]
-    events = plan["governance"]["events"]
+    grid = plan if unit is None else unit[4]          # positions in boxes; titles and the deadline stay in weeks
+    total = grid["total_duration_weeks"]["max"]
+    phases = grid["phases"]
+    events = grid["governance"]["events"]
     wss = rows if rows is not None else _ws_order(plan)
+    if unit is not None:
+        gws = {w["id"]: w for w in grid["workstreams"]}
+        wss = [gws.get(w["id"], w) for w in wss]
     if numbering is None:
         numbering = {w["id"]: i + 1 for i, w in enumerate(_ws_order(plan))}
     if avail is None:
@@ -366,7 +456,7 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
     gx = L + label_w
     gw = W - label_w
     col = gw / total
-    step = week_step(total)
+    step = week_step(total) if unit is None else 1
     n_rows = len(wss)
     row_h = max(MIN_ROW, min(MAX_ROW, avail / max(n_rows, 1)))
     y0 = TOP
@@ -376,7 +466,11 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
         w = (p["end_week"] - p["start_week"] + 1) * col
         b = _box(s, x, y0, w, _BAND_H, fill=_phase_color(p["order"]))
         est = "" if p["duration_weeks"]["min"] == p["duration_weeks"]["max"] else " (estimate)"
-        full = f"{p['name']} · {_weeks_label(p['duration_weeks'])}{est}"
+        if unit is None or unit[0] == 52:
+            full = f"{p['name']} · {_weeks_label(p['duration_weeks'])}{est}"
+        else:
+            nb = p["end_week"] - p["start_week"] + 1
+            full = f"{p['name']} · {nb} {one if nb == 1 else many}"
         fit = int((w - Inches(0.2)) / Inches(0.075))  # inside the box margins (Oct 18: 'Measurement · 6 weeks' overflowed a 6-of-39-week band)
         _text(b, _clip(full if len(full) <= fit else p["name"], fit), size=10 if fit >= 12 else 8,
               bold=True, color=WHITE, align=PP_ALIGN.CENTER)
@@ -384,7 +478,7 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
     # week header: one label per tick (every `step` weeks)
     yh = y0 + _BAND_H + Inches(0.04)
     hdr = _box(s, L, yh, W, _HEAD_H, fill=NAVY)
-    _text(hdr, "Week", size=10, bold=True, color=WHITE)
+    _text(hdr, head, size=10, bold=True, color=WHITE)
     lab_size = 10 if col * step >= Inches(0.3) else 9
     for wk in range(1, total + 1, step):
         _text(s, str(wk), size=lab_size, bold=True, color=WHITE, align=PP_ALIGN.CENTER if step == 1 else PP_ALIGN.LEFT,
@@ -412,7 +506,7 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
             _line(s, cx, grid_top, cx, my - d / 2, color=GREY, width=0.75, dash=True)
 
     # rows
-    del_due = {dd["id"]: dd["due_week"] for dd in plan["deliverables"]}
+    del_due = {dd["id"]: dd["due_week"] for dd in grid["deliverables"]}
     # stream labels always get two lines: 10pt in tall rows, 8pt in the tightest ones
     lsize = 10 if row_h >= Inches(0.4) else 8
     two_lines = True
@@ -449,7 +543,7 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
         _line(s, L, y + row_h, L + W, y + row_h, color=LGREY, width=0.5, dash=True)
     # governance row
     _text(s, "Steering", size=10, bold=True, color=NAVY, x=L, y=my - d / 2, w=label_w, h=d)
-    for wk in plan["governance"]["status_weeks"]:
+    for wk in grid["governance"]["status_weeks"]:
         _box(s, gx + (wk - 0.5) * col - d / 2, my - d / 2, d, d, fill=WHITE, line=BLACK, shape=MSO_SHAPE.OVAL, line_w=0.75)
     gap = Emu(45720)
     evs = sorted(events, key=lambda e: e["week"])
@@ -828,7 +922,7 @@ def marked_slides(prs):
     return out
 
 
-def fill_template_slides(prs, plan, marked, client="[Client]"):
+def fill_template_slides(prs, plan, marked, client="[Client]", unit_scale=False):
     """Draw the plan onto the template's work-plan slides. Without a plan the
     slides stay and say what the firm has to complete."""
     if not (isinstance(plan, dict) and plan.get("phases")):
@@ -842,7 +936,7 @@ def fill_template_slides(prs, plan, marked, client="[Client]"):
     if "roadmap" in marked:
         out.append(roadmap_slide(prs, plan, "", client, slide=marked["roadmap"]))
     if "timeline" in marked:
-        out += timeline_slides(prs, plan, "", client, slide=marked["timeline"])
+        out += timeline_slides(prs, plan, "", client, slide=marked["timeline"], unit_scale=unit_scale)
     if "deliverables" in marked:
         out += deliverables_slides(prs, plan, "", client, slide=marked["deliverables"])
     if "steering" in marked:

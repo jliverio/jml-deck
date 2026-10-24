@@ -402,7 +402,8 @@ def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=Non
             plan = {**plan, "_titles": given}
     if marked:
         wp.fill_template_slides(prs, plan if has_plan else None, marked,
-                                client=str((plan or {}).get("client") or "[Client]"))
+                                client=str((plan or {}).get("client") or "[Client]"),
+                                unit_scale=version is not None and str(version) in S3_LAYOUT)   # 1.5: 24-box rule
         if not has_plan:
             warnings.append("no work plan in the payload: the work-plan slides say [Firm to complete]")
     elif has_plan:
