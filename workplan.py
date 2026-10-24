@@ -808,6 +808,143 @@ def roadmap_slide(prs, plan, section, client, slide=None):
     return s
 
 
+def _wk(a, b):
+    return f"week {a}" if a == b else f"weeks {a}–{b}"
+
+
+def phase_work_slide(prs, plan, section, client, title, deadline=None):
+    """Template 1.5, interim (José, 24 Oct: "same structure as the previous one"; he will say how to use it):
+    the approach-overview columns, filled with what each phase does (its workstreams and their weeks) and
+    what it hands over at its decision; the strip gives the length, the client's limit and what the appendix
+    holds. Returns (slide, every workstream listed)."""
+    s = _new_slide(prs, title, "Work plan: workstreams by phase", section)
+    phases = sorted(plan["phases"], key=lambda p: p["order"])
+    events = plan["governance"]["events"]
+    gates = {e["phase_order"]: e for e in events if e["type"] == "gate"}
+    ws_all = plan.get("workstreams") or []
+    dl_all = plan.get("deliverables") or []
+    n = len(phases)
+    gap = Inches(0.12)
+    cw = (W - gap * (n - 1)) / n
+    chev_h = Inches(0.62)
+    y = TOP
+    sy = BOTTOM - Inches(1.05)                       # the strip, where slide 6 has it
+    gy = sy - Inches(0.95)                           # decision row: line, diamond + label, one line under it
+    list_top = y + chev_h + Inches(0.58)
+    size = 11 if n < 4 else 10
+    cpl = max(8, int((cw - Inches(0.1)) / Inches(0.0075 * size)))   # characters per line (slide 6's estimate)
+    line_h = Pt(size * 1.2 + 4)                      # line plus space after
+    rows = max(1, int((gy - Inches(0.1) - list_top) / line_h))
+    all_listed = True
+    for i, p in enumerate(phases):
+        x = L + i * (cw + gap)
+        shape = MSO_SHAPE.PENTAGON if i == 0 else MSO_SHAPE.CHEVRON
+        ch = _box(s, x, y, cw + (gap if i < n - 1 else 0), chev_h, fill=_phase_color(p["order"]), shape=shape)
+        ch.adjustments[0] = 0.25
+        weeks = (f"Week {p['start_week']}" if p.get("start_week") == p.get("end_week")
+                 else f"Weeks {p.get('start_week')}–{p.get('end_week')}") if p.get("start_week") else ""
+        tf = ch.text_frame
+        tf.margin_left = Inches(0.3) if i else Inches(0.15)
+        _text(ch, [f"Phase {p['order']}: {p['name']}", f"{weeks} ({_weeks_label(p['duration_weeks'])})" if weeks
+                   else _weeks_label(p["duration_weeks"])], size=12, bold=True, color=WHITE)
+        tf.paragraphs[1].runs[0].font.bold = False
+        tf.paragraphs[1].runs[0].font.size = Pt(10)
+        ws = sorted([w for w in ws_all if w.get("phase_order") == p["order"]],
+                    key=lambda w: (w.get("start_week") or 0, w.get("end_week") or 0))
+        par = len(ws) > 1 and any(a.get("start_week") <= b.get("end_week") and b.get("start_week") <= a.get("end_week")
+                                  for j, a in enumerate(ws) for b in ws[j + 1:])
+        head = _cap(_count(len(ws), "workstream")) if ws else "No workstreams in the plan"
+        if par and len(head) + 18 <= int((cw - Inches(0.1)) / Inches(0.075)):   # narrow columns: the count only
+            head += ", some in parallel"
+        _text(s, _clip(head, cpl), size=10, italic=True, color=GREY, anchor=MSO_ANCHOR.TOP,
+              x=x, y=y + chev_h + Inches(0.08), w=cw - Inches(0.1), h=Inches(0.22))
+        _text(s, "What we do", size=9, bold=True, color=GREY, anchor=MSO_ANCHOR.TOP,
+              x=x, y=y + chev_h + Inches(0.36), w=cw, h=Inches(0.2))
+        # one paragraph per workstream: its name, then its weeks in grey; a wide column (one or two phases)
+        # takes two lists side by side; what still does not fit points to the appendix
+        sub = 2 if cw > Inches(5.5) and len(ws) > rows else 1
+        sw = (cw - Inches(0.1) - Inches(0.2) * (sub - 1)) / sub
+        scpl = max(8, int(sw / Inches(0.0075 * size)))
+        cols, used = [[] for _ in range(sub)], 0
+        for k, w in enumerate(ws):
+            nm, wk = str(w.get("name") or "").strip(), _wk(w.get("start_week"), w.get("end_week"))
+            need = -(-(len(nm) + len(wk) + 3) // scpl)
+            c = min(used // rows, sub - 1)
+            if used % rows + need > rows and c < sub - 1:   # does not fit the rest of this list: next list
+                used = (c + 1) * rows
+                c += 1
+            left = len(ws) - k - 1
+            if used + need + (1 if left else 0) > rows * sub:
+                cols[c].append((f"+{_num(len(ws) - k)} more in the appendix", ""))
+                all_listed = False
+                break
+            cols[c].append((nm, wk))
+            used += need
+        for c, entries in enumerate(cols):
+            if not entries:
+                continue
+            box = s.shapes.add_textbox(Emu(int(x + c * (sw + Inches(0.2)))), Emu(int(list_top)), Emu(int(sw)),
+                                       Emu(int(gy - Inches(0.1) - list_top)))
+            tb = box.text_frame
+            tb.word_wrap = True
+            tb.vertical_anchor = MSO_ANCHOR.TOP
+            tb.margin_left = tb.margin_right = tb.margin_top = tb.margin_bottom = Emu(0)
+            for k, (nm, wk) in enumerate(entries):
+                para = tb.paragraphs[0] if k == 0 else tb.add_paragraph()
+                para.space_after = Pt(4)
+                for txt, col in ((nm, BLACK if wk else GREY), (f"  {wk}" if wk else "", GREY)):
+                    if txt:
+                        r = para.add_run(); r.text = txt
+                        f = r.font; f.size = Pt(size); f.name = FONT; f.color.rgb = col; f.italic = not wk
+        # the decision that closes it, and what the phase hands over by then
+        g = gates.get(p["order"]) or {}
+        gate = p.get("gate") or {}
+        label = gate.get("label") or g.get("label") or "Phase decision"
+        wk = g.get("week") or p.get("end_week")
+        _line(s, x, gy, x + cw, gy, color=BLACK, width=1.0)
+        _box(s, x, gy + Inches(0.14), Inches(0.24), Inches(0.24), fill=YELLOW, shape=MSO_SHAPE.DIAMOND)
+        gfit = int((cw - Inches(0.34)) / Inches(0.085))
+        full = f"{label}" + (f", week {wk}" if wk else "")
+        _text(s, _clip(full if len(full) <= gfit else label, gfit), size=11, bold=True,
+              x=x + Inches(0.32), y=gy + Inches(0.1), w=cw - Inches(0.32), h=Inches(0.3))
+        ds = [d for d in dl_all if d.get("phase_order") == p["order"]]
+        if ds:
+            last = max((d.get("due_week") or 0 for d in ds), default=0)
+            fit = int((cw - Inches(0.1)) / Inches(0.0075 * size))
+            cnt = _cap(_count(len(ds), "deliverable"))
+            hand = next((h for h in (cnt + " handed over" + (f" by week {last}" if last else ""),   # narrow: shorter
+                                     cnt + (f" by week {last}" if last else ""), cnt) if len(h) <= fit), cnt)
+            _text(s, _clip(hand, fit), size=size, color=NAVY,
+                  anchor=MSO_ANCHOR.TOP, x=x, y=gy + Inches(0.48), w=cw - Inches(0.1), h=Inches(0.4))
+    # strip: length, the client's limit, what the appendix holds
+    span = plan.get("total_duration_weeks") or {}
+    end = max(int(p.get("end_week") or 0) for p in phases)
+    length = (_weeks_label(span) if span.get("max") else f"{end} weeks") + " in total"
+    if n > 1:
+        length += ": " + ", ".join(f"{p['name']} {_weeks_label(p['duration_weeks'])}" for p in phases)
+    if deadline:
+        over = end - int(deadline)
+        limit = (f"End of week {deadline}. The plan ends in week {end}, "
+                 + ("within the limit" if over <= 0 else f"{_count(over, 'week')} past it"))
+    else:
+        limit = f"No end date given in the brief. The plan ends in week {end}"
+    cells = [("Length", length), ("Client's limit", limit),
+             ("In the appendix", "The week-by-week timeline, deliverables by workstream and the assumptions behind this plan")]
+    _box(s, L, sy, W, Inches(1.0), fill=None, line=NAVY)
+    cwid = W / 3
+    for k, (head, body) in enumerate(cells):
+        cx = L + k * cwid
+        _text(s, head, size=10, bold=True, color=NAVY, anchor=MSO_ANCHOR.TOP,
+              x=cx + Inches(0.15), y=sy + Inches(0.1), w=cwid - Inches(0.3), h=Inches(0.22))
+        _text(s, _clip(body, 150), size=10, anchor=MSO_ANCHOR.TOP,
+              x=cx + Inches(0.15), y=sy + Inches(0.36), w=cwid - Inches(0.3), h=Inches(0.6))
+        if k:
+            _line(s, cx, sy + Inches(0.12), cx, sy + Inches(0.88), color=LGREY, width=0.75)
+    _text(s, f"Initial view – to confirm with {client}", size=10, italic=True, color=GREY,
+          align=PP_ALIGN.RIGHT, x=L + W - Inches(4), y=TOP - Inches(0.28), w=Inches(4), h=Inches(0.22))
+    return s, all_listed
+
+
 # ------------------------------------------------------------------ entry points
 def add_workplan_slides(prs, plan, section="Approach", client="[Client]"):
     out = timeline_slides(prs, plan, section, client) + deliverables_slides(prs, plan, section, client)

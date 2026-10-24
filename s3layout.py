@@ -2,14 +2,16 @@
 
 - Section dividers are left out.
 - The executive summary stays the first slide after the cover and the agenda (José, 24 Oct).
-- The timeline pages ("Plan by workstream") give way to a one-page roadmap: phases as blocks, each phase's
-  decision as a diamond, workstreams as bars, the client's deadline as a red line. When the workstreams do not
-  fit on one page, the roadmap shows phases only and the timeline pages move to an appendix.
-- "Deliverables by workstream" moves to the appendix (the steering-meetings slide refers readers to it).
-- New slides: a "[Firm to complete] Fees" placeholder before Next Steps (no team slide and no price: the firm
-  completes both), and the assumptions the draft rests on (payload s3.assumptions), first in the appendix.
-- The appendix comes after the closing slide (José, 24 Oct: the assumptions slide explains our rationale to
-  readers who want it; it is not part of the story).
+- The timeline pages ("Plan by workstream") give way to one slide built like the approach overview before it
+  (José, 24 Oct: "same structure as the previous one"; interim until he says how the slide is to be used):
+  one column per phase listing its workstreams and their weeks, the decision that closes it and what it hands
+  over, and a strip with the length, the client's limit and what the appendix holds (workplan.phase_work_slide).
+  The custom Gantt roadmap (_Builder.roadmap) is no longer drawn.
+- The appendix comes after the closing slide, for an executive reader (José, 24 Oct): the timeline pages, then
+  "Deliverables by workstream" (the steering-meetings slide refers readers to it), then the assumptions the
+  draft rests on (payload s3.assumptions), which explain our rationale to readers who want it.
+- New slide: a "[Firm to complete] Fees" placeholder before Next Steps (no team slide and no price: the firm
+  completes both).
 - The agenda follows the new order; the situation slide's box reads "Hypothesis to test".
 
 Called by varfill.build_deck after filling, before saving. Payloads without template "1.5" never reach it.
@@ -19,6 +21,8 @@ from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.oxml.ns import qn
 from pptx.util import Emu, Pt
+
+import workplan as wp
 
 NAVY = RGBColor(0x14, 0x2B, 0x4C)
 TEAL = RGBColor(0x2E, 0x86, 0x8C)
@@ -58,6 +62,18 @@ def _weeks(d):
     d = d or {}
     lo, hi = d.get("min"), d.get("max")
     return f"{hi}" if lo == hi else f"{lo}–{hi}"
+
+
+def _road_title(plan, deadline):
+    phases = plan.get("phases") or []
+    total = max([int(p["end_week"]) for p in phases] + [int(deadline or 0)])
+    n = len(phases)
+    span = plan.get("total_duration_weeks") or {}
+    length = (f"about {round(total / 4.33)} months" if total > 26
+              else f"{_weeks(span) if span else total} weeks")
+    word = NUM_WORDS[n] if n < len(NUM_WORDS) else str(n)
+    return (f"The work runs {word} phase{'s' if n != 1 else ''} over {length}, "
+            f"with a decision at the end of {'each phase' if n != 1 else 'it'}")
 
 
 class _Builder:
@@ -104,7 +120,7 @@ class _Builder:
         ln.line.width = Pt(width)
         return ln
 
-    # ---------- one-page roadmap ----------
+    # ---------- one-page Gantt roadmap (not drawn since 24 Oct; kept until José says how slide 7 is used) ----------
     def roadmap(self, plan, deadline, label):
         phases = plan.get("phases") or []
         ws = plan.get("workstreams") or []
@@ -114,12 +130,7 @@ class _Builder:
         gx, gw = X0 + lab, self.CW - lab
         wx = lambda wk: gx + int(gw * (wk - 1) / total)
         n = len(phases)
-        span = plan.get("total_duration_weeks") or {}
-        length = (f"about {round(total / 4.33)} months" if months
-                  else f"{_weeks(span) if span else total} weeks")
-        word = NUM_WORDS[n] if n < len(NUM_WORDS) else str(n)
-        title = (f"The work runs {word} phase{'s' if n != 1 else ''} over {length}, "
-                 f"with a decision at the end of {'each phase' if n != 1 else 'it'}")
+        title = _road_title(plan, deadline)
         # Fit: phase rows (block + decision label) and one row per workstream, in the content area.
         avail = YMAX - Y0 - 300000 - 120000
         ph_row, gap = 760000, 80000
@@ -242,7 +253,9 @@ def apply(prs, values, plan, s3):
 
     # new slides (appended; placed below)
     has_plan = bool(plan.get("phases"))
-    road, show_ws = (b.roadmap(plan, s3.get("deadline_weeks"), label_approach) if has_plan else (None, False))
+    client = str(plan.get("client") or values.get("workplan_client") or "[Client]")
+    road, show_ws = ((wp.phase_work_slide(prs, plan, label_approach, client, _road_title(plan, s3.get("deadline_weeks")),
+                                          s3.get("deadline_weeks")) if has_plan else (None, False)))
     items = [a for a in (s3.get("assumptions") or []) if str(a.get("text", "")).strip()]
     assum = b.assumptions(items[:5], "Appendix") if items else None
     fees = b.fees(plan, label_next)
@@ -263,10 +276,9 @@ def apply(prs, values, plan, s3):
             if not placed_road:
                 order.append(by_kind["roadmap"])
                 placed_road = True
-            # the steering-meetings slide sends readers to the deliverables page ("+2 more (see deliverables
-            # page)"), so it always stays, in the appendix; timeline pages only when the roadmap drops workstreams
-            if k == "deliverables" or not show_ws:
-                appendix.append(e)
+            # both go to the appendix (José, 24 Oct: executive level). The steering-meetings slide sends readers
+            # to the deliverables page; the work-plan slide's strip names the timeline and the deliverables.
+            appendix.append(e)
             continue
         if k == "next":
             order += [by_kind[x] for x in ("fees",) if x in by_kind]
@@ -280,11 +292,16 @@ def apply(prs, values, plan, s3):
     if has_plan and not placed_road:
         warnings.append("S3: no timeline pages found; the roadmap is left out")
     if "assumptions" in by_kind:
-        appendix.insert(0, by_kind["assumptions"])
+        appendix.append(by_kind["assumptions"])       # last: after the timeline and deliverables (José, 24 Oct)
     if appendix:
         order = order + appendix                      # after the closing slide (José, 24 Oct)
-        if not show_ws:
-            warnings.append("S3: workstreams did not fit the roadmap; the timeline pages moved to the appendix")
+        for e in appendix:                            # the tracker (top right) reads "Appendix" on every one
+            sl = prs.slides.get(int(e.get("id")))
+            for ph in (sl.placeholders if sl is not None else []):
+                if ph.placeholder_format.idx == 17:
+                    ph.text_frame.text = "Appendix"
+    if has_plan and placed_road and not show_ws:
+        warnings.append("S3: not every workstream fits the work-plan slide; the rest are in the appendix timeline")
 
     for e in list(lst):
         lst.remove(e)
