@@ -1,7 +1,7 @@
 """S3 deck layout (template "1.5"): template 1.4 filled as usual, then restructured.
 
 - Section dividers are left out.
-- The executive summary moves after the situation slide (problem first, then our answer).
+- The executive summary stays the first slide after the cover and the agenda (José, 24 Oct).
 - The timeline pages ("Plan by workstream") give way to a one-page roadmap: phases as blocks, each phase's
   decision as a diamond, workstreams as bars, the client's deadline as a red line. When the workstreams do not
   fit on one page, the roadmap shows phases only and the timeline pages move to an appendix.
@@ -251,16 +251,12 @@ def apply(prs, values, plan, s3):
     by_kind = {k: el for el, k in new.items()}
 
     order, appendix = [], []
-    summary = [e for e in ids if kinds[e] == "summary"]
-    has_situation = any(kinds[e] == "situation" for e in ids)
     placed_road = False
     next_seen = False
     for e in ids:
         k = kinds[e]
         if k == "divider":
             continue
-        if k == "summary" and has_situation:
-            continue                                  # placed after the situation slide
         if k in ("workplan", "deliverables") and has_plan:
             if not placed_road:
                 order.append(by_kind["roadmap"])
@@ -274,8 +270,6 @@ def apply(prs, values, plan, s3):
             order += [by_kind[x] for x in ("assumptions", "fees") if x in by_kind]
             next_seen = True
         order.append(e)
-        if k == "situation":
-            order += summary
     if not next_seen:                                 # no Next Steps slide: new slides go before the closing slide
         tail = order.pop() if order else None
         order += [by_kind[x] for x in ("assumptions", "fees") if x in by_kind]
@@ -327,10 +321,7 @@ def _reorder_agenda(prs, ids, kinds, sec, has_assumptions):
     names = [x for x in sec if x]
     if len(names) < 2:
         return
-    new = list(names)
-    # Executive Summary (section 1) after Context (section 2)
-    if len(new) >= 2:
-        new[0], new[1] = new[1], new[0]
+    new = list(names)                                 # Executive Summary stays first (José, 24 Oct)
     if has_assumptions and len(names) >= 4 and names[3]:
         new[3] = f"Assumptions and {names[3]}" if not names[3].lower().startswith("assumptions") else names[3]
     agenda = None
