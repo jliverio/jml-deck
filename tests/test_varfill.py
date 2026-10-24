@@ -288,6 +288,17 @@ check("1.5: approach overview without subtitle, still in place; 1.4 keeps it",
       (overview_subtitle(b15), overview_subtitle(pptx)))
 check("1.5: no steering-meetings slide, 1.4 keeps it", steering_pages(b15) == 0 and steering_pages(pptx) >= 1,
       (steering_pages(b15), steering_pages(pptx)))
+# Oct 25 (Valtrenix run): the deadline sentence and the deliverables slide's workstream label
+dl_rel = wp._deadline_line({"text": "The CEO wants initial recommendations within 12 weeks.", "weeks_available": 12}, 12)
+dl_date = wp._deadline_line({"text": "Recommendations by 1 March 2027", "weeks_available": 16}, 14)
+check("deadline: one period after the brief's text; two weeks to contract named only for a date",
+      ".." not in dl_rel and "contract" not in dl_rel and dl_rel.endswith("12 weeks available.")
+      and dl_date.endswith("allowing two weeks to contract and start."), (dl_rel, dl_date))
+lab = wp._del_label("01 Labor & agency cost baseline", "Diagnostic phase", wp.Inches(0.3),
+                    wp._del_label_size(["01 Labor & agency cost baseline", "05 Scheduling and turnover"]))
+check("deliverables label: a 31-character name is not clipped (8 pt for the page)",
+      lab == (["01 Labor & agency cost baseline", "Diagnostic phase"], 8)
+      and wp._del_label_size(["05 Scheduling and turnover"]) == 9, lab)
 
 failed = [r for r in results if not r[1]]
 for name, ok, detail in results:

@@ -14,6 +14,7 @@ from the numbers (no model writes them), so they can never disagree with the cha
     build_workplan_deck(plan) -> pptx bytes (template with only these slides; for tests)
 """
 import io
+import re
 import os
 
 from pptx.dml.color import RGBColor
@@ -218,6 +219,28 @@ def _ink(fill):
 def _clip(s, n):
     s = " ".join(str(s or "").split())
     return s if len(s) <= n else s[: n - 1].rstrip(" ,.;:") + "…"
+
+
+_NUM_WORDS = {w: i + 1 for i, w in enumerate("one two three four five six seven eight nine ten eleven twelve".split())}
+
+
+def _limit_weeks(text):
+    """Weeks a relative limit names ('within 12 weeks', 'three months'), as Architect input reads it; else None."""
+    m = re.search(r"\b(\d+|" + "|".join(_NUM_WORDS) + r")[\s-]*(weeks?|months?)\b", str(text or ""), re.I)
+    if not m:
+        return None
+    n = int(m.group(1)) if m.group(1).isdigit() else _NUM_WORDS[m.group(1).lower()]
+    return round(n * 52 / 12) if m.group(2).lower().startswith("month") else n
+
+
+def _deadline_line(dl, t):
+    """The timeline's deadline sentence. Architect input takes two weeks off only a calendar date ('by 1 March');
+    a relative limit ('within 12 weeks') or a length written as a limit is the weeks available as it stands (Oct 25)."""
+    text = " ".join(str(dl.get("text") or "").split()).rstrip(" .;:")
+    wa = dl["weeks_available"]
+    fits = "fits within" if t <= wa else "does NOT fit within"
+    allow = ", allowing two weeks to contract and start" if text and _limit_weeks(text) != wa else ""
+    return f"Deadline: {text or 'stated in the brief'}. The plan ({t} weeks) {fits} the {wa} weeks available{allow}."
 
 
 # ------------------------------------------------------------------ titles
@@ -725,8 +748,7 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
     dl = plan.get("deadline")
     if dl and dl.get("weeks_available") is not None:
         t = (plan.get("_weeks_total") or plan["total_duration_weeks"])["max"]   # the client's limit is in weeks
-        fits = "fits within" if t <= dl["weeks_available"] else "does NOT fit within"
-        _text(s, f"Deadline: {dl.get('text') or 'stated in the brief'}. The plan ({t} weeks) {fits} the {dl['weeks_available']} weeks available, allowing two weeks to contract and start.",
+        _text(s, _deadline_line(dl, t),
               size=9, bold=True, color=NAVY, x=L, y=BOTTOM - _LEGEND_H - _DEADLINE_H + Inches(0.05), w=W, h=Inches(0.2))
     # legend
     ly = BOTTOM - Inches(0.18)
@@ -815,6 +837,27 @@ def deliverables_slides(prs, plan, section, client, slide=None):
     return out
 
 
+# Workstream label on the deliverables slide: 2.1 in of text in the 2.3 in column. Characters per line follow the
+# layout checker's Arial estimate (tests/workplan_stress.py), about 12% wider than Arial Bold's measured average, so
+# a name in capitals still fits. Oct 25: the old cut at 29 at 9 pt clipped "01 Labor & agency cost basel…"
+# (Valtrenix run). One size per page: if any name needs 8 pt, every label on the page uses it.
+_DEL_LAB = {9: 30, 8: 33}
+
+
+def _del_label_size(names):
+    return 9 if all(len(" ".join(str(n).split())) <= _DEL_LAB[9] for n in names) else 8
+
+
+def _del_label(name, phase, box_h, size):
+    """(lines, size): the name on one line at the page's size; at 8 pt a longer name takes two lines when the box
+    holds three (stream with two or more deliverables), else it is clipped. The phase line always follows."""
+    name = " ".join(str(name).split())
+    n = _DEL_LAB[size]
+    if len(name) > n and size == 8 and box_h >= Inches(0.46):
+        n = 2 * n - 6                               # slack for word wrap
+    return [_clip(name, n), phase], size
+
+
 def deliverables_slide(prs, plan, section, client, slide=None, items=None, numbering=None, avail=None,
                        page=(0, 1), after=None):
     T = titles(plan)
@@ -850,12 +893,14 @@ def deliverables_slide(prs, plan, section, client, slide=None, items=None, numbe
             runs[-1][1].append(did)
         else:
             runs.append((w, [did]))
+    lab_size = _del_label_size(f"{numbering[w['id']]:02d} {w['name']}" for w, _ in runs)
     for w, ids in runs:
         ids = [i for i in ids if i is not None]
         h = line_h * max(1, len(ids))
         c = _phase_color(w["phase_order"])
         lab = _box(s, L, y + Emu(18288), cols[0][1] - Emu(91440), h - Emu(36576), fill=c)
-        _text(lab, [_clip(f"{numbering[w['id']]:02d} {w['name']}", 29), phases[w["phase_order"]]["name"] + " phase"], size=9, bold=True, color=_ink(c))
+        _text(lab, *_del_label(f"{numbering[w['id']]:02d} {w['name']}", phases[w["phase_order"]]["name"] + " phase",
+                               h - Emu(36576), lab_size), bold=True, color=_ink(c))
         for j, did in enumerate(ids):
             d = dels[did]
             yy = y + j * line_h
