@@ -18,7 +18,7 @@ import varfill, workplan
 from workplan_stress import make_plan, check_slide
 
 TOTALS = (2, 6, 12, 16, 17, 20, 24, 25, 26, 39, 52, 78, 104, 105, 130, 173, 208, 260, 312, 416, 520, 624)
-WS = (3, 7, 12)
+WS = (3, 7, 10, 12)
 
 
 def expected_k(total):
@@ -81,11 +81,12 @@ def run(total, n_ws, outdir=None):
         sq = [x for x in sl.shapes if x.name.startswith("palette:phase")]
         if len(sq) != 5 or any(x.left + x.width > 0 for x in sq):
             probs.append(f"{len(sq)} palette squares, or one on the slide")
-    # José, 24 Oct: rows fill the 7.42 cm (at most 7 a page); no status dots past 16 weeks; labels on gates only
+    # José, 24 Oct: rows fill the 7.42 cm (at most 10 a page); no status dots past 16 weeks; labels on gates only
     import re as _re
     from pptx.enum.shapes import MSO_SHAPE_TYPE
     labs = [x for x in slides[0].shapes if x.has_text_frame and _re.match(r"^\d\d ", x.text_frame.text)]
-    want_h = workplan.WS_AREA_15 * min(len(labs), 7) / (7 if n_ws > 7 else len(labs))
+    cap = workplan.WS_MAX_15
+    want_h = workplan.WS_AREA_15 * min(len(labs), cap) / (cap if n_ws > cap else len(labs))
     span = (max(x.top + x.height for x in labs) - min(x.top for x in labs)) if labs else 0
     if labs and abs(span - want_h) > 30000:
         probs.append(f"rows span {span / 360000:.2f} cm, want {want_h / 360000:.2f}")

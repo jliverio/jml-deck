@@ -367,8 +367,9 @@ _LEGEND_H = Inches(0.25)
 _DEADLINE_H = Inches(0.3)
 
 
-WS_MAX_15 = 7                    # 1.5 (José, 24 Oct): the slide holds at most 7 workstreams ...
-WS_AREA_15 = Emu(2671200)        # ... in at most 7.42 cm, filled by the rows (1.06 cm each at 7)
+WS_MAX_15 = 10                   # 1.5 (José, 24 Oct): the slide holds at most 10 workstreams (was 7) ...
+WS_AREA_15 = Emu(2671200)        # ... in at most 7.42 cm, filled by the rows: at 10, 0.742 cm a row and a
+                                 # 0.69 cm label box with 8 pt Arial (José's measure)
 STATUS_MAX_WEEKS_15 = 16         # 1.5: status meetings drawn only up to 16 weeks (José, 24 Oct)
 PHASE_SHORT = {"Diagnostic": "Diag.", "Research": "Res.", "Design": "Des.", "Pilot": "Pilot",
                "Implementation": "Impl.", "Change & Training": "C&T", "Measurement": "Meas.", "Handover": "Hand."}
@@ -635,6 +636,8 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
         y = yr + i * row_h
         c = _phase_color(w["phase_order"])
         lab = _box(s, L, y + Emu(9144), label_w - Emu(27432), row_h - Emu(18288), fill=c)
+        if unit is not None:                        # 1.5: two 8 pt lines fit the 0.69 cm box only without
+            lab.text_frame.margin_top = lab.text_frame.margin_bottom = Emu(0)   # the default top/bottom inset
         _text(lab, _clip(f"{numbering[w['id']]:02d} {w['name']}", chars_line * (2 if two_lines else 1)),
               size=lsize, bold=True, color=_ink(c))
         bx = gx + (w["start_week"] - 1) * col + Emu(18288)
