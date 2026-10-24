@@ -142,6 +142,8 @@ def check_slide(sl, sw, sh, idx):
     for s in sl.shapes:
         if s.left is None:
             continue
+        if s.name.startswith("palette:") or (s.left + s.width <= 0):   # 1.5: colour squares on the pasteboard, by design
+            continue
         if s.left < -Emu(9144) or s.top < -Emu(9144) or s.left + s.width > sw + Emu(9144) or s.top + s.height > sh + Emu(9144):
             probs.append(f"s{idx}: '{s.name}' outside slide")
         if getattr(s, "has_text_frame", False) and s.text_frame.text.strip() and not s.is_placeholder:

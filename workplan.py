@@ -181,6 +181,21 @@ def _phase_color(order):
     return _PALETTE[(order - 1) % len(_PALETTE)]
 
 
+def _palette_swatches(slide):
+    """José, 24 Oct: the five phase blues as squares just left of the slide, on the pasteboard, so whoever edits
+    the deck can pick them up. Off the slide they never show in the presentation, a PDF or a print."""
+    sq, gap = Emu(504000), Emu(108000)                 # 1.4 cm squares, 0.3 cm apart
+    x = -(sq + Emu(144000))                            # 0.4 cm left of the slide edge
+    _text(slide, "Phase colours", size=7, bold=True, color=GREY, x=x, y=TOP - Inches(0.28), w=sq, h=Inches(0.22))
+    for k, c in enumerate(PHASE_BLUES):
+        b = _box(slide, x, TOP + k * (sq + gap), sq, sq, fill=c)
+        b.name = f"palette:phase{k + 1}"
+        hexa = "#%02X%02X%02X" % (c[0], c[1], c[2])
+        ink = WHITE if 1.05 / (_lum(c) + 0.05) >= 4.5 else NAVY
+        _text(b, [f"Phase {k + 1}", hexa], size=6.5, bold=True, color=ink, align=PP_ALIGN.CENTER)
+        b.text_frame.margin_left = b.text_frame.margin_right = Emu(0)
+
+
 def _lum(c):
     ch = [x / 255 for x in (c[0], c[1], c[2])]
     ch = [x / 12.92 if x <= 0.04045 else ((x + 0.055) / 1.055) ** 2.4 for x in ch]
@@ -531,6 +546,8 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
 
     _text(s, f"Initial view – to confirm with {client}", size=10, italic=True, color=GREY,
           align=PP_ALIGN.RIGHT, x=L + W - Inches(4), y=TOP - Inches(0.28), w=Inches(4), h=Inches(0.22))
+    if unit is not None:
+        _palette_swatches(s)
 
     label_w = Inches(1.85)
     gx = L + label_w
