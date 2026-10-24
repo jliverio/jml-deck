@@ -2,14 +2,12 @@
 
 - Section dividers are left out.
 - The executive summary stays the first slide after the cover and the agenda (José, 24 Oct).
-- The timeline pages ("Plan by workstream") give way to one slide built like the approach overview before it
-  (José, 24 Oct: "same structure as the previous one"; interim until he says how the slide is to be used):
-  one column per phase listing its workstreams and their weeks, the decision that closes it and what it hands
-  over, and a strip with the length, the client's limit and what the appendix holds (workplan.phase_work_slide).
-  The custom Gantt roadmap (_Builder.roadmap) is no longer drawn.
-- The appendix comes after the closing slide, for an executive reader (José, 24 Oct): the timeline pages, then
-  "Deliverables by workstream" (the steering-meetings slide refers readers to it), then the assumptions the
-  draft rests on (payload s3.assumptions), which explain our rationale to readers who want it.
+- The template's own timeline ("Plan by workstream", 1-2 pages) stays in the story, right after the approach
+  overview (José, 24 Oct: slide 7 keeps the 1.4 timeline's structure; he will explain how to use it for long
+  plans). The custom one-page roadmaps tried on 23-24 Oct are gone.
+- The appendix comes after the closing slide, for an executive reader (José, 24 Oct): "Deliverables by
+  workstream" (the steering-meetings slide refers readers to it), then the assumptions the draft rests on
+  (payload s3.assumptions), which explain our rationale to readers who want it.
 - New slide: a "[Firm to complete] Fees" placeholder before Next Steps (no team slide and no price: the firm
   completes both).
 - The agenda follows the new order; the situation slide's box reads "Hypothesis to test".
@@ -22,14 +20,11 @@ from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.oxml.ns import qn
 from pptx.util import Emu, Pt
 
-import workplan as wp
-
 NAVY = RGBColor(0x14, 0x2B, 0x4C)
 TEAL = RGBColor(0x2E, 0x86, 0x8C)
 GREY = RGBColor(0xE6, 0xE9, 0xEE)
 INK = RGBColor(0x22, 0x22, 0x22)
 MUTED = RGBColor(0x6B, 0x72, 0x80)
-RED = RGBColor(0xC0, 0x39, 0x2B)
 WHITE = RGBColor(0xFF, 0xFF, 0xFF)
 
 X0, Y0 = 554736, 1700000      # content area under the subtitle (Default layout of template 1.4)
@@ -62,18 +57,6 @@ def _weeks(d):
     d = d or {}
     lo, hi = d.get("min"), d.get("max")
     return f"{hi}" if lo == hi else f"{lo}–{hi}"
-
-
-def _road_title(plan, deadline):
-    phases = plan.get("phases") or []
-    total = max([int(p["end_week"]) for p in phases] + [int(deadline or 0)])
-    n = len(phases)
-    span = plan.get("total_duration_weeks") or {}
-    length = (f"about {round(total / 4.33)} months" if total > 26
-              else f"{_weeks(span) if span else total} weeks")
-    word = NUM_WORDS[n] if n < len(NUM_WORDS) else str(n)
-    return (f"The work runs {word} phase{'s' if n != 1 else ''} over {length}, "
-            f"with a decision at the end of {'each phase' if n != 1 else 'it'}")
 
 
 class _Builder:
@@ -119,66 +102,6 @@ class _Builder:
         ln.line.color.rgb = color
         ln.line.width = Pt(width)
         return ln
-
-    # ---------- one-page Gantt roadmap (not drawn since 24 Oct; kept until José says how slide 7 is used) ----------
-    def roadmap(self, plan, deadline, label):
-        phases = plan.get("phases") or []
-        ws = plan.get("workstreams") or []
-        total = max([int(p["end_week"]) for p in phases] + [int(deadline or 0)])
-        months = total > 26
-        lab = 2000000                       # left label column (a 28-character workstream name fits at 8 pt)
-        gx, gw = X0 + lab, self.CW - lab
-        wx = lambda wk: gx + int(gw * (wk - 1) / total)
-        n = len(phases)
-        title = _road_title(plan, deadline)
-        # Fit: phase rows (block + decision label) and one row per workstream, in the content area.
-        avail = YMAX - Y0 - 300000 - 120000
-        ph_row, gap = 760000, 80000
-        ws_h = (avail - n * (ph_row + gap)) // max(1, len(ws)) if ws else 0
-        if ws and ws_h < 160000:            # try compact phase rows
-            ph_row, gap = 620000, 40000
-            ws_h = (avail - n * (ph_row + gap)) // max(1, len(ws))
-        show_ws = bool(ws) and ws_h >= 160000
-        ws_h = min(ws_h, 250000) if show_ws else 0
-        if not show_ws and n:
-            ph_row = min(1000000, (avail - n * gap) // n)
-        subtitle = "Roadmap: phases, decisions and workstreams" if show_ws else "Roadmap: phases and decisions (workstreams in the appendix)"
-        s = self.slide(title, subtitle, label)
-        y = Y0
-        step = 4 if months else (1 if total <= 16 else 2)
-        for wk in range(1, total + 1, step):
-            self.box(s, wx(wk), y, min(int(gw / total * step), gx + gw - wx(wk)), 260000,
-                     f"M{(wk - 1) // 4 + 1}" if months else f"W{wk}", size=9, color=MUTED)
-        y += 300000
-        blk = min(420000, ph_row - 300000)
-        for p in phases:
-            x1, x2 = wx(int(p["start_week"])), wx(int(p["end_week"]) + 1)
-            self.box(s, X0, y, lab - 80000, blk, p["name"], size=12, bold=True, color=NAVY, anchor=MSO_ANCHOR.MIDDLE)
-            self.box(s, x1, y, x2 - x1 - 60000, blk, f"{p['name']} · {_weeks(p.get('duration_weeks'))} weeks",
-                     size=10, bold=True, color=WHITE, fill=NAVY, anchor=MSO_ANCHOR.MIDDLE)
-            g = p.get("gate") or {}
-            dsz = min(300000, blk - 120000)
-            self.box(s, x2 - dsz + 40000, y + (blk - dsz) // 2, dsz, dsz, "", fill=TEAL, shape=MSO_SHAPE.DIAMOND)
-            if g.get("label"):
-                lw = min(2600000, x2 - X0 - lab + 400000)
-                self.box(s, max(X0 + lab, x2 - lw), y + blk + 20000, lw, 240000, "◆ " + g["label"],
-                         size=9, color=TEAL, align=PP_ALIGN.RIGHT)
-            y += ph_row
-            if show_ws:
-                for w in [w for w in ws if w.get("phase_order") == p.get("order")]:
-                    self.box(s, X0 + 150000, y, lab - 230000, ws_h - 10000, w.get("name", ""), size=8,
-                             anchor=MSO_ANCHOR.MIDDLE, tight=True)
-                    self.box(s, wx(int(w["start_week"])), y + ws_h // 5,
-                             wx(int(w["end_week"]) + 1) - wx(int(w["start_week"])) - 60000, ws_h * 3 // 5, "", fill=GREY)
-                    y += ws_h
-            y += gap
-        if deadline:
-            x = wx(int(deadline) + 1) - 20000
-            yb = min(y, YMAX - 280000)
-            self.line(s, x, Y0 + 280000, x, yb, RED, 1.75)
-            self.box(s, x - 2200000, yb, 2180000, 260000, f"Client's limit: end of week {deadline}",
-                     size=9, bold=True, color=RED, align=PP_ALIGN.RIGHT)
-        return s, show_ws
 
     # ---------- assumptions ----------
     def assumptions(self, items, label):
@@ -253,31 +176,23 @@ def apply(prs, values, plan, s3):
 
     # new slides (appended; placed below)
     has_plan = bool(plan.get("phases"))
-    client = str(plan.get("client") or values.get("workplan_client") or "[Client]")
-    road, show_ws = ((wp.phase_work_slide(prs, plan, label_approach, client, _road_title(plan, s3.get("deadline_weeks")),
-                                          s3.get("deadline_weeks")) if has_plan else (None, False)))
     items = [a for a in (s3.get("assumptions") or []) if str(a.get("text", "")).strip()]
     assum = b.assumptions(items[:5], "Appendix") if items else None
     fees = b.fees(plan, label_next)
     if not items:
         warnings.append("S3: no assumptions in the payload; the assumptions slide is left out")
     new = {el: k for el, k in zip(list(lst)[len(ids):],
-                                  [k for k, v in (("roadmap", road), ("assumptions", assum), ("fees", fees)) if v is not None])}
+                                  [k for k, v in (("assumptions", assum), ("fees", fees)) if v is not None])}
     by_kind = {k: el for el, k in new.items()}
 
     order, appendix = [], []
-    placed_road = False
     next_seen = False
     for e in ids:
         k = kinds[e]
         if k == "divider":
             continue
-        if k in ("workplan", "deliverables") and has_plan:
-            if not placed_road:
-                order.append(by_kind["roadmap"])
-                placed_road = True
-            # both go to the appendix (José, 24 Oct: executive level). The steering-meetings slide sends readers
-            # to the deliverables page; the work-plan slide's strip names the timeline and the deliverables.
+        if k == "deliverables" and has_plan:
+            # appendix (José, 24 Oct: executive level); the steering-meetings slide sends readers to it
             appendix.append(e)
             continue
         if k == "next":
@@ -289,10 +204,8 @@ def apply(prs, values, plan, s3):
         order += [by_kind[x] for x in ("fees",) if x in by_kind]
         if tail is not None:
             order.append(tail)
-    if has_plan and not placed_road:
-        warnings.append("S3: no timeline pages found; the roadmap is left out")
     if "assumptions" in by_kind:
-        appendix.append(by_kind["assumptions"])       # last: after the timeline and deliverables (José, 24 Oct)
+        appendix.append(by_kind["assumptions"])       # last: after the deliverables (José, 24 Oct)
     if appendix:
         order = order + appendix                      # after the closing slide (José, 24 Oct)
         for e in appendix:                            # the tracker (top right) reads "Appendix" on every one
@@ -300,8 +213,6 @@ def apply(prs, values, plan, s3):
             for ph in (sl.placeholders if sl is not None else []):
                 if ph.placeholder_format.idx == 17:
                     ph.text_frame.text = "Appendix"
-    if has_plan and placed_road and not show_ws:
-        warnings.append("S3: not every workstream fits the work-plan slide; the rest are in the appendix timeline")
 
     for e in list(lst):
         lst.remove(e)
