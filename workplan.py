@@ -393,9 +393,10 @@ _DEADLINE_H = Inches(0.3)
 WS_MAX_15 = 10                   # 1.5 (José, 24 Oct): the slide holds at most 10 workstreams (was 7) ...
 WS_AREA_15 = Emu(2671200)        # ... in at most 7.42 cm, filled by the rows: at 10, 0.742 cm a row and a
                                  # 0.69 cm label box with 8 pt Arial (José's measure)
-SCOPE_H = Inches(1.4)            # approach overview, trial (José, 24 Oct): the scope box under each phase
+SCOPE_H = Inches(1.4)            # approach overview (José, 24-25 Oct): the scope box under each phase
 SCOPE_PT = {1: 12, 2: 12, 3: 11, 4: 11, 5: 10}   # its type size by number of phases
-SCOPE_COMPACT = False            # trial: smaller chevrons and strip, the scope box takes the room freed
+SCOPE_MAX = {1: 300, 2: 300, 3: 300, 4: 220, 5: 220}   # José, 25 Oct: the planner writes at most this many
+                                 # characters per phase; past it the renderer cuts (the plan check should stop it first)
 STATUS_MAX_WEEKS_15 = 16         # 1.5: status meetings drawn only up to 16 weeks (José, 24 Oct)
 PHASE_SHORT = {"Diagnostic": "Diag.", "Research": "Res.", "Design": "Des.", "Pilot": "Pilot",
                "Implementation": "Impl.", "Change & Training": "C&T", "Measurement": "Meas.", "Handover": "Hand."}
@@ -1005,9 +1006,9 @@ def _list(items):
 
 
 def roadmap_slide(prs, plan, section, client, slide=None):
-    """Approach overview: one column per phase (what it answers, when it ends,
+    """Approach overview: one column per phase (its scope or what it answers, when it ends,
     the decision that closes it) and a governance strip. Everything is read
-    from the plan; nothing here is written by a model."""
+    from the plan; the scope and decision texts are the planner's, the rest is built here."""
     s = _new_slide(prs, titles(plan)["roadmap"], "Approach overview: phases, decisions and how we work together",
                    section, slide=slide)
     if plan.get("_unit"):
@@ -1022,12 +1023,9 @@ def roadmap_slide(prs, plan, section, client, slide=None):
     cw = (W - gap * (n - 1)) / n
     chev_h = Inches(0.62)
     y = TOP - Inches(0.2) if plan.get("_unit") else TOP   # 1.5: the subtitle is gone, the content moves up into its room
-    scoped = any(str(p.get("scope") or "").strip() for p in phases)   # trial: plans with a scope per phase
-    strip_h = Inches(0.85) if scoped and SCOPE_COMPACT else Inches(1.0)
-    # scope box: what is left between the chevrons and the gate block, above the governance strip
-    dec_h = Inches(0.7) if n >= 5 else Inches(0.6)
-    scope_h = (BOTTOM - strip_h - Inches(0.05) - Inches(0.08) - (Inches(0.05) + Inches(0.48) + dec_h)
-               - (y + chev_h + Inches(0.5))) if scoped and SCOPE_COMPACT else SCOPE_H
+    scoped = any(str(p.get("scope") or "").strip() for p in phases)   # plans whose planner wrote a scope per phase
+    strip_h = Inches(1.0)
+    scope_h = SCOPE_H
     gates = {e["phase_order"]: e for e in events if e["type"] == "gate"}
     kick = next((e for e in events if e["type"] == "kickoff"), None)
     for i, p in enumerate(phases):
@@ -1059,13 +1057,13 @@ def roadmap_slide(prs, plan, section, client, slide=None):
         _text(s, _clip(starts, int((cw - Inches(0.1)) / Inches(0.075))), size=10, italic=True, color=GREY,
               anchor=MSO_ANCHOR.TOP, x=x, y=y + chev_h + Inches(0.08), w=cw - Inches(0.1), h=Inches(0.22))
         if scoped:
-            # José, 24 Oct (trial): the phase's scope in the client's own terms replaces "What it answers"; the
-            # gate block moves down into the room the decision text left free
+            # José, 24-25 Oct: the phase's scope in the client's own terms replaces "What it answers" (at most
+            # 300 characters for 1-3 phases, 220 for 4-5); the gate block moves down into the room left free
             top = Inches(0.58)
             _text(s, "Scope", size=9, bold=True, color=GREY, anchor=MSO_ANCHOR.TOP,
                   x=x, y=y + chev_h + top - Inches(0.22), w=cw, h=Inches(0.2))
-            _text(s, str(p.get("scope") or ""), size=SCOPE_PT[min(n, 5)], anchor=MSO_ANCHOR.TOP,
-                  x=x, y=y + chev_h + top, w=cw - Inches(0.1), h=scope_h)
+            _text(s, _clip(p.get("scope") or p.get("objective_one_line", ""), SCOPE_MAX[min(n, 5)]),
+                  size=SCOPE_PT[min(n, 5)], anchor=MSO_ANCHOR.TOP, x=x, y=y + chev_h + top, w=cw - Inches(0.1), h=scope_h)
             gy = y + chev_h + top + scope_h + Inches(0.05)
         else:
             # what the phase answers

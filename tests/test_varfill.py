@@ -300,6 +300,29 @@ check("deliverables label: a 31-character name is not clipped (8 pt for the page
       lab == (["01 Labor & agency cost baseline", "Diagnostic phase"], 8)
       and wp._del_label_size(["05 Scheduling and turnover"]) == 9, lab)
 
+# Oct 25 (José): the planner's scope per phase replaces "What it answers" on the overview, cut at 300 characters
+# for 1-3 phases and 220 for 4-5 if the plan check let a longer one through; a phase without one keeps its objective
+import copy  # noqa: E402
+def overview_texts(b):
+    for sl in Presentation(io.BytesIO(b)).slides:
+        if any(sh.name == "workplan:roadmap" for sh in sl.shapes):
+            return [sh.text_frame.text for sh in sl.shapes if sh.has_text_frame]
+    return []
+wps = copy.deepcopy(NAV["workplan"])
+phs = sorted(wps["phases"], key=lambda q: q["order"])
+nph = len(phs)
+long_scope = "Interview 12 regional sales managers and map every distributor contract in Iberia; " * 6
+phs[0]["scope"] = "Interview 12 regional sales managers and map the distributor contracts in Iberia."
+phs[1]["scope"] = long_scope
+bsc = varfill.build_deck(v, NAV["rules"], workplan=wps, version="1.5", s3={"assumptions": []})[0]
+ot = overview_texts(bsc)
+cut = [t for t in ot if t.startswith("Interview 12 regional") and t.endswith("…")]
+check("overview: scope replaces 'What it answers'; a long one is cut at the limit; no scope keeps the objective",
+      "Scope" in ot and "What it answers" not in ot and phs[0]["scope"] in ot
+      and cut and len(cut[0]) <= wp.SCOPE_MAX[min(nph, 5)]
+      and (nph < 3 or phs[2].get("objective_one_line", "") in ot), (nph, [t[:60] for t in ot][:12]))
+check("overview: no scope in the plan, 'What it answers' as before", "What it answers" in overview_texts(b15), None)
+
 failed = [r for r in results if not r[1]]
 for name, ok, detail in results:
     print(("PASS " if ok else "FAIL ") + name + ("" if ok else f"  -> {detail}"))
