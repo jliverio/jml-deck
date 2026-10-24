@@ -182,12 +182,18 @@ def _phase_color(order):
 
 
 def _palette_swatches(slide):
-    """José, 24 Oct: the five phase blues as squares just left of the slide, on the pasteboard, so whoever edits
-    the deck can pick them up. Off the slide they never show in the presentation, a PDF or a print."""
+    """José, 24 Oct: the five phase colours as squares just left of the slide, on the pasteboard, so whoever edits
+    the deck can pick them up. Off the slide they never show in the presentation, a PDF or a print. The template
+    carries the blues; each timeline page is redrawn with the colours its deck uses (the blues in 1.5, the 1.4
+    colours in 1.4), so the squares never disagree with the bars."""
+    for sh in list(slide.shapes):                      # the template's own squares give way to this deck's palette
+        if sh.name.startswith("palette:"):
+            sh._element.getparent().remove(sh._element)
     sq, gap = Emu(504000), Emu(108000)                 # 1.4 cm squares, 0.3 cm apart
     x = -(sq + Emu(144000))                            # 0.4 cm left of the slide edge
-    _text(slide, "Phase colours", size=7, bold=True, color=GREY, x=x, y=TOP - Inches(0.28), w=sq, h=Inches(0.22))
-    for k, c in enumerate(PHASE_BLUES):
+    lab = _text(slide, "Phase colours", size=7, bold=True, color=GREY, x=x, y=TOP - Inches(0.28), w=sq, h=Inches(0.22))
+    lab.name = "palette:label"
+    for k, c in enumerate(_PALETTE[:5]):               # the colours this deck draws its phases in
         b = _box(slide, x, TOP + k * (sq + gap), sq, sq, fill=c)
         b.name = f"palette:phase{k + 1}"
         hexa = "#%02X%02X%02X" % (c[0], c[1], c[2])
@@ -505,9 +511,11 @@ def _dur(plan, p):
 
 
 # ------------------------------------------------------------------ slide 1: timeline
-def timeline_slides(prs, plan, section, client, slide=None, unit_scale=False):
+def timeline_slides(prs, plan, section, client, slide=None, unit_scale=False, swatches=False):
     """One or more timeline pages (each holds whole phases where possible). unit_scale: template 1.5's
-    rule, at most 24 boxes of one unit (time_unit); otherwise one column per week, as in 1.4."""
+    rule, at most 24 boxes of one unit (time_unit); otherwise one column per week, as in 1.4. swatches: the
+    phase-colour squares beside every page, redrawn in this deck's colours (when the template slide carries them:
+    1.4 and 1.5; 1.3 does not)."""
     if unit_scale:
         plan = scaled(plan)
     avail, cap = _timeline_capacity(plan)
@@ -520,12 +528,12 @@ def timeline_slides(prs, plan, section, client, slide=None, unit_scale=False):
     for i, rows in enumerate(pages):
         out.append(timeline_slide(prs, plan, section, client, rows=rows, numbering=numbering, avail=avail,
                                   page=(i, len(pages)), slide=slide if i == 0 else None,
-                                  after=(out[-1] if (i and slide is not None) else None)))
+                                  after=(out[-1] if (i and slide is not None) else None), swatches=swatches))
     return out
 
 
 def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=None, avail=None,
-                   page=(0, 1), after=None):
+                   page=(0, 1), after=None, swatches=False):
     T = titles(plan)
     ranged = any(p["duration_weeks"]["min"] != p["duration_weeks"]["max"] for p in plan["phases"])
     title = T["timeline"] + (" (continued)" if page[0] else "")
@@ -546,8 +554,8 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
 
     _text(s, f"Initial view – to confirm with {client}", size=10, italic=True, color=GREY,
           align=PP_ALIGN.RIGHT, x=L + W - Inches(4), y=TOP - Inches(0.28), w=Inches(4), h=Inches(0.22))
-    if unit is not None:
-        _palette_swatches(s)
+    if swatches:
+        _palette_swatches(s)                           # every timeline page, 1.4 and 1.5 (José, 24 Oct)
 
     label_w = Inches(1.85)
     gx = L + label_w
@@ -1044,7 +1052,9 @@ def _fill_marked(prs, plan, marked, client):
     if "roadmap" in marked:
         out.append(roadmap_slide(prs, plan, "", client, slide=marked["roadmap"]))
     if "timeline" in marked:
-        out += timeline_slides(prs, plan, "", client, slide=marked["timeline"])
+        # the squares come with the template: 1.4 (and 1.5, built on it) carries them, 1.3 does not
+        sw = any(sh.name.startswith("palette:") for sh in marked["timeline"].shapes)
+        out += timeline_slides(prs, plan, "", client, slide=marked["timeline"], swatches=sw)
     if "deliverables" in marked:
         out += deliverables_slides(prs, plan, "", client, slide=marked["deliverables"])
     if "steering" in marked:

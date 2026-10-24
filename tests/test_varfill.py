@@ -14,6 +14,7 @@ sys.path.insert(0, ROOT)
 
 from pptx import Presentation  # noqa: E402
 import varfill  # noqa: E402
+import workplan as wp  # noqa: E402
 
 RULES = json.load(open(os.path.join(ROOT, "variables", "template_variables.json")))
 METALCO = json.load(open(os.path.join(HERE, "metalco.json")))
@@ -259,6 +260,20 @@ check("1.5: no situation title -> no duplicate slide parts, one assumptions slid
 prs5, tx5 = texts(varfill.build_deck(NAV["values"], NAV["rules"], workplan=None, version="1.4")[0])
 check("1.4 without a plan: overview marked [Firm to complete]",
       any(t[0] == 9 and t[2].startswith("[Firm to complete] Approach overview") for t in tx5))
+
+
+# Oct 24 (José): five phase-colour squares beside every timeline page, off the slide, in the colours the deck uses
+def squares(b):
+    prs = Presentation(io.BytesIO(b))
+    return [[(x.left + x.width <= 0, str(x.fill.fore_color.rgb)) for x in sl.shapes if x.name.startswith("palette:phase")]
+            for sl in prs.slides if any(x.name.startswith("palette:") for x in sl.shapes)]
+sq14 = squares(pptx)
+check("1.4: squares beside the timeline, off the slide, in the 1.4 colours",
+      sq14 and all(len(p) == 5 and all(off for off, _ in p) for p in sq14)
+      and [c for _, c in sq14[0]] == [str(c) for c in wp.PHASE_COLORS], sq14)
+sq15 = squares(b15)
+check("1.5: squares in the phase blues", sq15 and [c for _, c in sq15[0]] == [str(c) for c in wp.PHASE_BLUES], sq15)
+check("1.3: no squares", not squares(b13), squares(b13))
 
 failed = [r for r in results if not r[1]]
 for name, ok, detail in results:

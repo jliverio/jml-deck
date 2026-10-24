@@ -6,7 +6,7 @@ Draws the timeline with unit_scale=True for plans of 2 to 624 weeks and 3 to 12 
 the unit is the smallest of week, month, bi-month, quarter, four-month period, semester that fits 24 boxes;
 every header box is one unit; phases follow each other with no shared box; every bar, diamond and meeting
 sits inside its phase; one marker per box on the timeline, while the steering slides keep every meeting; and
-the slide passes the layout checks of workplan_stress.py. Past 24 semesters
+the slide passes the layout checks of workplan_stress.py, and five phase-colour squares sit off the slide. Past 24 semesters
 time_unit must return None. Exits 1 on any failure.
 """
 import io, os, sys
@@ -68,7 +68,7 @@ def run(total, n_ws, outdir=None):
     lst = prs.slides._sldIdLst
     for el in list(lst):
         prs.part.drop_rel(el.rId); lst.remove(el)
-    slides = workplan.timeline_slides(prs, plan, "Approach", "The Navigator Company", unit_scale=True)
+    slides = workplan.timeline_slides(prs, plan, "Approach", "The Navigator Company", unit_scale=True, swatches=True)
     hdr = [s for s in slides[0].shapes if s.has_text_frame and s.text_frame.text == head]
     if not hdr:
         probs.append(f"no '{head}' header")
@@ -76,6 +76,10 @@ def run(total, n_ws, outdir=None):
               and s.top == min((x.top for x in slides[0].shapes if x.has_text_frame and x.text_frame.text.isdigit()), default=0)]
     if len(labels) != n:
         probs.append(f"{len(labels)} header boxes for {n} {many}")
+    for sl in slides:                       # five squares beside every page, all off the slide (José, 24 Oct)
+        sq = [x for x in sl.shapes if x.name.startswith("palette:phase")]
+        if len(sq) != 5 or any(x.left + x.width > 0 for x in sq):
+            probs.append(f"{len(sq)} palette squares, or one on the slide")
     # the other plan slides in the same unit (José, 24 Oct)
     sp = workplan.scaled(plan)
     workplan.roadmap_slide(prs, sp, "Approach", "The Navigator Company")
