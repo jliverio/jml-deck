@@ -47,7 +47,8 @@ function validatePlan(arch, ctx) {
   const scList = ctx.success_criteria_list || [];
   const never = (ctx.jargon_never || []).map(x => String(x).replace(/\s*\(.*\)\s*/, '').trim().toLowerCase()).filter(Boolean);
   // The partner's own split of the work (Brief Organizer soft_fields.workstreams), when the email gives one.
-  // It replaces the 2-4 per phase default: any length, any number per phase, at most 12 rows (José, Oct 18).
+  // It replaces the 2-4 per phase default: any length, any number per phase, at most 7 rows (José, Oct 24: the
+  // timeline slide holds 7 workstreams; it was 12 from Oct 18).
   const wsf = ((brief.soft_fields || {}).workstreams) || {};
   const statedStreams = (wsf.value != null && Number.isInteger(wsf.count) && wsf.count > 0) ? wsf.count : null;
 
@@ -93,11 +94,11 @@ function validatePlan(arch, ctx) {
   const wss = (arch.workstreams || []).map(w => ({ ...w }));
   const wsById = {};
   wss.forEach(w => { if (wsById[w.id]) v.push(`ws:${w.id}:duplicate_id`); wsById[w.id] = w; });
-  if (wss.length > 12) v.push(`ws:count_${wss.length}_over_12`);  // the deck pages the timeline at 8 rows
+  if (wss.length > 7) v.push(`ws:count_${wss.length}_over_7`);  // the timeline slide holds 7 rows (José, Oct 24)
   if (statedStreams) {
     // one name per stream: a stream that runs in several phases repeats its name in each
     const distinct = new Set(wss.map(w => String(w.name || '').trim().toLowerCase())).size;
-    const want = Math.min(statedStreams, 12);
+    const want = Math.min(statedStreams, 7);
     if (distinct !== want) v.push(`ws:streams_${distinct}_vs_stated_${want}`);
   }
   for (const w of wss) {
@@ -145,8 +146,9 @@ function validatePlan(arch, ctx) {
     const mine = wss.filter(w => w.phase_order === p.order && w.start_week != null);
     p.workstream_ids = mine.map(w => w.id);
     if (!mine.length) { v.push(`phase:${p.name}:no_workstreams`); continue; }
-    const minCount = (statedStreams || p.duration_weeks.max <= 3) ? 1 : 2;
-    const maxCount = statedStreams ? 12 : 4;
+    // 2 per phase would pass 7 rows in a plan of 4 or 5 phases: there a phase may have 1
+    const minCount = (statedStreams || p.duration_weeks.max <= 3 || phases.length >= 4) ? 1 : 2;
+    const maxCount = statedStreams ? 7 : 4;
     if (mine.length < minCount || mine.length > maxCount) v.push(`phase:${p.name}:workstreams_${mine.length}`);
     const idle = [];
     for (let wk = p.start_week; wk <= p.end_week; wk++) if (!mine.some(w => w.start_week <= wk && w.end_week >= wk)) idle.push(wk - p.start_week + 1);
@@ -940,7 +942,31 @@ const input = $('Architect input').first().json.architect_input;
 // which agent just answered, and on which pass (0 = first answer, 1 = retry)
 let prevName = null, prevRun = null;
 try { prevName = $prevNode.name; prevRun = $prevNode.runIndex; } catch (e) { /* not available */ }
-const out0 = ($json && $json.output) || null;
+// The Phase Architect answers as text (no output parser since Oct 21: its first answers came back as
+// {"output": "<JSON as a string>"} and the parser, even with a fixer, rejected them). Parse it here: strip a code
+// fence, take the outermost {...}, unwrap {"output": ...}, parse a JSON string inside it. Parsed answers pass through.
+// A streamed answer comes back with a newline between chunks, inside keys and strings too (runs 930, 931): when the text
+// does not parse, it is parsed again without its raw line breaks, which valid JSON never needs.
+function parseAnswer(j) {
+  if (!j || j.error) return j || {};
+  let o = j.output;
+  for (let k = 0; k < 3; k++) {
+    if (typeof o === 'string') {
+      const s = o.trim().replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '');
+      const a = s.indexOf('{'), b = s.lastIndexOf('}');
+      if (a < 0 || b < a) return { error: 'format: the answer holds no JSON object' };
+      const t = s.slice(a, b + 1);
+      try { o = JSON.parse(t); } catch (e) {
+        try { o = JSON.parse(t.replace(/[\r\n]/g, '')); } catch (e2) { return { error: 'format: invalid JSON (' + e.message + ')' }; }
+      }
+    }
+    if (o && typeof o === 'object' && !Array.isArray(o) && Object.keys(o).length === 1 && 'output' in o) { o = o.output; continue; }
+    break;
+  }
+  return o && typeof o === 'object' && !Array.isArray(o) ? { output: o } : { error: 'format: the answer is not a JSON object' };
+}
+const cur = parseAnswer($json);
+const out0 = cur.output || null;
 let stage = ORDER.find(s => AGENT[s] === prevName);
 if (!stage) stage = out0 && out0.events ? 'gov' : out0 && out0.deliverables ? 'del' : out0 && out0.workstreams ? 'ws' : 'lead';
 // $prevNode.runIndex is the agent's run (Oct 21 probe, execution 827). The fallback counts the agent's runs; it is not
@@ -949,7 +975,7 @@ const runsOf = name => { let k = 0; try { while (k < 5) { const a = $(name).all(
 const pass = Number.isInteger(prevRun) ? prevRun : Math.max(0, runsOf(AGENT[stage]) - 1);
 
 // the state so far: the Phase Architect input plus each agent's latest answer up to this one
-const latest = s => { if (s === stage) return $json || {}; try { return $(AGENT[s]).first().json || {}; } catch (e) { return null; } };
+const latest = s => { if (s === stage) return cur; try { return parseAnswer($(AGENT[s]).first().json || {}); } catch (e) { return null; } };
 const state = { input };
 for (const s of ORDER) {
   const j = latest(s);
@@ -960,7 +986,7 @@ for (const s of ORDER) {
   if (s === stage) break;
 }
 
-const agentError = $json && $json.error ? String($json.error.message || $json.error) : (out0 ? '' : 'no answer');
+const agentError = cur.error ? String(cur.error.message || cur.error) : (out0 ? '' : 'no answer');
 let violations;
 if (agentError) violations = ['agent_error: ' + agentError];
 else {
