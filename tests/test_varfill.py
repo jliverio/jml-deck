@@ -246,6 +246,16 @@ v = dict(NAV["values"]); v["situation_title_01"] = ""
 prs2, tx2 = texts(varfill.build_deck(v, NAV["rules"], workplan=NAV["workplan"], version="1.4")[0])
 check("1.4: no situation title -> slide dropped",
       len(prs2.slides) == n14 - 1 and not any(t[2].startswith("Where things stand") for t in tx2), len(prs2.slides))
+# 1.5 after a dropped slide: the S3 layout adds slides; every part name stays unique (run 1619, 24 Oct)
+import zipfile  # noqa: E402
+b15, _w = varfill.build_deck(v, NAV["rules"], workplan=NAV["workplan"], version="1.5",
+                             s3={"assumptions": [{"id": "A1", "text": "An assumption", "if_wrong": "What changes"}]})
+names = zipfile.ZipFile(io.BytesIO(b15)).namelist()
+p15 = Presentation(io.BytesIO(b15))
+titles15 = [s.shapes.title.text_frame.text if s.shapes.title is not None else "" for s in p15.slides]
+check("1.5: no situation title -> no duplicate slide parts, one assumptions slide",
+      len(names) == len(set(names)) and sum(1 for t in titles15 if t.startswith("This draft rests on")) == 1,
+      [n for n in names if names.count(n) > 1][:3])
 prs5, tx5 = texts(varfill.build_deck(NAV["values"], NAV["rules"], workplan=None, version="1.4")[0])
 check("1.4 without a plan: overview marked [Firm to complete]",
       any(t[0] == 9 and t[2].startswith("[Firm to complete] Approach overview") for t in tx5))

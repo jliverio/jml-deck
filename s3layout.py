@@ -153,6 +153,11 @@ def apply(prs, values, plan, s3):
     sec_names = {x for x in sec if x}
     b = _Builder(prs)
     lst = prs.slides._sldIdLst
+    # Name the slide parts slide1..N in deck order before adding any. python-pptx names a new slide
+    # slide<N+1>.xml; after a dropped slide (an empty situation slide) that name can already be taken, and the
+    # saved file then holds two parts with one name (run 1619, 24 Oct: a duplicated assumptions slide, and a
+    # file PowerPoint and LibreOffice cannot open).
+    prs.part.rename_slide_parts([el.rId for el in lst])
     ids = list(lst)
     slides = list(prs.slides)
     kinds = {}
