@@ -168,8 +168,30 @@ def _cap(s):
 _weeks_label = _weeks
 
 
+# Template 1.5 (José, 24 Oct): the phases are tones of one blue, light to dark, one per phase the planner may
+# use (Chain check MAX_PHASES = 5), so the timeline's colours tie each workstream to its phase. Three are the
+# template's own theme blues (accent5, accent2, accent4); the two darker steps continue the same hue towards the
+# navy (#051C2C) without reaching it. Lightness steps (OKLab L): 0.85, 0.68, 0.54, 0.42, 0.31.
+PHASE_BLUES = [RGBColor(0xA2, 0xD5, 0xEC), RGBColor(0x22, 0xA3, 0xDF), RGBColor(0x18, 0x77, 0xA2),
+               RGBColor(0x03, 0x52, 0x7B), RGBColor(0x00, 0x33, 0x5A)]
+_PALETTE = PHASE_COLORS                  # set to PHASE_BLUES while a 1.5 deck is drawn (fill_template_slides)
+
+
 def _phase_color(order):
-    return PHASE_COLORS[(order - 1) % len(PHASE_COLORS)]
+    return _PALETTE[(order - 1) % len(_PALETTE)]
+
+
+def _lum(c):
+    ch = [x / 255 for x in (c[0], c[1], c[2])]
+    ch = [x / 12.92 if x <= 0.04045 else ((x + 0.055) / 1.055) ** 2.4 for x in ch]
+    return 0.2126 * ch[0] + 0.7152 * ch[1] + 0.0722 * ch[2]
+
+
+def _ink(fill):
+    """Text colour on a phase colour: white, as in 1.4; on the 1.5 blues, navy where white would read below 4.5:1."""
+    if _PALETTE is PHASE_COLORS:
+        return WHITE
+    return WHITE if 1.05 / (_lum(fill) + 0.05) >= 4.5 else NAVY
 
 
 def _clip(s, n):
@@ -305,6 +327,8 @@ def _paginate(groups, cap):
 
 
 def _ws_order(plan):
+    if plan.get("_unit"):                # 1.5 (José, 24 Oct): from the first workstream to finish to the last
+        return sorted(plan["workstreams"], key=lambda w: (w["end_week"], w["start_week"], w["phase_order"], w["id"]))
     return sorted(plan["workstreams"], key=lambda w: (w["phase_order"], w["start_week"], w["id"]))
 
 
@@ -319,7 +343,13 @@ _LEGEND_H = Inches(0.25)
 _DEADLINE_H = Inches(0.3)
 
 
+WS_MAX_15 = 7                    # 1.5 (José, 24 Oct): the slide holds at most 7 workstreams ...
+WS_AREA_15 = Emu(2671200)        # ... in at most 7.42 cm, so each row is 1.06 cm
+
+
 def _timeline_capacity(plan):
+    if plan.get("_unit"):
+        return WS_AREA_15, WS_MAX_15
     reserve = _STEER_GAP + Inches(0.16) + _LABEL_TIER + _LABEL_H + _LEGEND_H
     if (plan.get("deadline") or {}).get("weeks_available") is not None:
         reserve += _DEADLINE_H
@@ -469,7 +499,8 @@ def timeline_slides(prs, plan, section, client, slide=None, unit_scale=False):
     order = _ws_order(plan)
     numbering = {w["id"]: i + 1 for i, w in enumerate(order)}
     groups = [[w for w in order if w["phase_order"] == p["order"]] for p in plan["phases"]]
-    pages = _paginate([g for g in groups if g], cap)
+    pages = (_paginate([g for g in groups if g], cap) if not plan.get("_unit")
+             else [order[i:i + cap] for i in range(0, len(order), cap)])   # 1.5: completion order, 7 a page
     out = []
     for i, rows in enumerate(pages):
         out.append(timeline_slide(prs, plan, section, client, rows=rows, numbering=numbering, avail=avail,
@@ -507,7 +538,8 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
     col = gw / total
     step = week_step(total) if unit is None else 1  # 1.5: every box labelled, one unit each
     n_rows = len(wss)
-    row_h = max(MIN_ROW, min(MAX_ROW, avail / max(n_rows, 1)))
+    row_h = (WS_AREA_15 / WS_MAX_15 if unit is not None
+             else max(MIN_ROW, min(MAX_ROW, avail / max(n_rows, 1))))   # 1.5: every row 1.06 cm
     y0 = TOP
     # phase band
     for p in phases:
@@ -518,7 +550,7 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
         full = f"{p['name']} · {_dur(plan, p)}{'' if _boxes(plan) else est}"
         fit = int((w - Inches(0.2)) / Inches(0.075))  # inside the box margins (Oct 18: 'Measurement · 6 weeks' overflowed a 6-of-39-week band)
         _text(b, _clip(full if len(full) <= fit else p["name"], fit), size=10 if fit >= 12 else 8,
-              bold=True, color=WHITE, align=PP_ALIGN.CENTER)
+              bold=True, color=_ink(_phase_color(p["order"])), align=PP_ALIGN.CENTER)
     _text(s, "Phase", size=10, bold=True, color=NAVY, x=L, y=y0, w=label_w, h=_BAND_H)
     # week header: one label per tick (every `step` weeks)
     yh = y0 + _BAND_H + Inches(0.04)
@@ -561,14 +593,15 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
         c = _phase_color(w["phase_order"])
         lab = _box(s, L, y + Emu(9144), label_w - Emu(27432), row_h - Emu(18288), fill=c)
         _text(lab, _clip(f"{numbering[w['id']]:02d} {w['name']}", chars_line * (2 if two_lines else 1)),
-              size=lsize, bold=True, color=WHITE)
+              size=lsize, bold=True, color=_ink(c))
         bx = gx + (w["start_week"] - 1) * col + Emu(18288)
         bw = max(Emu(36576), (w["end_week"] - w["start_week"] + 1) * col - Emu(36576))
         _box(s, bx, y + row_h * 0.22, bw, row_h * 0.56, fill=c)
         # deliverable markers: a white diamond in the due week, its number inside.
         # Diamonds keep a readable size on long plans and are pushed apart instead of overlapping.
         dm = min(row_h * 0.72, Inches(0.3), max(col * 0.9, Inches(0.22)))
-        marks = sorted(((del_due[did], did) for did in w.get("deliverable_ids", []) if did in del_due))
+        # 1.5 (José, 24 Oct): deliverables are not drawn on this slide; the deliverables page lists them
+        marks = [] if unit is not None else sorted(((del_due[did], did) for did in w.get("deliverable_ids", []) if did in del_due))
         placed = []
         for dw, did in marks:
             cx = gx + (dw - 0.5) * col
@@ -641,8 +674,9 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
         _box(s, lx, ly, Inches(0.13), Inches(0.13), fill=fill, line=line, shape=MSO_SHAPE.OVAL)
         _text(s, name, size=8, color=GREY, x=lx + Inches(0.18), y=ly - Inches(0.02), w=Inches(2.3), h=Inches(0.17))
         lx += Inches(2.55)
-    _box(s, lx, ly, Inches(0.13), Inches(0.13), fill=WHITE, line=NAVY, shape=MSO_SHAPE.DIAMOND)
-    _text(s, "Deliverable due (3 = D3, listed on the deliverables page)", size=8, color=GREY, x=lx + Inches(0.18), y=ly - Inches(0.02), w=Inches(3.7), h=Inches(0.17))
+    if unit is None:
+        _box(s, lx, ly, Inches(0.13), Inches(0.13), fill=WHITE, line=NAVY, shape=MSO_SHAPE.DIAMOND)
+        _text(s, "Deliverable due (3 = D3, listed on the deliverables page)", size=8, color=GREY, x=lx + Inches(0.18), y=ly - Inches(0.02), w=Inches(3.7), h=Inches(0.17))
     return s
 
 
@@ -745,7 +779,7 @@ def deliverables_slide(prs, plan, section, client, slide=None, items=None, numbe
         h = line_h * max(1, len(ids))
         c = _phase_color(w["phase_order"])
         lab = _box(s, L, y + Emu(18288), cols[0][1] - Emu(91440), h - Emu(36576), fill=c)
-        _text(lab, [_clip(f"{numbering[w['id']]:02d} {w['name']}", 29), phases[w["phase_order"]]["name"] + " phase"], size=9, bold=True, color=WHITE)
+        _text(lab, [_clip(f"{numbering[w['id']]:02d} {w['name']}", 29), phases[w["phase_order"]]["name"] + " phase"], size=9, bold=True, color=_ink(c))
         for j, did in enumerate(ids):
             d = dels[did]
             yy = y + j * line_h
@@ -873,7 +907,7 @@ def roadmap_slide(prs, plan, section, client, slide=None):
         tf = ch.text_frame
         tf.margin_left = Inches(0.3) if i else Inches(0.15)
         _text(ch, [f"Phase {p['order']}: {p['name']}", f"{weeks} ({_dur(plan, p)})" if weeks
-                   else _dur(plan, p)], size=12, bold=True, color=WHITE)
+                   else _dur(plan, p)], size=12, bold=True, color=_ink(_phase_color(p["order"])))
         tf.paragraphs[1].runs[0].font.bold = False
         tf.paragraphs[1].runs[0].font.size = Pt(10)
         # what it waits for (José, Oct 18: the sequence belongs on this slide)
@@ -978,8 +1012,17 @@ def fill_template_slides(prs, plan, marked, client="[Client]", unit_scale=False)
         for kind, sl in marked.items():
             _new_slide(prs, "[Firm to complete] " + todo[kind], "", "", slide=sl)
         return list(marked.values())
+    global _PALETTE
     if unit_scale:                         # 1.5: every plan slide in the timeline's unit (José, 24 Oct)
         plan = scaled(plan)
+        _PALETTE = PHASE_BLUES             # ... and in the phase blues
+    try:
+        return _fill_marked(prs, plan, marked, client)
+    finally:
+        _PALETTE = PHASE_COLORS
+
+
+def _fill_marked(prs, plan, marked, client):
     out = []
     if "roadmap" in marked:
         out.append(roadmap_slide(prs, plan, "", client, slide=marked["roadmap"]))
