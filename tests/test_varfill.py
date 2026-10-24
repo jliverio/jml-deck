@@ -278,6 +278,14 @@ check("1.3: no squares", not squares(b13), squares(b13))
 def steering_pages(b):
     return sum(1 for sl in Presentation(io.BytesIO(b)).slides if any(
         sh.has_text_frame and sh.text_frame.text.startswith("Steering meetings") for sh in sl.shapes))
+def overview_subtitle(b):
+    for sl in Presentation(io.BytesIO(b)).slides:
+        if any(sh.name == "workplan:roadmap" for sh in sl.shapes):
+            return [ph.text_frame.text for ph in sl.placeholders if ph.placeholder_format.idx == 1]
+    return None
+check("1.5: approach overview without subtitle, still in place; 1.4 keeps it",
+      overview_subtitle(b15) == [] and overview_subtitle(pptx) == ["Approach overview: phases, decisions and how we work together"],
+      (overview_subtitle(b15), overview_subtitle(pptx)))
 check("1.5: no steering-meetings slide, 1.4 keeps it", steering_pages(b15) == 0 and steering_pages(pptx) >= 1,
       (steering_pages(b15), steering_pages(pptx)))
 

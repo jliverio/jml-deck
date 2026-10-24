@@ -2,6 +2,7 @@
 
 - Section dividers are left out.
 - The executive summary stays the first slide after the cover and the agenda (José, 24 Oct).
+- The approach overview has no subtitle (José, 24 Oct): it is found by its shape name, workplan:roadmap.
 - The template's own timeline ("Plan by workstream", 1-2 pages) stays in the story, right after the approach
   overview (José, 24 Oct: slide 7 keeps the 1.4 timeline's structure; he will explain how to use it for long
   plans). The custom one-page roadmaps tried on 23-24 Oct are gone.
@@ -179,7 +180,7 @@ def apply(prs, values, plan, s3):
             kinds[el] = "deliverables"
         elif "Plan by workstream" in tx:
             kinds[el] = "workplan"
-        elif "Approach overview" in tx:
+        elif "Approach overview" in tx or any(sh.name == "workplan:roadmap" for sh in s.shapes):   # no subtitle in 1.5
             kinds[el] = "overview"
         elif "Steering meetings" in tx:
             kinds[el] = "steering"
