@@ -274,6 +274,12 @@ check("1.4: squares beside the timeline, off the slide, in the 1.4 colours",
 sq15 = squares(b15)
 check("1.5: squares in the phase blues", sq15 and [c for _, c in sq15[0]] == [str(c) for c in wp.PHASE_BLUES], sq15)
 check("1.3: no squares", not squares(b13), squares(b13))
+# Oct 24 (José): no steering-meetings slides in 1.5; 1.4 keeps them
+def steering_pages(b):
+    return sum(1 for sl in Presentation(io.BytesIO(b)).slides if any(
+        sh.has_text_frame and sh.text_frame.text.startswith("Steering meetings") for sh in sl.shapes))
+check("1.5: no steering-meetings slide, 1.4 keeps it", steering_pages(b15) == 0 and steering_pages(pptx) >= 1,
+      (steering_pages(b15), steering_pages(pptx)))
 
 failed = [r for r in results if not r[1]]
 for name, ok, detail in results:

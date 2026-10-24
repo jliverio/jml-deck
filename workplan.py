@@ -288,7 +288,10 @@ def titles(plan):
         gov = f"After the kick-off, {_count(len(ev), 'steering meeting')} review the work, {closing}"
     out = {
         "roadmap": roadmap_title(plan),
-        "timeline": run + (f", with no more than {gap} {one if gap == 1 and _boxes(plan) else many} between steering meetings" if gap else ""),
+        "timeline": (run + (f", and {_num(gates)} phase gates decide when the work moves on" if gates > 1
+                            else ", and one gate closes the work with a decision" if gates else "")
+                     if plan.get("_unit") else   # 1.5 (José, 24 Oct): the gates, not the gaps between meetings
+                     run + (f", with no more than {gap} {one if gap == 1 and _boxes(plan) else many} between steering meetings" if gap else "")),
         "deliverables": f"{ws_part} {_count(nd, 'deliverable')}, each reviewed at a steering meeting",
         "governance": gov,
     }
@@ -365,7 +368,10 @@ _DEADLINE_H = Inches(0.3)
 
 
 WS_MAX_15 = 7                    # 1.5 (José, 24 Oct): the slide holds at most 7 workstreams ...
-WS_AREA_15 = Emu(2671200)        # ... in at most 7.42 cm, so each row is 1.06 cm
+WS_AREA_15 = Emu(2671200)        # ... in at most 7.42 cm, filled by the rows (1.06 cm each at 7)
+STATUS_MAX_WEEKS_15 = 16         # 1.5: status meetings drawn only up to 16 weeks (José, 24 Oct)
+PHASE_SHORT = {"Diagnostic": "Diag.", "Research": "Res.", "Design": "Des.", "Pilot": "Pilot",
+               "Implementation": "Impl.", "Change & Training": "C&T", "Measurement": "Meas.", "Handover": "Hand."}
 
 
 def _timeline_capacity(plan):
@@ -563,8 +569,13 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
     col = gw / total
     step = week_step(total) if unit is None else 1  # 1.5: every box labelled, one unit each
     n_rows = len(wss)
-    row_h = (WS_AREA_15 / WS_MAX_15 if unit is not None
-             else max(MIN_ROW, min(MAX_ROW, avail / max(n_rows, 1))))   # 1.5: every row 1.06 cm
+    if unit is not None:
+        # 1.5 (José, 24 Oct): the rows fill the 7.42 cm, as the boxes fill the 26.04 cm; a plan past 7 rows
+        # (planned before the cap) keeps 1.06 cm rows on every page
+        n_all = len(numbering)
+        row_h = WS_AREA_15 / (WS_MAX_15 if n_all > WS_MAX_15 else max(n_all, 1))
+    else:
+        row_h = max(MIN_ROW, min(MAX_ROW, avail / max(n_rows, 1)))
     y0 = TOP
     # phase band
     for p in phases:
@@ -574,8 +585,14 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
         est = "" if p["duration_weeks"]["min"] == p["duration_weeks"]["max"] else " (estimate)"
         full = f"{p['name']} · {_dur(plan, p)}{'' if _boxes(plan) else est}"
         fit = int((w - Inches(0.2)) / Inches(0.075))  # inside the box margins (Oct 18: 'Measurement · 6 weeks' overflowed a 6-of-39-week band)
-        _text(b, _clip(full if len(full) <= fit else p["name"], fit), size=10 if fit >= 12 else 8,
-              bold=True, color=_ink(_phase_color(p["order"])), align=PP_ALIGN.CENTER)
+        if unit is not None and len(p["name"]) > fit:
+            # 1.5 (José, 24 Oct): a phase too narrow for its name shows the short form, never a cut word
+            b.text_frame.margin_left = b.text_frame.margin_right = Emu(0)
+            _text(b, PHASE_SHORT.get(p["name"], p["name"][:4] + "."), size=8, bold=True,
+                  color=_ink(_phase_color(p["order"])), align=PP_ALIGN.CENTER)
+        else:
+            _text(b, _clip(full if len(full) <= fit else p["name"], fit), size=10 if fit >= 12 else 8,
+                  bold=True, color=_ink(_phase_color(p["order"])), align=PP_ALIGN.CENTER)
     _text(s, "Phase", size=10, bold=True, color=NAVY, x=L, y=y0, w=label_w, h=_BAND_H)
     # week header: one label per tick (every `step` weeks)
     yh = y0 + _BAND_H + Inches(0.04)
@@ -602,8 +619,9 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
     _line(s, gx, grid_top, gx, grid_bottom, color=BLACK, width=1.0)
     my = grid_bottom + _STEER_GAP
     d = max(Inches(0.1), min(Inches(0.2), col * 0.8))
+    decisive = ("gate",) if unit is not None else ("workshop", "gate")   # 1.5: only the phase gates
     for e in events:
-        if e["type"] in ("workshop", "gate"):
+        if e["type"] in decisive:
             cx = gx + (e["week"] - 0.5) * col
             _line(s, cx, grid_top, cx, my - d / 2, color=GREY, width=0.75, dash=True)
 
@@ -621,7 +639,11 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
               size=lsize, bold=True, color=_ink(c))
         bx = gx + (w["start_week"] - 1) * col + Emu(18288)
         bw = max(Emu(36576), (w["end_week"] - w["start_week"] + 1) * col - Emu(36576))
-        _box(s, bx, y + row_h * 0.22, bw, row_h * 0.56, fill=c)
+        if unit is None:
+            _box(s, bx, y + row_h * 0.22, bw, row_h * 0.56, fill=c)
+        else:                                       # tall rows (few workstreams) keep a bar, not a block
+            bh = min(row_h * 0.56, Inches(0.4))
+            _box(s, bx, y + (row_h - bh) / 2, bw, bh, fill=c)
         # deliverable markers: a white diamond in the due week, its number inside.
         # Diamonds keep a readable size on long plans and are pushed apart instead of overlapping.
         dm = min(row_h * 0.72, Inches(0.3), max(col * 0.9, Inches(0.22)))
@@ -646,10 +668,15 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
         _line(s, L, y + row_h, L + W, y + row_h, color=LGREY, width=0.5, dash=True)
     # governance row
     _text(s, "Steering", size=10, bold=True, color=NAVY, x=L, y=my - d / 2, w=label_w, h=d)
-    for wk in plan["governance"]["status_weeks"]:
+    # 1.5 (José, 24 Oct): status meetings are drawn only on plans of 16 weeks or less
+    real_weeks = (plan.get("_weeks_total") or plan["total_duration_weeks"])["max"]
+    show_status = unit is None or real_weeks <= STATUS_MAX_WEEKS_15
+    for wk in (plan["governance"]["status_weeks"] if show_status else []):
         _box(s, gx + (wk - 0.5) * col - d / 2, my - d / 2, d, d, fill=WHITE, line=BLACK, shape=MSO_SHAPE.OVAL, line_w=0.75)
     gap = Emu(45720)
-    evs = _markers(events) if _boxes(plan) else sorted(events, key=lambda e: e["week"])
+    marks = _markers(events) if _boxes(plan) else sorted(events, key=lambda e: e["week"])
+    # 1.5: every meeting is a dot; only the phase gates carry a label (the steering-meetings slides are gone)
+    evs = [e for e in marks if e["type"] == "gate"] if unit is not None else marks
 
     def place(lab_w):
         # two tiers of labels; when both are taken, the label goes on the freer tier, pushed right.
@@ -677,10 +704,15 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
         if not clash:
             break
     chars = int(2 * (lab_w - Inches(0.1)) / Inches(0.068))
+    if unit is not None:
+        for e in marks:
+            cx = gx + (e["week"] - 0.5) * col
+            _box(s, cx - d / 2, my - d / 2, d, d, fill=YELLOW if e["type"] == "gate" else NAVY, shape=MSO_SHAPE.OVAL)
     for e, lx, tier in placed:
         cx = gx + (e["week"] - 0.5) * col
-        fill = YELLOW if e["type"] in ("workshop", "gate") else NAVY
-        _box(s, cx - d / 2, my - d / 2, d, d, fill=fill, shape=MSO_SHAPE.OVAL)
+        if unit is None:
+            fill = YELLOW if e["type"] in ("workshop", "gate") else NAVY
+            _box(s, cx - d / 2, my - d / 2, d, d, fill=fill, shape=MSO_SHAPE.OVAL)
         ly = my + d / 2 + Inches(0.06) + tier * _LABEL_TIER
         _text(s, _clip(e["label"], min(34, chars)), size=9, bold=e["type"] == "gate", color=BLACK, align=PP_ALIGN.CENTER,
               anchor=MSO_ANCHOR.TOP, x=lx, y=ly, w=lab_w, h=_LABEL_H)
@@ -694,8 +726,21 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
     ly = BOTTOM - Inches(0.18)
     lx = L
     cad = plan['governance']['status_cadence_weeks']
-    for fill, line, name in ((NAVY, None, "Kick-off / check-in"), (YELLOW, None, "Steering workshop / decision gate"),
-                             (WHITE, BLACK, ("Status meeting (weekly)" if cad == 1 else f"Status meeting (every {cad} weeks)"))):
+    status = ("Status meeting (weekly)" if cad == 1 else f"Status meeting (every {cad} weeks)")
+    if unit is not None:
+        # 1.5 (José, 24 Oct): steering meetings and the phase gates; status meetings only where they are drawn
+        items = [(NAVY, None, "Steering meeting"),
+                 (YELLOW, None, "Phase gate: the next phase starts only once this phase's deliverables are approved")]
+        if show_status and plan["governance"]["status_weeks"]:
+            items.append((WHITE, BLACK, status))
+        for fill, line, name in items:
+            tw = Inches(0.058) * len(name) + Inches(0.1)
+            _box(s, lx, ly, Inches(0.13), Inches(0.13), fill=fill, line=line, shape=MSO_SHAPE.OVAL)
+            _text(s, name, size=8, color=GREY, x=lx + Inches(0.18), y=ly - Inches(0.02), w=tw, h=Inches(0.17))
+            lx += Inches(0.18) + tw + Inches(0.3)
+    for fill, line, name in (() if unit is not None else
+                             ((NAVY, None, "Kick-off / check-in"), (YELLOW, None, "Steering workshop / decision gate"),
+                              (WHITE, BLACK, status))):
         _box(s, lx, ly, Inches(0.13), Inches(0.13), fill=fill, line=line, shape=MSO_SHAPE.OVAL)
         _text(s, name, size=8, color=GREY, x=lx + Inches(0.18), y=ly - Inches(0.02), w=Inches(2.3), h=Inches(0.17))
         lx += Inches(2.55)

@@ -6,8 +6,11 @@
   overview (José, 24 Oct: slide 7 keeps the 1.4 timeline's structure; he will explain how to use it for long
   plans). The custom one-page roadmaps tried on 23-24 Oct are gone.
 - The appendix comes after the closing slide, for an executive reader (José, 24 Oct): "Deliverables by
-  workstream" (the steering-meetings slide refers readers to it), then the assumptions the draft rests on
+  workstream" (its "Reviewed at" column names the meeting), then the assumptions the draft rests on
   (payload s3.assumptions), which explain our rationale to readers who want it.
+- No steering-meetings slides (José, 24 Oct): the approach overview names each phase's decision, the steering
+  members and the working rhythm; the timeline's steering row shows every meeting as a dot and labels the phase
+  gates. Status meetings are drawn only on plans of 16 weeks or less.
 - The timeline uses at most 24 boxes of one unit (week, month, bi-month, quarter, four-month period, semester;
   workplan.time_unit). A plan longer than 24 semesters gets no plan slides at all (José, 24 Oct).
 - New slide: a "[Firm to complete] Fees" placeholder before Next Steps (no team slide and no price: the firm
@@ -212,8 +215,12 @@ def apply(prs, values, plan, s3):
             continue
         if too_long and k in ("overview", "workplan", "deliverables", "steering"):
             continue
+        if k == "steering":
+            # José, 24 Oct: no steering-meetings slides. The approach overview names the decisions, the
+            # steering members and the rhythm; the timeline shows when the meetings and the phase gates fall.
+            continue
         if k == "deliverables" and has_plan:
-            # appendix (José, 24 Oct: executive level); the steering-meetings slide sends readers to it
+            # appendix (José, 24 Oct: executive level); its "Reviewed at" column names each meeting
             appendix.append(e)
             continue
         if k == "next":

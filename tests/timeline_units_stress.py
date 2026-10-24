@@ -6,7 +6,8 @@ Draws the timeline with unit_scale=True for plans of 2 to 624 weeks and 3 to 12 
 the unit is the smallest of week, month, bi-month, quarter, four-month period, semester that fits 24 boxes;
 every header box is one unit; phases follow each other with no shared box; every bar, diamond and meeting
 sits inside its phase; one marker per box on the timeline, while the steering slides keep every meeting; and
-the slide passes the layout checks of workplan_stress.py, and five phase-colour squares sit off the slide. Past 24 semesters
+the slide passes the layout checks of workplan_stress.py, five phase-colour squares sit off the slide, the rows
+fill the 7.42 cm, status dots appear only up to 16 weeks and only the phase gates carry a label. Past 24 semesters
 time_unit must return None. Exits 1 on any failure.
 """
 import io, os, sys
@@ -80,6 +81,24 @@ def run(total, n_ws, outdir=None):
         sq = [x for x in sl.shapes if x.name.startswith("palette:phase")]
         if len(sq) != 5 or any(x.left + x.width > 0 for x in sq):
             probs.append(f"{len(sq)} palette squares, or one on the slide")
+    # José, 24 Oct: rows fill the 7.42 cm (at most 7 a page); no status dots past 16 weeks; labels on gates only
+    import re as _re
+    from pptx.enum.shapes import MSO_SHAPE_TYPE
+    labs = [x for x in slides[0].shapes if x.has_text_frame and _re.match(r"^\d\d ", x.text_frame.text)]
+    want_h = workplan.WS_AREA_15 * min(len(labs), 7) / (7 if n_ws > 7 else len(labs))
+    span = (max(x.top + x.height for x in labs) - min(x.top for x in labs)) if labs else 0
+    if labs and abs(span - want_h) > 30000:
+        probs.append(f"rows span {span / 360000:.2f} cm, want {want_h / 360000:.2f}")
+    white = [x for x in slides[0].shapes if x.shape_type == MSO_SHAPE_TYPE.AUTO_SHAPE and x.fill.type == 1
+             and str(x.fill.fore_color.rgb) == "FFFFFF" and x.width == x.height]
+    if total > 16 and white:                 # José: none past 16 weeks
+        probs.append(f"{len(white)} status dots on a {total}-week plan")
+    gate_boxes = {e["week"] for e in workplan._markers(g["governance"]["events"]) if e["type"] == "gate"}
+    lab_texts = [x.text_frame.text for x in slides[0].shapes if x.has_text_frame
+                 and x.top > max((y.top for y in labs), default=0) and x.text_frame.text
+                 and x.text_frame.text in {e["label"] for e in g["governance"]["events"]}]
+    if len(lab_texts) != len(gate_boxes):
+        probs.append(f"{len(lab_texts)} steering labels for {len(gate_boxes)} gates")
     # the other plan slides in the same unit (José, 24 Oct)
     sp = workplan.scaled(plan)
     workplan.roadmap_slide(prs, sp, "Approach", "The Navigator Company")
