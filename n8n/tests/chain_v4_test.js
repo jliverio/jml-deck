@@ -153,9 +153,14 @@ const check = (name, cond, detail) => results.push({ name, ok: !!cond, detail })
   const dur = b.violations.filter(x => /duration_\d+_under_its_work/.test(x));
   check("v4 big estimate: streams are checked against their work", dur.length > 0, JSON.stringify(b.violations).slice(0, 200));
   // the fit note is written by code at compile time, whatever the retry did
-  ans("Workstream agent", { output: big });
-  ans("Deliverable agent", { output: v.del });
-  const d = ans("Governance agent", { output: v.gov });
+  check("v4.1 re-split: pass 0 asks the ws agent to reschedule", b.violations.some(x => /^fit:phase_weeks_.*_resplit_to_.*_reschedule_the_streams$/.test(x)), JSON.stringify(b.violations.filter(x => /^fit:/.test(x))));
+  const b2 = ans("Workstream agent", { output: big });
+  check("v4.1 re-split: pass 1 carries no fit violation and goes on", b2.route === "del" && !b2.violations.some(x => /^fit:/.test(x)), b2.route + " " + JSON.stringify(b2.violations.filter(x => /^fit:/.test(x))));
+  check("v4.1 re-split: the ws retry input carries the new phase weeks", JSON.stringify(b.agent_input.phases.map(p => p.duration_weeks)) !== JSON.stringify(v.lead.phases.map(p => p.duration_weeks)), "");
+  // the fixtures were scheduled to the old weeks, so del and gov retry once each, as the chain allows
+  let c2 = ans("Deliverable agent", { output: v.del }); if (c2.route === "del") c2 = ans("Deliverable agent", { output: v.del });
+  let d = ans("Governance agent", { output: v.gov }); if (d.route === "gov") d = ans("Governance agent", { output: v.gov });
+  check("v4.1 re-split: the compiled plan carries the re-split weeks", d.output && JSON.stringify(d.output.phases.map(p => p.duration_weeks)) !== JSON.stringify(v.lead.phases.map(p => p.duration_weeks)) && d.output.total_duration_weeks.max === v.lead.phases.reduce((a, p) => a + p.duration_weeks.max, 0), d.output && JSON.stringify(d.output.phases.map(p => p.duration_weeks)));
   const note = (d.output && d.output.architect_notes || [])[0] || "";
   check("v4 fit note: plan fits, work would benefit from more weeks", /^The plan fits the \d+ weeks given; the work listed takes \d+-\d+ weeks, so we think it would benefit from \d+ more\.$/.test(note), note);
   check("v4 more_time_weeks > 0", d.output && d.output.sizing.more_time_weeks > 0, String(d.output && d.output.sizing.more_time_weeks));

@@ -60,12 +60,14 @@ for (const s of ORDER) {
   if (s === 'del') { const r = C.renumberDeliverables(state); state.del = { deliverables: r.deliverables, notes: r.notes }; }
   if (s === stage) break;
 }
+// v4.1: once the work is sized, the phase weeks are re-split from the estimates and the meetings follow the new weeks
+if (typeof C.effectivePhases === 'function' && state.lead) state.calendar = C.meetingCalendar(C.effectivePhases(state));
 
 const agentError = cur.error ? String(cur.error.message || cur.error) : (out0 ? '' : 'no answer');
 let violations;
 if (agentError) violations = ['agent_error: ' + agentError];
 else {
-  try { violations = C.checkStage(stage, state, { jargon_never: JARGON }).violations; }
+  try { violations = C.checkStage(stage, state, { jargon_never: JARGON, pass }).violations; }
   catch (e) { violations = ['check_error: ' + e.message]; }
 }
 const hard = violations.filter(x => !SOFT.test(x));

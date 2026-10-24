@@ -42,6 +42,15 @@ function validatePlan(arch, ctx) {
   const brief = ctx.brief || {};
   const scList = ctx.success_criteria_list || [];
   const never = (ctx.jargon_never || []).map(x => String(x).replace(/\s*\(.*\)\s*/, '').trim().toLowerCase()).filter(Boolean);
+  // 'drive (for outcomes)' bans 'drive growth', 'drive results', not 'what drives the margin decline' (Oct 24: four
+  // false retries on Valtrenix). A term the list qualifies with '(for outcomes)' hits only before an outcome noun.
+  const forOutcomes = new Set((ctx.jargon_never || []).filter(x => /\(for outcomes\)/i.test(String(x))).map(x => String(x).replace(/\s*\(.*\)\s*/, '').trim().toLowerCase()));
+  const OUTCOME = /^(growth|results?|value|outcomes?|performance|change|revenue|sales|savings|adoption|impact|improvements?|margins?|profit|efficiency|success|innovation|alignment|engagement)$/;
+  const jargonHit = (s, term) => {
+    const t = String(s || '').toLowerCase();
+    if (forOutcomes.has(term)) { const toks = t.split(/[^a-z0-9]+/).filter(Boolean); return toks.some((w, i) => (w === term || w === term + 's') && OUTCOME.test(toks[i + 1] || '')); }
+    return term.includes(' ') ? t.includes(term) : t.split(/[^a-z0-9]+/).filter(Boolean).includes(term);
+  };
   // The partner's own split of the work (Brief Organizer soft_fields.workstreams), when the email gives one.
   // It replaces the 2-4 per phase default: any length, any number per phase, at most 10 rows (José, Oct 24: the
   // timeline slide holds 10 workstreams; it was 12 from Oct 18, 7 for a few hours on Oct 24).
@@ -290,8 +299,7 @@ function validatePlan(arch, ctx) {
   events.forEach(e => { texts.push(['gov:' + e.id, e.label], ['gov:' + e.id, e.purpose], ['gov:' + e.id, e.decision]); (e.agenda || []).forEach(a => texts.push(['gov:' + e.id, a])); });
   const tok = s => String(s || '').toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
   for (const [where, s] of texts) for (const term of never) {
-    const hit = term.includes(' ') ? String(s || '').toLowerCase().includes(term) : tok(s).includes(term);
-    if (hit) v.push(`${where}:never_use_${term.replace(/\s+/g, '_')}`);
+    if (jargonHit(s, term)) v.push(`${where}:never_use_${term.replace(/\s+/g, '_')}`);
   }
   (arch.architect_notes || []).forEach((n, i) => { if (words(n) > LIM.note_words) v.push(`note_${i + 1}:over_${LIM.note_words}_words`); });
   if ((arch.architect_notes || []).length > 6) v.push('notes:over_6');

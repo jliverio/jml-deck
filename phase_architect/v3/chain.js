@@ -18,6 +18,15 @@ const MAX_AGENT_NOTES = 2;      // workstream, deliverable and governance agents
 const NOTE_WORDS = 25;
 
 function words(s) { return String(s || '').split(/\s+/).filter(Boolean).length; }
+// Same rule as the validator: a term the firm's list qualifies with '(for outcomes)' hits only before an outcome noun.
+const OUTCOME_NOUN = /^(growth|results?|value|outcomes?|performance|change|revenue|sales|savings|adoption|impact|improvements?|margins?|profit|efficiency|success|innovation|alignment|engagement)$/;
+function jargonHit(s, term, list) {
+  const t = String(s || '').toLowerCase();
+  const qualified = (list || []).some(x => /\(for outcomes\)/i.test(String(x)) && String(x).replace(/\s*\(.*\)\s*/, '').trim().toLowerCase() === term);
+  const toks = t.split(/[^a-z0-9]+/).filter(Boolean);
+  if (qualified) return toks.some((w, i) => (w === term || w === term + 's') && OUTCOME_NOUN.test(toks[i + 1] || ''));
+  return term.includes(' ') ? t.includes(term) : toks.includes(term);
+}
 
 // ---------- sizing: the lead's scoping step (sub-questions, drivers, work per phase) ----------
 // A phase's estimate = fixed weeks + sum over pieces of ceil(count / at_once) x weeks_each (min and max apart).
@@ -65,9 +74,8 @@ function checkSizing(state, ctx) {
     if (!(q.phase_order >= 1 && q.phase_order <= n)) v.push(`sizing:${q.id}:unknown_phase_${q.phase_order}`);
     if (words(q.question) > 20) v.push(`sizing:${q.id}:over_20_words`);
     // sub-questions travel into workstream text, so the firm's banned words are checked here too
-    const toks = String(q.question || '').toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
     for (const t of ((ctx || {}).jargon_never || []).map(x => String(x).replace(/\s*\(.*\)\s*/, '').trim().toLowerCase()).filter(Boolean))
-      if (t.includes(' ') ? String(q.question || '').toLowerCase().includes(t) : toks.includes(t)) v.push(`sizing:${q.id}:never_use_${t.replace(/\s+/g, '_')}`);
+      if (jargonHit(q.question, t, (ctx || {}).jargon_never)) v.push(`sizing:${q.id}:never_use_${t.replace(/\s+/g, '_')}`);
   });
   for (let o = 1; o <= n; o++) if (!sq.some(q => q.phase_order === o)) v.push(`sizing:phase_${o}_answers_no_sub_question`);
   const drv = {};

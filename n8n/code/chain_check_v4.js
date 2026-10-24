@@ -46,6 +46,15 @@ function validatePlan(arch, ctx) {
   const brief = ctx.brief || {};
   const scList = ctx.success_criteria_list || [];
   const never = (ctx.jargon_never || []).map(x => String(x).replace(/\s*\(.*\)\s*/, '').trim().toLowerCase()).filter(Boolean);
+  // 'drive (for outcomes)' bans 'drive growth', 'drive results', not 'what drives the margin decline' (Oct 24: four
+  // false retries on Valtrenix). A term the list qualifies with '(for outcomes)' hits only before an outcome noun.
+  const forOutcomes = new Set((ctx.jargon_never || []).filter(x => /\(for outcomes\)/i.test(String(x))).map(x => String(x).replace(/\s*\(.*\)\s*/, '').trim().toLowerCase()));
+  const OUTCOME = /^(growth|results?|value|outcomes?|performance|change|revenue|sales|savings|adoption|impact|improvements?|margins?|profit|efficiency|success|innovation|alignment|engagement)$/;
+  const jargonHit = (s, term) => {
+    const t = String(s || '').toLowerCase();
+    if (forOutcomes.has(term)) { const toks = t.split(/[^a-z0-9]+/).filter(Boolean); return toks.some((w, i) => (w === term || w === term + 's') && OUTCOME.test(toks[i + 1] || '')); }
+    return term.includes(' ') ? t.includes(term) : t.split(/[^a-z0-9]+/).filter(Boolean).includes(term);
+  };
   // The partner's own split of the work (Brief Organizer soft_fields.workstreams), when the email gives one.
   // It replaces the 2-4 per phase default: any length, any number per phase, at most 10 rows (José, Oct 24: the
   // timeline slide holds 10 workstreams; it was 12 from Oct 18, 7 for a few hours on Oct 24).
@@ -294,8 +303,7 @@ function validatePlan(arch, ctx) {
   events.forEach(e => { texts.push(['gov:' + e.id, e.label], ['gov:' + e.id, e.purpose], ['gov:' + e.id, e.decision]); (e.agenda || []).forEach(a => texts.push(['gov:' + e.id, a])); });
   const tok = s => String(s || '').toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
   for (const [where, s] of texts) for (const term of never) {
-    const hit = term.includes(' ') ? String(s || '').toLowerCase().includes(term) : tok(s).includes(term);
-    if (hit) v.push(`${where}:never_use_${term.replace(/\s+/g, '_')}`);
+    if (jargonHit(s, term)) v.push(`${where}:never_use_${term.replace(/\s+/g, '_')}`);
   }
   (arch.architect_notes || []).forEach((n, i) => { if (words(n) > LIM.note_words) v.push(`note_${i + 1}:over_${LIM.note_words}_words`); });
   if ((arch.architect_notes || []).length > 6) v.push('notes:over_6');
@@ -354,6 +362,15 @@ const MAX_AGENT_NOTES = 2;      // workstream, deliverable and governance agents
 const NOTE_WORDS = 25;
 
 function words(s) { return String(s || '').split(/\s+/).filter(Boolean).length; }
+// Same rule as the validator: a term the firm's list qualifies with '(for outcomes)' hits only before an outcome noun.
+const OUTCOME_NOUN = /^(growth|results?|value|outcomes?|performance|change|revenue|sales|savings|adoption|impact|improvements?|margins?|profit|efficiency|success|innovation|alignment|engagement)$/;
+function jargonHit(s, term, list) {
+  const t = String(s || '').toLowerCase();
+  const qualified = (list || []).some(x => /\(for outcomes\)/i.test(String(x)) && String(x).replace(/\s*\(.*\)\s*/, '').trim().toLowerCase() === term);
+  const toks = t.split(/[^a-z0-9]+/).filter(Boolean);
+  if (qualified) return toks.some((w, i) => (w === term || w === term + 's') && OUTCOME_NOUN.test(toks[i + 1] || ''));
+  return term.includes(' ') ? t.includes(term) : toks.includes(term);
+}
 
 // ---------- sizing (v4: the Workstream agent's step): drivers and the pieces of work per workstream ----------
 // The lead's sub-questions and length_basis sit at the top level of its answer.
@@ -403,9 +420,8 @@ function checkFrame(state, ctx) {
     if (!(q.phase_order >= 1 && q.phase_order <= n)) v.push(`frame:${q.id}:unknown_phase_${q.phase_order}`);
     if (words(q.question) > 20) v.push(`frame:${q.id}:over_20_words`);
     // sub-questions travel into workstream text, so the firm's banned words are checked here too
-    const toks = String(q.question || '').toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
     for (const t of ((ctx || {}).jargon_never || []).map(x => String(x).replace(/\s*\(.*\)\s*/, '').trim().toLowerCase()).filter(Boolean))
-      if (t.includes(' ') ? String(q.question || '').toLowerCase().includes(t) : toks.includes(t)) v.push(`frame:${q.id}:never_use_${t.replace(/\s+/g, '_')}`);
+      if (jargonHit(q.question, t, (ctx || {}).jargon_never)) v.push(`frame:${q.id}:never_use_${t.replace(/\s+/g, '_')}`);
   });
   for (let o = 1; o <= n; o++) if (!sq.some(q => q.phase_order === o)) v.push(`frame:phase_${o}_answers_no_sub_question`);
   (L.phases || []).forEach((p, i) => {
@@ -442,7 +458,7 @@ function checkSizing(state, ctx) {
   const lib = Object.fromEntries(libraryUnits(inp, (L.basis || {}).archetype_id).map(u => [norm(u.unit), u]));
   const pw = sz.phase_work || [];
   if (pw.length !== n) v.push(`sizing:phase_work_has_${pw.length}_entries_for_${n}_phases`);
-  const planned = phaseWeeks(L.phases);
+  const planned = phaseWeeks(effectivePhases(state));
   pw.forEach((e, i) => {
     const tag = `sizing:phase_${e.phase_order}`;
     if (e.phase_order !== i + 1) v.push(`sizing:phase_work_${i + 1}_has_phase_order_${e.phase_order}`);
@@ -485,7 +501,7 @@ function sizingSummary(state) {
   const inp = state.input, L = state.lead || {}, sz = (state.ws || {}).sizing;
   if (!sz) return null;
   const arche = (inp.method_library || []).find(a => a.id === (L.basis || {}).archetype_id);
-  const planned = phaseWeeks(L.phases);
+  const planned = phaseWeeks(effectivePhases(state));
   const phases = planned.map((p, i) => {
     const e = (sz.phase_work || [])[i] || {};
     const ref = arche && (arche.phases || []).find(x => x.name === p.name);
@@ -523,6 +539,36 @@ function phaseWeeks(phases) {
     return out;
   });
 }
+
+// v4.1 (Oct 24, runs 1643/1683): the lead sets the phase weeks before the work is listed, so once the Workstream agent has
+// sized it, code re-splits the weeks across the phases in proportion to the estimates (their midpoints), keeping the
+// lead's totals: the plan still fits the time given. A pure function of the lead's answer and the sizing, so every later
+// Chain check call computes the same phases. Not for stage_lengths (the brief set each stage) or a single phase.
+function splitTotal(total, weights) {
+  const n = weights.length, sum = weights.reduce((a, b) => a + b, 0);
+  if (!(sum > 0) || total < n) return null;
+  const raw = weights.map(w => total * w / sum);
+  const out = raw.map(x => Math.max(1, Math.floor(x)));
+  let left = total - out.reduce((a, b) => a + b, 0);
+  const order = raw.map((x, i) => [x - Math.floor(x), i]).sort((a, b) => b[0] - a[0]).map(x => x[1]);
+  for (let k = 0; left > 0; k = (k + 1) % n) { out[order[k]] += 1; left -= 1; }
+  for (let k = 0; left < 0; k = (k + 1) % n) { const i = order[n - 1 - k]; if (out[i] > 1) { out[i] -= 1; left += 1; } }
+  return out;
+}
+function effectivePhases(state) {
+  const lead = state.lead || {}, ph = lead.phases || [];
+  const sz = (state.ws || {}).sizing;
+  if (!sz || !Array.isArray(sz.phase_work) || sz.phase_work.length !== ph.length || lead.length_basis === 'stage_lengths' || ph.length < 2) return ph;
+  const weights = ph.map((p, i) => { const e = workEstimate(sz.phase_work[i] || {}); return (e.min + e.max) / 2; });
+  if (weights.some(w => !(w > 0))) return ph;
+  const cur = phaseWeeks(ph);
+  const mx = splitTotal(cur.reduce((a, p) => a + p.duration_weeks.max, 0), weights);
+  const mn = splitTotal(cur.reduce((a, p) => a + p.duration_weeks.min, 0), weights);
+  if (!mx || !mn) return ph;
+  return ph.map((p, i) => ({ ...p, duration_weeks: { min: Math.min(mn[i], mx[i]), max: mx[i] } }));
+}
+const weeksOf = phases => phaseWeeks(phases).map(p => `${p.duration_weeks.min}-${p.duration_weeks.max}`).join('_');
+function resplitChanged(state) { return weeksOf(effectivePhases(state)) !== weeksOf((state.lead || {}).phases); }
 
 // Meeting calendar, from the phase lengths only. The rules are the validator's:
 //   kick-off in week 1 of phase 1; one gate in each phase's last week;
@@ -588,7 +634,7 @@ function phasesView(lead) {
   return phaseWeeks((lead || {}).phases).map(p => pick(p, ['order', 'name', 'duration_weeks', 'start_week', 'end_week', 'objective_one_line', 'gate']));
 }
 function wsView(state) {
-  const ph = Object.fromEntries(phaseWeeks(state.lead.phases).map(p => [p.order, p]));
+  const ph = Object.fromEntries(phaseWeeks(effectivePhases(state)).map(p => [p.order, p]));
   return ((state.ws || {}).workstreams || []).map(w => {
     const p = ph[w.phase_order] || { start_week: 1 };
     const so = Number(w.start_offset) || 0, du = Math.max(1, Number(w.duration) || 1);
@@ -598,8 +644,8 @@ function wsView(state) {
 // v4: every agent after the lead sees the whole state so far: the brief (every field the lead used), the profile and
 // findings, the weeks available, the archetype and the common sizing units (not the whole library), the lead's frame,
 // the meetings, and each earlier agent's answer, with the weeks computed. Nothing an earlier agent decided is trimmed.
-function phasesViewDone(lead) {
-  return phaseWeeks((lead || {}).phases).map(p => pick(p, ['order', 'name', 'duration_weeks', 'start_week', 'end_week', 'objective_one_line', 'gate']));
+function phasesViewDone(state) {
+  return phaseWeeks(effectivePhases(state)).map(p => pick(p, ['order', 'name', 'duration_weeks', 'start_week', 'end_week', 'objective_one_line', 'gate']));
 }
 function stageInput(stage, state) {
   const inp = state.input;
@@ -615,7 +661,7 @@ function stageInput(stage, state) {
     weeks_available: inp.weeks_available == null ? null : inp.weeks_available,
     basis: state.lead.basis, length_basis: state.lead.length_basis, archetype: arche, sizing_common: inp.sizing_common || null,
     sub_questions: state.lead.sub_questions || [],
-    phases: phasesViewDone(state.lead), meetings,
+    phases: phasesViewDone(state), meetings,
     architect_notes: state.lead.architect_notes || [],
   };
   const fb = s => (state.review_feedback && state.review_feedback[s] ? { review_feedback: state.review_feedback[s] } : {});
@@ -624,7 +670,7 @@ function stageInput(stage, state) {
   const sizing = sizingSummary(state);
   if (stage === 'del') return { ...common, workstreams: wsv, sizing, ...fb('del') };
   if (stage === 'gov') {
-    const ph = Object.fromEntries(phaseWeeks(state.lead.phases).map(p => [p.order, p]));
+    const ph = Object.fromEntries(phaseWeeks(effectivePhases(state)).map(p => [p.order, p]));
     const wsById = Object.fromEntries(wsv.map(w => [w.id, w]));
     return {
       ...common, workstreams: wsv, sizing,
@@ -657,7 +703,7 @@ function buildArch(state) {
     const d = (govById[c.id] || {}).decision;
     if (c.type === 'gate' && typeof d === 'string' && /\?$/.test(d.trim()) && d.length <= 90) gateWord[c.phase_order] = d.trim();
   }
-  const phases = (lead.phases || []).map((p, i) => gateWord[i + 1] ? { ...p, gate: { ...(p.gate || {}), decision: gateWord[i + 1] } } : p);
+  const phases = effectivePhases(state).map((p, i) => gateWord[i + 1] ? { ...p, gate: { ...(p.gate || {}), decision: gateWord[i + 1] } } : p);
   const delOut = ((state.del || {}).deliverables) || [];
   const workstreams = (((state.ws || {}).workstreams) || []).map(w => ({
     ...pick(w, ['id', 'phase_order', 'name', 'question_id', 'answers', 'traces_to', 'start_offset', 'duration', 'follows', 'builds_on_meeting', 'activities']),
@@ -687,7 +733,7 @@ function vctx(state, ctx) {
 const CALENDAR = /^gov:(gap_|kickoff_count|[^:]+:(gates_|workshops_|checkins_|workshop_outside|checkin_outside|workshops_under))/;
 const STAGE = {
   lead: v => /^(plan:|basis:|note_|notes:|gate:|frame:)/.test(v) || (/^phase:/.test(v) && !/:(no_workstreams|workstreams_\d+|idle_weeks_|nothing_runs_into_gate_week)/.test(v)),
-  ws: v => (/^ws:/.test(v) && !/:deliverables_count_/.test(v)) || /^trace:/.test(v) || /^sizing:/.test(v) || /^phase:[^:]+:(no_workstreams|workstreams_\d+|idle_weeks_|nothing_runs_into_gate_week)/.test(v),
+  ws: v => (/^ws:/.test(v) && !/:deliverables_count_/.test(v)) || /^trace:/.test(v) || /^sizing:/.test(v) || /^fit:/.test(v) || /^phase:[^:]+:(no_workstreams|workstreams_\d+|idle_weeks_|nothing_runs_into_gate_week)/.test(v),
   del: v => (/^del:/.test(v) && !/:never_presented$/.test(v)) || /^ws:[^:]+:deliverables_count_/.test(v) || /^done:/.test(v),
   gov: v => (/^gov:/.test(v) && !CALENDAR.test(v)) || /^del:[^:]+:never_presented$/.test(v),
 };
@@ -706,7 +752,8 @@ function planNumbers(state) {
   const inp = state.input, L = state.lead || {};
   const ranges = new Set(), singles = new Set();
   const add = (a, b) => { if (a == null || b == null) return; ranges.add(`${a}-${b}`); singles.add(a); singles.add(b); };
-  const planned = phaseWeeks(L.phases);
+  const planned = phaseWeeks(effectivePhases(state));
+  phaseWeeks(L.phases).forEach(p => add(p.duration_weeks.min, p.duration_weeks.max));   // the lead's own weeks stay quotable
   planned.forEach(p => add(p.duration_weeks.min, p.duration_weeks.max));
   add(planned.reduce((a, p) => a + p.duration_weeks.min, 0), planned.reduce((a, p) => a + p.duration_weeks.max, 0));
   const sz = sizingSummary(state);
@@ -780,7 +827,7 @@ function checkFormats(state, r) {
 // v4: every done item of a gate is evidenced by a deliverable of that phase, and every done_ref points at one.
 function checkDone(state, r) {
   const v = [];
-  const phases = phaseWeeks((state.lead || {}).phases);
+  const phases = phaseWeeks(effectivePhases(state));
   const wsPhase = Object.fromEntries(((state.ws || {}).workstreams || []).map(w => [w.id, w.phase_order]));
   const refs = {};
   for (const d of ((state.del || {}).deliverables || [])) {
@@ -821,12 +868,12 @@ function checkStage(stage, state, ctx) {
       if (w.builds_on_meeting == null) return;
       const m = mById[w.builds_on_meeting];
       if (!m || m.type === 'kickoff') { v.push(`ws:${w.id}:builds_on_meeting_${w.builds_on_meeting}_is_not_a_steering_meeting`); return; }
-      const ph0 = phaseWeeks(state.lead.phases).find(p => p.order === w.phase_order) || { start_week: 1 };
+      const ph0 = phaseWeeks(effectivePhases(state)).find(p => p.order === w.phase_order) || { start_week: 1 };
       const st = ph0.start_week + (Number(w.start_offset) || 0);
       if (st <= m.week) v.push(`ws:${w.id}:builds_on_${m.id}_wk${m.week}_but_starts_wk${st}`);
     });
     // a stream that follows another but overlaps it must leave room for an interim handover (at least 2 weeks in)
-    const pw = Object.fromEntries(phaseWeeks(state.lead.phases).map(p => [p.order, p]));
+    const pw = Object.fromEntries(phaseWeeks(effectivePhases(state)).map(p => [p.order, p]));
     const abs = w => { const so = Number(w.start_offset) || 0, du = Math.max(1, Number(w.duration) || 1), st = ((pw[w.phase_order] || {}).start_week || 1) + so; return { st, en: st + du - 1 }; };
     const byId = Object.fromEntries((state.ws.workstreams || []).map(w => [w.id, w]));
     (state.ws.workstreams || []).forEach(w => (w.follows || []).forEach(f => {
@@ -835,6 +882,9 @@ function checkStage(stage, state, ctx) {
       if (a.st <= b.en && a.st - b.st < 2) v.push(`ws:${w.id}:follows_${f}_but_starts_${a.st - b.st}_week_after_it`);
     }));
     v.push(...checkSizing(state, ctx));
+    // v4.1: the sizing re-splits the phase weeks; the streams were scheduled to the lead's weeks, so one more pass
+    // reschedules them to the new ones (the retry input carries the new phases and meetings)
+    if ((ctx.pass || 0) === 0 && resplitChanged(state)) v.push(`fit:phase_weeks_${weeksOf((state.lead || {}).phases)}_resplit_to_${weeksOf(effectivePhases(state))}_reschedule_the_streams`);
     v.push(...agentNotes('ws', state.ws, state));
   }
   if (stage === 'del') {
@@ -983,7 +1033,7 @@ function routeReview(review, mode) {
   return { from: from || null, feedback, for_partner: forPartner };
 }
 
-return { meetingCalendar, phaseWeeks, stageInput, renumberDeliverables, buildArch, checkStage, compile, workEstimate, checkFrame, checkSizing, checkDone, sizingSummary, fitNote, reviewInput, checkReview, routeReview, MAX_PHASES, MAX_DEL_PER_WS };
+return { meetingCalendar, phaseWeeks, effectivePhases, resplitChanged, stageInput, renumberDeliverables, buildArch, checkStage, compile, workEstimate, checkFrame, checkSizing, checkDone, sizingSummary, fitNote, reviewInput, checkReview, routeReview, MAX_PHASES, MAX_DEL_PER_WS };
 
 })();
 
@@ -1048,12 +1098,14 @@ for (const s of ORDER) {
   if (s === 'del') { const r = C.renumberDeliverables(state); state.del = { deliverables: r.deliverables, notes: r.notes }; }
   if (s === stage) break;
 }
+// v4.1: once the work is sized, the phase weeks are re-split from the estimates and the meetings follow the new weeks
+if (typeof C.effectivePhases === 'function' && state.lead) state.calendar = C.meetingCalendar(C.effectivePhases(state));
 
 const agentError = cur.error ? String(cur.error.message || cur.error) : (out0 ? '' : 'no answer');
 let violations;
 if (agentError) violations = ['agent_error: ' + agentError];
 else {
-  try { violations = C.checkStage(stage, state, { jargon_never: JARGON }).violations; }
+  try { violations = C.checkStage(stage, state, { jargon_never: JARGON, pass }).violations; }
   catch (e) { violations = ['check_error: ' + e.message]; }
 }
 const hard = violations.filter(x => !SOFT.test(x));
