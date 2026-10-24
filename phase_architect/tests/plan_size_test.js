@@ -158,6 +158,22 @@ expect('catch_one_stream_in_a_5_phase_plan', split(39, 5), [2, 2, 2, 2, 1], null
   results.push({ label: 'catch_two_checkins_in_6w', ok });
   console.log(`${ok ? 'PASS' : 'FAIL'} catch_two_checkins_in_6w: ${JSON.stringify(r.violations)}`);
 }
+{ // Oct 24: a length the brief states keeps its ranges (Joana: 4-8 weeks, 1-2 months, 12-36 months)
+  const { arch, ctx } = build([8, 9, 156], [3, 3, 4], null);
+  [[4, 8], [4, 9], [52, 156]].forEach(([mn, mx], i) => { arch.phases[i].duration_weeks = { min: mn, max: mx }; });
+  ctx.brief.required.engagement_length = { value: '4-8 weeks, 1-2 months, 12-36 months', source: 'stated', quote: 'x', weeks_min: 60, weeks_max: 173, duration_derived: false };
+  const r = validatePlan(arch, ctx);
+  const ok = !r.violations.some(x => /wider_than_2|total_m(in|ax)/.test(x));
+  results.push({ label: 'stated_wide_ranges_pass', ok });
+  console.log(`${ok ? 'PASS' : 'FAIL'} stated_wide_ranges_pass: ${JSON.stringify(r.violations.filter(x => /wider|total/.test(x)))}`);
+  const e = build([8, 9, 30], [3, 3, 4], null);
+  e.arch.phases[2].duration_weeks = { min: 20, max: 30 };
+  e.ctx.brief.required.engagement_length = { value: null, source: 'assumed', quote: null, weeks_min: null, weeks_max: null };
+  const r2 = validatePlan(e.arch, e.ctx);
+  const ok2 = r2.violations.some(x => x.includes('range_20-30_wider_than_2'));
+  results.push({ label: 'catch_wide_estimated_range', ok: ok2 });
+  console.log(`${ok2 ? 'PASS' : 'FAIL'} catch_wide_estimated_range`);
+}
 const bad = results.filter(r => !r.ok);
 console.log(`\n${results.length - bad.length}/${results.length} passed`);
 process.exit(bad.length ? 1 : 0);

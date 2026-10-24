@@ -61,8 +61,8 @@ Do this for every brief, also when the length is stated: it shows the partner wh
 
 STEP 5 - LENGTH
 `sizing.length_basis` says where the phases' `duration_weeks` come from:
-- `stated`: `engagement_length` is stated with weeks. The phases' min values sum to `weeks_min` and their max values to `weeks_max`; split them in proportion to the estimates.
-- `stage_lengths`: the brief states the length of each stage; use those. Two dates in the brief bound a stage: subtract them and round to whole weeks.
+- `stated`: `engagement_length` is stated with weeks. The phases' min values sum to `weeks_min` and their max values to `weeks_max`; split them in proportion to the estimates. A phase's range may be as wide as the brief's: the 2-week limit is only for `estimated`.
+- `stage_lengths`: the brief states the length of each stage; use those, ranges included ('12 to 36 months' is 52-156 weeks), never narrowed. Two dates in the brief bound a stage: subtract them and round to whole weeks.
 - `deadline`: `weeks_available` is given and no length is stated. The phases' max values together never exceed `weeks_available`: use the estimates when they fit, otherwise shorten the phases with the widest estimates first.
 - `estimated`: none of the above. Each phase's `duration_weeks` is a range of at most 2 weeks inside its estimate: the estimate itself when it spans 2 weeks or less, otherwise the 2 weeks around its middle. Say in a note that the length is an estimate; when you took the middle of a wider estimate, say what would push it to the top.
 When a stated length or deadline is shorter than the estimates, still plan to it: code tells the partner how many weeks the work needs.
@@ -87,7 +87,7 @@ ARCHITECT NOTES
 Write no note without one of these reasons. Every length a note quotes (a range or a number of weeks) must be one the plan or its sizing contains: a phase's weeks, an estimate, a piece's weeks, the total or the archetype's typical weeks. Code checks it.
 
 SELF-CHECK BEFORE ANSWERING
-Recompute every `estimate` from its pieces. Add up the phases' min and max weeks and compare them with the stated length, `weeks_available`, or (estimated) each phase's estimate. Confirm every phase answers a sub-question, every range is at most 2 weeks wide, every name is one of the eight, the type rule holds, and there are at most 5 phases.
+Recompute every `estimate` from its pieces. Add up the phases' min and max weeks and compare them with the stated length, `weeks_available`, or (estimated) each phase's estimate. Confirm every phase answers a sub-question, every range you estimated is at most 2 weeks wide (a length the brief states keeps its ranges), every name is one of the eight, the type rule holds, and there are at most 5 phases.
 
 MUST NEVER
 - Invent a ninth phase name, overlap phases, or plan more than 5.

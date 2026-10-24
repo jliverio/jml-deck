@@ -72,7 +72,11 @@ function validatePlan(arch, ctx) {
   if (el.source === 'stated' && el.weeks_max != null && total.max !== el.weeks_max) v.push(`phase:total_max_${total.max}_vs_stated_${el.weeks_max}`);
   if (el.source === 'stated' && el.weeks_min != null && total.min !== el.weeks_min) v.push(`phase:total_min_${total.min}_vs_stated_${el.weeks_min}`);
   if (ctx.weeks_available != null && total.max > ctx.weeks_available) v.push(`phase:total_max_${total.max}_over_weeks_available_${ctx.weeks_available}`);
-  phases.forEach(p => { if (p.duration_weeks.max - p.duration_weeks.min > 2) v.push(`phase:${p.name}:range_${p.duration_weeks.min}-${p.duration_weeks.max}_wider_than_2`); });
+  // The 2-week limit is for the firm's own estimates. A length the brief states keeps the brief's ranges (José, Oct 24:
+  // Joana's 'diagnosis 4 to 8 weeks, plan 1 to 2 months, implementation 12 to 36 months'; run 1628 had to narrow them
+  // and so broke the stated length).
+  const statedLength = el.source === 'stated' && el.weeks_max != null;
+  if (!statedLength) phases.forEach(p => { if (p.duration_weeks.max - p.duration_weeks.min > 2) v.push(`phase:${p.name}:range_${p.duration_weeks.min}-${p.duration_weeks.max}_wider_than_2`); });
   const et = ((brief.required || {}).engagement_type || {}).value;
   const IMPL = ['Pilot', 'Implementation', 'Change & Training', 'Measurement'];
   if (et !== 'assessment_and_implementation' && names.some(n => IMPL.includes(n))) v.push('phase:implementation_phase_in_assessment');
