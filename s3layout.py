@@ -6,8 +6,10 @@
   decision as a diamond, workstreams as bars, the client's deadline as a red line. When the workstreams do not
   fit on one page, the roadmap shows phases only and the timeline pages move to an appendix.
 - "Deliverables by workstream" moves to the appendix (the steering-meetings slide refers readers to it).
-- New slides before Next Steps: the assumptions the draft rests on (payload s3.assumptions) and a
-  "[Firm to complete] Fees" placeholder. No team slide and no price: the firm completes both.
+- New slides: a "[Firm to complete] Fees" placeholder before Next Steps (no team slide and no price: the firm
+  completes both), and the assumptions the draft rests on (payload s3.assumptions), first in the appendix.
+- The appendix comes after the closing slide (José, 24 Oct: the assumptions slide explains our rationale to
+  readers who want it; it is not part of the story).
 - The agenda follows the new order; the situation slide's box reads "Hypothesis to test".
 
 Called by varfill.build_deck after filling, before saving. Payloads without template "1.5" never reach it.
@@ -242,7 +244,7 @@ def apply(prs, values, plan, s3):
     has_plan = bool(plan.get("phases"))
     road, show_ws = (b.roadmap(plan, s3.get("deadline_weeks"), label_approach) if has_plan else (None, False))
     items = [a for a in (s3.get("assumptions") or []) if str(a.get("text", "")).strip()]
-    assum = b.assumptions(items[:5], label_next) if items else None
+    assum = b.assumptions(items[:5], "Appendix") if items else None
     fees = b.fees(plan, label_next)
     if not items:
         warnings.append("S3: no assumptions in the payload; the assumptions slide is left out")
@@ -267,18 +269,20 @@ def apply(prs, values, plan, s3):
                 appendix.append(e)
             continue
         if k == "next":
-            order += [by_kind[x] for x in ("assumptions", "fees") if x in by_kind]
+            order += [by_kind[x] for x in ("fees",) if x in by_kind]
             next_seen = True
         order.append(e)
     if not next_seen:                                 # no Next Steps slide: new slides go before the closing slide
         tail = order.pop() if order else None
-        order += [by_kind[x] for x in ("assumptions", "fees") if x in by_kind]
+        order += [by_kind[x] for x in ("fees",) if x in by_kind]
         if tail is not None:
             order.append(tail)
     if has_plan and not placed_road:
         warnings.append("S3: no timeline pages found; the roadmap is left out")
+    if "assumptions" in by_kind:
+        appendix.insert(0, by_kind["assumptions"])
     if appendix:
-        order = order[:-1] + appendix + order[-1:]    # before the closing slide
+        order = order + appendix                      # after the closing slide (José, 24 Oct)
         if not show_ws:
             warnings.append("S3: workstreams did not fit the roadmap; the timeline pages moved to the appendix")
 
@@ -305,7 +309,7 @@ def apply(prs, values, plan, s3):
                         p.runs[0].text = rest[:1].upper() + rest[1:]
                         for r in p.runs[1:]:
                             r.text = ""
-    _reorder_agenda(prs, ids, kinds, sec, bool(items))
+    _reorder_agenda(prs, ids, kinds, sec, False)     # assumptions sit in the appendix, not under Next Steps
     return warnings
 
 
