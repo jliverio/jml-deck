@@ -5,7 +5,8 @@
 Draws the timeline with unit_scale=True for plans of 2 to 624 weeks and 3 to 12 workstreams, and checks:
 the unit is the smallest of week, month, bi-month, quarter, four-month period, semester that fits 24 boxes;
 every header box is one unit; phases follow each other with no shared box; every bar, diamond and meeting
-sits inside its phase; and the slide passes the layout checks of workplan_stress.py. Past 24 semesters
+sits inside its phase; one marker per box on the timeline, while the steering slides keep every meeting; and
+the slide passes the layout checks of workplan_stress.py. Past 24 semesters
 time_unit must return None. Exits 1 on any failure.
 """
 import io, os, sys
@@ -54,11 +55,15 @@ def run(total, n_ws, outdir=None):
         a, b = ws_span[d["workstream_id"]]
         if not a <= d["due_week"] <= b:
             probs.append(f"{d['id']} due outside its workstream")
-    boxes = [e["week"] for e in g["governance"]["events"]]
-    if len(boxes) != len(set(boxes)) or any(not 1 <= x <= n for x in boxes):
-        probs.append("two meetings in one box, or a meeting off the grid")
+    if any(not 1 <= e["week"] <= n for e in g["governance"]["events"]):
+        probs.append("a meeting off the grid")
+    boxes = [e["week"] for e in workplan._markers(g["governance"]["events"])]   # one timeline marker per box
+    if len(boxes) != len(set(boxes)):
+        probs.append("two markers in one box")
     if set(boxes) & set(g["governance"]["status_weeks"]):
         probs.append("status dot on a meeting box")
+    if len(g["governance"]["events"]) != len(plan["governance"]["events"]):
+        probs.append("a meeting was dropped (the steering slides list them all)")
     prs = varfill._load_template(varfill.TEMPLATES["1.4"])
     lst = prs.slides._sldIdLst
     for el in list(lst):
@@ -71,6 +76,14 @@ def run(total, n_ws, outdir=None):
               and s.top == min((x.top for x in slides[0].shapes if x.has_text_frame and x.text_frame.text.isdigit()), default=0)]
     if len(labels) != n:
         probs.append(f"{len(labels)} header boxes for {n} {many}")
+    # the other plan slides in the same unit (José, 24 Oct)
+    sp = workplan.scaled(plan)
+    workplan.roadmap_slide(prs, sp, "Approach", "The Navigator Company")
+    workplan.deliverables_slides(prs, sp, "Approach", "The Navigator Company")
+    workplan.governance_slides(prs, sp, "Approach", "The Navigator Company")
+    words = [x.text_frame.text for sl in prs.slides for x in sl.shapes if x.has_text_frame]
+    if one != "week" and any(("Week " in w or "week " in w) and "weeks between" not in w and "every" not in w for w in words):
+        probs.append("a slide still counts in weeks: " + next(w for w in words if "Week " in w or "week " in w)[:40])
     buf = io.BytesIO(); prs.save(buf)
     deck = Presentation(io.BytesIO(buf.getvalue()))
     for i, sl in enumerate(deck.slides, 1):

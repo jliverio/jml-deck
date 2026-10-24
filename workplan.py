@@ -190,9 +190,10 @@ def _gate_weeks(plan):
     return [(p, (gates.get(p["order"]) or {}).get("week") or p.get("end_week")) for p in phases]
 
 
-def _week_list(ws):
+def _week_list(ws, plan=None):
+    one, many, _ = _uw(plan)
     ws = [str(w) for w in ws]
-    return ("week " + ws[0]) if len(ws) == 1 else "weeks " + ", ".join(ws[:-1]) + " and " + ws[-1]
+    return (f"{one} " + ws[0]) if len(ws) == 1 else f"{many} " + ", ".join(ws[:-1]) + " and " + ws[-1]
 
 
 def roadmap_title(plan, limit=110):
@@ -202,14 +203,14 @@ def roadmap_title(plan, limit=110):
     last_p, last_w = gw[-1]
     if len(gw) == 1:
         label = (last_p.get("gate") or {}).get("label") or "final decision"
-        return f"{client} takes one decision, at the {label} in week {last_w}"
-    head = (f"in week {gw[0][1]} whether {gw[1][0]['name']} goes ahead" if len(gw) == 2
-            else f"in {_week_list([w for _, w in gw[:-1]])} whether the next phase goes ahead")
-    t = f"{client} decides {head}; the work closes in week {last_w}"
+        return f"{client} takes one decision, at the {label} in {_at(plan, last_w)}"
+    head = (f"in {_at(plan, gw[0][1])} whether {gw[1][0]['name']} goes ahead" if len(gw) == 2
+            else f"in {_week_list([w for _, w in gw[:-1]], plan)} whether the next phase goes ahead")
+    t = f"{client} decides {head}; the work closes in {_at(plan, last_w)}"
     if len(t) <= limit:
         return t
     nxt = gw[1][0]["name"] if len(gw) == 2 else "Each next phase"
-    return f"{nxt} goes ahead only after a decision in {_week_list([w for _, w in gw[:-1]])}; the work closes in week {last_w}"
+    return f"{nxt} goes ahead only after a decision in {_week_list([w for _, w in gw[:-1]], plan)}; the work closes in {_at(plan, last_w)}"
 
 
 def _peak_parallel(plan):
@@ -233,7 +234,8 @@ def titles(plan):
     gates = sum(1 for e in ev if e["type"] == "gate")
     peak = _peak_parallel(plan)
     gap = _max_steering_gap(plan)
-    run = "The workstreams run one at a time" if peak <= 1 else f"Up to {_count(peak, 'workstream')} run in the same week"
+    one, many, _ = _uw(plan)
+    run = "The workstreams run one at a time" if peak <= 1 else f"Up to {_count(peak, 'workstream')} run in the same {one}"
     ws_part = "The workstream hands over" if nws == 1 else f"The {_count(nws, 'workstream')} hand over"
     if len(ev) == 1:
         gov = "After the kick-off, one steering meeting reviews the work and closes it with a decision"
@@ -243,7 +245,7 @@ def titles(plan):
         gov = f"After the kick-off, {_count(len(ev), 'steering meeting')} review the work, {closing}"
     out = {
         "roadmap": roadmap_title(plan),
-        "timeline": run + (f", with no more than {gap} weeks between steering meetings" if gap else ""),
+        "timeline": run + (f", with no more than {gap} {one if gap == 1 and _boxes(plan) else many} between steering meetings" if gap else ""),
         "deliverables": f"{ws_part} {_count(nd, 'deliverable')}, each reviewed at a steering meeting",
         "governance": gov,
     }
@@ -377,23 +379,28 @@ def _to_units(plan, k):
         if d.get("due_week"):
             a, b = wspan.get(d.get("workstream_id"), (1, prev))
             d["due_week"] = min(max(_box_end(d["due_week"], k), a), b)
-    # one marker per box: a decision gate wins, then a workshop, the kick-off, a check-in
-    rank = {"gate": 0, "workshop": 1, "kickoff": 2, "checkin": 3}
-    best = {}
-    for e in g["governance"]["events"]:
+    for e in g["governance"]["events"]:       # every meeting keeps its place (the steering slides list them all)
         if e["type"] == "gate" and e.get("phase_order") in pspan:
             e["week"] = pspan[e["phase_order"]][1]
         else:
             e["week"] = min(_box_end(e["week"], k), prev)
+    taken = {e["week"] for e in g["governance"]["events"]}
+    g["governance"]["status_weeks"] = sorted({min(_box_end(wk, k), prev) for wk in g["governance"].get("status_weeks") or []}
+                                             - taken)
+    g["_weeks_total"] = dict(plan["total_duration_weeks"])
+    g["total_duration_weeks"] = {"min": prev, "max": prev}
+    return g
+
+
+def _markers(events):
+    """One timeline marker per box: a decision gate wins, then a workshop, the kick-off, a check-in."""
+    rank = {"gate": 0, "workshop": 1, "kickoff": 2, "checkin": 3}
+    best = {}
+    for e in events:
         cur = best.get(e["week"])
         if cur is None or rank.get(e["type"], 9) < rank.get(cur["type"], 9):
             best[e["week"]] = e
-    g["governance"]["events"] = sorted(best.values(), key=lambda e: e["week"])
-    taken = set(best)
-    g["governance"]["status_weeks"] = sorted({min(_box_end(wk, k), prev) for wk in g["governance"].get("status_weeks") or []}
-                                             - taken)
-    g["total_duration_weeks"] = {"min": prev, "max": prev}
-    return g
+    return sorted(best.values(), key=lambda e: e["week"])
 
 
 def time_unit(plan):
@@ -404,15 +411,60 @@ def time_unit(plan):
             continue
         g = _to_units(plan, k)
         if g["total_duration_weeks"]["max"] <= MAX_BOXES:
+            g["_unit"] = {"k": k, "head": head, "one": one, "many": many}
             return k, head, one, many, g
     return None
+
+
+def scaled(plan):
+    """Template 1.5: the plan in the timeline's unit for every plan slide (José, 24 Oct), or the plan itself
+    when weeks fit (or no unit does: the S3 layout then leaves the plan slides out)."""
+    if not plan or plan.get("_unit"):
+        return plan
+    u = time_unit(plan)
+    if u is None:
+        return plan
+    if u[0] == 52:                            # weeks fit: same plan, one box per week
+        return {**plan, "_unit": {"k": 52, "head": "Week", "one": "week", "many": "weeks"}}
+    return u[4]
+
+
+def _boxes(plan):
+    """True when the plan's numbers are boxes of a unit longer than a week."""
+    return ((plan or {}).get("_unit") or {}).get("k", 52) != 52
+
+
+# words for a box number in the plan's unit (weeks unless the plan was scaled)
+def _uw(plan):
+    u = (plan or {}).get("_unit") or {}
+    return u.get("one", "week"), u.get("many", "weeks"), u.get("head", "Week")
+
+
+def _at(plan, n, cap=False):
+    one = _uw(plan)[0]
+    return f"{_cap(one) if cap else one} {n}"
+
+
+def _range(plan, a, b):
+    one, many, _ = _uw(plan)
+    return f"{_cap(one)} {a}" if a == b else f"{_cap(many)} {a}–{b}"
+
+
+def _dur(plan, p):
+    """A phase's length: the plan's weeks (with its range), or its box count in a scaled plan."""
+    if not _boxes(plan):
+        return _weeks_label(p["duration_weeks"])
+    one, many, _ = _uw(plan)
+    n = p["end_week"] - p["start_week"] + 1
+    return f"{n} {one if n == 1 else many}"
 
 
 # ------------------------------------------------------------------ slide 1: timeline
 def timeline_slides(prs, plan, section, client, slide=None, unit_scale=False):
     """One or more timeline pages (each holds whole phases where possible). unit_scale: template 1.5's
     rule, at most 24 boxes of one unit (time_unit); otherwise one column per week, as in 1.4."""
-    unit = time_unit(plan) if unit_scale else None
+    if unit_scale:
+        plan = scaled(plan)
     avail, cap = _timeline_capacity(plan)
     order = _ws_order(plan)
     numbering = {w["id"]: i + 1 for i, w in enumerate(order)}
@@ -422,28 +474,25 @@ def timeline_slides(prs, plan, section, client, slide=None, unit_scale=False):
     for i, rows in enumerate(pages):
         out.append(timeline_slide(prs, plan, section, client, rows=rows, numbering=numbering, avail=avail,
                                   page=(i, len(pages)), slide=slide if i == 0 else None,
-                                  after=(out[-1] if (i and slide is not None) else None), unit=unit))
+                                  after=(out[-1] if (i and slide is not None) else None)))
     return out
 
 
 def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=None, avail=None,
-                   page=(0, 1), after=None, unit=None):
+                   page=(0, 1), after=None):
     T = titles(plan)
     ranged = any(p["duration_weeks"]["min"] != p["duration_weeks"]["max"] for p in plan["phases"])
     title = T["timeline"] + (" (continued)" if page[0] else "")
-    head, one, many = ("Week", "week", "weeks") if unit is None else unit[1:4]
+    one, many, head = _uw(plan)
+    unit = plan.get("_unit")                        # template 1.5: at most 24 boxes, one unit each
     sub = f"Plan by workstream and {one}" + (" (drawn on the longer estimate)" if ranged else "")
     if page[1] > 1:
         sub += f" – page {page[0] + 1} of {page[1]}"
     s = _new_slide(prs, title, sub, section, slide=slide, after=after)
-    grid = plan if unit is None else unit[4]          # positions in boxes; titles and the deadline stay in weeks
-    total = grid["total_duration_weeks"]["max"]
-    phases = grid["phases"]
-    events = grid["governance"]["events"]
+    total = plan["total_duration_weeks"]["max"]     # in boxes when the plan is scaled
+    phases = plan["phases"]
+    events = plan["governance"]["events"]
     wss = rows if rows is not None else _ws_order(plan)
-    if unit is not None:
-        gws = {w["id"]: w for w in grid["workstreams"]}
-        wss = [gws.get(w["id"], w) for w in wss]
     if numbering is None:
         numbering = {w["id"]: i + 1 for i, w in enumerate(_ws_order(plan))}
     if avail is None:
@@ -456,7 +505,7 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
     gx = L + label_w
     gw = W - label_w
     col = gw / total
-    step = week_step(total) if unit is None else 1
+    step = week_step(total) if unit is None else 1  # 1.5: every box labelled, one unit each
     n_rows = len(wss)
     row_h = max(MIN_ROW, min(MAX_ROW, avail / max(n_rows, 1)))
     y0 = TOP
@@ -466,11 +515,7 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
         w = (p["end_week"] - p["start_week"] + 1) * col
         b = _box(s, x, y0, w, _BAND_H, fill=_phase_color(p["order"]))
         est = "" if p["duration_weeks"]["min"] == p["duration_weeks"]["max"] else " (estimate)"
-        if unit is None or unit[0] == 52:
-            full = f"{p['name']} · {_weeks_label(p['duration_weeks'])}{est}"
-        else:
-            nb = p["end_week"] - p["start_week"] + 1
-            full = f"{p['name']} · {nb} {one if nb == 1 else many}"
+        full = f"{p['name']} · {_dur(plan, p)}{'' if _boxes(plan) else est}"
         fit = int((w - Inches(0.2)) / Inches(0.075))  # inside the box margins (Oct 18: 'Measurement · 6 weeks' overflowed a 6-of-39-week band)
         _text(b, _clip(full if len(full) <= fit else p["name"], fit), size=10 if fit >= 12 else 8,
               bold=True, color=WHITE, align=PP_ALIGN.CENTER)
@@ -506,7 +551,7 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
             _line(s, cx, grid_top, cx, my - d / 2, color=GREY, width=0.75, dash=True)
 
     # rows
-    del_due = {dd["id"]: dd["due_week"] for dd in grid["deliverables"]}
+    del_due = {dd["id"]: dd["due_week"] for dd in plan["deliverables"]}
     # stream labels always get two lines: 10pt in tall rows, 8pt in the tightest ones
     lsize = 10 if row_h >= Inches(0.4) else 8
     two_lines = True
@@ -543,10 +588,10 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
         _line(s, L, y + row_h, L + W, y + row_h, color=LGREY, width=0.5, dash=True)
     # governance row
     _text(s, "Steering", size=10, bold=True, color=NAVY, x=L, y=my - d / 2, w=label_w, h=d)
-    for wk in grid["governance"]["status_weeks"]:
+    for wk in plan["governance"]["status_weeks"]:
         _box(s, gx + (wk - 0.5) * col - d / 2, my - d / 2, d, d, fill=WHITE, line=BLACK, shape=MSO_SHAPE.OVAL, line_w=0.75)
     gap = Emu(45720)
-    evs = sorted(events, key=lambda e: e["week"])
+    evs = _markers(events) if _boxes(plan) else sorted(events, key=lambda e: e["week"])
 
     def place(lab_w):
         # two tiers of labels; when both are taken, the label goes on the freer tier, pushed right.
@@ -583,7 +628,7 @@ def timeline_slide(prs, plan, section, client, slide=None, rows=None, numbering=
               anchor=MSO_ANCHOR.TOP, x=lx, y=ly, w=lab_w, h=_LABEL_H)
     dl = plan.get("deadline")
     if dl and dl.get("weeks_available") is not None:
-        t = plan["total_duration_weeks"]["max"]
+        t = (plan.get("_weeks_total") or plan["total_duration_weeks"])["max"]   # the client's limit is in weeks
         fits = "fits within" if t <= dl["weeks_available"] else "does NOT fit within"
         _text(s, f"Deadline: {dl.get('text') or 'stated in the brief'}. The plan ({t} weeks) {fits} the {dl['weeks_available']} weeks available, allowing two weeks to contract and start.",
               size=9, bold=True, color=NAVY, x=L, y=BOTTOM - _LEGEND_H - _DEADLINE_H + Inches(0.05), w=W, h=Inches(0.2))
@@ -708,7 +753,7 @@ def deliverables_slide(prs, plan, section, client, slide=None, items=None, numbe
             _icon(s, _format(d), x, yy + (line_h - _ICON) / 2, _ICON)
             _text(s, _clip(f"{did}  {d['name']}", name_chars), size=size, x=x + icon_w, y=yy, w=cols[1][1] - Inches(0.1) - icon_w, h=line_h)
             x += cols[1][1]
-            _text(s, d.get("due_label") or f"Week {d['due_week']}", size=size, x=x, y=yy, w=cols[2][1], h=line_h)
+            _text(s, d.get("due_label") or _at(plan, d['due_week'], True), size=size, x=x, y=yy, w=cols[2][1], h=line_h)
             x += cols[2][1]
             _text(s, _clip(d.get("presented_at") or "[Firm to complete]", rev_chars), size=size, x=x, y=yy, w=cols[3][1], h=line_h)
         y += h
@@ -753,13 +798,14 @@ def governance_slides(prs, plan, section, client, per_slide=4, slide=None):
         for i, e in enumerate(chunk):
             x = L + i * (cw + gap)
             y = TOP
-            head = f"Week {e['week']}"
-            lab_w = cw - Inches(0.7)
+            head = _at(plan, e['week'], True)
+            hw = max(Inches(0.68), Inches(0.075) * len(head) + Inches(0.08))   # "Four-month period 12" needs more room
+            lab_w = cw - Inches(0.7) - (hw - Inches(0.68))
             fit11 = int(lab_w / Inches(0.088))
             lsize = 11 if len(e["label"]) <= fit11 else 9
             _text(s, _clip(e["label"], int(lab_w / Inches(0.072)) if lsize == 9 else fit11), size=lsize, bold=True,
                   x=x, y=y, w=lab_w, h=Inches(0.3))
-            _text(s, head, size=10, color=GREY, align=PP_ALIGN.RIGHT, x=x + cw - Inches(0.68), y=y, w=Inches(0.68), h=Inches(0.3))
+            _text(s, head, size=10, color=GREY, align=PP_ALIGN.RIGHT, x=x + cw - hw, y=y, w=hw, h=Inches(0.3))
             _line(s, x, y + Inches(0.34), x + cw, y + Inches(0.34), color=BLACK, width=1.0)
             fill = YELLOW if e["type"] == "gate" else (ELECTRIC if e["type"] == "workshop" else NAVY)
             band = _box(s, x, y + Inches(0.42), cw, Inches(0.58), fill=fill)
@@ -823,27 +869,27 @@ def roadmap_slide(prs, plan, section, client, slide=None):
         shape = MSO_SHAPE.PENTAGON if i == 0 else MSO_SHAPE.CHEVRON
         ch = _box(s, x, y, cw + (gap if i < n - 1 else 0), chev_h, fill=_phase_color(p["order"]), shape=shape)
         ch.adjustments[0] = 0.25
-        weeks = (f"Week {p['start_week']}" if p.get("start_week") == p.get("end_week")
-                 else f"Weeks {p.get('start_week')}–{p.get('end_week')}") if p.get("start_week") else ""
+        weeks = _range(plan, p["start_week"], p["end_week"]) if p.get("start_week") else ""
         tf = ch.text_frame
         tf.margin_left = Inches(0.3) if i else Inches(0.15)
-        _text(ch, [f"Phase {p['order']}: {p['name']}", f"{weeks} ({_weeks_label(p['duration_weeks'])})" if weeks
-                   else _weeks_label(p["duration_weeks"])], size=12, bold=True, color=WHITE)
+        _text(ch, [f"Phase {p['order']}: {p['name']}", f"{weeks} ({_dur(plan, p)})" if weeks
+                   else _dur(plan, p)], size=12, bold=True, color=WHITE)
         tf.paragraphs[1].runs[0].font.bold = False
         tf.paragraphs[1].runs[0].font.size = Pt(10)
         # what it waits for (José, Oct 18: the sequence belongs on this slide)
         if i == 0:
-            starts = f"Starts at the kick-off, week {kick['week'] if kick else 1}"
+            starts = f"Starts at the kick-off, {_at(plan, kick['week'] if kick else 1)}"
             if len(starts) > int((cw - Inches(0.1)) / Inches(0.075)):
-                starts = f"Week {kick['week'] if kick else 1}, at the kick-off"
+                starts = f"{_at(plan, kick['week'] if kick else 1, True)}, at the kick-off"
         else:
             pg = gates.get(phases[i - 1]["order"]) or {}
             plabel = (phases[i - 1].get("gate") or {}).get("label") or pg.get("label") or "previous decision"
-            starts = f"Starts after the {plabel}, week {pg.get('week') or phases[i - 1].get('end_week')}"
+            pw = pg.get('week') or phases[i - 1].get('end_week')
+            starts = f"Starts after the {plabel}, {_at(plan, pw)}"
             if len(starts) > int((cw - Inches(0.1)) / Inches(0.075)):   # narrow columns (5 phases): keep the week
-                starts = f"Week {pg.get('week') or phases[i - 1].get('end_week')}, after the {plabel}"
+                starts = f"{_at(plan, pw, True)}, after the {plabel}"
             if len(starts) > int((cw - Inches(0.1)) / Inches(0.075)):   # still too long: name the phase, not the gate (Oct 19)
-                starts = f"Week {pg.get('week') or phases[i - 1].get('end_week')}, after Phase {phases[i - 1]['order']}"
+                starts = f"{_at(plan, pw, True)}, after Phase {phases[i - 1]['order']}"
         _text(s, _clip(starts, int((cw - Inches(0.1)) / Inches(0.075))), size=10, italic=True, color=GREY,
               anchor=MSO_ANCHOR.TOP, x=x, y=y + chev_h + Inches(0.08), w=cw - Inches(0.1), h=Inches(0.22))
         # what the phase answers
@@ -861,12 +907,12 @@ def roadmap_slide(prs, plan, section, client, slide=None):
         _line(s, x, gy, x + cw, gy, color=BLACK, width=1.0)
         dm = _box(s, x, gy + Inches(0.14), Inches(0.24), Inches(0.24), fill=YELLOW, shape=MSO_SHAPE.DIAMOND)
         gfit = int((cw - Inches(0.34)) / Inches(0.085))
-        full = f"{label}" + (f", week {wk}" if wk else "")
+        full = f"{label}" + (f", {_at(plan, wk)}" if wk else "")
         short = len(full) > gfit and wk          # narrow columns (5 phases): the week moves to the decision line
         _text(s, _clip(label if short else full, gfit),
               size=11, bold=True, x=x + Inches(0.32), y=gy + Inches(0.1), w=cw - Inches(0.32), h=Inches(0.3))
         if decision:
-            _text(s, _clip((f"Week {wk} decision: " if short else "Decision: ") + decision, 190), size=11 if n < 5 else 10, color=NAVY, anchor=MSO_ANCHOR.TOP,
+            _text(s, _clip((f"{_at(plan, wk, True)} decision: " if short else "Decision: ") + decision, 190), size=11 if n < 5 else 10, color=NAVY, anchor=MSO_ANCHOR.TOP,
                   x=x, y=gy + Inches(0.48), w=cw - Inches(0.1), h=Inches(1.0))
     # governance strip
     gov = plan["governance"]
@@ -881,8 +927,8 @@ def roadmap_slide(prs, plan, section, client, slide=None):
     cells = [
         ("Steering", _cap(_count(len(steer), "steering meeting")) + (f" with {_list(who)}" if who else "")
          + ("; each phase ends in a decision" if n > 1 else "; the work ends in a decision")),
-        ("Working rhythm", (f"Kick-off in week {kick['week']}" if kick else "Kick-off at the start")
-         + (f"; first deliverable in week {first_due}" if first_due else "")
+        ("Working rhythm", (f"Kick-off in {_at(plan, kick['week'])}" if kick else "Kick-off at the start")
+         + (f"; first deliverable in {_at(plan, first_due)}" if first_due else "")
          + (f"; status meetings every {cad} weeks" if cad and cad > 1 else ("; weekly status meetings" if cad == 1 else ""))),
         (f"What we ask of {client}", "A named project lead, plus time from the steering members; the exact commitment to agree at kick-off"),
     ]
@@ -932,11 +978,13 @@ def fill_template_slides(prs, plan, marked, client="[Client]", unit_scale=False)
         for kind, sl in marked.items():
             _new_slide(prs, "[Firm to complete] " + todo[kind], "", "", slide=sl)
         return list(marked.values())
+    if unit_scale:                         # 1.5: every plan slide in the timeline's unit (José, 24 Oct)
+        plan = scaled(plan)
     out = []
     if "roadmap" in marked:
         out.append(roadmap_slide(prs, plan, "", client, slide=marked["roadmap"]))
     if "timeline" in marked:
-        out += timeline_slides(prs, plan, "", client, slide=marked["timeline"], unit_scale=unit_scale)
+        out += timeline_slides(prs, plan, "", client, slide=marked["timeline"])
     if "deliverables" in marked:
         out += deliverables_slides(prs, plan, "", client, slide=marked["deliverables"])
     if "steering" in marked:

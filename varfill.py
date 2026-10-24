@@ -288,7 +288,7 @@ def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=Non
 
     # work-plan slide titles: composed from the plan unless the payload gives them
     if has_plan:
-        composed = wp.titles(plan)
+        composed = wp.titles(wp.scaled(plan) if version is not None and str(version) in S3_LAYOUT else plan)   # 1.5: in the timeline's unit
         for var, key in TITLE_VARS.items():
             if var in present and not str(values.get(var) or "").strip():
                 values[var] = composed[key]
