@@ -43,7 +43,8 @@ function validatePlan(arch, ctx) {
   const scList = ctx.success_criteria_list || [];
   const never = (ctx.jargon_never || []).map(x => String(x).replace(/\s*\(.*\)\s*/, '').trim().toLowerCase()).filter(Boolean);
   // The partner's own split of the work (Brief Organizer soft_fields.workstreams), when the email gives one.
-  // It replaces the 2-4 per phase default: any length, any number per phase, at most 12 rows (José, Oct 18).
+  // It replaces the 2-4 per phase default: any length, any number per phase, at most 10 rows (José, Oct 24: the
+  // timeline slide holds 10 workstreams; it was 12 from Oct 18, 7 for a few hours on Oct 24).
   const wsf = ((brief.soft_fields || {}).workstreams) || {};
   const statedStreams = (wsf.value != null && Number.isInteger(wsf.count) && wsf.count > 0) ? wsf.count : null;
 
@@ -71,7 +72,11 @@ function validatePlan(arch, ctx) {
   if (el.source === 'stated' && el.weeks_max != null && total.max !== el.weeks_max) v.push(`phase:total_max_${total.max}_vs_stated_${el.weeks_max}`);
   if (el.source === 'stated' && el.weeks_min != null && total.min !== el.weeks_min) v.push(`phase:total_min_${total.min}_vs_stated_${el.weeks_min}`);
   if (ctx.weeks_available != null && total.max > ctx.weeks_available) v.push(`phase:total_max_${total.max}_over_weeks_available_${ctx.weeks_available}`);
-  phases.forEach(p => { if (p.duration_weeks.max - p.duration_weeks.min > 2) v.push(`phase:${p.name}:range_${p.duration_weeks.min}-${p.duration_weeks.max}_wider_than_2`); });
+  // The 2-week limit is for the firm's own estimates. A length the brief states keeps the brief's ranges (José, Oct 24:
+  // Joana's 'diagnosis 4 to 8 weeks, plan 1 to 2 months, implementation 12 to 36 months'; run 1628 had to narrow them
+  // and so broke the stated length).
+  const statedLength = el.source === 'stated' && el.weeks_max != null;
+  if (!statedLength) phases.forEach(p => { if (p.duration_weeks.max - p.duration_weeks.min > 2) v.push(`phase:${p.name}:range_${p.duration_weeks.min}-${p.duration_weeks.max}_wider_than_2`); });
   const et = ((brief.required || {}).engagement_type || {}).value;
   const IMPL = ['Pilot', 'Implementation', 'Change & Training', 'Measurement'];
   if (et !== 'assessment_and_implementation' && names.some(n => IMPL.includes(n))) v.push('phase:implementation_phase_in_assessment');
@@ -89,11 +94,11 @@ function validatePlan(arch, ctx) {
   const wss = (arch.workstreams || []).map(w => ({ ...w }));
   const wsById = {};
   wss.forEach(w => { if (wsById[w.id]) v.push(`ws:${w.id}:duplicate_id`); wsById[w.id] = w; });
-  if (wss.length > 12) v.push(`ws:count_${wss.length}_over_12`);  // the deck pages the timeline at 8 rows
+  if (wss.length > 10) v.push(`ws:count_${wss.length}_over_10`);  // the timeline slide holds 10 rows (José, Oct 24)
   if (statedStreams) {
     // one name per stream: a stream that runs in several phases repeats its name in each
     const distinct = new Set(wss.map(w => String(w.name || '').trim().toLowerCase())).size;
-    const want = Math.min(statedStreams, 12);
+    const want = Math.min(statedStreams, 10);
     if (distinct !== want) v.push(`ws:streams_${distinct}_vs_stated_${want}`);
   }
   for (const w of wss) {
@@ -141,8 +146,9 @@ function validatePlan(arch, ctx) {
     const mine = wss.filter(w => w.phase_order === p.order && w.start_week != null);
     p.workstream_ids = mine.map(w => w.id);
     if (!mine.length) { v.push(`phase:${p.name}:no_workstreams`); continue; }
+    // 2 per phase in 5 phases is 10 rows: the 2-4 default holds at every phase count
     const minCount = (statedStreams || p.duration_weeks.max <= 3) ? 1 : 2;
-    const maxCount = statedStreams ? 12 : 4;
+    const maxCount = statedStreams ? 10 : 4;
     if (mine.length < minCount || mine.length > maxCount) v.push(`phase:${p.name}:workstreams_${mine.length}`);
     const idle = [];
     for (let wk = p.start_week; wk <= p.end_week; wk++) if (!mine.some(w => w.start_week <= wk && w.end_week >= wk)) idle.push(wk - p.start_week + 1);

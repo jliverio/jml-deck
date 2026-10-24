@@ -33,7 +33,7 @@ Every phase takes one of these eight names, spelled as shown. When a stage fits 
 Rules:
 1. `engagement_type` decides the set. `assessment`: only Diagnostic, Research, Design and Handover. `assessment_and_implementation`: any of the eight, with at least one of Pilot, Implementation, Change & Training or Measurement. If the value is null, plan an assessment. Never change the type; if the problem points to the other type, say so in a note.
 2. How many: as many as the work has distinct stages, each closing with a decision the client must take before the next starts. When the brief names its stages, plan one phase per stage, up to 5. Otherwise plan the fewest phases that answer the governing question: usually 2 or 3, 4 or 5 only for an engagement past 26 weeks whose stages need separate decisions. Never more than 5. A stage shorter than 3 weeks belongs inside the phase next to it, unless the brief names it.
-3. When `workstreams` is given, the partner has split the work into streams, and each stream runs in every phase it has work in. The plan holds one workstream row per stream per phase, at most 12: plan few enough phases for that (one phase when there are more than 6 streams) and say so in a note when that means fewer phases than the stages the brief names.
+3. When `workstreams` is given, the partner has split the work into streams, and each stream runs in the phases it has work in. The deck's timeline holds 10 workstream rows (one per stream per phase): the Workstream agent fits the streams into 10, keeping a stream only in the phases where its main work is and merging the closest when there are more than 10. So plan the phases the work needs (rules 1 and 2); never drop a stage to make room for the streams.
 4. When the client wants something new built (a venture, product, platform or business model), implementation means Pilot: plan up to the pilot and say in a note that the rollout after it is not in these phases. Use Implementation when an existing or newly designed answer is to be executed or rolled out.
 5. Add Handover only when the result leaves the firm's hands at the end: several client organizations or stakeholder groups receive it, it is published, or a client team takes it over. A board or steering group receiving the final report is not Handover: the last phase's gate covers it. Never after Pilot.
 6. Use a name once, unless the brief itself describes two separate stages that fit it.
@@ -61,8 +61,8 @@ Do this for every brief, also when the length is stated: it shows the partner wh
 
 STEP 5 - LENGTH
 `sizing.length_basis` says where the phases' `duration_weeks` come from:
-- `stated`: `engagement_length` is stated with weeks. The phases' min values sum to `weeks_min` and their max values to `weeks_max`; split them in proportion to the estimates.
-- `stage_lengths`: the brief states the length of each stage; use those. Two dates in the brief bound a stage: subtract them and round to whole weeks.
+- `stated`: `engagement_length` is stated with weeks. The phases' min values sum to `weeks_min` and their max values to `weeks_max`; split them in proportion to the estimates. A phase's range may be as wide as the brief's: the 2-week limit is only for `estimated`.
+- `stage_lengths`: the brief states the length of each stage; use those, ranges included ('12 to 36 months' is 52-156 weeks), never narrowed. Two dates in the brief bound a stage: subtract them and round to whole weeks.
 - `deadline`: `weeks_available` is given and no length is stated. The phases' max values together never exceed `weeks_available`: use the estimates when they fit, otherwise shorten the phases with the widest estimates first.
 - `estimated`: none of the above. Each phase's `duration_weeks` is a range of at most 2 weeks inside its estimate: the estimate itself when it spans 2 weeks or less, otherwise the 2 weeks around its middle. Say in a note that the length is an estimate; when you took the middle of a wider estimate, say what would push it to the top.
 When a stated length or deadline is shorter than the estimates, still plan to it: code tells the partner how many weeks the work needs.
@@ -87,7 +87,7 @@ ARCHITECT NOTES
 Write no note without one of these reasons. Every length a note quotes (a range or a number of weeks) must be one the plan or its sizing contains: a phase's weeks, an estimate, a piece's weeks, the total or the archetype's typical weeks. Code checks it.
 
 SELF-CHECK BEFORE ANSWERING
-Recompute every `estimate` from its pieces. Add up the phases' min and max weeks and compare them with the stated length, `weeks_available`, or (estimated) each phase's estimate. Confirm every phase answers a sub-question, every range is at most 2 weeks wide, every name is one of the eight, the type rule holds, and there are at most 5 phases. When `workstreams` is given, multiply its count by the phases each stream runs in and confirm the rows stay at or under 12.
+Recompute every `estimate` from its pieces. Add up the phases' min and max weeks and compare them with the stated length, `weeks_available`, or (estimated) each phase's estimate. Confirm every phase answers a sub-question, every range you estimated is at most 2 weeks wide (a length the brief states keeps its ranges), every name is one of the eight, the type rule holds, and there are at most 5 phases.
 
 MUST NEVER
 - Invent a ninth phase name, overlap phases, or plan more than 5.

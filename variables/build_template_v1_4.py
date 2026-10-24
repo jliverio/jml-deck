@@ -19,6 +19,7 @@ What 1.4 adds to 1.3 (Scenario 1 of the October 16 plan):
    slide titles are variables (approach_title_01, timeline_title_01,
    deliverables_title_01, steering_title_01), filled by the renderer from the plan.
    The footer "JML Operations SAMPLE" on the slide masters becomes footer_01.
+5. Oct 24 (José): the five phase blues as squares just left of the timeline slide (off the slide).
 
 Section names are sent by the workflow (section_01 Executive Summary,
 section_02 Context, section_03 Approach, section_04 Next Steps).
@@ -223,6 +224,15 @@ def main():
                 right = sh.left + sh.width            # keep the right edge next to the page number;
                 sh.width = Emu(4114800)               # 4.5 in holds "<client> | Draft for discussion"
                 sh.left = Emu(right - 4114800)
+
+    # Oct 24 (José): the phase colours as squares beside the timeline slide, on the pasteboard, for whoever
+    # edits the deck by hand. The renderer redraws them in the colours each deck uses.
+    import workplan as wp
+    wp._PALETTE = wp.PHASE_BLUES
+    try:
+        wp._palette_swatches(timeline)
+    finally:
+        wp._PALETTE = wp.PHASE_COLORS
 
     buf = io.BytesIO()
     prs.save(buf)

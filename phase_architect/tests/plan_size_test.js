@@ -1,7 +1,7 @@
 // Plan-size stress test for the Phase Architect rules (validate_plan_v2.js).
-// Builds rule-following plans from 2 to 52 weeks with 1 to 12 workstreams, with and without the partner's
-// own streams (brief.soft_fields.workstreams), and checks that each passes the validator; then checks that
-// the size rules still catch the plans they should. Writes the compiled plans to tests/out_plan_size/ for
+// Builds rule-following plans from 2 to 52 weeks with 1 to 10 workstream rows (José, Oct 24: the timeline slide
+// holds 10; it was 12, then 7), with and without the partner's own streams (brief.soft_fields.workstreams), and checks that
+// each passes the validator; then checks that the size rules still catch the plans they should. Writes the compiled plans to tests/out_plan_size/ for
 // tests/workplan_render_size.py. Usage: node phase_architect/tests/plan_size_test.js
 const fs = require('fs');
 const path = require('path');
@@ -44,7 +44,8 @@ function meetings(L, prevRel) {
   return ev;
 }
 
-// phases: [L, ...]; perPhase: [k, ...] workstreams in each phase; stated: null or {count, names?}
+// phases: [L, ...]; perPhase: [k, ...] workstreams in each phase, or [{k, from}, ...] when the partner's streams are
+// spread over the phases (each phase names streams from..from+k-1); stated: null or {count, names?}
 function build(phases, perPhase, stated) {
   const total = phases.reduce((a, b) => a + b, 0);
   const arch = { basis: { governing_question: 'Why did Testco margins fall?', archetype_id: null }, phases: [], workstreams: [],
@@ -58,10 +59,11 @@ function build(phases, perPhase, stated) {
       gate: { label: 'Phase sign-off', decision: 'Do the findings stand as the basis for the next step?' }, depends_on_assumptions: [] });
     const ms = meetings(L, prevAbs - start + 1);
     const fresh = ms.filter(m => m.type !== 'checkin');
-    const k = perPhase[i];
+    const k = typeof perPhase[i] === 'number' ? perPhase[i] : perPhase[i].k;
+    const from = typeof perPhase[i] === 'number' ? 0 : perPhase[i].from;
     const streams = [];
     for (let j = 0; j < k; j++) {
-      const name = stated ? (stated.names ? stated.names[j] : STREAMS[j]) : `${(phases.length === 5 ? NAMES5 : NAMES)[i]} stream ${j + 1}`;
+      const name = stated ? (stated.names ? stated.names[from + j] : STREAMS[from + j]) : `${(phases.length === 5 ? NAMES5 : NAMES)[i]} stream ${j + 1}`;
       streams.push({ id: 'W' + (++wsN), phase_order: order, name, answers: 'What explains this part of the margin fall?', traces_to: ['problem_statement'],
         start_offset: 0, duration: L, follows: [], activities: ['Review documents and operational data', 'Interview the people who do the work'], deliverables: [] });
     }
@@ -83,7 +85,9 @@ function build(phases, perPhase, stated) {
     prevAbs = start + L - 1;
     start += L;
   });
-  return { arch, ctx: { brief: brief(total, stated, phases.length === 5 ? 'assessment_and_implementation' : null), success_criteria_list: [], jargon_never: [] } };
+  // up to 3 deliverables a stream, as the four-agent chain allows (MAX_DEL_PER_WS): with 7 rows a long phase's
+  // workshops and gate fall on fewer streams
+  return { arch, ctx: { brief: brief(total, stated, phases.length === 5 ? 'assessment_and_implementation' : null), success_criteria_list: [], jargon_never: [], max_deliverables_per_ws: 3 } };
 }
 
 const results = [];
@@ -100,32 +104,44 @@ function expect(label, phases, perPhase, stated, want) {
 }
 const split = (T, n) => { const b = Math.floor(T / n), r = T % n; return Array.from({ length: n }, (_, i) => b + (i < r ? 1 : 0)); };
 
-// 1. Partner's own streams: any length, 1 to 12 streams, rows = streams x phases <= 12
+const MAXR = 10;
+// 1. Partner's own streams: any length, 2 to 12 streams, at most 10 rows. The phases stay the ones the work needs;
+//    past 10 rows each stream runs only in its main phase, and more than 10 streams are merged into 10 (Oct 24).
 for (const T of [4, 6, 8, 12, 13, 16, 20, 26, 39, 52]) {
   for (const c of [2, 3, 6, 7, 12]) {
-    const nPh = Math.max(1, Math.min(T >= 8 ? 3 : 2, Math.floor(12 / c)));
+    const nPh = T >= 8 ? 3 : 2;
     const phases = split(T, nPh);
-    expect(`stated_${String(T).padStart(2, '0')}w_${String(c).padStart(2, '0')}streams_${nPh}ph`, phases, phases.map(() => c), { count: c }, 'pass');
+    const n = Math.min(c, MAXR);
+    let per;
+    if (n * nPh <= MAXR) per = phases.map(() => n);
+    else { let from = 0; per = split(n, nPh).map(k => { const x = { k, from }; from += k; return x; }); }
+    const rows = per.reduce((a, x) => a + (typeof x === 'number' ? x : x.k), 0);
+    expect(`stated_${String(T).padStart(2, '0')}w_${String(c).padStart(2, '0')}streams_${nPh}ph_${rows}rows`, phases, per, { count: c }, 'pass');
   }
 }
-// 2. No stated streams: the 2-4 per phase default still works at every length
+// 2. No stated streams: the 2-4 per phase default, at most 10 in the plan
 for (const T of [2, 4, 6, 8, 12, 13, 16, 20, 26, 39, 52]) {
   const nPh = T <= 3 ? 1 : (T <= 8 ? 2 : (T <= 26 ? 3 : 4));
   const phases = split(T, nPh);
-  for (const k of [2, 3]) expect(`default_${String(T).padStart(2, '0')}w_${k}perphase`, phases, phases.map(() => k), null, 'pass');
+  for (const per of [...new Set([2, 3].map(k => split(Math.min(k * nPh, MAXR), nPh).join('-')))].map(s => s.split('-').map(Number))) {
+    expect(`default_${String(T).padStart(2, '0')}w_${per.join('-')}`, phases, per, null, 'pass');
+  }
 }
 // 3. One long phase: 16 to 52 weeks need gap check-ins, and pass with them
 for (const L of [16, 19, 20, 24, 30, 52]) expect(`longphase_${L}w`, [L], [3], null, 'pass');
 expect('longphase_20w_after_another', [6, 20], [2, 3], null, 'pass');
 
 // 3b. Five phases (the four-agent chain allows 5): 15 to 52 weeks, 2 streams per phase
-for (const T of [15, 20, 26, 39, 52]) expect(`five_${String(T).padStart(2, '0')}w_2perphase`, split(T, 5), [2, 2, 2, 2, 2], null, 'pass');
-expect('five_39w_uneven', [6, 6, 8, 13, 6], [2, 2, 3, 3, 2], null, 'pass');
+for (const T of [15, 20, 26, 39, 52]) expect(`five_${String(T).padStart(2, '0')}w_10rows`, split(T, 5), [2, 2, 2, 2, 2], null, 'pass');
+expect('five_39w_uneven', [6, 6, 8, 13, 6], [2, 2, 2, 2, 2], null, 'pass');
 
 // 4. The rules still catch what they should
-expect('catch_default_6_in_a_phase', [6, 6], [6, 6], null, 'workstreams_6');
-expect('catch_stated_3_planned_4', [6, 6], [4, 4], { count: 3 }, 'streams_4_vs_stated_3');
-expect('catch_over_12_rows', [6, 6], [7, 7], { count: 7 }, 'count_14_over_12');
+expect('catch_default_5_in_a_phase', [6, 6], [5, 2], null, 'workstreams_5');
+expect('catch_one_stream_in_a_3_phase_plan', [6, 6, 6], [3, 3, 1], null, 'workstreams_1');
+expect('catch_stated_3_planned_4', [6, 6], [4, 3], { count: 3 }, 'streams_4_vs_stated_3');
+expect('catch_over_10_rows', [6, 6], [6, 5], { count: 6 }, 'count_11_over_10');
+expect('catch_12_stated_not_merged', [12], [12], { count: 12 }, 'streams_12_vs_stated_10');
+expect('catch_one_stream_in_a_5_phase_plan', split(39, 5), [2, 2, 2, 2, 1], null, 'workstreams_1');
 { // a long phase without the gap check-ins
   const { arch, ctx } = build([24], [3], null);
   arch.governance.events = arch.governance.events.filter(e => e.type !== 'checkin');
@@ -141,6 +157,22 @@ expect('catch_over_12_rows', [6, 6], [7, 7], { count: 7 }, 'count_14_over_12');
   const ok = r.violations.some(x => x.includes('checkins_2_want_1'));
   results.push({ label: 'catch_two_checkins_in_6w', ok });
   console.log(`${ok ? 'PASS' : 'FAIL'} catch_two_checkins_in_6w: ${JSON.stringify(r.violations)}`);
+}
+{ // Oct 24: a length the brief states keeps its ranges (Joana: 4-8 weeks, 1-2 months, 12-36 months)
+  const { arch, ctx } = build([8, 9, 156], [3, 3, 4], null);
+  [[4, 8], [4, 9], [52, 156]].forEach(([mn, mx], i) => { arch.phases[i].duration_weeks = { min: mn, max: mx }; });
+  ctx.brief.required.engagement_length = { value: '4-8 weeks, 1-2 months, 12-36 months', source: 'stated', quote: 'x', weeks_min: 60, weeks_max: 173, duration_derived: false };
+  const r = validatePlan(arch, ctx);
+  const ok = !r.violations.some(x => /wider_than_2|total_m(in|ax)/.test(x));
+  results.push({ label: 'stated_wide_ranges_pass', ok });
+  console.log(`${ok ? 'PASS' : 'FAIL'} stated_wide_ranges_pass: ${JSON.stringify(r.violations.filter(x => /wider|total/.test(x)))}`);
+  const e = build([8, 9, 30], [3, 3, 4], null);
+  e.arch.phases[2].duration_weeks = { min: 20, max: 30 };
+  e.ctx.brief.required.engagement_length = { value: null, source: 'assumed', quote: null, weeks_min: null, weeks_max: null };
+  const r2 = validatePlan(e.arch, e.ctx);
+  const ok2 = r2.violations.some(x => x.includes('range_20-30_wider_than_2'));
+  results.push({ label: 'catch_wide_estimated_range', ok: ok2 });
+  console.log(`${ok2 ? 'PASS' : 'FAIL'} catch_wide_estimated_range`);
 }
 const bad = results.filter(r => !r.ok);
 console.log(`\n${results.length - bad.length}/${results.length} passed`);

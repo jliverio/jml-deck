@@ -48,7 +48,9 @@ TEMPLATES = {
     "1.2": TEMPLATE,                                     # 1.1 + slide 4 summary variables
     "1.3": os.path.join(HERE, "template_v1_3.potx"),     # 1.2 + Approach section and work-plan slides
     "1.4": os.path.join(HERE, "template_v1_4.potx"),     # 1.3 + situation slide, approach overview
+    "1.5": os.path.join(HERE, "template_v1_4.potx"),     # 1.4 filled, then the S3 layout (s3layout.py)
 }
+S3_LAYOUT = {"1.5"}
 FIRM_TODO = "[Firm to complete]"
 # A table row for a group of variables drawn from the plan (deliverable_NN_name: one row for deliverable_01_name,
 # deliverable_02_name, ...). The template holds no such token, so these rows are not reported as missing from it.
@@ -240,7 +242,7 @@ def _default_rule(name):
 
 
 # --------------------------------------------------------------- builder
-def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=None):
+def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=None, s3=None):
     values = dict(values or {})
     if version:
         if str(version) not in TEMPLATES:
@@ -293,7 +295,7 @@ def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=Non
 
     # work-plan slide titles: composed from the plan unless the payload gives them
     if has_plan:
-        composed = wp.titles(plan)
+        composed = wp.titles(wp.scaled(plan) if version is not None and str(version) in S3_LAYOUT else plan)   # 1.5: in the timeline's unit
         for var, key in TITLE_VARS.items():
             if var in present and not str(values.get(var) or "").strip():
                 values[var] = composed[key]
@@ -410,7 +412,8 @@ def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=Non
             plan = {**plan, "_titles": given}
     if marked:
         wp.fill_template_slides(prs, plan if has_plan else None, marked,
-                                client=str((plan or {}).get("client") or "[Client]"))
+                                client=str((plan or {}).get("client") or "[Client]"),
+                                unit_scale=version is not None and str(version) in S3_LAYOUT)   # 1.5: 24-box rule
         if not has_plan:
             warnings.append("no work plan in the payload: the work-plan slides say [Firm to complete]")
     elif has_plan:
@@ -433,6 +436,11 @@ def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=Non
             if int(el.get("id")) in to_drop:
                 prs.part.drop_rel(el.rId)
                 lst.remove(el)
+
+    # 6. S3 layout (template 1.5): restructure the filled deck; 1.4 and older never get here
+    if version is not None and str(version) in S3_LAYOUT:
+        import s3layout
+        warnings.extend(s3layout.apply(prs, values, plan if has_plan else None, s3))
 
     out = io.BytesIO()
     prs.save(out)

@@ -14,6 +14,7 @@ sys.path.insert(0, ROOT)
 
 from pptx import Presentation  # noqa: E402
 import varfill  # noqa: E402
+import workplan as wp  # noqa: E402
 
 RULES = json.load(open(os.path.join(ROOT, "variables", "template_variables.json")))
 METALCO = json.load(open(os.path.join(HERE, "metalco.json")))
@@ -251,9 +252,39 @@ v = dict(NAV["values"]); v["situation_title_01"] = ""
 prs2, tx2 = texts(varfill.build_deck(v, NAV["rules"], workplan=NAV["workplan"], version="1.4")[0])
 check("1.4: no situation title -> slide dropped",
       len(prs2.slides) == n14 - 1 and not any(t[2].startswith("Where things stand") for t in tx2), len(prs2.slides))
+# 1.5 after a dropped slide: the S3 layout adds slides; every part name stays unique (run 1619, 24 Oct)
+import zipfile  # noqa: E402
+b15, _w = varfill.build_deck(v, NAV["rules"], workplan=NAV["workplan"], version="1.5",
+                             s3={"assumptions": [{"id": "A1", "text": "An assumption", "if_wrong": "What changes"}]})
+names = zipfile.ZipFile(io.BytesIO(b15)).namelist()
+p15 = Presentation(io.BytesIO(b15))
+titles15 = [s.shapes.title.text_frame.text if s.shapes.title is not None else "" for s in p15.slides]
+check("1.5: no situation title -> no duplicate slide parts, one assumptions slide",
+      len(names) == len(set(names)) and sum(1 for t in titles15 if t.startswith("This draft rests on")) == 1,
+      [n for n in names if names.count(n) > 1][:3])
 prs5, tx5 = texts(varfill.build_deck(NAV["values"], NAV["rules"], workplan=None, version="1.4")[0])
 check("1.4 without a plan: overview marked [Firm to complete]",
       any(t[0] == 9 and t[2].startswith("[Firm to complete] Approach overview") for t in tx5))
+
+
+# Oct 24 (José): five phase-colour squares beside every timeline page, off the slide, in the colours the deck uses
+def squares(b):
+    prs = Presentation(io.BytesIO(b))
+    return [[(x.left + x.width <= 0, str(x.fill.fore_color.rgb)) for x in sl.shapes if x.name.startswith("palette:phase")]
+            for sl in prs.slides if any(x.name.startswith("palette:") for x in sl.shapes)]
+sq14 = squares(pptx)
+check("1.4: squares beside the timeline, off the slide, in the 1.4 colours",
+      sq14 and all(len(p) == 5 and all(off for off, _ in p) for p in sq14)
+      and [c for _, c in sq14[0]] == [str(c) for c in wp.PHASE_COLORS], sq14)
+sq15 = squares(b15)
+check("1.5: squares in the phase blues", sq15 and [c for _, c in sq15[0]] == [str(c) for c in wp.PHASE_BLUES], sq15)
+check("1.3: no squares", not squares(b13), squares(b13))
+# Oct 24 (José): no steering-meetings slides in 1.5; 1.4 keeps them
+def steering_pages(b):
+    return sum(1 for sl in Presentation(io.BytesIO(b)).slides if any(
+        sh.has_text_frame and sh.text_frame.text.startswith("Steering meetings") for sh in sl.shapes))
+check("1.5: no steering-meetings slide, 1.4 keeps it", steering_pages(b15) == 0 and steering_pages(pptx) >= 1,
+      (steering_pages(b15), steering_pages(pptx)))
 
 failed = [r for r in results if not r[1]]
 for name, ok, detail in results:
