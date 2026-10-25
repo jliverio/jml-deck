@@ -2,7 +2,9 @@ FROM python:3.12-slim
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-COPY deckgen.py templatefill.py varfill.py workplan.py app.py template.pptx template_v1_1.potx template_v1_2.potx template_v1_3.potx template_v1_4.potx ./
+# every module and template at the repo root: s3layout.py (template 1.5) and extract.py (/extract) were missing
+# from the old explicit list, so a 1.5 render would fail on Render with "No module named 's3layout'" (Oct 25)
+COPY *.py template.pptx template_v1_*.potx ./
 COPY assets ./assets
 ENV PORT=8080
 EXPOSE 8080

@@ -13,6 +13,10 @@ POST /render   header X-API-Key: <secret>
     -> 200 .pptx, header X-Render-Warnings (JSON list, may be empty)
     -> 422 {"error": ...} when the template, the table and the values disagree
   Legacy payload ({"cover": ..., "context": ...}) -> previous renderer.
+POST /extract  header X-API-Key: <secret>; body: the file (raw, with its Content-Type), name in ?name= or
+               X-File-Name; or multipart form field "file"
+    -> 200 {"name", "kind": "pdf"|"docx"|"unsupported", "pages_total", "pages_read", "chars", "truncated",
+            "text", "note"}: the first 10 PDF pages or about 10 Word pages (extract.py)
 GET  /health   -> 200 {"ok": true, ...}
 """
 import json
@@ -20,6 +24,7 @@ import os
 
 from flask import Flask, Response, jsonify, request
 
+import extract as attach
 import varfill
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -33,6 +38,7 @@ else:
 app = Flask(__name__)
 API_KEY = os.environ.get("JML_API_KEY", "")
 MAX_BYTES = 1_000_000
+MAX_FILE_BYTES = 15_000_000   # attachments read by /extract (Gmail caps a message at 25 MB)
 PPTX = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
 
 
@@ -41,7 +47,7 @@ def health():
     return jsonify(ok=True, service="jml-deck", auth=bool(API_KEY),
                    renderer="variables-1.2", legacy=LEGACY,
                    template=os.path.exists(varfill.TEMPLATE),
-                   templates=sorted(varfill.TEMPLATES))
+                   templates=sorted(varfill.TEMPLATES), extract=True)
 
 
 @app.post("/render")
@@ -76,6 +82,25 @@ def render():
         "Content-Disposition": f'attachment; filename="{fname}"',
         "X-Render-Warnings": json.dumps(warnings[:20]),
     })
+
+
+@app.post("/extract")
+def extract_text():
+    """Email plan E6 (Oct 25): text of a PDF or Word attachment for the intake workflow."""
+    if API_KEY and request.headers.get("X-API-Key", "") != API_KEY:
+        return jsonify(error="unauthorized"), 401
+    if request.content_length and request.content_length > MAX_FILE_BYTES:
+        return jsonify(error="file too large"), 413
+    f = request.files.get("file")
+    if f is not None:
+        data, name, mime = f.read(MAX_FILE_BYTES + 1), f.filename or "", f.mimetype or ""
+    else:
+        data = request.get_data(cache=False)
+        name = request.args.get("name") or request.headers.get("X-File-Name", "")
+        mime = request.content_type or ""
+    if len(data) > MAX_FILE_BYTES:
+        return jsonify(error="file too large"), 413
+    return jsonify(attach.extract(data, name, mime))
 
 
 if __name__ == "__main__":
