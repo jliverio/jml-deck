@@ -14,7 +14,8 @@ POST /render   header X-API-Key: <secret>
     -> 422 {"error": ...} when the template, the table and the values disagree
   Legacy payload ({"cover": ..., "context": ...}) -> previous renderer.
 POST /extract  header X-API-Key: <secret>; body: the file (raw, with its Content-Type), name in ?name= or
-               X-File-Name; or multipart form field "file"
+               X-File-Name; or multipart form field "file"; or JSON {"files": [{"name", "mime", "b64"}]} (up to 5)
+               -> {"results": [one object per file, as below]}
     -> 200 {"name", "kind": "pdf"|"docx"|"unsupported", "pages_total", "pages_read", "chars", "truncated",
             "text", "note"}: the first 10 PDF pages or about 10 Word pages (extract.py)
 GET  /health   -> 200 {"ok": true, ...}
@@ -39,6 +40,7 @@ app = Flask(__name__)
 API_KEY = os.environ.get("JML_API_KEY", "")
 MAX_BYTES = 1_000_000
 MAX_FILE_BYTES = 15_000_000   # attachments read by /extract (Gmail caps a message at 25 MB)
+MAX_JSON_BYTES = 45_000_000   # /extract with several base64 files in one JSON body
 PPTX = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
 
 
@@ -89,8 +91,21 @@ def extract_text():
     """Email plan E6 (Oct 25): text of a PDF or Word attachment for the intake workflow."""
     if API_KEY and request.headers.get("X-API-Key", "") != API_KEY:
         return jsonify(error="unauthorized"), 401
-    if request.content_length and request.content_length > MAX_FILE_BYTES:
+    if request.content_length and request.content_length > (MAX_JSON_BYTES if request.is_json else MAX_FILE_BYTES):
         return jsonify(error="file too large"), 413
+    if request.is_json:   # the intake sends every attachment of one email at once: {"files": [{name, mime, b64}]}
+        import base64
+        try:
+            files = (request.get_json(silent=True) or {}).get("files") or []
+            results = []
+            for x in files[:5]:
+                data = base64.b64decode(x.get("b64") or "")
+                results.append(attach.extract(data[:MAX_FILE_BYTES], x.get("name") or "", x.get("mime") or "")
+                               if len(data) <= MAX_FILE_BYTES else
+                               dict(name=x.get("name") or "", kind="unsupported", text="", note="The file is over 15 MB; nothing was read."))
+        except Exception as e:
+            return jsonify(error=f"invalid files: {type(e).__name__}"), 400
+        return jsonify(results=results)
     f = request.files.get("file")
     if f is not None:
         data, name, mime = f.read(MAX_FILE_BYTES + 1), f.filename or "", f.mimetype or ""

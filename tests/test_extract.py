@@ -79,6 +79,12 @@ j = post(b"\x89PNG", "logo.png", "image/png").get_json()
 check("image: not read, said so", j["kind"] == "unsupported" and j["text"] == "" and j["note"], j)
 j = post(b"%PDF-1.4 garbage", "bad.pdf", "application/pdf").get_json()
 check("broken PDF: empty text and a note, no error", r.status_code == 200 and j["text"] == "" and "could not be read" in j["note"], j)
+import base64  # noqa: E402
+j = c.post("/extract", json={"files": [{"name": "brief.pdf", "mime": "application/pdf", "b64": base64.b64encode(pdf(3)).decode()},
+                                        {"name": "logo.png", "mime": "image/png", "b64": base64.b64encode(b"x").decode()}]},
+           headers={"X-API-Key": "k"}).get_json()
+check("JSON with several files: one result each, in order",
+      [r["kind"] for r in j["results"]] == ["pdf", "unsupported"] and "Brief page 3" in j["results"][0]["text"], j)
 check("wrong key: 401", post(b"x", "a.pdf", "application/pdf", key="no").status_code == 401)
 
 failed = [x for x in results if not x[1]]
