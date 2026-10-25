@@ -29,10 +29,10 @@ STEP 4 - GEOGRAPHY
 Use a geography only when the inputs name a country/region or the verified site shows where the unit operates. Otherwise worldwide. Never guess a country from a placeholder or ambiguous name.
 
 STEP 5 - MARKET AND SIZE
-Define the market in one phrase (what is sold, to whom, where). Search for a published estimate of its total size in that geography; take a figure only from a source passing the three tests, with its unit, year and scope exactly as given. Never calculate, combine or adjust figures. If none, market_size null. For topic, spend at most one search on it.
+Define the market in one phrase (what is sold, to whom, where). Search for a published estimate of its total size in that geography; take a figure only from a source passing the three tests, with its unit, year and scope exactly as given. Never calculate, combine or adjust figures. If none, market_size null. For topic, spend at most one search on it, and none when client_verified is false: set market_size null and keep the searches for Step 6.
 
 STEP 6 - DIRECT COMPETITORS
-List up to five companies a source passing the three tests names as leading companies in that market and geography. Name only companies a source names; never from memory; never the client. When client_verified is false, they are the market's leaders, not confirmed rivals.
+List up to five companies a source passing the three tests names as leading companies in that market and geography. Name only companies a source names; never from memory; never the client. When client_verified is false, they are the market's leaders, not confirmed rivals. Spend every search left on this step (up to three queries: the sector's largest companies in the geography, its trade body's members, a ranking by an established publication) before leaving competitors empty: the researchers start from this list, and with none they search blind.
 
 STEP 7 - CLIENT SIZE
 From the client's own published material or a source passing the three tests, take revenue or customers for offering, employees for topic (any for both). Use the unit's figure when published, else the group's, and say which in scope. Never estimate, never calculate a market share.

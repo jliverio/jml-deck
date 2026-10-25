@@ -18,7 +18,12 @@ for (const it of items) {
   if (rows.length < slide.rows.length) {
     warnings.push(`Market research (${slide.slide_id}): ${slide.rows.length - rows.length} of ${slide.rows.length} finding(s) left out because they cite no listed source.`);
   }
-  if (rows.length) kept.push({ ...o, slide: { ...slide, rows } });
+  if (!rows.length) continue;
+  // The title states what the rows share. Rows across several dimensions share nothing, and the researcher's title then
+  // says so ('three sources show trends'); the strongest row's headline carries the slide instead (Sequence 1, Oct 25).
+  const dims = new Set(rows.map(r => r.dimension));
+  const title = (dims.size > 1 && rows[0].summary) ? String(rows[0].summary).trim().replace(/[.]$/, '').slice(0, 90) : slide.title;
+  kept.push({ ...o, slide: { ...slide, rows, title, title_source: dims.size > 1 && rows[0].summary ? 'code' : 'researcher' } });
 }
 kept.sort((a, b) => { const oa = order[a.slide.slide_id]; const ob = order[b.slide.slide_id]; return (oa === undefined ? 9 : oa) - (ob === undefined ? 9 : ob); });
 const market_slides = kept.map(o => ({ slide: o.slide, sources: o.sources || [] }));
