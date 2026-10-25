@@ -65,6 +65,7 @@ function logRows(sheet, executions) {
     // --- what kind of run is this?
     let trig = {}, source = 'manual';
     if (has('New proposal request')) { source = 'email'; trig = first(rd['New proposal request'][0].data || {}, 'main') || {}; }
+    else if (has('From intake')) { source = 'email'; trig = first(rd['From intake'][0].data || {}, 'main') || {}; }   // since the Oct 25 email plan the intake starts every run
     else if (has('Test brief (no email)')) { source = 'webhook'; trig = first(rd['Test brief (no email)'][0].data || {}, 'main') || {}; }
     const body = source === 'webhook' ? (trig.body || {}) : {};
     const subject = String(source === 'email' ? trig.subject || '' : body.subject || '').trim();

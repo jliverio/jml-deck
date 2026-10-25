@@ -16,6 +16,9 @@ const email = (id, from, subject, extra = {}) => ({ id: String(id), mode: 'trigg
     'New proposal request': [{ data: { main: [[{ json: { threadId: 'thr' + id, subject, from: { value: [{ address: from }] } } }]] } }],
     'Model: Brief Organizer': model({ promptTokens: 1000, completionTokens: 500 }),
   }, extra) } } });
+// since Oct 25 the intake starts the main workflow as a sub-workflow: the trigger node is "From intake", same item shape
+const fromIntake = (id, from, subject, extra = {}) => { const e = email(id, from, subject, extra); const rd = e.data.resultData.runData;
+  rd['From intake'] = rd['New proposal request']; delete rd['New proposal request']; e.mode = 'integrated'; return e; };
 const full = { 'Client Profiler': [{ data: {} }], 'Phase Architect': [{ data: {} }] };
 const questions = { 'Reply with missing info': [{ data: {} }] };
 
@@ -25,6 +28,8 @@ const out = logRows(sheet, [
   email(902, 'someone@gmail.com', 'Proposal - Other Client', questions),         // Unlisted sender, masked, questions
   email(903, 'jose.liverio@jml-ops.com', 'Proposal - internal', full),           // Debug
   email(904, 'partner@acmeconsult.pt', '[T3] Proposal - test', full),            // Measurement T3
+  fromIntake(905, 'partner@acmeconsult.pt', 'Proposal - Intake Client SA', full), // Live through the intake, masked
+  fromIntake(906, 'someone@gmail.com', 'Proposal - Other Intake', questions),     // Unlisted sender through the intake
 ]);
 const j = out[0].json;
 const rows = {};
@@ -33,13 +38,16 @@ const sx = {};
 for (const d of j.body.data) if (/'Run log'!S/.test(d.range)) sx[d.range] = d.values[0];
 
 assert.strictEqual(j.skippedAlreadyLogged, 1);
-assert.strictEqual(j.runs, 4);
+assert.strictEqual(j.runs, 6);
 assert.ok(!rows[900]);
 assert.deepStrictEqual([rows[901][2], rows[901][3], rows[901][12]], ['thr901', 'Live run', 'Live']);
 assert.deepStrictEqual([rows[902][2], rows[902][3], rows[902][4], rows[902][5], rows[902][12]], ['thr902', 'Test round 1', 'success', '', 'Unlisted sender']);
 assert.deepStrictEqual([rows[903][2], rows[903][3]], ['Proposal - internal', 'Debug']);
 assert.deepStrictEqual([rows[904][3], rows[904][12]], ['Test round 1', 'T3']);
 assert.ok(!JSON.stringify(j.body).includes('Secret Client'), 'client name leaked');
+assert.deepStrictEqual([rows[905][2], rows[905][3], rows[905][12]], ['thr905', 'Live run', 'Live']);
+assert.deepStrictEqual([rows[906][2], rows[906][3], rows[906][12]], ['thr906', 'Test round 1', 'Unlisted sender']);
+assert.ok(!JSON.stringify(j.body).includes('Intake Client') && !JSON.stringify(j.body).includes('Other Intake'), 'intake client name leaked');
 assert.ok(!JSON.stringify(j.body).includes('Other Client'), 'unlisted client name leaked');
 // running again with everything logged -> nothing new
 const again = logRows({ valueRanges: [{ values: [['900'], ['901'], ['902'], ['903'], ['904']] }, sheet.valueRanges[1], sheet.valueRanges[2], sheet.valueRanges[3]] },
