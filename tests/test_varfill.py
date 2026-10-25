@@ -342,6 +342,14 @@ check("deadline line: neutral sentence with the plan's fit",
       == "Deadline: Initial recommendations within 16 weeks. The plan (14 weeks) fits within the 16 weeks available.",
       wp._deadline_line({"text": "The CEO wants initial recommendations within 16 weeks.", "weeks_available": 16}, 14))
 
+# Steering cell fits its box (Banco SP run 1966, Oct 25: five executives cut the sentence at "each phase e...").
+FIVE = ["Chief Digital Officer", "CIO", "Head of Retail Banking", "Head of Customer Experience", "Head of IT Architecture"]
+st5, st3 = wp._steering_line(4, FIVE, 2), wp._steering_line(4, ["the CEO", "Atrium's leadership", "the board"], 2)
+check("steering: a long attendee list keeps two names and counts the rest; a short one is kept whole",
+      len(st5) <= 150 and st5.endswith("each phase ends in a decision") and "three other leaders" in st5
+      and st3 == "Four steering meetings with the CEO, Atrium's leadership and the board; each phase ends in a decision",
+      (st5, st3))
+
 failed = [r for r in results if not r[1]]
 for name, ok, detail in results:
     print(("PASS " if ok else "FAIL ") + name + ("" if ok else f"  -> {detail}"))

@@ -1027,6 +1027,18 @@ def _list(items):
     return items[0] if len(items) == 1 else ", ".join(items[:-1]) + " and " + items[-1] if items else ""
 
 
+def _steering_line(meetings, who, phases, limit=150):
+    """Governance strip, Steering cell. Oct 25 (Banco SP run 1966): five stated executives ran the sentence past the
+    cell, cut at "each phase e…". A long list keeps the first two names and counts the rest."""
+    head = _cap(_count(meetings, "steering meeting"))
+    tail = "; each phase ends in a decision" if phases > 1 else "; the work ends in a decision"
+    options = [head + (f" with {_list(who)}" if who else "") + tail]
+    if len(who) > 2:
+        options.append(head + f" with {_list(who[:2] + [_count(len(who) - 2, 'other leader')])}" + tail)
+        options.append(head + f" with the {_count(len(who), 'named stakeholder')}" + tail)
+    return next((o for o in options if len(o) <= limit), options[-1])
+
+
 def roadmap_slide(prs, plan, section, client, slide=None):
     """Approach overview: one column per phase (its scope or what it answers, when it ends,
     the decision that closes it) and a governance strip. Everything is read
@@ -1122,8 +1134,7 @@ def roadmap_slide(prs, plan, section, client, slide=None):
     cad = gov.get("status_cadence_weeks")
     first_due = min((d.get("due_week") for d in plan.get("deliverables") or [] if d.get("due_week")), default=None)
     cells = [
-        ("Steering", _cap(_count(len(steer), "steering meeting")) + (f" with {_list(who)}" if who else "")
-         + ("; each phase ends in a decision" if n > 1 else "; the work ends in a decision")),
+        ("Steering", _steering_line(len(steer), who, n)),
         ("Working rhythm", (f"Kick-off in {_at(plan, kick['week'])}" if kick else "Kick-off at the start")
          + (f"; first deliverable in {_at(plan, first_due)}" if first_due else "")
          + (f"; status meetings every {cad} weeks" if cad and cad > 1 else ("; weekly status meetings" if cad == 1 else ""))),
