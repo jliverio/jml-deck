@@ -233,10 +233,32 @@ def _limit_weeks(text):
     return round(n * 52 / 12) if m.group(2).lower().startswith("month") else n
 
 
+_ATTRIBUTION = re.compile(
+    r"^(?P<who>(?:[A-Za-z][\w&'’.-]*\s+){0,5}?)"
+    r"(?:wants?|needs?|expects?|requires?|would\s+like|is\s+looking\s+for|has\s+asked\s+for|asks?\s+for|hopes?\s+for)\s+"
+    r"(?:(?:to\s+)?(?:have|see|get|receive)\s+)?(?P<rest>.+)$", re.I)
+_WHO_START = re.compile(r"^(?:the|our|their|its|we|they|he|she|[A-Z])", re.I)
+
+
+def _neutral_deadline(text):
+    """A requirement stated neutrally (José, Oct 23): 'The CEO wants initial recommendations within 16 weeks' becomes
+    'Initial recommendations within 16 weeks'. Only a short attribution at the start that names who wants it is
+    dropped; a sentence without one, or whose rest holds no time, is kept as written (Oct 25, Atrium run)."""
+    m = _ATTRIBUTION.match(text)
+    if not m or not m.group("who") or re.search(r"\d", m.group("who")) or not _WHO_START.match(m.group("who")):
+        return text
+    rest = m.group("rest").strip()
+    if re.search(r"\b(that|which|who)\b", m.group("who"), re.I) or re.match(r"(within|by|before|until|in|on|it|this|that|them|these|those)\b", rest, re.I):
+        return text   # 'needs' as a noun, or a pronoun after the verb ('needs it by 1 March'): kept as written
+    if not re.search(r"\d|\b(" + "|".join(_NUM_WORDS) + r")\b|\b(by|before|until|within|end of)\b", rest, re.I):
+        return text
+    return rest[:1].upper() + rest[1:]
+
+
 def _deadline_line(dl, t):
     """The timeline's deadline sentence. Architect input takes two weeks off only a calendar date ('by 1 March');
     a relative limit ('within 12 weeks') or a length written as a limit is the weeks available as it stands (Oct 25)."""
-    text = " ".join(str(dl.get("text") or "").split()).rstrip(" .;:")
+    text = _neutral_deadline(" ".join(str(dl.get("text") or "").split()).rstrip(" .;:"))
     wa = dl["weeks_available"]
     fits = "fits within" if t <= wa else "does NOT fit within"
     allow = ", allowing two weeks to contract and start" if text and _limit_weeks(text) != wa else ""

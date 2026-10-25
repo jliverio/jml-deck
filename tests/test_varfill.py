@@ -323,6 +323,25 @@ check("overview: scope replaces 'What it answers'; a long one is cut at the limi
       and (nph < 3 or phs[2].get("objective_one_line", "") in ot), (nph, [t[:60] for t in ot][:12]))
 check("overview: no scope in the plan, 'What it answers' as before", "What it answers" in overview_texts(b15), None)
 
+# Deadline line states the requirement neutrally (José, Oct 23; Atrium run 1801, Oct 25: "The CEO wants ...").
+NEUTRAL = {
+    "The CEO wants initial recommendations within 16 weeks": "Initial recommendations within 16 weeks",
+    "Initial recommendations within 12 weeks": "Initial recommendations within 12 weeks",
+    "The board expects a plan by March 2027": "A plan by March 2027",
+    "Valtrenix's CEO wants to see a first answer in 8 weeks": "A first answer in 8 weeks",
+    "Leadership requires initial recommendations by end of Q1 2027": "Initial recommendations by end of Q1 2027",
+    "Recommendations that address staffing needs within 12 weeks": "Recommendations that address staffing needs within 12 weeks",
+    "The board needs it by 1 March": "The board needs it by 1 March",
+    "The CEO wants a strong team": "The CEO wants a strong team",
+    "Present to the board at the annual meeting on 15 March": "Present to the board at the annual meeting on 15 March",
+}
+bad = {a: wp._neutral_deadline(a) for a, want in NEUTRAL.items() if wp._neutral_deadline(a) != want}
+check("deadline: an attribution at the start is dropped, anything else kept as written", not bad, bad)
+check("deadline line: neutral sentence with the plan's fit",
+      wp._deadline_line({"text": "The CEO wants initial recommendations within 16 weeks.", "weeks_available": 16}, 14)
+      == "Deadline: Initial recommendations within 16 weeks. The plan (14 weeks) fits within the 16 weeks available.",
+      wp._deadline_line({"text": "The CEO wants initial recommendations within 16 weeks.", "weeks_available": 16}, 14))
+
 failed = [r for r in results if not r[1]]
 for name, ok, detail in results:
     print(("PASS " if ok else "FAIL ") + name + ("" if ok else f"  -> {detail}"))
