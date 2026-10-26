@@ -18,13 +18,16 @@ POST /extract  header X-API-Key: <secret>; body: the file (raw, with its Content
                -> {"results": [one object per file, as below]}
     -> 200 {"name", "kind": "pdf"|"docx"|"unsupported", "pages_total", "pages_read", "chars", "truncated",
             "text", "note"}: the first 10 PDF pages or about 10 Word pages (extract.py)
+POST /palette  header X-API-Key: <secret>; body {"url": ...} -> the site's brand colours (brand.py, trial)
 GET  /health   -> 200 {"ok": true, ...}
 """
 import json
 import os
+import re
 
 from flask import Flask, Response, jsonify, request
 
+import brand
 import extract as attach
 import varfill
 
@@ -72,6 +75,13 @@ def render():
                                                 workplan=data.get("workplan"),
                                                 version=data.get("template"),
                                                 s3=data.get("s3"))
+            # Oct 26 (trial): {"brand": {"primary": "C8102E", "accent": "FFB81C"}} repaints the deck in the
+            # client's colours (brand.py); without it the deck is byte-identical to before.
+            b = data.get("brand") or {}
+            if b.get("primary") and re.fullmatch(r"#?[0-9A-Fa-f]{6}", str(b["primary"])):
+                acc = b.get("accent") if re.fullmatch(r"#?[0-9A-Fa-f]{6}", str(b.get("accent") or "")) else None
+                pptx, _ = brand.recolor_pptx(pptx, str(b["primary"]), acc)
+                warnings.append(f"recoloured to the client's palette ({str(b['primary']).lstrip('#').upper()})")
         else:
             pptx = legacy_build(data)
     except (varfill.TemplateCapacityError, varfill.TemplateRulesError,
@@ -84,6 +94,23 @@ def render():
         "Content-Disposition": f'attachment; filename="{fname}"',
         "X-Render-Warnings": json.dumps(warnings[:20]),
     })
+
+
+@app.post("/palette")
+def palette():
+    """Oct 26 (trial): a website's brand colours, read from its home page and style sheets (brand.py).
+    Body {"url": "https://client.com"} -> {"primary", "secondary", "theme_color", "confidence", "top", "sources"}."""
+    if API_KEY and request.headers.get("X-API-Key", "") != API_KEY:
+        return jsonify(error="unauthorized"), 401
+    url = str((request.get_json(silent=True) or {}).get("url") or "").strip()
+    if not url:
+        return jsonify(error="no url"), 400
+    try:
+        return jsonify(brand.extract_palette(url))
+    except brand.PaletteError as e:
+        return jsonify(error=str(e)), 422
+    except Exception as e:
+        return jsonify(error=f"{type(e).__name__}: {e}"[:300]), 502
 
 
 @app.post("/extract")
