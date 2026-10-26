@@ -68,6 +68,17 @@ check("framework defaults (Bootstrap blue, --bs-* variables) never count", "0D6E
 r = brand._rank({"B22E46": 6, "000000": 16}, {"B22E46": 3, "000000": 6}, None, {})
 check("a colour seen only a few times does not repaint the deck (apply false)", r["apply"] is False, r)
 
+check("rgb(var(--name-2, r, g, b)): a digit in the variable's name is not a channel (IKEA came out cyan)",
+      brand._hex("rgb(var(--colour-elevation-2, 255, 255, 255))") == "FFFFFF"
+      and brand._hex("rgb(var(--colour-static-ikea-brand-blue, 0, 88, 163))") == "0058A3"
+      and brand._hex("rgb(var(--colour-neutral-1))") is None,
+      (brand._hex("rgb(var(--colour-elevation-2, 255, 255, 255))"), brand._hex("rgb(var(--colour-neutral-1))")))
+w, u = {}, {}
+brand._weigh(".alert-danger{color:#a94442;background-color:#f2dede}.alert-success{color:#3c763d}.btn{background:#337ab7}" * 20, w, u)
+check("Bootstrap 3 and theme defaults never count (PLMJ's alert colours)", not w, sorted(w))
+r = brand._rank({"232F0F": 29, "FFFFFF": 269, "292929": 28, "B3F7E4": 12}, {"232F0F": 10, "FFFFFF": 119, "292929": 10, "B3F7E4": 6}, None, {})
+check("medium evidence does not repaint the deck (Feedzai's near-grey olive)", r["confidence"] != "high" and r["apply"] is False, r["confidence"])
+
 failed = [x for x in results if not x[1]]
 for n, ok, d in results:
     print(("PASS " if ok else "FAIL ") + n + ("" if ok else f"  -> {d}"))

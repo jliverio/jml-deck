@@ -162,9 +162,17 @@ BRANDY = re.compile(r"brand|primary|main|accent|theme|corporate|secondary", re.I
 # as the second colour of Millennium bcp and Novo Banco). Their variables (--bs-*, --wp--preset--*) are skipped too.
 FRAMEWORK = {"007BFF", "0D6EFD", "6610F2", "6F42C1", "E83E8C", "D63384", "DC3545", "FD7E14", "FFC107", "28A745",
              "198754", "20C997", "17A2B8", "0DCAF0", "6C757D", "343A40", "F8F9FA", "CF2E2E", "FF6900", "FCB900",
-             "7BDCB5", "00D084", "8ED1FC", "0693E3", "9B51E0", "ABB8C3", "F78DA7"}
+             "7BDCB5", "00D084", "8ED1FC", "0693E3", "9B51E0", "ABB8C3", "F78DA7",
+             # Bootstrap 3 (PLMJ's two "brand" colours were its alert red and green), the WordPress editor's blue,
+             # and the Divi theme's default accent (Bike.POP)
+             "337AB7", "286090", "23527C", "2E6DA4", "204D74", "5CB85C", "449D44", "398439", "5BC0DE", "31B0D5",
+             "F0AD4E", "EC971F", "D9534F", "C9302C", "A94442", "3C763D", "31708F", "8A6D3B", "DFF0D8", "D9EDF7",
+             "FCF8E3", "F2DEDE", "2B542C", "245269", "66512C", "843534", "66AFE9", "007CBA", "006BA1", "005A87", "2271B1", "135E96", "3858E9", "2EA3F2"}
 FRAMEWORK_VAR = re.compile(r"^--(bs-|wp--preset|wp-admin)", re.I)
-APPLY = ("high", "medium")   # confidence at which a deck is repainted; below it the deck keeps the JML blues
+# Confidence at which a deck is repainted; below it the deck keeps the JML blues. Oct 26 trial on 24 sites: all 9 "high"
+# results matched the brand; of 5 "medium", 1 did (Stripe), 2 were a template's default (Odoo's plum) or a near-grey
+# (Feedzai), 2 were not checked (Bike.POP, EDP).
+APPLY = ("high",)
 
 
 class PaletteError(Exception):
@@ -206,7 +214,9 @@ def _hex(token):
                 return None
             h = h[:6]
         return h.upper()
-    nums = re.findall(r"[\d.]+%?", t)
+    # rgb(var(--colour-elevation-2, 255, 255, 255)): the digit in the variable's name is not a channel (Oct 26, IKEA
+    # came out cyan, 01FFFF, from "elevation-2" read as red = 2... then 1)
+    nums = re.findall(r"[\d.]+%?", re.sub(r"--[\w-]+", "", t))
     if len(nums) < 3:
         return None
     def ch(x):
