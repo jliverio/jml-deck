@@ -12,7 +12,7 @@ a{color:#c8102e}h1,h2{color:#1a1a1a}body{color:#333;background:#fff}.footer{back
 .badge{background:rgba(200,16,46,1)}.shadow{box-shadow:0 0 4px #0d6efd}.alt{background:#ffb81c}.alt2{color:#ffb81c}
 .cta{background:#ffb81c}"""
 w, u = {}, {}
-brand._weigh(css, w, u)
+brand._weigh(css * 5, w, u)   # a real site repeats its colours across many rules; a second colour needs 10+ uses
 r = brand._rank(w, u, None, {})
 check("CSS: the most used colourful family is the brand; a shadow colour does not count",
       r["primary"] in ("C8102E", "A00D25") and r["secondary"] == "FFB81C" and "0D6EFD" not in [x["hex"] for x in r["top"] if x["weight"] > 2],
@@ -61,6 +61,12 @@ theme = z.read("ppt/theme/theme1.xml").decode()
 check("render with brand: no JML blue left on any slide, theme accents repainted",
       branded.status_code == 200 and not left and "051C2C" not in theme and "recoloured" in branded.headers.get("X-Render-Warnings", ""),
       (branded.status_code, sorted(left)[:5]))
+
+w, u = {}, {}
+brand._weigh(css + ":root{--bs-primary:#0d6efd}.x{background:#0d6efd}", w, u)
+check("framework defaults (Bootstrap blue, --bs-* variables) never count", "0D6EFD" not in w, sorted(w)[:8])
+r = brand._rank({"B22E46": 6, "000000": 16}, {"B22E46": 3, "000000": 6}, None, {})
+check("a colour seen only a few times does not repaint the deck (apply false)", r["apply"] is False, r)
 
 failed = [x for x in results if not x[1]]
 for n, ok, d in results:

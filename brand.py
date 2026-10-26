@@ -158,6 +158,13 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like
 COLOR = re.compile(r"#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})\b|rgba?\(\s*[^)]*\)", re.I)
 DECL = re.compile(r"([-\w]+)\s*:\s*([^;{}]+)")
 BRANDY = re.compile(r"brand|primary|main|accent|theme|corporate|secondary", re.I)
+# Default palettes of web frameworks, present on sites that never use them (Oct 26 trial: Bootstrap's blue came out
+# as the second colour of Millennium bcp and Novo Banco). Their variables (--bs-*, --wp--preset--*) are skipped too.
+FRAMEWORK = {"007BFF", "0D6EFD", "6610F2", "6F42C1", "E83E8C", "D63384", "DC3545", "FD7E14", "FFC107", "28A745",
+             "198754", "20C997", "17A2B8", "0DCAF0", "6C757D", "343A40", "F8F9FA", "CF2E2E", "FF6900", "FCB900",
+             "7BDCB5", "00D084", "8ED1FC", "0693E3", "9B51E0", "ABB8C3", "F78DA7"}
+FRAMEWORK_VAR = re.compile(r"^--(bs-|wp--preset|wp-admin)", re.I)
+APPLY = ("high", "medium")   # confidence at which a deck is repainted; below it the deck keeps the JML blues
 
 
 class PaletteError(Exception):
@@ -218,6 +225,8 @@ def _hex(token):
 def _weigh(css, weights, uses):
     for prop, value in DECL.findall(css):
         p = prop.lower()
+        if FRAMEWORK_VAR.match(p):
+            continue
         if p.startswith("--"):
             w = 2 + (3 if BRANDY.search(p) else 0)
         elif "background" in p or p in ("fill", "stop-color"):
@@ -230,7 +239,7 @@ def _weigh(css, weights, uses):
             continue   # shadows, filters, masks: not the brand
         for tok in COLOR.findall(value):
             h = _hex(tok)
-            if h:
+            if h and h not in FRAMEWORK:
                 weights[h] = weights.get(h, 0) + w
                 uses[h] = uses.get(h, 0) + 1
 
@@ -305,11 +314,14 @@ def _rank(weights, uses, theme, sources):
         primary = max(top, key=lambda r: (r["weight"], -abs(r["L"] - 0.55)))
         for rs in ranked[1:]:
             cand = max(rs, key=lambda r: r["weight"])
-            if hue_gap(cand["H"], primary["H"]) >= 45 and sum(r["weight"] for r in rs) >= 0.15 * sum(r["weight"] for r in top):
+            if (hue_gap(cand["H"], primary["H"]) >= 45 and cand["uses"] >= 10
+                    and sum(r["weight"] for r in rs) >= 0.2 * sum(r["weight"] for r in top)):
                 secondary = cand
                 break
         share = sum(r["weight"] for r in top) / chroma_w
-        confidence = "high" if share >= 0.5 and primary["uses"] >= 5 else "medium" if share >= 0.3 else "low"
+        # enough evidence as well as a clear lead: a colour met a handful of times (a script-built site) is not a brand
+        confidence = ("high" if share >= 0.5 and primary["uses"] >= 20 else
+                      "medium" if share >= 0.3 and primary["uses"] >= 10 else "low")
     else:
         dark = [r for r in rows if r["L"] < 0.4 and r["C"] < 0.05]
         if dark:   # a black-and-white brand: its darkest neutral leads the ladder, which comes out grey
@@ -322,6 +334,7 @@ def _rank(weights, uses, theme, sources):
         "secondary": secondary["hex"] if secondary else None,
         "theme_color": theme,
         "confidence": confidence,
+        "apply": bool(primary) and confidence in APPLY,
         "chromatic_share": round(chroma_w / total, 2),
         "note": note,
         "top": top_rows,
