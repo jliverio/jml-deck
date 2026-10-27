@@ -79,6 +79,9 @@ check("Bootstrap 3 and theme defaults never count (PLMJ's alert colours)", not w
 r = brand._rank({"232F0F": 29, "FFFFFF": 269, "292929": 28, "B3F7E4": 12}, {"232F0F": 10, "FFFFFF": 119, "292929": 10, "B3F7E4": 6}, None, {})
 check("medium evidence does not repaint the deck (Feedzai's near-grey olive)", r["confidence"] != "high" and r["apply"] is False, r["confidence"])
 
+logo = zipfile.ZipFile(io.BytesIO(brand.recolor_pptx(open("template.pptx", "rb").read(), "E60000")[0])).read("ppt/slides/slide1.xml").decode().upper()
+check("the JML logo keeps its navy and green (only the deck's blues change)", "1E3A5F" in logo and "5DCAA5" in logo, None)
+
 failed = [x for x in results if not x[1]]
 for n, ok, d in results:
     print(("PASS " if ok else "FAIL ") + n + ("" if ok else f"  -> {d}"))

@@ -88,8 +88,9 @@ def hue_gap(h1, h2):
 
 # ---------------------------------------------------------------- the JML palette and the client ramp
 
-# Every blue the renderer and the templates place (slides, layouts, masters, theme), counted on the Banco SP deck.
-JML_BLUES = ["051C2C", "061F32", "062032", "142B4C", "00335A", "1E3A5F", "03527B", "1877A2", "2E868C", "22A3DF",
+# Every blue the renderer and the templates place (slides, layouts, masters, theme), counted on a rendered deck.
+# 1E3A5F is left out: it is the navy of the JML logo (cover and closing), which keeps its own colours.
+JML_BLUES = ["051C2C", "061F32", "062032", "142B4C", "00335A", "03527B", "1877A2", "2E868C", "22A3DF",
              "A2D5EC", "E6E9EE", "2222F6", "3478AB", "00A9F4", "1F40E6", "AAE6F0", "3C96B4", "AFC3FF", "034B6F",
              "027AB1", "39BDF3", "71D2F1"]
 JML_ACCENT = "F8BC3B"                       # phase gates
