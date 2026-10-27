@@ -7,7 +7,7 @@ const cfg = $('Research method').first().json;
 const attrIds = cfg.method.attributes.map(a => a.id);
 const norm = s => String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[\u2018\u2019\u02bc]/g, "'").replace(/[\u201c\u201d]/g, '"').replace(/[\u2013\u2014]/g, '-').replace(/\u00a0/g, ' ').replace(/[*_#`>\[\]()|]/g, '').replace(/\s+/g, ' ').trim();   // markdown marks the read-page tool keeps and a quoting model drops
 // A passage may join several excerpts with '...' or '…'; every part of at least 15 characters must be in the page.
-const inPage = (text, passage) => { const parts = norm(passage).split(/\.{3}|\u2026/).map(x => x.trim()).filter(x => x.length >= 15); return parts.length > 0 && parts.every(p => text.includes(p)); };
+const inPage = (text, passage) => { const whole = norm(passage); let parts = whole.split(/\.{3}|\u2026/).map(x => x.trim()).filter(x => x.length >= 15); if (!parts.length && whole.length >= 5) parts = [whole]; return parts.length > 0 && parts.every(p => text.includes(p)); };   // a short passage ('3533 articulos') is checked whole
 const host = u => String(u || '').trim().toLowerCase().replace(/^https?:\/\//, '').split(/[/?#]/)[0].replace(/^www\./, '');
 const urlKey = u => String(u || '').trim().toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
 const parseObs = o => { if (typeof o !== 'string') return o; try { return JSON.parse(o); } catch (e) { return null; } };
@@ -31,9 +31,10 @@ const cells = (Array.isArray(out.cells) ? out.cells : []).map(c => {
   const text = pages[urlKey(c.url)];
   if (text === undefined) faults.push('page_not_opened');
   else if (!inPage(text, c.passage)) faults.push('passage_not_in_page');
-  const val = norm(c.value); const firstVal = val.split(/[,;]/)[0].trim();
+  // A figure's value must be in the passage: the first number of the value (digits with their separators) is looked for.
+  const num = (String(c.value || '').match(/\d[\d.,]*/) || [])[0];
   if (!c.value) faults.push('no_value');
-  else if (FIGURE.has(c.attribute) && !norm(c.passage).includes(firstVal.slice(0, 40))) faults.push('value_not_in_passage');   // lists and quotes are paraphrased by nature
+  else if (FIGURE.has(c.attribute) && (!num || !String(c.passage || '').includes(num))) faults.push('value_not_in_passage');   // lists and quotes are paraphrased by nature
   if (!c.unit) faults.push('no_unit');
   if (!c.basis) faults.push('no_basis');
   return { ...c, company, ok: faults.length === 0, faults };

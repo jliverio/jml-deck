@@ -13,7 +13,7 @@ const finder = $('Competitor Finder').all(0, pass);
 const previous_output = ((finder[0] || {}).json || {}).output || null;
 return { json: {
   layer: 'L1', pass, route,
-  records: ck.records, violations: ck.violations || [], gaps, challenger_verdict: ch.verdict || null, weak_records: ch.weak_records || [],
+  records: ck.records, violations: ck.violations || [], gaps, challenger_verdict: ch.verdict || null, weak_records: ch.weak_records || [], previous_gaps_review: Array.isArray(ch.previous_gaps) ? ch.previous_gaps : [],
   budget_left: left, searches_used: ck.searches_used, reads_used: ck.reads_used,
   _retry: route === 'retry' ? { previous_output, gaps, unopened_urls: ck.unopened_urls || [], budget_left: left } : null,
 } };

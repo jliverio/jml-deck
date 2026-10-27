@@ -11,7 +11,7 @@ const out = $json.output || {};
 const pass = typeof $runIndex === 'number' ? $runIndex : 0;
 const norm = s => String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[\u2018\u2019\u02bc]/g, "'").replace(/[\u201c\u201d]/g, '"').replace(/[\u2013\u2014]/g, '-').replace(/\u00a0/g, ' ').replace(/[*_#`>\[\]()|]/g, '').replace(/\s+/g, ' ').trim();   // markdown marks the read-page tool keeps and a quoting model drops
 // A passage may join several excerpts with '...' or '…'; every part of at least 15 characters must be in the page.
-const inPage = (text, passage) => { const parts = norm(passage).split(/\.{3}|\u2026/).map(x => x.trim()).filter(x => x.length >= 15); return parts.length > 0 && parts.every(p => text.includes(p)); };
+const inPage = (text, passage) => { const whole = norm(passage); let parts = whole.split(/\.{3}|\u2026/).map(x => x.trim()).filter(x => x.length >= 15); if (!parts.length && whole.length >= 5) parts = [whole]; return parts.length > 0 && parts.every(p => text.includes(p)); };   // a short passage ('3533 articulos') is checked whole
 const host = u => String(u || '').trim().toLowerCase().replace(/^https?:\/\//, '').split(/[/?#]/)[0].replace(/^www\./, '');
 const urlKey = u => String(u || '').trim().toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
 const inList = (h, list) => list.some(d => h === d || h.endsWith('.' + d));
@@ -19,7 +19,9 @@ const compDomains = comps.map(c => c.domain && host('https://' + String(c.domain
 const allowed = h => inList(h, M.publishers.primary_domains) || inList(h, M.publishers.press_domains) || inList(h, M.publishers.trade_bodies.map(b => b.domain)) || inList(h, compDomains);
 const parseObs = o => { if (typeof o !== 'string') return o; try { return JSON.parse(o); } catch (e) { return null; } };
 const pages = {}, surfaced = []; let searches = 0, reads = 0; const queries = [];
-for (const st of ($json.intermediateSteps || [])) {
+// Pages opened and budget spent count across passes: a second pass keeps the first pass's findings, whose pages it did not open again.
+const traces = []; for (let k = 0; k < pass; k++) { try { const a = $('Press Gatherer').all(0, k); if (a && a.length) traces.push(a[0].json.intermediateSteps || []); } catch (e) {} } traces.push($json.intermediateSteps || []);
+for (const steps of traces) for (const st of steps) {
   const tool = String(((st || {}).action || {}).tool || ''); const obs = parseObs((st || {}).observation); const inp = ((st || {}).action || {}).toolInput;
   if (/search/i.test(tool)) { searches += 1; queries.push(typeof inp === 'string' ? inp : (inp && inp.query) || ''); const list = Array.isArray(obs) ? obs : [obs]; for (const q of list) for (const r of ((q || {}).results || [])) if (r && r.url && !surfaced.some(x => x.url === r.url)) surfaced.push({ url: r.url, title: r.title || '', date: r.date || null }); }
   if (/read/i.test(tool)) { reads += 1; const list = Array.isArray(obs) ? obs : [obs]; for (const p of list) if (p && p.url) pages[urlKey(p.url)] = norm(p.text || ''); }
@@ -60,5 +62,6 @@ const budget_left = { searches: Math.max(0, cfg.budget.l4_searches - searches), 
 const cutoff = new Date(cfg.today + 'T00:00:00Z'); cutoff.setUTCMonth(cutoff.getUTCMonth() - 24);
 const unopened_urls = surfaced.filter(x => pages[urlKey(x.url)] === undefined && allowed(host(x.url)) && (!x.date || isNaN(Date.parse(x.date)) || new Date(x.date) >= cutoff)).slice(0, 8);
 const records = { findings, claims: claimsOut, not_covered: nc, queries: queries.length ? queries : (out.queries_run || []) };
-const _challenger_input = { layer: 'L4', questions: M.questions.L4, brief: { client: cfg.brief.hard_fields.client.value, problem_statement: cfg.brief.hard_fields.problem_statement.value }, frame: { market: frame.market, problem_geography: frame.problem_geography, competitors: comps.map(c => c.name) }, records: { findings: findings.map(f => ({ index: f.index, ok: f.ok, faults: f.faults, actor: f.actor, dimension: f.dimension, date: f.date, geography: f.geography, action: (f.action || {}).text, result: f.result && f.result.text, scope_risk: f.scope_risk })), claims: claimsOut, not_covered: nc }, violations, budget_left };
+let previous_gaps = []; if (pass > 0) { try { const g = $('L4 gate').all(0, pass - 1); previous_gaps = (((g[0] || {}).json || {}).gaps || []).filter(x => x.source === 'challenger').map((x, i) => ({ id: 'G' + (i + 1), question_id: x.question_id, what_is_missing: x.what_is_missing })); } catch (e) {} }
+const _challenger_input = { layer: 'L4', pass, previous_gaps, questions: M.questions.L4, brief: { client: cfg.brief.hard_fields.client.value, problem_statement: cfg.brief.hard_fields.problem_statement.value }, frame: { market: frame.market, problem_geography: frame.problem_geography, competitors: comps.map(c => c.name) }, records: { findings: findings.map(f => ({ index: f.index, ok: f.ok, faults: f.faults, actor: f.actor, dimension: f.dimension, date: f.date, geography: f.geography, action: (f.action || {}).text, result: f.result && f.result.text, scope_risk: f.scope_risk })), claims: claimsOut, not_covered: nc }, violations, budget_left };
 return { json: { pass, records, violations, code_gaps: gaps, budget_left, unopened_urls, searches_used: searches, reads_used: reads, _challenger_input } };

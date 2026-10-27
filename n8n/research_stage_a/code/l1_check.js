@@ -10,7 +10,7 @@ const cf = $json.output || {};
 const pass = typeof $runIndex === 'number' ? $runIndex : 0;
 const norm = s => String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[\u2018\u2019\u02bc]/g, "'").replace(/[\u201c\u201d]/g, '"').replace(/[\u2013\u2014]/g, '-').replace(/\u00a0/g, ' ').replace(/[*_#`>\[\]()|]/g, '').replace(/\s+/g, ' ').trim();   // markdown marks the read-page tool keeps and a quoting model drops
 // A passage may join several excerpts with '...' or '…'; every part of at least 15 characters must be in the page.
-const inPage = (text, passage) => { const parts = norm(passage).split(/\.{3}|\u2026/).map(x => x.trim()).filter(x => x.length >= 15); return parts.length > 0 && parts.every(p => text.includes(p)); };
+const inPage = (text, passage) => { const whole = norm(passage); let parts = whole.split(/\.{3}|\u2026/).map(x => x.trim()).filter(x => x.length >= 15); if (!parts.length && whole.length >= 5) parts = [whole]; return parts.length > 0 && parts.every(p => text.includes(p)); };   // a short passage ('3533 articulos') is checked whole
 const host = u => String(u || '').trim().toLowerCase().replace(/^https?:\/\//, '').split(/[/?#]/)[0].replace(/^www\./, '');
 const inList = (h, list) => list.some(d => h === d || h.endsWith('.' + d));
 const primary = M.publishers.primary_domains, press = M.publishers.press_domains, bodies = M.publishers.trade_bodies.map(b => b.domain);
@@ -51,7 +51,8 @@ if (!(frame.channels || []).length) gaps.push({ question_id: 'L1.1', what_is_mis
 const parseObs = o => { if (typeof o !== 'string') return o; try { return JSON.parse(o); } catch (e) { return null; } };
 const urlKey = u => String(u || '').trim().toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
 let searches = 0, reads = 0; const surfaced = [], opened = new Set();
-for (const steps of [fs.intermediateSteps || [], $json.intermediateSteps || []]) for (const st of steps) {
+const traces = [fs.intermediateSteps || []]; for (let k = 0; k < pass; k++) { try { const a = $('Competitor Finder').all(0, k); if (a && a.length) traces.push(a[0].json.intermediateSteps || []); } catch (e) {} } traces.push($json.intermediateSteps || []);   // budget counts across passes
+for (const steps of traces) for (const st of steps) {
   const tool = String(((st || {}).action || {}).tool || ''); const obs = parseObs((st || {}).observation);
   if (/search/i.test(tool)) { searches += 1; const list = Array.isArray(obs) ? obs : [obs]; for (const q of list) for (const r of ((q || {}).results || [])) if (r && r.url && !surfaced.some(x => x.url === r.url)) surfaced.push({ url: r.url, title: r.title || '', date: r.date || null }); }
   else if (/read/i.test(tool)) { reads += 1; const inp = ((st || {}).action || {}).toolInput; const u = typeof inp === 'string' ? inp : (inp && inp.url) || ''; if (u) opened.add(urlKey(u)); }
@@ -59,5 +60,6 @@ for (const steps of [fs.intermediateSteps || [], $json.intermediateSteps || []])
 const budget_left = { searches: Math.max(0, cfg.budget.l1_searches - searches), reads: Math.max(0, cfg.budget.l1_reads - reads) };
 const unopened_urls = surfaced.filter(x => !opened.has(urlKey(x.url))).slice(0, 8);
 const records = { frame, competitors: comps, lists_tried: cf.lists_tried || [], notes: [...(frame.notes || []), ...(cf.notes || [])] };
-const _challenger_input = { layer: 'L1', questions: M.questions.L1, brief: { client: cfg.brief.hard_fields.client.value, problem_statement: cfg.brief.hard_fields.problem_statement.value }, frame: null, records, violations: v, budget_left };
+let previous_gaps = []; if (pass > 0) { try { const g = $('L1 gate').all(0, pass - 1); previous_gaps = (((g[0] || {}).json || {}).gaps || []).filter(x => x.source === 'challenger').map((x, i) => ({ id: 'G' + (i + 1), question_id: x.question_id, what_is_missing: x.what_is_missing })); } catch (e) {} }
+const _challenger_input = { layer: 'L1', pass, previous_gaps, questions: M.questions.L1, brief: { client: cfg.brief.hard_fields.client.value, problem_statement: cfg.brief.hard_fields.problem_statement.value }, frame: null, records, violations: v, budget_left };
 return { json: { pass, records, violations: v, code_gaps: gaps, budget_left, unopened_urls, searches_used: searches, reads_used: reads, _challenger_input } };

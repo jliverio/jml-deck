@@ -2,7 +2,8 @@
 // comparison table (attributes x companies), marks each row comparable or not (same unit, basis and country across
 // its filled cells), and prepares the Comparison Challenger's input. No headline in v0.
 const cfg = $('Research method').first().json;
-const checks = $('Cell check').all().map(i => i.json);
+// $('Cell check').all() returns the last run only; the loop ran it once per company, so every run is read.
+const checks = []; for (let k = 0; k < 40; k++) { let a; try { a = $('Cell check').all(0, k); } catch (e) { break; } if (!a || !a.length) break; for (const i of a) checks.push(i.json); }
 const companies = $('Company list').all().map(i => i.json.company);
 const norm = s => String(s || '').toLowerCase().replace(/\s+/g, ' ').trim();
 const byName = {}; for (const c of checks) byName[norm(c.company)] = c;
