@@ -28,5 +28,5 @@ return [{ json: {
   focus: 'offering',
   category: 'consumer_goods',
   allow_sentiment: false,
-  budget: { l1_searches: 8, l1_reads: 4, reader_pages: 6, l4_searches: 10, l4_reads: 6 },
+  budget: { l1_searches: 8, l1_reads: 4, l1_wave: { searches: 3, reads: 2 }, reader_pages: 6, l4_searches: 10, l4_reads: 6, l4_wave: { searches: 3, reads: 2 } },
 } }];

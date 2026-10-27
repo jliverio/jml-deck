@@ -57,7 +57,8 @@ for (const steps of traces) for (const st of steps) {
   if (/search/i.test(tool)) { searches += 1; const list = Array.isArray(obs) ? obs : [obs]; for (const q of list) for (const r of ((q || {}).results || [])) if (r && r.url && !surfaced.some(x => x.url === r.url)) surfaced.push({ url: r.url, title: r.title || '', date: r.date || null }); }
   else if (/read/i.test(tool)) { reads += 1; const inp = ((st || {}).action || {}).toolInput; const u = typeof inp === 'string' ? inp : (inp && inp.url) || ''; if (u) opened.add(urlKey(u)); }
 }
-const budget_left = { searches: Math.max(0, cfg.budget.l1_searches - searches), reads: Math.max(0, cfg.budget.l1_reads - reads) };
+const wave = pass > 0 ? (cfg.budget.l1_wave || { searches: 0, reads: 0 }) : { searches: 0, reads: 0 };
+const budget_left = { searches: Math.max(0, cfg.budget.l1_searches + wave.searches - searches), reads: Math.max(0, cfg.budget.l1_reads + wave.reads - reads) };
 const unopened_urls = surfaced.filter(x => !opened.has(urlKey(x.url))).slice(0, 8);
 const records = { frame, competitors: comps, lists_tried: cf.lists_tried || [], notes: [...(frame.notes || []), ...(cf.notes || [])] };
 let previous_gaps = []; if (pass > 0) { try { const g = $('L1 gate').all(0, pass - 1); previous_gaps = (((g[0] || {}).json || {}).gaps || []).filter(x => x.source === 'challenger').map((x, i) => ({ id: 'G' + (i + 1), question_id: x.question_id, what_is_missing: x.what_is_missing })); } catch (e) {} }

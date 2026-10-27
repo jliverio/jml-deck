@@ -58,7 +58,8 @@ const allQ = norm([...queries, ...(out.queries_run || [])].join(' | '));
 for (const c of comps) if (c.name && !allQ.includes(norm(c.name).split(' ')[0])) gaps.push({ question_id: 'L4.1', what_is_missing: `${c.name} was never searched`, how_to_fill: `search "${c.name}" with the product and the problem geography, 24 months`, severity: 'medium', source: 'code' });
 const claimsOut = Array.isArray(out.claims) ? out.claims : [];
 for (const c of (cfg.claims || [])) { const e = claimsOut.find(x => x && x.id === c.id); if (!e) gaps.push({ question_id: 'L4.4', what_is_missing: `claim ${c.id} not reported`, how_to_fill: `one query for the public series behind: ${c.text.slice(0, 80)}`, severity: 'medium', source: 'code' }); else if (e.status === 'found' && !(findings[e.finding_index] && findings[e.finding_index].ok)) violations.push(`claims:${c.id}_found_but_finding_${e.finding_index}_not_ok`); }
-const budget_left = { searches: Math.max(0, cfg.budget.l4_searches - searches), reads: Math.max(0, cfg.budget.l4_reads - reads) };
+const wave = pass > 0 ? (cfg.budget.l4_wave || { searches: 0, reads: 0 }) : { searches: 0, reads: 0 };
+const budget_left = { searches: Math.max(0, cfg.budget.l4_searches + wave.searches - searches), reads: Math.max(0, cfg.budget.l4_reads + wave.reads - reads) };
 const cutoff = new Date(cfg.today + 'T00:00:00Z'); cutoff.setUTCMonth(cutoff.getUTCMonth() - 24);
 const unopened_urls = surfaced.filter(x => pages[urlKey(x.url)] === undefined && allowed(host(x.url)) && (!x.date || isNaN(Date.parse(x.date)) || new Date(x.date) >= cutoff)).slice(0, 8);
 const records = { findings, claims: claimsOut, not_covered: nc, queries: queries.length ? queries : (out.queries_run || []) };
