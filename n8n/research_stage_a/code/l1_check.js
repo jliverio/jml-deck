@@ -8,8 +8,10 @@ const fs = $('Frame Setter').first().json;
 const frame = fs.output || {};
 const cf = $json.output || {};
 const pass = typeof $runIndex === 'number' ? $runIndex : 0;
-const norm = s => String(s || '').toLowerCase().replace(/\s+/g, ' ').trim();
-const host = u => { try { return new URL(String(u)).hostname.replace(/^www\./, '').toLowerCase(); } catch (e) { return ''; } };
+const norm = s => String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[\u2018\u2019\u02bc]/g, "'").replace(/[\u201c\u201d]/g, '"').replace(/[\u2013\u2014]/g, '-').replace(/\u00a0/g, ' ').replace(/[*_#`>\[\]()|]/g, '').replace(/\s+/g, ' ').trim();   // markdown marks the read-page tool keeps and a quoting model drops
+// A passage may join several excerpts with '...' or '…'; every part of at least 15 characters must be in the page.
+const inPage = (text, passage) => { const parts = norm(passage).split(/\.{3}|\u2026/).map(x => x.trim()).filter(x => x.length >= 15); return parts.length > 0 && parts.every(p => text.includes(p)); };
+const host = u => String(u || '').trim().toLowerCase().replace(/^https?:\/\//, '').split(/[/?#]/)[0].replace(/^www\./, '');
 const inList = (h, list) => list.some(d => h === d || h.endsWith('.' + d));
 const primary = M.publishers.primary_domains, press = M.publishers.press_domains, bodies = M.publishers.trade_bodies.map(b => b.domain);
 

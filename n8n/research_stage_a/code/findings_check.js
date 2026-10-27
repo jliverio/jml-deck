@@ -9,8 +9,10 @@ const frame = (L1.records || {}).frame || {};
 const comps = (L1.records || {}).competitors || [];
 const out = $json.output || {};
 const pass = typeof $runIndex === 'number' ? $runIndex : 0;
-const norm = s => String(s || '').toLowerCase().replace(/\s+/g, ' ').trim();
-const host = u => { try { return new URL(String(u)).hostname.replace(/^www\./, '').toLowerCase(); } catch (e) { return ''; } };
+const norm = s => String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[\u2018\u2019\u02bc]/g, "'").replace(/[\u201c\u201d]/g, '"').replace(/[\u2013\u2014]/g, '-').replace(/\u00a0/g, ' ').replace(/[*_#`>\[\]()|]/g, '').replace(/\s+/g, ' ').trim();   // markdown marks the read-page tool keeps and a quoting model drops
+// A passage may join several excerpts with '...' or '…'; every part of at least 15 characters must be in the page.
+const inPage = (text, passage) => { const parts = norm(passage).split(/\.{3}|\u2026/).map(x => x.trim()).filter(x => x.length >= 15); return parts.length > 0 && parts.every(p => text.includes(p)); };
+const host = u => String(u || '').trim().toLowerCase().replace(/^https?:\/\//, '').split(/[/?#]/)[0].replace(/^www\./, '');
 const urlKey = u => String(u || '').trim().toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
 const inList = (h, list) => list.some(d => h === d || h.endsWith('.' + d));
 const compDomains = comps.map(c => c.domain && host('https://' + String(c.domain).replace(/^https?:\/\//, ''))).filter(Boolean);
@@ -34,7 +36,7 @@ const findings = (Array.isArray(out.findings) ? out.findings : []).map((f, i) =>
     else if (!allowed(h)) faults.push(part + '_publisher_' + h + '_not_listed');
     const text = pages[urlKey(p.url)];
     if (p.url && text === undefined) faults.push(part + '_page_not_opened');
-    else if (text !== undefined && !text.includes(norm(p.passage))) faults.push(part + '_passage_not_in_page');
+    else if (text !== undefined && !inPage(text, p.passage)) faults.push(part + '_passage_not_in_page');
   }
   if (/\b(should|must|needs? to)\b/i.test(f.why_it_matters)) faults.push('why_gives_advice');
   return { ...f, index: i, ok: faults.length === 0, faults };
