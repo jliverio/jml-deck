@@ -2,7 +2,7 @@
 
 Copies of the Code nodes, instructions and schemas changed by **Batch C** (22 Nov 2026), with an offline test.
 **The workflow in n8n is the source of truth.** These files were compared with what n8n stored after the update
-(version dee76e7c, after the fixes that three real runs called for): identical.
+(version of 22 Nov 23:49 UTC, after the fixes that the seven real runs called for): identical.
 
 | File | Node |
 |---|---|
@@ -43,6 +43,8 @@ Test without n8n (102 checks):
 5. **The page is theirs and the offer is related.** The light check says whether the page read belongs to the named
    competitor and whether it serves the same need. If not, the name is left out and the next candidate moves up.
    An address that is exactly the company's name is taken as its own site whatever the check says.
+   "Same need" means the same field, not the exact product: a large company with many products stays; only a
+   different trade altogether (an identity-check firm, a general shop) goes.
    Two candidates whose pages land on the same site, or name the same company, also count once.
 6. The final five are numbered 1 to 5. The `competitors` table is now written at the end, with the final list.
    Of the spellings of a merged name the most frequent is kept. On a full tie a direct competitor goes before a substitute.

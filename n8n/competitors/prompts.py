@@ -38,7 +38,7 @@ LIGHT_SYSTEM = """You read the home page of ONE company. It was named as a compe
 
 - page_company: the name of the company or brand this page belongs to, as the page writes it.
 - is_competitor_site: true when this page is the own website of the competitor named in the request, or of the company that owns that brand. false when it belongs to a different company, or when it is a shop that sells many brands, a directory or an article.
-- same_need: true when the page shows this company sells something a customer could use for the same need as the client's product category, given in the request. false only when what it sells is unrelated to that need.
+- same_need: true when the page shows this company works in the same field as the client's product category, given in the request, even if the page does not show the exact product: a large company with many products counts when the field is the same. false only when the page shows a different trade altogether, for example an identity-check firm or a general shop when the client sells food boxes.
 - reason: when either of the two is false, one short sentence saying what the page shows instead. Otherwise an empty string.
 - hq_country: the country the company is based in if the page says, otherwise an empty string.
 - advantages: up to 3 things the company says make it better than alternatives, taken from its headlines and opening lines only. Each is one sentence that starts with: The company presents itself as. Each has a quote copied from the page character for character, one continuous stretch of 5 to 60 words.
