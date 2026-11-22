@@ -262,7 +262,8 @@ def _default_rule(name):
 
 
 # --------------------------------------------------------------- builder
-def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=None, s3=None, logos=None):
+def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=None, s3=None, logos=None,
+               fit_report=None, last_resort=True):
     values = dict(values or {})
     if version:
         if str(version) not in TEMPLATES:
@@ -446,6 +447,13 @@ def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=Non
                     if any(m.group() in present for m in TOKEN.finditer(r.text)):
                         r.text = TOKEN.sub(lambda m: FIRM_TODO if m.group() in present else m.group(), r.text)
                         warnings.append("a variable survived filling and was replaced")
+
+    # 5a. market research slides (template 1.5.4): does every box hold its text? Measured after all filling.
+    #     /render trims what is over (last_resort); /fit only reports (fit_report is filled, nothing is trimmed).
+    if version is not None and str(version) in FILE_LAYOUT:
+        boxes = research_slides.fit_boxes(prs, warnings, last_resort=last_resort)
+        if fit_report is not None:
+            fit_report["boxes"] = boxes
 
     # 5. work plan slides (Phase Architect v2): timeline, deliverables, steering
     #    meetings. Template 1.2 holds marked slides (shape named workplan:<kind>)

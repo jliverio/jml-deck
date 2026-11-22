@@ -18,6 +18,15 @@ Comparison slide
   * logos: {"competitor_01": <base64 PNG/JPEG>} puts the logo on a white chip at the left of that header;
     without one the header shows the name alone.
 
+Cover
+  * logos: {"client": <base64 PNG/JPEG>} puts the client's logo in the cover's logo slot (the template's
+    ClientLogo placeholder), fitted inside it. A logo that would not show on white is left out.
+Fit (fit.py, José 22 Nov: text never runs out of its box)
+  * every box written here is named rs:<key>; fit_boxes() measures each one with a font of Arial's widths.
+  * /fit returns that report, so the slide-values stage can shorten its text before a deck is built.
+  * /render applies a last resort when a box is still too full: a box of points loses its last point, a text
+    is cut at a word with an ellipsis. A title or a name is only reported.
+
 Text markup in these values (the slide-values stage writes it):
     **bold**            the status word of a layer (Sells, In-house only), a price, a point's label
     __grey italic__     "Buys from: ...", "Markets: not public."
@@ -174,6 +183,7 @@ def _profile(slide, val, warnings):
             v = val(f"value_layer_{k:02d}")
             if v:
                 write(sh.text_frame.paragraphs[0]._p, v)
+                sh.name = f"rs:value_layer_{k:02d}"
                 continue
             _remove(sh)
             if i < len(circles) and i < len(labels):
@@ -217,9 +227,11 @@ def _profile(slide, val, warnings):
             name_h = kids["name"].height
             pad = kids["text"].top - kids["name"].top - name_h if "text" in kids else 0
             write(kids["name"].text_frame.paragraphs[0]._p, name)
+            kids["name"].name = f"rs:product_{k:02d}_name"
             els = {"name": kids["name"]._element}
             if text and "text" in kids:
                 write(kids["text"].text_frame.paragraphs[0]._p, text)
+                kids["text"].name = f"rs:product_{k:02d}_text"
                 els["text"] = kids["text"]._element
             for el in els.values():           # out of the group: the frames below are slide coordinates
                 tree.append(el)
@@ -244,6 +256,7 @@ def _profile(slide, val, warnings):
     if det is not None:
         lines = [v for v in (val("details_01"), val("details_02")) if v]
         write(det.text_frame.paragraphs[0]._p, "\n".join(lines))
+        det.name = "rs:details"
 
 
 # ------------------------------------------------------------------ comparison slide
@@ -289,40 +302,44 @@ def _points(sh, names, val, fact=None):
     return len(filled)
 
 
-def _fit(sh, who, warnings):
-    """Warn when a box of points will run past its bottom edge. An estimate from the box size: Arial averages
-    about 0.52 of its size per character; a line takes size x 1.2 x the paragraph's line spacing."""
-    import math
-    need = 0.0
-    for p in sh.text_frame.paragraphs:
-        text = "".join(r.text for r in p.runs)
-        if not text:
-            continue
-        size = next((r.font.size.pt for r in p.runs if r.font.size), 12.0)
-        pPr = p._p.find(qn("a:pPr"))
-        indent = int(pPr.get("marL", 0)) / 12700 if pPr is not None else 0
-        width = sh.width / 12700 - 14.4 - indent
-        lines = max(1, math.ceil(len(text) * size * 0.52 / max(width, 1)))
-        before = p.space_before.pt if p.space_before is not None else 0
-        need += lines * size * 1.2 * (p.line_spacing if isinstance(p.line_spacing, float) else 1.0) + before
-    room = sh.height / 12700 - 5.4
-    if need > room:
-        warnings.append(f"{who}: the text needs about {need / room:.1f} times the height of its box")
-
-
-def _logo(slide, header, data, warnings, who):
+def _load_logo(data, warnings, who):
+    """(PIL image, PNG bytes) of a logo sent as base64, or None with a warning. A logo that is unreadable,
+    tiny, or that would not show on white (a white logo made for a dark header) never costs the deck."""
     try:
         from PIL import Image
         raw = base64.b64decode(str(data).split(",", 1)[-1])
         im = Image.open(io.BytesIO(raw))
         im.load()
-        if im.mode not in ("RGB", "RGBA"):
-            im = im.convert("RGBA")
-        buf = io.BytesIO()
-        im.save(buf, "PNG")
-    except Exception as e:                                   # an unreadable logo never costs the deck
-        warnings.append(f"logo of {who} could not be read ({type(e).__name__}); the name is shown alone")
+        im = im.convert("RGBA")
+    except Exception as e:
+        warnings.append(f"logo of {who} could not be read ({type(e).__name__}); left out")
+        return None
+    box = im.getchannel("A").getbbox()
+    if box:
+        im = im.crop(box)                                    # empty margins make a logo look small in its slot
+    if max(im.size) < 48:
+        warnings.append(f"logo of {who} is too small ({im.size[0]} x {im.size[1]} px); left out")
+        return None
+    small = im.resize((max(1, min(im.size[0], 64)), max(1, min(im.size[1], 64))))
+    ink, seen = 0.0, 0
+    for r, g, b, a in small.getdata():
+        if a < 40:
+            continue
+        seen += 1
+        ink += 1 - (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255.0
+    if not seen or ink / seen < 0.12:
+        warnings.append(f"logo of {who} would not show on white; left out")
+        return None
+    buf = io.BytesIO()
+    im.save(buf, "PNG")
+    return im, buf.getvalue()
+
+
+def _logo(slide, header, data, warnings, who):
+    got = _load_logo(data, warnings, who)
+    if got is None:
         return
+    im, png = got
     h = header.height - 2 * LOGO_PAD
     w = min(int(h * im.size[0] / max(im.size[1], 1)), LOGO_MAX_W)
     ih = int(w * im.size[1] / max(im.size[0], 1))
@@ -335,7 +352,7 @@ def _logo(slide, header, data, warnings, who):
     chip.fill.solid()
     chip.fill.fore_color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
     chip.line.fill.background()
-    pic = slide.shapes.add_picture(io.BytesIO(buf.getvalue()), header.left + LOGO_PAD // 2 + LOGO_PAD,
+    pic = slide.shapes.add_picture(io.BytesIO(png), header.left + LOGO_PAD // 2 + LOGO_PAD,
                                    int(header.top + (header.height - ih) / 2), w, ih)
     pic.name = f"logo:{who}"
     header.text_frame.margin_left = Emu(chip_w + LOGO_PAD)   # the name keeps to the room beside the chip
@@ -345,7 +362,7 @@ def _compare(slide, val, warnings, logos):
     box = _find(slide, "client_point_01")
     if box is not None:
         _points(box, [f"client_point_{k:02d}" for k in range(1, 6)], val)
-        _fit(box, "client points", warnings)
+        box.name = "rs:client_points"
     cols = []
     for k in range(1, 5):
         head = _find(slide, f"competitor_{k:02d}_name")
@@ -380,25 +397,147 @@ def _compare(slide, val, warnings, logos):
                 if sh is not None:
                     sh.left = Emu(int(x0 + i * (w + gap)))
                     sh.width = Emu(int(w))
-    for k, head, body in kept:                 # after the columns have their final width
+    for k, head, body in kept:
+        head.name = f"rs:competitor_{k:02d}_name"
         if body is not None:
-            _fit(body, f"competitor_{k:02d} points", warnings)
+            body.name = f"rs:competitor_{k:02d}_points"
     for k, head, _ in kept:
         data = (logos or {}).get(f"competitor_{k:02d}")
         if data:
             _logo(slide, head, data, warnings, f"competitor_{k:02d}")
 
 
-# ------------------------------------------------------------------ entry
+# ------------------------------------------------------------------ cover
+def _cover_logo(prs, data, warnings):
+    """The client's logo in the cover's logo slot: fitted inside the slot, left-aligned, never cropped."""
+    for slide in prs.slides:
+        slot = next((sh for sh in slide.placeholders if sh.placeholder_format.type is not None
+                     and "PICTURE" in str(sh.placeholder_format.type)), None)
+        if slot is None:
+            continue
+        got = _load_logo(data, warnings, "the client")
+        if got is None:
+            return
+        im, png = got
+        k = min(slot.width / im.size[0], slot.height / im.size[1])
+        w, h = int(im.size[0] * k), int(im.size[1] * k)
+        pic = slide.shapes.add_picture(io.BytesIO(png), slot.left, int(slot.top + (slot.height - h) / 2), w, h)
+        pic.name = "logo:client"
+        _remove(slot)
+        return
+    warnings.append("the template has no logo slot on its cover; the client's logo is left out")
+
+
+# ------------------------------------------------------------------ fit
 OWN = re.compile(r"(value_layer_\d+|product_\d+_(name|text)|details_\d+|client_point_\d+|"
                  r"competitor_\d+_(name|fact_\d+|point_\d+))")
+PLAIN = ["profile_title_01", "compare_title_01", "sources_profile_01", "sources_compare_01", "client_name_01"]
 
 
+def _kind(key):
+    if key.endswith("_points"):
+        return "points"
+    if "_title_" in key:
+        return "title"
+    if key.endswith("_name") or key.startswith("client_name"):
+        return "line"
+    return "text"
+
+
+def _variables(key):
+    if key == "client_points":
+        return [f"client_point_{k:02d}" for k in range(1, 6)]
+    if key == "details":
+        return ["details_01", "details_02"]
+    if key.endswith("_points"):
+        c = key[:-len("_points")]
+        return [c + "_fact_01"] + [f"{c}_point_{j:02d}" for j in range(1, 4)]
+    return [key]
+
+
+def _boxes(prs):
+    for slide in prs.slides:
+        for sh in _walk(slide.shapes):
+            if sh.name.startswith("rs:") and getattr(sh, "has_text_frame", False) and sh.has_text_frame:
+                yield sh.name[3:], sh
+
+
+def _measure(key, sh):
+    import fit
+    kind = _kind(key)
+    m = fit.measure(sh, max_lines=2 if kind == "title" else (1 if kind == "line" else None))
+    return {"box": key, "kind": kind, "variables": _variables(key), **m}
+
+
+def _last_resort(key, sh, warnings):
+    """A box that is still too full: a box of points loses its last point, a text is cut at a word."""
+    kind = _kind(key)
+    if kind == "points":
+        dropped = 0
+        while _measure(key, sh)["over"]:
+            pts = list(sh.text_frame.paragraphs)
+            first = pts[0]._p.find(qn("a:r")) if pts else None
+            rPr = first.find(qn("a:rPr")) if first is not None else None
+            if rPr is not None and rPr.get("i") in ("1", "true"):
+                pts = pts[1:]                      # the grey line above the points is not a point
+            if len(pts) <= 1:
+                break
+            pts[-1]._p.getparent().remove(pts[-1]._p)
+            dropped += 1
+        if dropped:
+            warnings.append(f"{key}: the last {'point was' if dropped == 1 else str(dropped) + ' points were'} "
+                            f"left out to fit the box")
+    elif kind == "text":
+        cut = False
+        for _ in range(200):
+            if not _measure(key, sh)["over"]:
+                break
+            runs = [r for p in sh.text_frame.paragraphs for r in p.runs if r.text.strip()]
+            if not runs:
+                break
+            last = runs[-1]
+            words = last.text.rstrip(" \u2026").split(" ")
+            if len(words) <= 1:
+                if len(runs) == 1:
+                    break
+                last.text = ""
+                continue
+            last.text = " ".join(words[:-1]).rstrip(" ,.;:") + "\u2026"
+            cut = True
+        if cut:
+            warnings.append(f"{key}: the text was cut to fit the box")
+    if _measure(key, sh)["over"]:
+        warnings.append(f"{key}: the text does not fit its box")
+
+
+def fit_boxes(prs, warnings, last_resort=True):
+    """Measure every box of the two slides (after all filling). Returns the report /fit sends back:
+    one entry per box, as the text stood before any last resort."""
+    report = []
+    for key, sh in _boxes(prs):
+        m = _measure(key, sh)
+        report.append(m)
+        if m["over"] and last_resort:
+            _last_resort(key, sh, warnings)
+    return report
+
+
+# ------------------------------------------------------------------ entry
 def apply(prs, val, warnings, logos=None, skip_ids=()):
-    """val(name) -> the value, already cut to its limit ('' when empty). skip_ids: slides about to be dropped."""
+    """val(name) -> the value, already cut to its limit ('' when empty). skip_ids: slides about to be dropped.
+    Runs before varfill's generic fill; fit_boxes() runs after it."""
     prof = _slide_with(prs, "value_layer_01")
     comp = _slide_with(prs, "competitor_01_name")
+    for slide in (prof, comp):                       # the boxes varfill fills itself, named for the fit check
+        if slide is None:
+            continue
+        for token in PLAIN:
+            sh = _find(slide, token)
+            if sh is not None:
+                sh.name = "rs:" + token
     if prof is not None and prof.slide_id not in skip_ids:
         _profile(prof, val, warnings)
     if comp is not None and comp.slide_id not in skip_ids:
         _compare(comp, val, warnings, logos)
+    if (logos or {}).get("client"):
+        _cover_logo(prs, logos["client"], warnings)

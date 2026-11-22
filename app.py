@@ -11,7 +11,8 @@ POST /render   header X-API-Key: <secret>
                          one-page roadmap, assumptions slide, "[Firm to complete] Fees" slide),
                or "1.5.4" (José's own file as the template, with the two market research slides),
      "s3": {"assumptions": [{"id", "text", "if_wrong"}], "deadline_weeks": n} (templates 1.5 and 1.5.4),
-     "logos": {"competitor_01": <base64 PNG or JPEG>, ...} (template 1.5.4; optional)}
+     "logos": {"competitor_01": <base64 PNG or JPEG>, ..., "client": <base64>} (template 1.5.4; optional:
+               competitor logos in the comparison headers, the client's logo in the cover's logo slot)}
     -> 200 .pptx, header X-Render-Warnings (JSON list, may be empty)
     -> 422 {"error": ...} when the template, the table and the values disagree
   Legacy payload ({"cover": ..., "context": ...}) -> previous renderer.
@@ -20,6 +21,8 @@ POST /extract  header X-API-Key: <secret>; body: the file (raw, with its Content
                -> {"results": [one object per file, as below]}
     -> 200 {"name", "kind": "pdf"|"docx"|"unsupported", "pages_total", "pages_read", "chars", "truncated",
             "text", "note"}: the first 10 PDF pages or about 10 Word pages (extract.py)
+POST /fit      header X-API-Key: <secret>; same body as /render, template 1.5.4 -> whether the text of the two
+               market research slides fits its boxes, box by box (fit.py); nothing is trimmed
 POST /palette  header X-API-Key: <secret>; body {"url": ...} -> the site's brand colours (brand.py, trial)
 GET  /health   -> 200 {"ok": true, ...}
 """
@@ -54,7 +57,16 @@ def health():
     return jsonify(ok=True, service="jml-deck", auth=bool(API_KEY),
                    renderer="variables-1.2", legacy=LEGACY,
                    template=os.path.exists(varfill.TEMPLATE),
-                   templates=sorted(varfill.TEMPLATES), extract=True)
+                   templates=sorted(varfill.TEMPLATES), extract=True, fit=_fit_ready())
+
+
+def _fit_ready():
+    """The fit check needs its four font files (assets/fonts); say so here rather than on the first /fit."""
+    try:
+        import fit
+        return all(fit.width("Hamburg", 12, b, i) > 0 for b in (False, True) for i in (False, True))
+    except Exception:
+        return False
 
 
 @app.post("/render")
@@ -96,6 +108,31 @@ def render():
         "Content-Disposition": f'attachment; filename="{fname}"',
         "X-Render-Warnings": json.dumps(warnings[:20]),
     })
+
+
+@app.post("/fit")
+def fit_check():
+    """22 Nov: does the text of the two market research slides fit its boxes? Same body as /render (values,
+    rules, template, logos); nothing is built for download and nothing is trimmed.
+    -> {"fits": bool, "boxes": [{"box", "kind", "variables", "lines", "room_lines", "over", "over_by_lines"}],
+        "over": [the boxes that do not fit], "warnings": [...]}"""
+    if API_KEY and request.headers.get("X-API-Key", "") != API_KEY:
+        return jsonify(error="unauthorized"), 401
+    data = request.get_json(silent=True) or {}
+    version = str(data.get("template") or "1.5.4")
+    if version not in varfill.FILE_LAYOUT:
+        return jsonify(error=f"/fit works on template 1.5.4, not {version}"), 422
+    report = {}
+    try:
+        _, warnings = varfill.build_deck(data.get("values") or {}, data.get("rules"), version=version,
+                                         logos=data.get("logos"), fit_report=report, last_resort=False)
+    except (varfill.TemplateCapacityError, varfill.TemplateRulesError, varfill.TemplateFormatError) as e:
+        return jsonify(error=str(e), kind=type(e).__name__), 422
+    except Exception as e:
+        return jsonify(error=f"fit check failed: {e}"), 500
+    boxes = report.get("boxes") or []
+    return jsonify(fits=not any(b["over"] for b in boxes), boxes=boxes, over=[b for b in boxes if b["over"]],
+                   warnings=warnings[:20])
 
 
 @app.post("/palette")

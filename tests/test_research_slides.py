@@ -80,7 +80,8 @@ for firm, vals in CASES.items():
     v = {**vals, **common(vals.get("client_name_01") or firm)}
     prs, warns, raw = build(v, firm)
     allt = [t for s in prs.slides for t in texts(s)]
-    check(f"{firm}: no value cut, no box too full", not [w for w in warns if "cut to" in w or "height of its box" in w], str(warns))
+    check(f"{firm}: no value cut, nothing trimmed to fit",
+          not [w for w in warns if "cut" in w or "left out to fit" in w or "does not fit" in w], str(warns))
     left = [t for t in allt if varfill.TOKEN.search(t) and not t.startswith("http")]
     check(f"{firm}: no variable left", not left, str(left[:3]))
     check(f"{firm}: no markup left", not [t for t in allt if "**" in t or "__" in t])
@@ -162,9 +163,68 @@ for n_ in names:
     if rs.OWN.fullmatch(n_) or re.fullmatch(r"(profile|compare)_title_01|client_name_01|sources_(profile|compare)_01", n_):
         v[n_] = fill(n_)
 prs, warns, _ = build(v, "at_limits")
-check("at the limits: no value cut", not [w for w in warns if "cut to" in w], str(warns))
-check("at the limits: the renderer says which boxes are too full",
-      sum(1 for w in warns if "height of its box" in w) == 5, str(warns))
+check("at the limits: no value cut by its character limit", not [w for w in warns if re.search(r"cut to \d+ characters", w)], str(warns))
+check("at the limits: the last resort says what it left out or cut",
+      sum(1 for w in warns if "left out to fit the box" in w) >= 4 and any("client_points" in w for w in warns), str(warns))
+after = rs.fit_boxes(prs, [], last_resort=False)
+check("at the limits: after the last resort no points box and no text box is over",
+      not [b["box"] for b in after if b["over"] and b["kind"] in ("points", "text")],
+      str([(b["box"], b["lines"], b["room_lines"]) for b in after if b["over"]]))
+
+# 6b. the fit report: line counts as LibreOffice wraps them (seen in the rendered test decks of 22 Nov)
+def report(values, **kw):
+    rep = {}
+    varfill.build_deck(values, RULES, version="1.5.4", fit_report=rep, last_resort=False, **kw)
+    return {b["box"]: b for b in rep["boxes"]}
+rep = report({**CASES["n8n"], **common("n8n")})
+got = {k: rep[k]["lines"] for k in ("client_points", "competitor_01_points", "competitor_02_points", "competitor_03_points", "competitor_04_points")}
+check("fit: n8n comparison boxes wrap as rendered (13, 10, 10, 10, 9 lines)", list(got.values()) == [13, 10, 10, 10, 9], str(got))
+rep = report({**CASES["equalfood"], **common("Equal Food")})
+got = {k: rep[k]["lines"] for k in ("client_points", "competitor_01_points", "competitor_02_points", "competitor_03_points", "competitor_04_points")}
+check("fit: Equal Food comparison boxes wrap as rendered (12, 10, 9, 10, 8 lines)", list(got.values()) == [12, 10, 9, 10, 8], str(got))
+check("fit: every box of a real case has room, titles on two lines at most",
+      not [b for b in rep.values() if b["over"]] and rep["profile_title_01"]["lines"] <= 2)
+check("fit: each box names its variables", rep["competitor_02_points"]["variables"][0] == "competitor_02_fact_01"
+      and rep["details"]["variables"] == ["details_01", "details_02"])
+rep = report(v)
+over = sorted(b["box"] for b in rep.values() if b["over"])
+check("fit: at the limits the report names the boxes that are over, and by how many lines",
+      "client_points" in over and all(rep[k]["over_by_lines"] >= 1 for k in over), str(over))
+
+# 6c. /fit endpoint
+import app as webapp  # noqa: E402
+webapp.API_KEY = ""
+client = webapp.app.test_client()
+r = client.post("/fit", json={"values": {**CASES["n8n"], **common("n8n")}, "rules": RULES, "template": "1.5.4"})
+j = r.get_json()
+check("/fit: a real case fits", r.status_code == 200 and j["fits"] is True and j["over"] == [] and len(j["boxes"]) >= 20, str(j)[:300])
+r = client.post("/fit", json={"values": v, "rules": RULES, "template": "1.5.4"})
+j = r.get_json()
+check("/fit: at the limits it does not fit and lists the boxes", r.status_code == 200 and j["fits"] is False
+      and any(b["box"] == "client_points" for b in j["over"]), str(j)[:300])
+check("/health: says the fit check is ready", client.get("/health").get_json().get("fit") is True)
+r = client.post("/fit", json={"values": {}, "template": "1.5"})
+check("/fit: refuses a template without the research slides", r.status_code == 422)
+
+# 6d. the client's logo on the cover
+def png(color, size=(400, 120)):
+    b = io.BytesIO()
+    Image.new("RGBA", size, color).save(b, "PNG")
+    return base64.b64encode(b.getvalue()).decode()
+prs, warns, _ = build({**CASES["n8n"], **common("n8n")}, "cover_logo", logos={"client": png((20, 40, 160, 255))})
+cover = prs.slides[0]
+pic = [sh for sh in cover.shapes if sh.name == "logo:client"]
+check("cover logo: placed on the cover", len(pic) == 1)
+check("cover logo: inside the logo slot, not stretched",
+      len(pic) == 1 and pic[0].left >= 500000 and pic[0].width <= 2010000 and pic[0].height <= 1050000
+      and abs(pic[0].width / pic[0].height - 400 / 120) < 0.05, str([(p.left, p.top, p.width, p.height) for p in pic]))
+check("cover logo: the empty slot is gone", not any(sh.is_placeholder and "PICTURE" in str(sh.placeholder_format.type) for sh in cover.shapes))
+prs, warns, _ = build({**CASES["n8n"], **common("n8n")}, "cover_logo_white", logos={"client": png((255, 255, 255, 255)), "competitor_01": png((250, 250, 250, 255))})
+check("cover logo: a white logo is left out, with a warning, on the cover and in a header",
+      not any(sh.name.startswith("logo:") for s_ in prs.slides for sh in s_.shapes)
+      and sum(1 for w in warns if "would not show on white" in w) == 2, str(warns))
+prs, warns, _ = build({**CASES["n8n"], **common("n8n")}, "cover_logo_tiny", logos={"client": png((20, 40, 160, 255), (16, 16))})
+check("cover logo: a 16 px icon is left out", any("too small" in w for w in warns) and not any(sh.name == "logo:client" for sh in prs.slides[0].shapes))
 
 # 7. the deck's structure is the file's
 prs, warns, _ = build({**CASES["n8n"], **common("n8n")}, "structure",
