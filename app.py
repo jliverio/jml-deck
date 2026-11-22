@@ -9,7 +9,9 @@ POST /render   header X-API-Key: <secret>
                or "1.4" (1.3 + situation slide, approach overview)
                or "1.5" (1.4 filled, then the S3 layout: no dividers, summary after the situation,
                          one-page roadmap, assumptions slide, "[Firm to complete] Fees" slide),
-     "s3": {"assumptions": [{"id", "text", "if_wrong"}], "deadline_weeks": n} (template 1.5 only)}
+               or "1.5.4" (José's own file as the template, with the two market research slides),
+     "s3": {"assumptions": [{"id", "text", "if_wrong"}], "deadline_weeks": n} (templates 1.5 and 1.5.4),
+     "logos": {"competitor_01": <base64 PNG or JPEG>, ...} (template 1.5.4; optional)}
     -> 200 .pptx, header X-Render-Warnings (JSON list, may be empty)
     -> 422 {"error": ...} when the template, the table and the values disagree
   Legacy payload ({"cover": ..., "context": ...}) -> previous renderer.
@@ -41,7 +43,7 @@ else:
 
 app = Flask(__name__)
 API_KEY = os.environ.get("JML_API_KEY", "")
-MAX_BYTES = 1_000_000
+MAX_BYTES = 2_000_000      # 22 Nov: room for up to four competitor logos (base64) in the payload
 MAX_FILE_BYTES = 15_000_000   # attachments read by /extract (Gmail caps a message at 25 MB)
 MAX_JSON_BYTES = 45_000_000   # /extract with several base64 files in one JSON body
 PPTX = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
@@ -74,7 +76,7 @@ def render():
             pptx, warnings = varfill.build_deck(data.get("values") or {}, data.get("rules"),
                                                 workplan=data.get("workplan"),
                                                 version=data.get("template"),
-                                                s3=data.get("s3"))
+                                                s3=data.get("s3"), logos=data.get("logos"))
             # Oct 26 (trial): {"brand": {"primary": "C8102E", "accent": "FFB81C"}} repaints the deck in the
             # client's colours (brand.py); without it the deck is byte-identical to before.
             b = data.get("brand") or {}

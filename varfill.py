@@ -34,6 +34,7 @@ import zipfile
 
 from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE
+from pptx.oxml.ns import qn
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE = os.path.join(HERE, "template_v1_2.potx")
@@ -45,8 +46,13 @@ TEMPLATES = {
     "1.3": os.path.join(HERE, "template_v1_3.potx"),     # 1.2 + Approach section and work-plan slides
     "1.4": os.path.join(HERE, "template_v1_4.potx"),     # 1.3 + situation slide, approach overview
     "1.5": os.path.join(HERE, "template_v1_4.potx"),     # 1.4 filled, then the S3 layout (s3layout.py)
+    # 1.5.4 (22 Nov): José's own file as the template (tools/make_template_1_5_4.py). The deck is the file:
+    # no restructuring. It carries the two market research slides (research_slides.py).
+    "1.5.4": os.path.join(HERE, "template_v1_5_4.potx"),
 }
 S3_LAYOUT = {"1.5"}
+FILE_LAYOUT = {"1.5.4"}                 # the template file is the deck's structure
+UNIT_SCALE = S3_LAYOUT | FILE_LAYOUT    # plan slides in the timeline's unit and the phase blues
 FIRM_TODO = "[Firm to complete]"
 TOKEN = re.compile(r"(?<![A-Za-z0-9_])[a-z0-9]+(?:_[a-z0-9]+)+(?![A-Za-z0-9_])")
 # drop_slide: when the variable is empty, the whole slide it sits on is removed
@@ -57,6 +63,7 @@ POLICIES = {"remove_row", "hide_line", "clear", "firm_todo", "drop_slide"}
 DEFAULT_RULES = [
     (r"cover_title_\d+", 21, "firm_todo"),
     (r"cover_subtitle_\d+", 100, "firm_todo"),
+    (r"cover_date_\d+", 20, "clear"),
     (r"section_\d+", 20, "remove_row"),
     (r"summary_title_\d+", 90, "firm_todo"),
     (r"(objective|outcome)_01", 127, "firm_todo"),
@@ -74,6 +81,18 @@ DEFAULT_RULES = [
     (r"belief_\d+", 140, "clear"),
     (r"footer_\d+", 60, "clear"),
     (r"(approach|timeline|deliverables|steering)_title_\d+", 110, "firm_todo"),
+    # market research slides (template 1.5.4); the live limits come from the n8n table
+    (r"(profile|compare)_title_\d+", 90, "drop_slide"),
+    (r"value_layer_\d+", 190, "clear"),
+    (r"product_\d+_name", 40, "remove_row"),
+    (r"product_\d+_text", 170, "hide_line"),
+    (r"details_\d+", 110, "hide_line"),
+    (r"client_name_\d+", 20, "firm_todo"),
+    (r"client_point_\d+", 95, "hide_line"),
+    (r"competitor_\d+_name", 30, "remove_row"),
+    (r"competitor_\d+_fact_\d+", 40, "hide_line"),
+    (r"competitor_\d+_point_\d+", 80, "hide_line"),
+    (r"sources_(profile|compare)_\d+", 135, "clear"),
 ]
 
 
@@ -182,11 +201,19 @@ def _join_split_tokens(para, where):
     """Re-join variables that PowerPoint split across runs."""
     for _ in range(50):
         runs = list(para.runs)
-        bounds, pos = [], 0
-        for r in runs:
-            bounds.append((pos, pos + len(r.text)))
-            pos += len(r.text)
-        full = "".join(r.text for r in runs)
+        bounds, pos, full, ri = [], 0, "", 0
+        for child in para._p:
+            # a line break separates two variables (template 1.5.4: details_01 <break> details_02); without
+            # it they read as one name, "details_01details_02", and neither is filled
+            if child.tag == qn("a:br"):
+                full += "\n"
+                pos += 1
+            elif child.tag == qn("a:r") and ri < len(runs):
+                t = runs[ri].text
+                ri += 1
+                bounds.append((pos, pos + len(t)))
+                full += t
+                pos += len(t)
         split = None
         for m in TOKEN.finditer(full):
             idx = [i for i, (s, e) in enumerate(bounds) if e > s and s < m.end() and e > m.start()]
@@ -235,7 +262,7 @@ def _default_rule(name):
 
 
 # --------------------------------------------------------------- builder
-def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=None, s3=None):
+def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=None, s3=None, logos=None):
     values = dict(values or {})
     if version:
         if str(version) not in TEMPLATES:
@@ -288,7 +315,7 @@ def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=Non
 
     # work-plan slide titles: composed from the plan unless the payload gives them
     if has_plan:
-        composed = wp.titles(wp.scaled(plan) if version is not None and str(version) in S3_LAYOUT else plan)   # 1.5: in the timeline's unit
+        composed = wp.titles(wp.scaled(plan) if version is not None and str(version) in UNIT_SCALE else plan)   # 1.5: in the timeline's unit
         for var, key in TITLE_VARS.items():
             if var in present and not str(values.get(var) or "").strip():
                 values[var] = composed[key]
@@ -333,6 +360,34 @@ def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=Non
             dropped.append(empty[0])
     if dropped:
         warnings.append("slide(s) left out because their text was empty: " + ", ".join(dropped))
+
+    # the cover's date (template 1.5.4): today, unless the payload gives one
+    if "cover_date_01" in present and not str(values.get("cover_date_01") or "").strip():
+        import datetime
+        d = datetime.date.today()
+        values["cover_date_01"] = f"{d.day} {d.strftime('%B %Y')}"
+
+    # 2c. market research slides (template 1.5.4): rich text and their own layout rules. After this the
+    #     generic steps find only their titles, source lines and the client's name.
+    if version is not None and str(version) in FILE_LAYOUT:
+        import research_slides
+
+        rich_cache = {}
+
+        def rich(name):
+            if name not in rich_cache:
+                v = values.get(name)
+                v = "" if v is None else "\n".join(" ".join(ln.split()) for ln in str(v).strip().split("\n"))
+                mx, _ = rule(name)
+                if not research_slides.plain(v):
+                    v = ""
+                elif mx and len(research_slides.plain(v)) > mx:
+                    warnings.append(f"{name} cut to {mx} characters")
+                    v = _shorten(research_slides.plain(v), mx)
+                rich_cache[name] = v
+            return rich_cache[name]
+
+        research_slides.apply(prs, rich, warnings, logos=logos, skip_ids=set(to_drop))
 
     # 3. remove grouped rows: any empty remove_row variable, or all empty
     def prune(shapes):
@@ -403,7 +458,7 @@ def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=Non
     if marked:
         wp.fill_template_slides(prs, plan if has_plan else None, marked,
                                 client=str((plan or {}).get("client") or "[Client]"),
-                                unit_scale=version is not None and str(version) in S3_LAYOUT)   # 1.5: 24-box rule
+                                unit_scale=version is not None and str(version) in UNIT_SCALE)   # 1.5: 24-box rule
         if not has_plan:
             warnings.append("no work plan in the payload: the work-plan slides say [Firm to complete]")
     elif has_plan:
@@ -431,6 +486,9 @@ def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=Non
     if version is not None and str(version) in S3_LAYOUT:
         import s3layout
         warnings.extend(s3layout.apply(prs, values, plan if has_plan else None, s3))
+    elif version is not None and str(version) in FILE_LAYOUT:
+        import s3layout
+        warnings.extend(s3layout.apply_file_layout(prs, plan if has_plan else None, s3))
 
     out = io.BytesIO()
     prs.save(out)

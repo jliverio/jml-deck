@@ -270,6 +270,30 @@ def apply(prs, values, plan, s3):
     return warnings
 
 
+def apply_file_layout(prs, plan, s3):
+    """Template 1.5.4: the template file is the deck, so nothing is reordered. Only two things happen here:
+    a plan longer than 24 semesters loses its plan slides (as in 1.5), and the assumptions the draft rests on
+    (payload s3.assumptions) go on an appendix slide after the closing slide. No fees slide: the file has none."""
+    warnings = []
+    s3 = s3 or {}
+    plan = plan if isinstance(plan, dict) else {}
+    lst = prs.slides._sldIdLst
+    prs.part.rename_slide_parts([el.rId for el in lst])
+    weeks = int((plan.get("total_duration_weeks") or {}).get("max") or 0)
+    if plan.get("phases") and weeks > wp.MAX_WEEKS:
+        warnings.append(f"the plan runs {weeks} weeks, more than 24 semesters; the plan slides are left out")
+        for el, s in zip(list(lst), list(prs.slides)):
+            if any(sh.name.startswith("workplan:") for sh in s.shapes):
+                prs.part.drop_rel(el.get(qn("r:id")))
+                lst.remove(el)
+    items = [a for a in (s3.get("assumptions") or []) if str(a.get("text", "")).strip()]
+    if items:
+        _Builder(prs).assumptions(items[:5], "Appendix")      # added last: after the closing slide
+    else:
+        warnings.append("no assumptions in the payload; the assumptions slide is left out")
+    return warnings
+
+
 def _iter_text_shapes(sh):
     if sh.shape_type == 6:
         for g in sh.shapes:

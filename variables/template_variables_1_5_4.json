@@ -1,0 +1,762 @@
+[
+ {
+  "variable": "approach_title_01",
+  "draft_chars": "",
+  "max_chars": "110",
+  "limit_basis": "estimated",
+  "fills_from": "code:workplan_title",
+  "writing_rule": "Composed by the renderer from the plan. When the client decides: the week of each gate and whether the next phase goes ahead.",
+  "if_empty": "firm_todo",
+  "example": "MetalCo decides in week 6 whether Pilot goes ahead; the work closes in week 20"
+ },
+ {
+  "variable": "client_name_01",
+  "draft_chars": "",
+  "max_chars": "20",
+  "limit_basis": "estimated",
+  "fills_from": "research:client_name",
+  "writing_rule": "The client's short name, without legal suffixes.",
+  "if_empty": "firm_todo",
+  "example": "Equal Food"
+ },
+ {
+  "variable": "client_point_01",
+  "draft_chars": "",
+  "max_chars": "95",
+  "limit_basis": "estimated",
+  "fills_from": "research:client_point_1",
+  "writing_rule": "One claim the client makes about itself: a label of one or two words in bold, a colon, then the claim in the site's sense. Figures in bold. Up to five. The box holds about 13 lines of 23 characters: with five points keep each under 60 characters. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "**Price:** up to **40%** cheaper than supermarkets"
+ },
+ {
+  "variable": "client_point_02",
+  "draft_chars": "",
+  "max_chars": "95",
+  "limit_basis": "estimated",
+  "fills_from": "research:client_point_2",
+  "writing_rule": "One claim the client makes about itself: a label of one or two words in bold, a colon, then the claim in the site's sense. Figures in bold. Up to five. The box holds about 13 lines of 23 characters: with five points keep each under 60 characters. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "**Price:** up to **40%** cheaper than supermarkets"
+ },
+ {
+  "variable": "client_point_03",
+  "draft_chars": "",
+  "max_chars": "95",
+  "limit_basis": "estimated",
+  "fills_from": "research:client_point_3",
+  "writing_rule": "One claim the client makes about itself: a label of one or two words in bold, a colon, then the claim in the site's sense. Figures in bold. Up to five. The box holds about 13 lines of 23 characters: with five points keep each under 60 characters. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "**Price:** up to **40%** cheaper than supermarkets"
+ },
+ {
+  "variable": "client_point_04",
+  "draft_chars": "",
+  "max_chars": "95",
+  "limit_basis": "estimated",
+  "fills_from": "research:client_point_4",
+  "writing_rule": "One claim the client makes about itself: a label of one or two words in bold, a colon, then the claim in the site's sense. Figures in bold. Up to five. The box holds about 13 lines of 23 characters: with five points keep each under 60 characters. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "**Price:** up to **40%** cheaper than supermarkets"
+ },
+ {
+  "variable": "client_point_05",
+  "draft_chars": "",
+  "max_chars": "95",
+  "limit_basis": "estimated",
+  "fills_from": "research:client_point_5",
+  "writing_rule": "One claim the client makes about itself: a label of one or two words in bold, a colon, then the claim in the site's sense. Figures in bold. Up to five. The box holds about 13 lines of 23 characters: with five points keep each under 60 characters. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "**Price:** up to **40%** cheaper than supermarkets"
+ },
+ {
+  "variable": "compare_title_01",
+  "draft_chars": "",
+  "max_chars": "90",
+  "limit_basis": "estimated",
+  "fills_from": "research:compare_title",
+  "writing_rule": "One sentence, no final period, built from the claims on the slide: what the competitors claim against the client's claims. Empty when the research found no competitor (the slide is then left out).",
+  "if_empty": "drop_slide",
+  "example": "All four competitors also claim to rescue imperfect produce; none claims free delivery"
+ },
+ {
+  "variable": "competitor_01_fact_01",
+  "draft_chars": "",
+  "max_chars": "40",
+  "limit_basis": "estimated",
+  "fills_from": "research:competitor_1_fact",
+  "writing_rule": "The grey line above the claims: country, then one size figure when the research holds one, separated by \" · \". Plain text (the template makes it grey italic).",
+  "if_empty": "hide_line",
+  "example": "Portugal · 12,970 members"
+ },
+ {
+  "variable": "competitor_01_name",
+  "draft_chars": "",
+  "max_chars": "30",
+  "limit_basis": "estimated",
+  "fills_from": "research:competitor_1_name",
+  "writing_rule": "The company's name, not a product's. First four in the research's rank; a competitor whose main entry failed the checks is skipped. Empty: the column is left out and the others share the width.",
+  "if_empty": "remove_row",
+  "example": "Fruta Feia"
+ },
+ {
+  "variable": "competitor_01_point_01",
+  "draft_chars": "",
+  "max_chars": "80",
+  "limit_basis": "estimated",
+  "fills_from": "research:competitor_1_point_1",
+  "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "**Waste:** a cooperative that has kept thousands of tonnes of produce from waste"
+ },
+ {
+  "variable": "competitor_01_point_02",
+  "draft_chars": "",
+  "max_chars": "80",
+  "limit_basis": "estimated",
+  "fills_from": "research:competitor_1_point_2",
+  "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "**Waste:** a cooperative that has kept thousands of tonnes of produce from waste"
+ },
+ {
+  "variable": "competitor_01_point_03",
+  "draft_chars": "",
+  "max_chars": "80",
+  "limit_basis": "estimated",
+  "fills_from": "research:competitor_1_point_3",
+  "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "**Waste:** a cooperative that has kept thousands of tonnes of produce from waste"
+ },
+ {
+  "variable": "competitor_02_fact_01",
+  "draft_chars": "",
+  "max_chars": "40",
+  "limit_basis": "estimated",
+  "fills_from": "research:competitor_2_fact",
+  "writing_rule": "The grey line above the claims: country, then one size figure when the research holds one, separated by \" · \". Plain text (the template makes it grey italic).",
+  "if_empty": "hide_line",
+  "example": "Portugal · 12,970 members"
+ },
+ {
+  "variable": "competitor_02_name",
+  "draft_chars": "",
+  "max_chars": "30",
+  "limit_basis": "estimated",
+  "fills_from": "research:competitor_2_name",
+  "writing_rule": "The company's name, not a product's. First four in the research's rank; a competitor whose main entry failed the checks is skipped. Empty: the column is left out and the others share the width.",
+  "if_empty": "remove_row",
+  "example": "Fruta Feia"
+ },
+ {
+  "variable": "competitor_02_point_01",
+  "draft_chars": "",
+  "max_chars": "80",
+  "limit_basis": "estimated",
+  "fills_from": "research:competitor_2_point_1",
+  "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "**Waste:** a cooperative that has kept thousands of tonnes of produce from waste"
+ },
+ {
+  "variable": "competitor_02_point_02",
+  "draft_chars": "",
+  "max_chars": "80",
+  "limit_basis": "estimated",
+  "fills_from": "research:competitor_2_point_2",
+  "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "**Waste:** a cooperative that has kept thousands of tonnes of produce from waste"
+ },
+ {
+  "variable": "competitor_02_point_03",
+  "draft_chars": "",
+  "max_chars": "80",
+  "limit_basis": "estimated",
+  "fills_from": "research:competitor_2_point_3",
+  "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "**Waste:** a cooperative that has kept thousands of tonnes of produce from waste"
+ },
+ {
+  "variable": "competitor_03_fact_01",
+  "draft_chars": "",
+  "max_chars": "40",
+  "limit_basis": "estimated",
+  "fills_from": "research:competitor_3_fact",
+  "writing_rule": "The grey line above the claims: country, then one size figure when the research holds one, separated by \" · \". Plain text (the template makes it grey italic).",
+  "if_empty": "hide_line",
+  "example": "Portugal · 12,970 members"
+ },
+ {
+  "variable": "competitor_03_name",
+  "draft_chars": "",
+  "max_chars": "30",
+  "limit_basis": "estimated",
+  "fills_from": "research:competitor_3_name",
+  "writing_rule": "The company's name, not a product's. First four in the research's rank; a competitor whose main entry failed the checks is skipped. Empty: the column is left out and the others share the width.",
+  "if_empty": "remove_row",
+  "example": "Fruta Feia"
+ },
+ {
+  "variable": "competitor_03_point_01",
+  "draft_chars": "",
+  "max_chars": "80",
+  "limit_basis": "estimated",
+  "fills_from": "research:competitor_3_point_1",
+  "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "**Waste:** a cooperative that has kept thousands of tonnes of produce from waste"
+ },
+ {
+  "variable": "competitor_03_point_02",
+  "draft_chars": "",
+  "max_chars": "80",
+  "limit_basis": "estimated",
+  "fills_from": "research:competitor_3_point_2",
+  "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "**Waste:** a cooperative that has kept thousands of tonnes of produce from waste"
+ },
+ {
+  "variable": "competitor_03_point_03",
+  "draft_chars": "",
+  "max_chars": "80",
+  "limit_basis": "estimated",
+  "fills_from": "research:competitor_3_point_3",
+  "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "**Waste:** a cooperative that has kept thousands of tonnes of produce from waste"
+ },
+ {
+  "variable": "competitor_04_fact_01",
+  "draft_chars": "",
+  "max_chars": "40",
+  "limit_basis": "estimated",
+  "fills_from": "research:competitor_4_fact",
+  "writing_rule": "The grey line above the claims: country, then one size figure when the research holds one, separated by \" · \". Plain text (the template makes it grey italic).",
+  "if_empty": "hide_line",
+  "example": "Portugal · 12,970 members"
+ },
+ {
+  "variable": "competitor_04_name",
+  "draft_chars": "",
+  "max_chars": "30",
+  "limit_basis": "estimated",
+  "fills_from": "research:competitor_4_name",
+  "writing_rule": "The company's name, not a product's. First four in the research's rank; a competitor whose main entry failed the checks is skipped. Empty: the column is left out and the others share the width.",
+  "if_empty": "remove_row",
+  "example": "Fruta Feia"
+ },
+ {
+  "variable": "competitor_04_point_01",
+  "draft_chars": "",
+  "max_chars": "80",
+  "limit_basis": "estimated",
+  "fills_from": "research:competitor_4_point_1",
+  "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "**Waste:** a cooperative that has kept thousands of tonnes of produce from waste"
+ },
+ {
+  "variable": "competitor_04_point_02",
+  "draft_chars": "",
+  "max_chars": "80",
+  "limit_basis": "estimated",
+  "fills_from": "research:competitor_4_point_2",
+  "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "**Waste:** a cooperative that has kept thousands of tonnes of produce from waste"
+ },
+ {
+  "variable": "competitor_04_point_03",
+  "draft_chars": "",
+  "max_chars": "80",
+  "limit_basis": "estimated",
+  "fills_from": "research:competitor_4_point_3",
+  "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "**Waste:** a cooperative that has kept thousands of tonnes of produce from waste"
+ },
+ {
+  "variable": "cover_date_01",
+  "draft_chars": "",
+  "max_chars": "20",
+  "limit_basis": "estimated",
+  "fills_from": "code:today",
+  "writing_rule": "The date of the draft, as \"22 November 2026\". The renderer writes today's date when the payload gives none.",
+  "if_empty": "clear",
+  "example": "22 November 2026"
+ },
+ {
+  "variable": "cover_subtitle_01",
+  "draft_chars": "",
+  "max_chars": "100",
+  "limit_basis": "measured",
+  "fills_from": "fixed:A proposal for {client_name}",
+  "writing_rule": "\"A proposal for [client short name]\". Use the name the client uses for itself, without legal suffixes (SA, GmbH, Ltd).",
+  "if_empty": "firm_todo",
+  "example": "A proposal for MetalCo"
+ },
+ {
+  "variable": "cover_title_01",
+  "draft_chars": "",
+  "max_chars": "21",
+  "limit_basis": "measured",
+  "fills_from": "fixed:Consulting Proposal",
+  "writing_rule": "Title Case, at most 4 words. Generic until a topic-specific rule is agreed.",
+  "if_empty": "firm_todo",
+  "example": "Consulting Proposal"
+ },
+ {
+  "variable": "deliverables_title_01",
+  "draft_chars": "",
+  "max_chars": "110",
+  "limit_basis": "estimated",
+  "fills_from": "code:workplan_title",
+  "writing_rule": "Composed by the renderer from the plan. How many workstreams hand over how many deliverables, each reviewed at a meeting.",
+  "if_empty": "firm_todo",
+  "example": "The seven workstreams hand over eight deliverables, each reviewed at a steering meeting"
+ },
+ {
+  "variable": "details_01",
+  "draft_chars": "",
+  "max_chars": "110",
+  "limit_basis": "estimated",
+  "fills_from": "research:details_markets",
+  "writing_rule": "The markets: the country in bold, then regions or cities. When the research found none: \"Markets: not public.\" in grey italic, plus one sentence from the research when it adds something. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "**Portugal** · Lisbon, Porto, Setúbal, Leiria, Coimbra, Santarém and Braga"
+ },
+ {
+  "variable": "details_02",
+  "draft_chars": "",
+  "max_chars": "110",
+  "limit_basis": "estimated",
+  "fills_from": "research:details_offer",
+  "writing_rule": "\"Offer type: \" B2C, B2B or B2C and B2B in bold; \" · Pricing: \" the pricing models in bold; \" · Regulatory: \" the status in bold, only when the research holds one. A part that is not public reads \"not public\" in grey italic. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "Offer type: **B2C** · Pricing: **subscription, one-off sale**"
+ },
+ {
+  "variable": "footer_01",
+  "draft_chars": "",
+  "max_chars": "60",
+  "limit_basis": "estimated",
+  "fills_from": "fixed:{client_name} | Draft for discussion",
+  "writing_rule": "Client short name, a vertical bar, then \"Draft for discussion\".",
+  "if_empty": "clear",
+  "example": "MetalCo | Draft for discussion"
+ },
+ {
+  "variable": "objective_01",
+  "draft_chars": "",
+  "max_chars": "127",
+  "limit_basis": "estimated",
+  "fills_from": "summary_writer:objectives",
+  "writing_rule": "One client goal per line, verb first, no subject, in the client's own words. Every condition the client stated appears. No solution or firm language.",
+  "if_empty": "firm_todo",
+  "example": "Launch a digital marketplace for construction materials."
+ },
+ {
+  "variable": "objective_02",
+  "draft_chars": "",
+  "max_chars": "127",
+  "limit_basis": "estimated",
+  "fills_from": "summary_writer:objectives",
+  "writing_rule": "One client goal per line, verb first, no subject, in the client's own words. Every condition the client stated appears. No solution or firm language.",
+  "if_empty": "hide_line",
+  "example": "Reach smaller contractors directly without losing distributor margins."
+ },
+ {
+  "variable": "objective_03",
+  "draft_chars": "",
+  "max_chars": "127",
+  "limit_basis": "estimated",
+  "fills_from": "summary_writer:objectives",
+  "writing_rule": "One client goal per line, verb first, no subject, in the client's own words. Every condition the client stated appears. No solution or firm language.",
+  "if_empty": "hide_line",
+  "example": "Grow digital revenue to 10% of sales within two years."
+ },
+ {
+  "variable": "objective_04",
+  "draft_chars": "",
+  "max_chars": "127",
+  "limit_basis": "estimated",
+  "fills_from": "summary_writer:objectives",
+  "writing_rule": "One client goal per line, verb first, no subject, in the client's own words. Every condition the client stated appears. No solution or firm language.",
+  "if_empty": "hide_line",
+  "example": "Launch in Iberia first, then expand to other markets."
+ },
+ {
+  "variable": "outcome_01",
+  "draft_chars": "",
+  "max_chars": "127",
+  "limit_basis": "estimated",
+  "fills_from": "summary_writer:outcomes",
+  "writing_rule": "A deliverable the client receives, as a noun phrase in the plan's own words. No promised results and no adjective the deliverable does not carry.",
+  "if_empty": "firm_todo",
+  "example": "Marketplace business model blueprint"
+ },
+ {
+  "variable": "outcome_02",
+  "draft_chars": "",
+  "max_chars": "127",
+  "limit_basis": "estimated",
+  "fills_from": "summary_writer:outcomes",
+  "writing_rule": "A deliverable the client receives, as a noun phrase in the plan's own words. No promised results and no adjective the deliverable does not carry.",
+  "if_empty": "hide_line",
+  "example": "Roadmap and feature backlog for a first version"
+ },
+ {
+  "variable": "outcome_03",
+  "draft_chars": "",
+  "max_chars": "127",
+  "limit_basis": "estimated",
+  "fills_from": "summary_writer:outcomes",
+  "writing_rule": "A deliverable the client receives, as a noun phrase in the plan's own words. No promised results and no adjective the deliverable does not carry.",
+  "if_empty": "hide_line",
+  "example": "Business case including implementation plan and roadmap"
+ },
+ {
+  "variable": "outcome_04",
+  "draft_chars": "",
+  "max_chars": "127",
+  "limit_basis": "estimated",
+  "fills_from": "summary_writer:outcomes",
+  "writing_rule": "A deliverable the client receives, as a noun phrase in the plan's own words. No promised results and no adjective the deliverable does not carry.",
+  "if_empty": "hide_line",
+  "example": ""
+ },
+ {
+  "variable": "product_01_name",
+  "draft_chars": "",
+  "max_chars": "40",
+  "limit_basis": "estimated",
+  "fills_from": "research:product_1_name",
+  "writing_rule": "The product's name as the site writes it. Product in focus first, then in the site's order. With seven or more products, box 6 is named \"Multi-product company\".",
+  "if_empty": "remove_row",
+  "example": "n8n Community Edition"
+ },
+ {
+  "variable": "product_01_text",
+  "draft_chars": "",
+  "max_chars": "170",
+  "limit_basis": "estimated",
+  "fills_from": "research:product_1_text",
+  "writing_rule": "One sentence on what the product is. A published price follows after a line break, in bold. Box 6 of a company with seven or more products lists the other names, separated by \" · \", ending \"and N more\" in grey italic when they do not fit. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "Self-hosted version, available on GitHub.\n**Free**"
+ },
+ {
+  "variable": "product_02_name",
+  "draft_chars": "",
+  "max_chars": "40",
+  "limit_basis": "estimated",
+  "fills_from": "research:product_2_name",
+  "writing_rule": "The product's name as the site writes it. Product in focus first, then in the site's order. With seven or more products, box 6 is named \"Multi-product company\".",
+  "if_empty": "remove_row",
+  "example": "n8n Community Edition"
+ },
+ {
+  "variable": "product_02_text",
+  "draft_chars": "",
+  "max_chars": "170",
+  "limit_basis": "estimated",
+  "fills_from": "research:product_2_text",
+  "writing_rule": "One sentence on what the product is. A published price follows after a line break, in bold. Box 6 of a company with seven or more products lists the other names, separated by \" · \", ending \"and N more\" in grey italic when they do not fit. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "Self-hosted version, available on GitHub.\n**Free**"
+ },
+ {
+  "variable": "product_03_name",
+  "draft_chars": "",
+  "max_chars": "40",
+  "limit_basis": "estimated",
+  "fills_from": "research:product_3_name",
+  "writing_rule": "The product's name as the site writes it. Product in focus first, then in the site's order. With seven or more products, box 6 is named \"Multi-product company\".",
+  "if_empty": "remove_row",
+  "example": "n8n Community Edition"
+ },
+ {
+  "variable": "product_03_text",
+  "draft_chars": "",
+  "max_chars": "170",
+  "limit_basis": "estimated",
+  "fills_from": "research:product_3_text",
+  "writing_rule": "One sentence on what the product is. A published price follows after a line break, in bold. Box 6 of a company with seven or more products lists the other names, separated by \" · \", ending \"and N more\" in grey italic when they do not fit. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "Self-hosted version, available on GitHub.\n**Free**"
+ },
+ {
+  "variable": "product_04_name",
+  "draft_chars": "",
+  "max_chars": "40",
+  "limit_basis": "estimated",
+  "fills_from": "research:product_4_name",
+  "writing_rule": "The product's name as the site writes it. Product in focus first, then in the site's order. With seven or more products, box 6 is named \"Multi-product company\".",
+  "if_empty": "remove_row",
+  "example": "n8n Community Edition"
+ },
+ {
+  "variable": "product_04_text",
+  "draft_chars": "",
+  "max_chars": "170",
+  "limit_basis": "estimated",
+  "fills_from": "research:product_4_text",
+  "writing_rule": "One sentence on what the product is. A published price follows after a line break, in bold. Box 6 of a company with seven or more products lists the other names, separated by \" · \", ending \"and N more\" in grey italic when they do not fit. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "Self-hosted version, available on GitHub.\n**Free**"
+ },
+ {
+  "variable": "product_05_name",
+  "draft_chars": "",
+  "max_chars": "40",
+  "limit_basis": "estimated",
+  "fills_from": "research:product_5_name",
+  "writing_rule": "The product's name as the site writes it. Product in focus first, then in the site's order. With seven or more products, box 6 is named \"Multi-product company\".",
+  "if_empty": "remove_row",
+  "example": "n8n Community Edition"
+ },
+ {
+  "variable": "product_05_text",
+  "draft_chars": "",
+  "max_chars": "170",
+  "limit_basis": "estimated",
+  "fills_from": "research:product_5_text",
+  "writing_rule": "One sentence on what the product is. A published price follows after a line break, in bold. Box 6 of a company with seven or more products lists the other names, separated by \" · \", ending \"and N more\" in grey italic when they do not fit. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "Self-hosted version, available on GitHub.\n**Free**"
+ },
+ {
+  "variable": "product_06_name",
+  "draft_chars": "",
+  "max_chars": "40",
+  "limit_basis": "estimated",
+  "fills_from": "research:product_6_name",
+  "writing_rule": "The product's name as the site writes it. Product in focus first, then in the site's order. With seven or more products, box 6 is named \"Multi-product company\".",
+  "if_empty": "remove_row",
+  "example": "n8n Community Edition"
+ },
+ {
+  "variable": "product_06_text",
+  "draft_chars": "",
+  "max_chars": "170",
+  "limit_basis": "estimated",
+  "fills_from": "research:product_6_text",
+  "writing_rule": "One sentence on what the product is. A published price follows after a line break, in bold. Box 6 of a company with seven or more products lists the other names, separated by \" · \", ending \"and N more\" in grey italic when they do not fit. Markup: **bold**, __grey italic__.",
+  "if_empty": "hide_line",
+  "example": "Self-hosted version, available on GitHub.\n**Free**"
+ },
+ {
+  "variable": "profile_title_01",
+  "draft_chars": "",
+  "max_chars": "90",
+  "limit_basis": "estimated",
+  "fills_from": "research:profile_title",
+  "writing_rule": "One sentence, no final period: what the company sells and how. Starts with the company's name.",
+  "if_empty": "drop_slide",
+  "example": "n8n sells a workflow automation and AI agent platform, hosted or self-hosted"
+ },
+ {
+  "variable": "section_01",
+  "draft_chars": "",
+  "max_chars": "20",
+  "limit_basis": "measured",
+  "fills_from": "fixed:Context",
+  "writing_rule": "Title Case noun phrase, 1 to 3 words. Same text on the agenda, the divider and the slide header. No numbers (the template prints them).",
+  "if_empty": "remove_row",
+  "example": "Context"
+ },
+ {
+  "variable": "section_02",
+  "draft_chars": "",
+  "max_chars": "20",
+  "limit_basis": "measured",
+  "fills_from": "fixed:Market Research",
+  "writing_rule": "Title Case noun phrase, 1 to 3 words. Same text on the agenda, the divider and the slide header. No numbers (the template prints them).",
+  "if_empty": "remove_row",
+  "example": "Market Research"
+ },
+ {
+  "variable": "section_03",
+  "draft_chars": "",
+  "max_chars": "20",
+  "limit_basis": "measured",
+  "fills_from": "fixed:Next Steps",
+  "writing_rule": "Title Case noun phrase, 1 to 3 words. Same text on the agenda, the divider and the slide header. No numbers (the template prints them).",
+  "if_empty": "remove_row",
+  "example": "Next Steps"
+ },
+ {
+  "variable": "section_04",
+  "draft_chars": "",
+  "max_chars": "20",
+  "limit_basis": "measured",
+  "fills_from": "none",
+  "writing_rule": "Title Case noun phrase, 1 to 3 words. Same text on the agenda, the divider and the slide header. No numbers (the template prints them).",
+  "if_empty": "remove_row",
+  "example": ""
+ },
+ {
+  "variable": "section_05",
+  "draft_chars": "",
+  "max_chars": "20",
+  "limit_basis": "measured",
+  "fills_from": "none",
+  "writing_rule": "Title Case noun phrase, 1 to 3 words. Same text on the agenda, the divider and the slide header. No numbers (the template prints them).",
+  "if_empty": "remove_row",
+  "example": ""
+ },
+ {
+  "variable": "section_06",
+  "draft_chars": "",
+  "max_chars": "20",
+  "limit_basis": "measured",
+  "fills_from": "none",
+  "writing_rule": "Title Case noun phrase, 1 to 3 words. Same text on the agenda, the divider and the slide header. No numbers (the template prints them).",
+  "if_empty": "remove_row",
+  "example": ""
+ },
+ {
+  "variable": "section_07",
+  "draft_chars": "",
+  "max_chars": "20",
+  "limit_basis": "measured",
+  "fills_from": "none",
+  "writing_rule": "Title Case noun phrase, 1 to 3 words. Same text on the agenda, the divider and the slide header. No numbers (the template prints them).",
+  "if_empty": "remove_row",
+  "example": ""
+ },
+ {
+  "variable": "solution_01",
+  "draft_chars": "",
+  "max_chars": "95",
+  "limit_basis": "estimated",
+  "fills_from": "summary_writer:solution",
+  "writing_rule": "Line 1: total duration, number of phases and how they run. Then one line per phase, \"Name (N weeks): objective\". Last, what stays outside the phases, only when the brief or the plan says so. Future tense. Names and weeks exactly as the Phase Architect set them.",
+  "if_empty": "firm_todo",
+  "example": "The work will run 16 weeks in two phases, one after the other."
+ },
+ {
+  "variable": "solution_02",
+  "draft_chars": "",
+  "max_chars": "95",
+  "limit_basis": "estimated",
+  "fills_from": "summary_writer:solution",
+  "writing_rule": "Line 1: total duration, number of phases and how they run. Then one line per phase, \"Name (N weeks): objective\". Last, what stays outside the phases, only when the brief or the plan says so. Future tense. Names and weeks exactly as the Phase Architect set them.",
+  "if_empty": "hide_line",
+  "example": "Design (6 weeks): Define the marketplace model, pricing and channel rules."
+ },
+ {
+  "variable": "solution_03",
+  "draft_chars": "",
+  "max_chars": "95",
+  "limit_basis": "estimated",
+  "fills_from": "summary_writer:solution",
+  "writing_rule": "Line 1: total duration, number of phases and how they run. Then one line per phase, \"Name (N weeks): objective\". Last, what stays outside the phases, only when the brief or the plan says so. Future tense. Names and weeks exactly as the Phase Architect set them.",
+  "if_empty": "hide_line",
+  "example": "Pilot (10 weeks): Launch with a first group of contractors and measure uptake."
+ },
+ {
+  "variable": "solution_04",
+  "draft_chars": "",
+  "max_chars": "95",
+  "limit_basis": "estimated",
+  "fills_from": "summary_writer:solution",
+  "writing_rule": "Line 1: total duration, number of phases and how they run. Then one line per phase, \"Name (N weeks): objective\". Last, what stays outside the phases, only when the brief or the plan says so. Future tense. Names and weeks exactly as the Phase Architect set them.",
+  "if_empty": "hide_line",
+  "example": "The rollout after the pilot will not be part of these phases."
+ },
+ {
+  "variable": "solution_05",
+  "draft_chars": "",
+  "max_chars": "95",
+  "limit_basis": "estimated",
+  "fills_from": "summary_writer:solution",
+  "writing_rule": "Line 1: total duration, number of phases and how they run. Then one line per phase, \"Name (N weeks): objective\". Last, what stays outside the phases, only when the brief or the plan says so. Future tense. Names and weeks exactly as the Phase Architect set them.",
+  "if_empty": "hide_line",
+  "example": ""
+ },
+ {
+  "variable": "sources_compare_01",
+  "draft_chars": "",
+  "max_chars": "135",
+  "limit_basis": "estimated",
+  "fills_from": "research:sources_compare",
+  "writing_rule": "One line in column order: \"[1] Client; [2] Competitor; ...; company websites, YEAR\". The template prints \"Sources: \".",
+  "if_empty": "clear",
+  "example": "[1] Equal Food; [2] Fruta Feia; [3] Misfits Market; [4] Imperfect Foods; company websites, 2026"
+ },
+ {
+  "variable": "sources_profile_01",
+  "draft_chars": "",
+  "max_chars": "135",
+  "limit_basis": "estimated",
+  "fills_from": "research:sources_profile",
+  "writing_rule": "The company's site, numbered: \"[1] Name, company website, YEAR\". The template prints \"Source: \".",
+  "if_empty": "clear",
+  "example": "[1] n8n, company website, 2026"
+ },
+ {
+  "variable": "summary_title_01",
+  "draft_chars": "",
+  "max_chars": "90",
+  "limit_basis": "estimated",
+  "fills_from": "summary_writer:title",
+  "writing_rule": "One full sentence naming the client, no final period. With a plan: what the work as a whole will do, with the total duration and the number of phases. Without a plan: what the client wants.",
+  "if_empty": "firm_todo",
+  "example": "We will design and pilot MetalCo's marketplace in two phases over 16 weeks"
+ },
+ {
+  "variable": "timeline_title_01",
+  "draft_chars": "",
+  "max_chars": "110",
+  "limit_basis": "estimated",
+  "fills_from": "code:workplan_title",
+  "writing_rule": "Composed by the renderer from the plan. How much runs at once: the most workstreams in one week, and the longest gap between steering meetings.",
+  "if_empty": "firm_todo",
+  "example": "Up to three workstreams run in the same week, with no more than 6 weeks between steering meetings"
+ },
+ {
+  "variable": "value_layer_01",
+  "draft_chars": "",
+  "max_chars": "190",
+  "limit_basis": "estimated",
+  "fills_from": "research:value_layer_1",
+  "writing_rule": "Layer 1 of the value chain (Supplies Essential Components). Sells / In-house only / Mixed: the status word in bold, a line break, then one sentence on what the company does there. Buys: \"Buys from: \" and the suppliers named, all in grey italic. Not involved or not public: empty (the label then stands alone). Markup: **bold**, __grey italic__.",
+  "if_empty": "clear",
+  "example": "__Buys from: OpenAI, Anthropic and Google Gemini (models)__"
+ },
+ {
+  "variable": "value_layer_02",
+  "draft_chars": "",
+  "max_chars": "190",
+  "limit_basis": "estimated",
+  "fills_from": "research:value_layer_2",
+  "writing_rule": "Layer 2 of the value chain (Builds the Core Product). Sells / In-house only / Mixed: the status word in bold, a line break, then one sentence on what the company does there. Buys: \"Buys from: \" and the suppliers named, all in grey italic. Not involved or not public: empty (the label then stands alone). Markup: **bold**, __grey italic__.",
+  "if_empty": "clear",
+  "example": "__Buys from: OpenAI, Anthropic and Google Gemini (models)__"
+ },
+ {
+  "variable": "value_layer_03",
+  "draft_chars": "",
+  "max_chars": "190",
+  "limit_basis": "estimated",
+  "fills_from": "research:value_layer_3",
+  "writing_rule": "Layer 3 of the value chain (Creates Specialist Capability). Sells / In-house only / Mixed: the status word in bold, a line break, then one sentence on what the company does there. Buys: \"Buys from: \" and the suppliers named, all in grey italic. Not involved or not public: empty (the label then stands alone). Markup: **bold**, __grey italic__.",
+  "if_empty": "clear",
+  "example": "__Buys from: OpenAI, Anthropic and Google Gemini (models)__"
+ },
+ {
+  "variable": "value_layer_04",
+  "draft_chars": "",
+  "max_chars": "190",
+  "limit_basis": "estimated",
+  "fills_from": "research:value_layer_4",
+  "writing_rule": "Layer 4 of the value chain (Applies Intelligence). Sells / In-house only / Mixed: the status word in bold, a line break, then one sentence on what the company does there. Buys: \"Buys from: \" and the suppliers named, all in grey italic. Not involved or not public: empty (the label then stands alone). Markup: **bold**, __grey italic__.",
+  "if_empty": "clear",
+  "example": "**Sells**\nA platform for building and running workflows and AI agents."
+ }
+]

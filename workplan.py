@@ -108,6 +108,25 @@ def _line(slide, x1, y1, x2, y2, color=BLACK, width=0.75, dash=False):
     return c
 
 
+def _set_title(ph, title):
+    """Template 1.5.4 writes its titles as "Section | title" in two runs (the section in bold). Keep the
+    section and replace only what follows it; any other title is replaced whole."""
+    runs = ph.text_frame.paragraphs[0].runs if ph.text_frame.paragraphs else []
+    if len(runs) >= 2 and runs[0].text.rstrip().endswith("|"):
+        runs[-1].text = title
+        for r in runs[1:-1]:
+            r.text = ""
+    else:
+        ph.text_frame.text = title
+
+
+def _title_ph(slide):
+    for ph in slide.placeholders:
+        if ph.placeholder_format.idx == 0:
+            return ph
+    return None
+
+
 def _new_slide(prs, title, subtitle, section, slide=None, after=None):
     """Use the template's marked slide when given; otherwise add a slide on the
     "Default" layout (after `after` when given). The tracker (idx 17) is only
@@ -117,7 +136,7 @@ def _new_slide(prs, title, subtitle, section, slide=None, after=None):
         for ph in s.placeholders:
             idx = ph.placeholder_format.idx
             if idx == 0:
-                ph.text_frame.text = title
+                _set_title(ph, title)
             elif idx == 1:
                 ph.text_frame.text = subtitle
         return s
@@ -133,10 +152,16 @@ def _new_slide(prs, title, subtitle, section, slide=None, after=None):
         for ph in after.placeholders:
             if ph.placeholder_format.idx == 17:
                 section = ph.text_frame.text or section
+    src = _title_ph(after) if after is not None else None
     for ph in s.placeholders:
         idx = ph.placeholder_format.idx
         if idx == 0:
-            ph.text_frame.text = title
+            runs = src.text_frame.paragraphs[0].runs if src is not None and src.text_frame.paragraphs else []
+            if len(runs) >= 2 and runs[0].text.rstrip().endswith("|"):
+                # a further page of a 1.5.4 slide: the same "Section | title" look as the page before it
+                import copy
+                ph._element.replace(ph._element.txBody, copy.deepcopy(src._element.txBody))
+            _set_title(ph, title)
         elif idx == 1:
             ph.text_frame.text = subtitle
         elif idx == 17:
