@@ -2,7 +2,7 @@
 
 Copies of the Code nodes, instructions and schemas changed by **Batch C** (22 Nov 2026), with an offline test.
 **The workflow in n8n is the source of truth.** These files were compared with what n8n stored after the update
-(version of 22 Nov 23:49 UTC, after the fixes that the seven real runs called for): identical.
+(version of 22 Nov 23:53 UTC, after the fixes that the seven real runs called for): identical.
 
 | File | Node |
 |---|---|
@@ -19,7 +19,7 @@ Copies of the Code nodes, instructions and schemas changed by **Batch C** (22 No
 
 Not copied here because Batch C did not change them: Start, Sources, Pages and the nodes that only read or write a table.
 
-Test without n8n (103 checks):
+Test without n8n (104 checks):
 
     node n8n/competitors/t_queries.js && node n8n/competitors/t_chain.js
 

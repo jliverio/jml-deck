@@ -44,7 +44,9 @@ let read = 0;
 for (const c of comps) {
   const L = light[c.was];
   const db = DB.some(d => host(c.source_url).endsWith(d));
-  const hq = c.hq || (L && clean(L.o.hq_country)) || '';
+  // The country a home page states is used only when the page read is the address asked for: a company's world site can answer with a national one (pfizer.com gave the Austrian site).
+  const moved = L && L.s.landed_on && regdom(host(L.s.landed_on)) !== regdom(host(L.s.site_url));
+  const hq = c.hq || (L && !moved && clean(L.o.hq_country)) || '';
   const also = (c.aliases || []).length ? ' Also named as: ' + c.aliases.join(', ') + '.' : '';
   row('B2-K' + c.rank, 'fact', c.name + ': ' + c.type + ' competitor' + (hq ? ', based in ' + hq : '') + '. Ranking measure: ' + (c.measure !== 'none' ? c.measure + ' ' + c.value + ' ' + c.unit + (c.as_of ? ' (' + c.as_of + ')' : '') : 'none found, ranked by the number of pages naming it') + '.', { value: c.measure !== 'none' ? c.value : null, unit: c.unit, measurement_base: c.measure, source_url: c.source_url, source_title: clean(c.source_title).slice(0, 200), source_tier: db ? '3' : '', quote: c.quote, confidence: db ? 'Database figure' : 'Independent source, not yet checked', check_note: 'Rank ' + c.rank + '. Named on ' + c.mentions + ' of the pages read. ' + (L ? 'Home page read: ' + L.s.site_url + '.' : 'Site not loaded: ' + c.site_url + '.') + also });
   if (!L) continue;
