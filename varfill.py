@@ -81,17 +81,20 @@ DEFAULT_RULES = [
     (r"belief_\d+", 140, "clear"),
     (r"footer_\d+", 60, "clear"),
     (r"(approach|timeline|deliverables|steering)_title_\d+", 110, "firm_todo"),
-    # market research slides (template 1.5.4); the live limits come from the n8n table
-    (r"(profile|compare)_title_\d+", 90, "drop_slide"),
-    (r"value_layer_\d+", 190, "clear"),
+    # market research slides (template 1.5.4); the live limits come from the n8n table.
+    # 22 Nov: these are a backstop, set a quarter above what the slide-values stage aims for. Whether a text fits
+    # is decided by measuring its box (fit.py), not by its length: on the first seven-firm run a point one
+    # character over its limit was thrown away although its box had room.
+    (r"(profile|compare)_title_\d+", 115, "drop_slide"),
+    (r"value_layer_\d+", 215, "clear"),
     (r"product_\d+_name", 40, "remove_row"),
-    (r"product_\d+_text", 170, "hide_line"),
-    (r"details_\d+", 110, "hide_line"),
+    (r"product_\d+_text", 200, "hide_line"),
+    (r"details_\d+", 140, "hide_line"),
     (r"client_name_\d+", 20, "firm_todo"),
-    (r"client_point_\d+", 95, "hide_line"),
+    (r"client_point_\d+", 120, "hide_line"),
     (r"competitor_\d+_name", 30, "remove_row"),
     (r"competitor_\d+_fact_\d+", 40, "hide_line"),
-    (r"competitor_\d+_point_\d+", 80, "hide_line"),
+    (r"competitor_\d+_point_\d+", 100, "hide_line"),
     (r"sources_(profile|compare)_\d+", 135, "clear"),
 ]
 

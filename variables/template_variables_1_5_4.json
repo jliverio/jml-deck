@@ -22,7 +22,7 @@
  {
   "variable": "client_point_01",
   "draft_chars": "",
-  "max_chars": "95",
+  "max_chars": "120",
   "limit_basis": "estimated",
   "fills_from": "research:client_point_1",
   "writing_rule": "One claim the client makes about itself: a label of one or two words in bold, a colon, then the claim in the site's sense. Figures in bold. Up to five. The box holds about 13 lines of 23 characters: with five points keep each under 60 characters. Markup: **bold**, __grey italic__.",
@@ -32,7 +32,7 @@
  {
   "variable": "client_point_02",
   "draft_chars": "",
-  "max_chars": "95",
+  "max_chars": "120",
   "limit_basis": "estimated",
   "fills_from": "research:client_point_2",
   "writing_rule": "One claim the client makes about itself: a label of one or two words in bold, a colon, then the claim in the site's sense. Figures in bold. Up to five. The box holds about 13 lines of 23 characters: with five points keep each under 60 characters. Markup: **bold**, __grey italic__.",
@@ -42,7 +42,7 @@
  {
   "variable": "client_point_03",
   "draft_chars": "",
-  "max_chars": "95",
+  "max_chars": "120",
   "limit_basis": "estimated",
   "fills_from": "research:client_point_3",
   "writing_rule": "One claim the client makes about itself: a label of one or two words in bold, a colon, then the claim in the site's sense. Figures in bold. Up to five. The box holds about 13 lines of 23 characters: with five points keep each under 60 characters. Markup: **bold**, __grey italic__.",
@@ -52,7 +52,7 @@
  {
   "variable": "client_point_04",
   "draft_chars": "",
-  "max_chars": "95",
+  "max_chars": "120",
   "limit_basis": "estimated",
   "fills_from": "research:client_point_4",
   "writing_rule": "One claim the client makes about itself: a label of one or two words in bold, a colon, then the claim in the site's sense. Figures in bold. Up to five. The box holds about 13 lines of 23 characters: with five points keep each under 60 characters. Markup: **bold**, __grey italic__.",
@@ -62,7 +62,7 @@
  {
   "variable": "client_point_05",
   "draft_chars": "",
-  "max_chars": "95",
+  "max_chars": "120",
   "limit_basis": "estimated",
   "fills_from": "research:client_point_5",
   "writing_rule": "One claim the client makes about itself: a label of one or two words in bold, a colon, then the claim in the site's sense. Figures in bold. Up to five. The box holds about 13 lines of 23 characters: with five points keep each under 60 characters. Markup: **bold**, __grey italic__.",
@@ -72,10 +72,10 @@
  {
   "variable": "compare_title_01",
   "draft_chars": "",
-  "max_chars": "90",
+  "max_chars": "115",
   "limit_basis": "estimated",
   "fills_from": "research:compare_title",
-  "writing_rule": "One sentence, no final period, built from the claims on the slide: what the competitors claim against the client's claims. Empty when the research found no competitor (the slide is then left out).",
+  "writing_rule": "One sentence, no final period, built from the claims on the slide: what the competitors claim against the client's claims. Empty only when the research holds neither a claim nor a competitor (the slide is then left out).",
   "if_empty": "drop_slide",
   "example": "All four competitors also claim to rescue imperfect produce; none claims free delivery"
  },
@@ -102,7 +102,7 @@
  {
   "variable": "competitor_01_point_01",
   "draft_chars": "",
-  "max_chars": "80",
+  "max_chars": "100",
   "limit_basis": "estimated",
   "fills_from": "research:competitor_1_point_1",
   "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
@@ -112,7 +112,7 @@
  {
   "variable": "competitor_01_point_02",
   "draft_chars": "",
-  "max_chars": "80",
+  "max_chars": "100",
   "limit_basis": "estimated",
   "fills_from": "research:competitor_1_point_2",
   "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
@@ -122,7 +122,7 @@
  {
   "variable": "competitor_01_point_03",
   "draft_chars": "",
-  "max_chars": "80",
+  "max_chars": "100",
   "limit_basis": "estimated",
   "fills_from": "research:competitor_1_point_3",
   "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
@@ -152,7 +152,7 @@
  {
   "variable": "competitor_02_point_01",
   "draft_chars": "",
-  "max_chars": "80",
+  "max_chars": "100",
   "limit_basis": "estimated",
   "fills_from": "research:competitor_2_point_1",
   "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
@@ -162,7 +162,7 @@
  {
   "variable": "competitor_02_point_02",
   "draft_chars": "",
-  "max_chars": "80",
+  "max_chars": "100",
   "limit_basis": "estimated",
   "fills_from": "research:competitor_2_point_2",
   "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
@@ -172,7 +172,7 @@
  {
   "variable": "competitor_02_point_03",
   "draft_chars": "",
-  "max_chars": "80",
+  "max_chars": "100",
   "limit_basis": "estimated",
   "fills_from": "research:competitor_2_point_3",
   "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
@@ -202,7 +202,7 @@
  {
   "variable": "competitor_03_point_01",
   "draft_chars": "",
-  "max_chars": "80",
+  "max_chars": "100",
   "limit_basis": "estimated",
   "fills_from": "research:competitor_3_point_1",
   "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
@@ -212,7 +212,7 @@
  {
   "variable": "competitor_03_point_02",
   "draft_chars": "",
-  "max_chars": "80",
+  "max_chars": "100",
   "limit_basis": "estimated",
   "fills_from": "research:competitor_3_point_2",
   "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
@@ -222,7 +222,7 @@
  {
   "variable": "competitor_03_point_03",
   "draft_chars": "",
-  "max_chars": "80",
+  "max_chars": "100",
   "limit_basis": "estimated",
   "fills_from": "research:competitor_3_point_3",
   "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
@@ -252,7 +252,7 @@
  {
   "variable": "competitor_04_point_01",
   "draft_chars": "",
-  "max_chars": "80",
+  "max_chars": "100",
   "limit_basis": "estimated",
   "fills_from": "research:competitor_4_point_1",
   "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
@@ -262,7 +262,7 @@
  {
   "variable": "competitor_04_point_02",
   "draft_chars": "",
-  "max_chars": "80",
+  "max_chars": "100",
   "limit_basis": "estimated",
   "fills_from": "research:competitor_4_point_2",
   "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
@@ -272,7 +272,7 @@
  {
   "variable": "competitor_04_point_03",
   "draft_chars": "",
-  "max_chars": "80",
+  "max_chars": "100",
   "limit_basis": "estimated",
   "fills_from": "research:competitor_4_point_3",
   "writing_rule": "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. No reference numbers. With no claim at all the column says so by itself. Markup: **bold**, __grey italic__.",
@@ -322,7 +322,7 @@
  {
   "variable": "details_01",
   "draft_chars": "",
-  "max_chars": "110",
+  "max_chars": "140",
   "limit_basis": "estimated",
   "fills_from": "research:details_markets",
   "writing_rule": "The markets: the country in bold, then regions or cities. When the research found none: \"Markets: not public.\" in grey italic, plus one sentence from the research when it adds something. Markup: **bold**, __grey italic__.",
@@ -332,7 +332,7 @@
  {
   "variable": "details_02",
   "draft_chars": "",
-  "max_chars": "110",
+  "max_chars": "140",
   "limit_basis": "estimated",
   "fills_from": "research:details_offer",
   "writing_rule": "\"Offer type: \" B2C, B2B or B2C and B2B in bold; \" · Pricing: \" the pricing models in bold; \" · Regulatory: \" the status in bold, only when the research holds one. A part that is not public reads \"not public\" in grey italic. Markup: **bold**, __grey italic__.",
@@ -442,7 +442,7 @@
  {
   "variable": "product_01_text",
   "draft_chars": "",
-  "max_chars": "170",
+  "max_chars": "200",
   "limit_basis": "estimated",
   "fills_from": "research:product_1_text",
   "writing_rule": "One sentence on what the product is. A published price follows after a line break, in bold. Box 6 of a company with seven or more products lists the other names, separated by \" · \", ending \"and N more\" in grey italic when they do not fit. Markup: **bold**, __grey italic__.",
@@ -462,7 +462,7 @@
  {
   "variable": "product_02_text",
   "draft_chars": "",
-  "max_chars": "170",
+  "max_chars": "200",
   "limit_basis": "estimated",
   "fills_from": "research:product_2_text",
   "writing_rule": "One sentence on what the product is. A published price follows after a line break, in bold. Box 6 of a company with seven or more products lists the other names, separated by \" · \", ending \"and N more\" in grey italic when they do not fit. Markup: **bold**, __grey italic__.",
@@ -482,7 +482,7 @@
  {
   "variable": "product_03_text",
   "draft_chars": "",
-  "max_chars": "170",
+  "max_chars": "200",
   "limit_basis": "estimated",
   "fills_from": "research:product_3_text",
   "writing_rule": "One sentence on what the product is. A published price follows after a line break, in bold. Box 6 of a company with seven or more products lists the other names, separated by \" · \", ending \"and N more\" in grey italic when they do not fit. Markup: **bold**, __grey italic__.",
@@ -502,7 +502,7 @@
  {
   "variable": "product_04_text",
   "draft_chars": "",
-  "max_chars": "170",
+  "max_chars": "200",
   "limit_basis": "estimated",
   "fills_from": "research:product_4_text",
   "writing_rule": "One sentence on what the product is. A published price follows after a line break, in bold. Box 6 of a company with seven or more products lists the other names, separated by \" · \", ending \"and N more\" in grey italic when they do not fit. Markup: **bold**, __grey italic__.",
@@ -522,7 +522,7 @@
  {
   "variable": "product_05_text",
   "draft_chars": "",
-  "max_chars": "170",
+  "max_chars": "200",
   "limit_basis": "estimated",
   "fills_from": "research:product_5_text",
   "writing_rule": "One sentence on what the product is. A published price follows after a line break, in bold. Box 6 of a company with seven or more products lists the other names, separated by \" · \", ending \"and N more\" in grey italic when they do not fit. Markup: **bold**, __grey italic__.",
@@ -542,7 +542,7 @@
  {
   "variable": "product_06_text",
   "draft_chars": "",
-  "max_chars": "170",
+  "max_chars": "200",
   "limit_basis": "estimated",
   "fills_from": "research:product_6_text",
   "writing_rule": "One sentence on what the product is. A published price follows after a line break, in bold. Box 6 of a company with seven or more products lists the other names, separated by \" · \", ending \"and N more\" in grey italic when they do not fit. Markup: **bold**, __grey italic__.",
@@ -552,7 +552,7 @@
  {
   "variable": "profile_title_01",
   "draft_chars": "",
-  "max_chars": "90",
+  "max_chars": "115",
   "limit_basis": "estimated",
   "fills_from": "research:profile_title",
   "writing_rule": "One sentence, no final period: what the company sells and how. Starts with the company's name.",
@@ -722,7 +722,7 @@
  {
   "variable": "value_layer_01",
   "draft_chars": "",
-  "max_chars": "190",
+  "max_chars": "215",
   "limit_basis": "estimated",
   "fills_from": "research:value_layer_1",
   "writing_rule": "Layer 1 of the value chain (Supplies Essential Components). Sells / In-house only / Mixed: the status word in bold, a line break, then one sentence on what the company does there. Buys: \"Buys from: \" and the suppliers named, all in grey italic. Not involved or not public: empty (the label then stands alone). Markup: **bold**, __grey italic__.",
@@ -732,7 +732,7 @@
  {
   "variable": "value_layer_02",
   "draft_chars": "",
-  "max_chars": "190",
+  "max_chars": "215",
   "limit_basis": "estimated",
   "fills_from": "research:value_layer_2",
   "writing_rule": "Layer 2 of the value chain (Builds the Core Product). Sells / In-house only / Mixed: the status word in bold, a line break, then one sentence on what the company does there. Buys: \"Buys from: \" and the suppliers named, all in grey italic. Not involved or not public: empty (the label then stands alone). Markup: **bold**, __grey italic__.",
@@ -742,7 +742,7 @@
  {
   "variable": "value_layer_03",
   "draft_chars": "",
-  "max_chars": "190",
+  "max_chars": "215",
   "limit_basis": "estimated",
   "fills_from": "research:value_layer_3",
   "writing_rule": "Layer 3 of the value chain (Creates Specialist Capability). Sells / In-house only / Mixed: the status word in bold, a line break, then one sentence on what the company does there. Buys: \"Buys from: \" and the suppliers named, all in grey italic. Not involved or not public: empty (the label then stands alone). Markup: **bold**, __grey italic__.",
@@ -752,7 +752,7 @@
  {
   "variable": "value_layer_04",
   "draft_chars": "",
-  "max_chars": "190",
+  "max_chars": "215",
   "limit_basis": "estimated",
   "fills_from": "research:value_layer_4",
   "writing_rule": "Layer 4 of the value chain (Applies Intelligence). Sells / In-house only / Mixed: the status word in bold, a line break, then one sentence on what the company does there. Buys: \"Buys from: \" and the suppliers named, all in grey italic. Not involved or not public: empty (the label then stands alone). Markup: **bold**, __grey italic__.",

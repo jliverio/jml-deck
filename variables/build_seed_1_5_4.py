@@ -32,7 +32,7 @@ def new_rows():
 
     add("cover_date_01", 20, "code:today", "The date of the draft, as \"22 November 2026\". The renderer writes "
         "today's date when the payload gives none.", "clear", "22 November 2026")
-    add("profile_title_01", 90, "research:profile_title",
+    add("profile_title_01", 115, "research:profile_title",
         "One sentence, no final period: what the company sells and how. Starts with the company's name.",
         "drop_slide", "n8n sells a workflow automation and AI agent platform, hosted or self-hosted")
     layer = ("Layer {n} of the value chain ({name}). Sells / In-house only / Mixed: the status word in bold, a line "
@@ -40,7 +40,7 @@ def new_rows():
              "named, all in grey italic. Not involved or not public: empty (the label then stands alone)." + MARKUP)
     for n, name in enumerate(["Supplies Essential Components", "Builds the Core Product",
                               "Creates Specialist Capability", "Applies Intelligence"], 1):
-        add(f"value_layer_{n:02d}", 190, f"research:value_layer_{n}", layer.format(n=n, name=name), "clear",
+        add(f"value_layer_{n:02d}", 215, f"research:value_layer_{n}", layer.format(n=n, name=name), "clear",
             "**Sells**\nA platform for building and running workflows and AI agents." if n == 4 else
             "__Buys from: OpenAI, Anthropic and Google Gemini (models)__")
     for n in range(1, 7):
@@ -48,16 +48,16 @@ def new_rows():
             "The product's name as the site writes it. Product in focus first, then in the site's order. "
             "With seven or more products, box 6 is named \"Multi-product company\".", "remove_row",
             "n8n Community Edition")
-        add(f"product_{n:02d}_text", 170, f"research:product_{n}_text",
+        add(f"product_{n:02d}_text", 200, f"research:product_{n}_text",
             "One sentence on what the product is. A published price follows after a line break, in bold. "
             "Box 6 of a company with seven or more products lists the other names, separated by \" · \", "
             "ending \"and N more\" in grey italic when they do not fit." + MARKUP, "hide_line",
             "Self-hosted version, available on GitHub.\n**Free**")
-    add("details_01", 110, "research:details_markets",
+    add("details_01", 140, "research:details_markets",
         "The markets: the country in bold, then regions or cities. When the research found none: "
         "\"Markets: not public.\" in grey italic, plus one sentence from the research when it adds something." + MARKUP,
         "hide_line", "**Portugal** · Lisbon, Porto, Setúbal, Leiria, Coimbra, Santarém and Braga")
-    add("details_02", 110, "research:details_offer",
+    add("details_02", 140, "research:details_offer",
         "\"Offer type: \" B2C, B2B or B2C and B2B in bold; \" · Pricing: \" the pricing models in bold; "
         "\" · Regulatory: \" the status in bold, only when the research holds one. A part that is not public reads "
         "\"not public\" in grey italic." + MARKUP, "hide_line",
@@ -65,14 +65,14 @@ def new_rows():
     add("sources_profile_01", 135, "research:sources_profile",
         "The company's site, numbered: \"[1] Name, company website, YEAR\". The template prints \"Source: \".",
         "clear", "[1] n8n, company website, 2026")
-    add("compare_title_01", 90, "research:compare_title",
+    add("compare_title_01", 115, "research:compare_title",
         "One sentence, no final period, built from the claims on the slide: what the competitors claim against "
-        "the client's claims. Empty when the research found no competitor (the slide is then left out).",
+        "the client's claims. Empty only when the research holds neither a claim nor a competitor (the slide is then left out).",
         "drop_slide", "All four competitors also claim to rescue imperfect produce; none claims free delivery")
     add("client_name_01", 20, "research:client_name", "The client's short name, without legal suffixes.",
         "firm_todo", "Equal Food")
     for n in range(1, 6):
-        add(f"client_point_{n:02d}", 95, f"research:client_point_{n}",
+        add(f"client_point_{n:02d}", 120, f"research:client_point_{n}",
             "One claim the client makes about itself: a label of one or two words in bold, a colon, then the "
             "claim in the site's sense. Figures in bold. Up to five. The box holds about 13 lines of 23 "
             "characters: with five points keep each under 60 characters." + MARKUP, "hide_line", "**Price:** up to **40%** cheaper than supermarkets")
@@ -86,7 +86,7 @@ def new_rows():
             "separated by \" · \". Plain text (the template makes it grey italic).", "hide_line",
             "Portugal · 12,970 members")
         for p in range(1, 4):
-            add(f"competitor_{c:02d}_point_{p:02d}", 80, f"research:competitor_{c}_point_{p}",
+            add(f"competitor_{c:02d}_point_{p:02d}", 100, f"research:competitor_{c}_point_{p}",
                 "One claim from the competitor's home page: a label in bold, a colon, the claim. Figures in bold. "
                 "No reference numbers. With no claim at all the column says so by itself." + MARKUP, "hide_line",
                 "**Waste:** a cooperative that has kept thousands of tonnes of produce from waste")
