@@ -44,7 +44,7 @@ FILES = {}
 PAGES = {}
 
 
-def fake_fetch(url, limit, timeout):
+def fake_fetch(url, limit, timeout, cut=False):
     if url in PAGES:
         return PAGES[url].encode("utf8"), url, "text/html"
     if url in FILES:

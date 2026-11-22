@@ -48,8 +48,10 @@ class _Safe(urllib.request.HTTPRedirectHandler):
 _opener = urllib.request.build_opener(_Safe)
 
 
-def _fetch(url, limit, timeout):
-    """-> (bytes, final address, content type). Only http and https, only public addresses."""
+def _fetch(url, limit, timeout, cut=False):
+    """-> (bytes, final address, content type). Only http and https, only public addresses.
+    More than `limit` bytes is refused, except with cut=True: then the first `limit` bytes are returned
+    (a home page: the logo sits in the header, at the top, so a very long page is still usable)."""
     if urllib.parse.urlparse(url).scheme not in ("http", "https"):
         raise ValueError("not a web address")
     brand._public(url)
@@ -57,7 +59,9 @@ def _fetch(url, limit, timeout):
     with _opener.open(req, timeout=timeout) as r:
         data = r.read(limit + 1)
         if len(data) > limit:
-            raise ValueError("too large")
+            if not cut:
+                raise ValueError("too large")
+            data = data[:limit]
         return data, r.geturl(), (r.headers.get("Content-Type") or "").lower()
 
 
@@ -248,7 +252,7 @@ def find(url, budget=SITE_BUDGET):
     if not re.match(r"https?://", url, re.I):
         url = "https://" + url
     try:
-        raw, final, _ = _fetch(url, MAX_HTML, min(left(), 6.0))
+        raw, final, _ = _fetch(url, MAX_HTML, min(left(), 6.0), cut=True)
     except Exception as e:
         return None, f"the home page could not be read ({type(e).__name__})"
     page = _Page()
