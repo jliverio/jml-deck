@@ -23,6 +23,8 @@ POST /extract  header X-API-Key: <secret>; body: the file (raw, with its Content
             "text", "note"}: the first 10 PDF pages or about 10 Word pages (extract.py)
 POST /fit      header X-API-Key: <secret>; same body as /render, template 1.5.4 -> whether the text of the two
                market research slides fits its boxes, box by box (fit.py); nothing is trimmed
+POST /logos    header X-API-Key: <secret>; body {"sites": {"client": url, "competitor_01": url, ...}} -> the
+               logos read from those home pages, as base64 PNG by key, with a note per site (logos.py)
 POST /palette  header X-API-Key: <secret>; body {"url": ...} -> the site's brand colours (brand.py, trial)
 GET  /health   -> 200 {"ok": true, ...}
 """
@@ -57,7 +59,16 @@ def health():
     return jsonify(ok=True, service="jml-deck", auth=bool(API_KEY),
                    renderer="variables-1.2", legacy=LEGACY,
                    template=os.path.exists(varfill.TEMPLATE),
-                   templates=sorted(varfill.TEMPLATES), extract=True, fit=_fit_ready())
+                   templates=sorted(varfill.TEMPLATES), extract=True, fit=_fit_ready(), logos=_logos_ready())
+
+
+def _logos_ready():
+    """Reading logos needs resvg-py for the SVG ones (requirements.txt)."""
+    try:
+        import logos
+        return len(logos._svg_png('<svg viewBox="0 0 4 4"><rect width="4" height="4"/></svg>')) > 0
+    except Exception:
+        return False
 
 
 def _fit_ready():
@@ -133,6 +144,25 @@ def fit_check():
     boxes = report.get("boxes") or []
     return jsonify(fits=not any(b["over"] for b in boxes), boxes=boxes, over=[b for b in boxes if b["over"]],
                    warnings=warnings[:20])
+
+
+@app.post("/logos")
+def logos_of_sites():
+    """22 Nov: the logos of the client and of the competitors, read from their home pages (logos.py).
+    Body {"sites": {"client": "https://client.com", "competitor_01": "https://...", ...}} (up to six)
+    -> {"logos": {key: base64 PNG}, "notes": {key: what was found or why nothing was}}. The logos go into
+    /render as "logos"; a site with no usable logo is simply absent and the deck shows the name alone."""
+    if API_KEY and request.headers.get("X-API-Key", "") != API_KEY:
+        return jsonify(error="unauthorized"), 401
+    sites = (request.get_json(silent=True) or {}).get("sites")
+    if not isinstance(sites, dict) or not sites:
+        return jsonify(error="no sites"), 400
+    try:
+        import logos
+        found, notes = logos.fetch_all({str(k): str(v or "") for k, v in sites.items()})
+    except Exception as e:
+        return jsonify(error=f"{type(e).__name__}: {e}"[:300]), 502
+    return jsonify(logos=found, notes=notes)
 
 
 @app.post("/palette")

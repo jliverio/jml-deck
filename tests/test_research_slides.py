@@ -149,6 +149,25 @@ prs, warns, _ = build(common("Bento"), "no_research")
 check("no research: both research slides left out", find(prs, "Product Portfolio") is None and find(prs, "Competitors Analysis") is None)
 check("no research: the warning names them", any("profile_title_01" in w for w in warns), str(warns))
 
+# 5b. no competitor, but the company's claims are there: the slide stays and says so
+v = {**CASES["equalfood"], **common("Equal Food")}
+for n_ in list(v):
+    if n_.startswith("competitor_"):
+        v[n_] = ""
+v["compare_title_01"] = "Equal Food makes 5 claims; the research found no competitor to compare them with"
+v["sources_compare_01"] = "[1] Equal Food; company website, 2026"
+prs, warns, _ = build(v, "no_competitor_claims_only")
+comp = find(prs, "Competitors Analysis")
+check("no competitor, claims present: the slide stays", comp is not None)
+if comp is not None:
+    tx = "\n".join(texts(comp))
+    check("no competitor: one box says none was found", rs.NO_COMPETITOR in tx and rs.NO_CLAIMS not in tx, tx[-300:])
+    check("no competitor: the company's points are there, no column header is left",
+          "cheaper than supermarkets" in tx and not [sh for sh in comp.shapes if sh.name.startswith("rs:competitor_")])
+    box = [sh for sh in comp.shapes if sh.name == "rs:no_competitor"]
+    check("no competitor: the box spans the competitors' area", len(box) == 1 and box[0].width > 6000000, [b.width for b in box])
+    check("no competitor: no variable name left on the slide", not re.search(r"competitor_\d+_|client_point_\d+", tx), tx)
+
 # 6. every value at its limit: nothing is cut, and the deck is there to look at for overflow
 def fill(name):
     n = LIMIT[name]

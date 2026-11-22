@@ -15,6 +15,8 @@ Comparison slide
   * competitor_NN_fact_01: the grey line above a competitor's points; left out when empty.
   * a competitor with a name and no points shows "No claims captured from its home page".
   * a competitor with no name loses its column; the columns left share the width.
+  * no competitor at all, with a title: the slide stays for the company's claims and one box says
+    "No competitor was found in the sources searched". (With no title the slide is left out, as before.)
   * logos: {"competitor_01": <base64 PNG/JPEG>} puts the logo on a white chip at the left of that header;
     without one the header shows the name alone.
 
@@ -42,6 +44,7 @@ from pptx.oxml.ns import qn
 from pptx.util import Emu
 
 NO_CLAIMS = "No claims captured from its home page"
+NO_COMPETITOR = "No competitor was found in the sources searched"
 GREY = "7F7F7F"
 MARK = re.compile(r"(\*\*.+?\*\*|__.+?__)", re.S)
 LOGO_MAX_W = 760000          # 0.83 in
@@ -374,6 +377,29 @@ def _compare(slide, val, warnings, logos):
         return
     x0 = min(h.left for _, h, _ in cols)
     x1 = max(h.left + h.width for _, h, _ in cols)
+    if not any(val(f"competitor_{k:02d}_name") for k, _, _ in cols):
+        # The slide is kept for the company's own claims (José, 22 Nov: both slides go whenever the research
+        # found anything). One box across the competitors' area says that none was found.
+        k0, head0, body0 = cols[0]
+        top = head0.top
+        for _, head, body in cols:
+            _remove(head)
+            if body is not None and body is not body0:
+                _remove(body)
+        if body0 is not None:
+            keep = _para(body0, f"competitor_{k0:02d}_fact_01")
+            for p in list(body0.text_frame._txBody.findall(qn("a:p"))):
+                if keep is None:
+                    keep = p
+                elif p is not keep:
+                    p.getparent().remove(p)
+            write(keep, NO_COMPETITOR, style="g")
+            body0.height = Emu(body0.top + body0.height - top)
+            body0.top = Emu(top)
+            body0.left = Emu(x0)
+            body0.width = Emu(x1 - x0)
+            body0.name = "rs:no_competitor"
+        return
     lefts = sorted(h.left for _, h, _ in cols)
     gap = (lefts[1] - lefts[0] - cols[0][1].width) if len(lefts) > 1 else 0
     kept = []
