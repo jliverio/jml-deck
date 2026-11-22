@@ -4,3 +4,4 @@ n8n/tests/out/
 out/
 phase_architect/tests/out_plan_size/
 n8n/slide_values/build_*.json
+n8n/slide_values/rewrite_prompt_example.txt
