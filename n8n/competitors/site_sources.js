@@ -67,7 +67,7 @@ $input.all().forEach((i, idx) => {
   if (j.error || !Array.isArray(res) || !res.length) empty_searches += 1;
   const ok = (Array.isArray(res) ? res : []).filter(r => r && r.url && !bad(host(r.url), c.name));
   let best = null;
-  ok.forEach((r, pos) => { const h = host(r.url); const s = fit(c.name, h); if (s < 55) return; const total = s + (home_tld && h.endsWith('.' + home_tld) ? 5 : 0) - pos * 0.1; if (!best || total > best.total) best = { url: r.url, total, fit: s }; });
+  ok.forEach((r, pos) => { const h = host(r.url); const s = fit(c.name, h); if (s < 55) return; const total = s + (home_tld && h.endsWith('.' + home_tld) ? 5 : 0) + (!q0.home_country && h.endsWith('.com') ? 2 : 0) - pos * 0.1; if (!best || total > best.total) best = { url: r.url, total, fit: s }; });
   const linked = c.site && !bad(host(c.site), c.name) ? { url: c.site, fit: fit(c.name, host(c.site)) } : null;
   let pick = null;
   let how = '';
