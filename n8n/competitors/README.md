@@ -43,6 +43,8 @@ Test without n8n (104 checks):
 5. **The page is theirs and the offer is related.** The light check says whether the page read belongs to the named
    competitor and whether it serves the same need. If not, the name is left out and the next candidate moves up.
    An address that is exactly the company's name is taken as its own site whatever the check says.
+   The country of a competitor is taken from its home page only when the page says where its head office is,
+   and only when the page read is the address asked for (a world site can answer with a national one).
    "Same need" means the same field, not the exact product: a large company with many products stays; only a
    different trade altogether (an identity-check firm, a general shop) goes.
    Two candidates whose pages land on the same site, or name the same company, also count once.
