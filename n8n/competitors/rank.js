@@ -43,7 +43,8 @@ $input.all().forEach((i, idx) => {
     const needle = norm(x.quote);
     if (!needle || needle.split(' ').length < 4 || hay.indexOf(needle) === -1) { dropped += 1; continue; }
     const kk = k.split(' ').join('');          // "Millennium bcp" and "Millenniumbcp" are one name
-    const e = by[kk] || (by[kk] = { name, pages: new Set(), types: {}, hq: '', measure: 'none', value: 0, unit: '', as_of: '', quote: String(x.quote).trim(), source_url: p.url, source_title: p.title, markets: new Set(), sells: {}, site: '' });
+    const e = by[kk] || (by[kk] = { names: {}, pages: new Set(), types: {}, hq: '', measure: 'none', value: 0, unit: '', as_of: '', quote: String(x.quote).trim(), source_url: p.url, source_title: p.title, markets: new Set(), sells: {}, site: '' });
+    e.names[name] = (e.names[name] || 0) + 1;
     e.pages.add(p.url);
     const t = x.type === 'Substitute' ? 'Substitute' : 'Direct';
     e.types[t] = (e.types[t] || 0) + 1;
@@ -57,11 +58,13 @@ $input.all().forEach((i, idx) => {
     if (meas !== 'none' && val > 0 && (PRI[meas] < PRI[e.measure] || (meas === e.measure && val > e.value))) { e.measure = meas; e.value = val; e.unit = String(x.unit || '').trim(); e.as_of = String(x.as_of || '').trim(); e.quote = String(x.quote).trim(); e.source_url = p.url; e.source_title = p.title; }
   }
 });
-let list = Object.values(by).map(e => ({ name: e.name, type: (e.types.Substitute || 0) > (e.types.Direct || 0) ? 'Substitute' : 'Direct', hq: e.hq, measure: e.measure, value: e.value, unit: e.unit, as_of: e.as_of, quote: e.quote, source_url: e.source_url, source_title: e.source_title, mentions: e.pages.size, markets: [...e.markets], sells: !home ? 'unknown' : (e.sells.yes ? 'yes' : (e.sells.no ? 'no' : 'unknown')), site: e.site }));
+// Of the ways a name was written, keep the most frequent; then the one with accents; then the longest ("Millennium bcp", not "Millenniumbcp").
+const written = (names) => Object.keys(names).sort((a, b) => (names[b] - names[a]) || (/[^\x00-\x7f]/.test(b) - /[^\x00-\x7f]/.test(a)) || (b.length - a.length))[0];
+let list = Object.values(by).map(e => ({ name: written(e.names), type: (e.types.Substitute || 0) > (e.types.Direct || 0) ? 'Substitute' : 'Direct', hq: e.hq, measure: e.measure, value: e.value, unit: e.unit, as_of: e.as_of, quote: e.quote, source_url: e.source_url, source_title: e.source_title, mentions: e.pages.size, markets: [...e.markets], sells: !home ? 'unknown' : (e.sells.yes ? 'yes' : (e.sells.no ? 'no' : 'unknown')), site: e.site }));
 const named = list.length;
 const not_selling = list.filter(e => e.sells === 'no').map(e => e.name);
 list = list.filter(e => e.sells !== 'no');
-list.sort((a, b) => (SELL[a.sells] - SELL[b.sells]) || (PRI[a.measure] - PRI[b.measure]) || (b.value - a.value) || (b.mentions - a.mentions));
+list.sort((a, b) => (SELL[a.sells] - SELL[b.sells]) || (PRI[a.measure] - PRI[b.measure]) || (b.value - a.value) || (b.mentions - a.mentions) || ((a.type === 'Substitute') - (b.type === 'Substitute')));
 const POOL = Math.max(5, Math.min(8, 10 - $('Queries').all().length));
 const pool = list.slice(0, POOL).map((e, i) => ({ ...e, rank: i + 1, candidates: named, quotes_dropped: dropped, also_named: list.slice(POOL, POOL + 10).map(x => x.name), not_selling }));
 if (!pool.length) return [{ json: { _none: true, candidates: named, quotes_dropped: dropped, not_selling } }];

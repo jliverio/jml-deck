@@ -26,7 +26,7 @@ const pick = async (name, urls, o) => {
     ['Ueofen Ultrasonic Retainer Cleaner', ['https://www.amazon.com/dp/B0X', 'https://www.forbes.com/best'], ''],
     ['Ueofen', ['https://www.amazon.com/dp/B0X', 'https://ueofen.com/products/x'], 'https://ueofen.com/'],
     ['Amazon', ['https://www.amazon.com/'], 'https://www.amazon.com/'],
-    ['Pursonic Ultrasonic Cleaner Pod', ['https://pursonicusa.com/products/pod'], ''],          // the product name does not fit the address; the short name does
+    ['Pursonic Ultrasonic Cleaner Pod', ['https://pursonicusa.com/products/pod'], 'https://pursonicusa.com/'],          // a product name still leads to the brand's site, through its distinctive word
     ['Pursonic', ['https://pursonicusa.com/products/pod'], 'https://pursonicusa.com/'],
     ['iSonic', ['https://www.isonicinc.com/'], 'https://www.isonicinc.com/'],
     ['Missive', ['https://mail.missiveapp.com/login', 'https://missiveapp.com/pricing'], 'https://missiveapp.com/'],
@@ -85,7 +85,7 @@ const pick = async (name, urls, o) => {
   const sq = await run('site_queries.js', { outs, input: [] });
   outs['Site queries'] = sq;
   ok('site search: name, category, country', sq[0].json.q === 'Caixa Geral de Depósitos home mortgage loan for individuals Portugal official website' && sq[0].json.site_country === 'PT', sq[0].json.q);
-  const RES = { 'Caixa Geral de Depósitos': ['https://www.cgd.pt/Particulares/x'], 'Millennium bcp': ['https://ind.millenniumbcp.pt/x'], 'Banco Santander Totta': ['https://www.santander.pt/credito'], 'Novobanco': ['https://www.idealista.pt/x'], 'Banco CTT': ['https://www.bancoctt.pt/'], 'UCI': ['https://www.idealista.pt/news/uci'], 'Bankinter': ['https://www.bankinter.pt/'], 'Santander': ['https://www.santander.pt/'], 'Doutor Finanças': ['https://www.doutorfinancas.pt/'], 'Crédito Agrícola': ['https://www.creditoagricola.pt/'] };
+  const RES = { 'Caixa Geral de Depósitos': ['https://www.cgd.pt/Particulares/x'], 'Millennium bcp': ['https://www.millennium-investimentos.pt/x'], 'Banco Santander Totta': ['https://www.santander.pt/credito'], 'Novobanco': ['https://www.idealista.pt/x'], 'Banco CTT': ['https://www.bancoctt.pt/'], 'UCI': ['https://www.idealista.pt/news/uci'], 'Bankinter': ['https://www.bankinter.pt/'], 'Santander': ['https://www.santander.pt/'], 'Doutor Finanças': ['https://www.doutorfinancas.pt/'], 'Crédito Agrícola': ['https://www.creditoagricola.pt/'] };
   const ss = await run('site_sources.js', { outs, input: sq.map(i => ({ json: brave(RES[i.json.name] || []) })) });
   outs['Site sources'] = ss;
   const S = ss.map(i => i.json);
@@ -101,7 +101,7 @@ const pick = async (name, urls, o) => {
   outs['Site pages'] = sp;
   ok('home pages: the one that failed is not read', sp.length === S.length - 1 && sp.every(i => i.json.category === q0.category), sp.length);
   const LC = (o) => ({ output: Object.assign({ hq_country: 'Portugal', page_company: '', is_competitor_site: true, same_need: true, reason: '', advantages: [{ claim: 'The company presents itself as the trusted bank of the Portuguese.', quote: 'Somos o banco de confiança dos portugueses há muitos anos' }, { claim: 'The company presents itself as invented.', quote: 'words that are not on the page at all' }], price: { amount: 0, currency: '', buys: '', quote: '' }, same_claims: [1, 7] }, o || {}) });
-  const lightOut = sp.map(i => i.json.name === 'Millennium bcp' ? LC({ is_competitor_site: false, page_company: 'Another Company' }) : LC());
+  const lightOut = sp.map(i => i.json.name === 'Millennium bcp' ? LC({ is_competitor_site: false, page_company: 'Another Company' }) : (i.json.name === 'Banco CTT' ? LC({ is_competitor_site: false, reason: 'The page is a shop.' }) : LC()));          // Banco CTT's address is exactly its name, so it stays
   const be = await run('build.js', { outs, input: J(lightOut) });
   outs['Build entries'] = be;
   const B = be.map(i => i.json);
@@ -110,7 +110,7 @@ const pick = async (name, urls, o) => {
   console.log('final:', sum.competitors.map(c => c.rank + ' ' + c.name + (c.home_page_read ? '' : ' (not read)')).join(' | '));
   console.log('left out:', sum.left_out.map(x => x.name + ' — ' + x.why).join(' | '));
   ok('build: five at most, numbered 1 to 5', K.length === 5 && K.map(r => r.entry_id).join() === 'B2-K1,B2-K2,B2-K3,B2-K4,B2-K5', K.map(r => r.entry_id));
-  ok('build: the wrong site is left out with the reason', sum.left_out.length === 2 && sum.left_out.find(x => x.name === 'Millennium bcp').why === 'the site found, ind.millenniumbcp.pt, is not its own (it is the page of Another Company)', sum.left_out);
+  ok('build: the wrong site is left out with the reason', sum.left_out.length === 2 && sum.left_out.find(x => x.name === 'Millennium bcp').why === 'the site found, millennium-investimentos.pt, is not its own (it is the page of Another Company)', sum.left_out);
   const RX = /^(.*?):\s*([^.,]*?)(?:,\s*based in\s+([^.]*))?\.\s*Ranking measure:\s*(.*)$/;          // the pattern the slide values stage reads
   ok('build: the entry keeps the format the slide stage reads', K.every(r => RX.test(r.statement)) && K[0].statement === 'Caixa Geral de Depósitos: Direct competitor, based in Portugal. Ranking measure: customers 25000000000 EUR credit granted (2025).', K[0].statement);
   ok('build: merged names are noted', /Also named as: Santander\.$/.test(K.find(r => /^Banco Santander Totta/.test(r.statement)).check_note), K.find(r => /^Banco Santander Totta/.test(r.statement)).check_note);
@@ -182,6 +182,19 @@ const pick = async (name, urls, o) => {
   ok('build: ... or name the same company', b4[0]._summary.competitors.length === 2 && b4[0]._summary.merged.length === 1, b4[0]._summary.competitors.map(c => c.name));
   b4 = (await run('build.js', { outs: o2, input: J([LC({ page_company: '' }), LC({ page_company: '' }), LC({ page_company: 'novobanco' })]) })).map(i => i.json);
   ok('build: an empty page name merges nothing', b4[0]._summary.competitors.length === 3, b4[0]._summary.competitors.map(c => c.name));
+  // ---- Round 3: which spelling of a name is kept, direct before substitute on a tie, app addresses, any strong word of the name ----
+  const ar2 = await run('rank.js', { outs: { Queries: J([q0, q0, q0]), Pages: J([a2, a1]) }, input: J([{ output: { companies: [C('Caixa Geral de Depositos', 'yes', 'Caixa Geral de Depositos is the largest bank in Portugal'), C('Millenniumbcp', 'yes', 'Millenniumbcp is the largest private bank in Portugal')] } }, { output: { companies: [C('Caixa Geral de Depósitos', 'yes', 'A Caixa Geral de Depósitos é o maior banco do país em crédito'), C('Millennium bcp', 'yes', 'O Millennium bcp é o maior banco privado em Portugal')] } }]) });
+  ok('rank: the spelling with the accent or the space is kept, whatever the order of the pages', ar2.map(i => i.json.name).sort().join() === 'Caixa Geral de Depósitos,Millennium bcp', ar2.map(i => i.json.name));
+  const t1 = { url: 'https://d.pt/x', title: 'd', text: 'Upscore is an app that compares mortgage offers for you. Banco CTT is a bank that sells mortgage loans to families.' };
+  const tr = await run('rank.js', { outs: { Queries: J([q0, q0, q0]), Pages: J([t1]) }, input: J([{ output: { companies: [C('Upscore', 'yes', 'Upscore is an app that compares mortgage offers for you', { type: 'Substitute' }), C('Banco CTT', 'yes', 'Banco CTT is a bank that sells mortgage loans to families')] } }]) });
+  ok('rank: when nothing else separates two names, the direct competitor goes first', tr.map(i => i.json.name).join() === 'Banco CTT,Upscore', tr.map(i => i.json.name));
+  ok('site: an app address gives the home page', (await pick('Upscore', ['https://unrelated.com/'], { site: 'https://v2.app.upscoreapp.com/login' })) === 'https://upscoreapp.com/', await pick('Upscore', ['https://unrelated.com/'], { site: 'https://v2.app.upscoreapp.com/login' }));
+  ok('site: any distinctive word of the name can be the address', (await pick('Associação Mutualista Montepio', ['https://www.montepio.org/'])) === 'https://www.montepio.org/', await pick('Associação Mutualista Montepio', ['https://www.montepio.org/']));
+  ok('site: a name with an apostrophe and a trade word', (await pick("Barbearia Figaro's", ['https://www.figaroslisboa.pt/'])) === 'https://www.figaroslisboa.pt/' && (await pick('Barbearia Oliveira', ['https://www.barbeariacampos.pt/'])) === '', [await pick("Barbearia Figaro's", ['https://www.figaroslisboa.pt/']), await pick('Barbearia Oliveira', ['https://www.barbeariacampos.pt/'])]);
+  ok('site: a word added to the name in the address', (await pick('Remi', ['https://www.amazon.com/x', 'https://shopremi.com/products/x'])) === 'https://shopremi.com/' && (await pick('Remi', ['https://www.remington.com/'])) === '', [await pick('Remi', ['https://shopremi.com/products/x']), await pick('Remi', ['https://www.remington.com/'])]);
+  ok('site: two letters added to a short name prove nothing', (await pick('Cred', ['https://www.credit.com/'])) === '' && (await pick('Zima Dental', ['https://zimadentalnl.com/'], { own: 'x.com' })) === 'https://zimadentalnl.com/', [await pick('Cred', ['https://www.credit.com/'])]);
+  const fits = [['Creditas', 'https://www.credit.com/', ''], ['Prove', 'https://www.improve.com/', ''], ['Slack AI', 'https://slack.com/', 'https://slack.com/'], ['Microsoft Outlook', 'https://www.microsoft.com/en/outlook', 'https://www.microsoft.com/'], ['Ventyx Biosciences', 'https://ventyxbio.com/', 'https://ventyxbio.com/'], ['Lindy AI', 'https://www.lindy.ai/', 'https://www.lindy.ai/'], ['Sonic Dental', 'https://nl.sonicdental.co/products', 'https://nl.sonicdental.co/'], ['Veterans United Home Loans', 'https://www.veterans.com/', 'https://www.veterans.com/'], ['Eli Lilly', 'https://www.lilly.com/', 'https://www.lilly.com/'], ['Banco Santander Portugal', 'https://www.santander.pt/', 'https://www.santander.pt/']];
+  for (const [n, u, want] of fits) { const got = await pick(n, [u], { own: 'x.com' }); ok('site of ' + n + ' from ' + u, got === want, got); }
   console.log(pass + ' passed, ' + fail + ' failed (chain)');
   process.exit(fail ? 1 : 0);
 })();

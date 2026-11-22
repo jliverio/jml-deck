@@ -30,7 +30,8 @@ const spare = [];
 const merged = (sites_report.merged || []).slice();
 for (const c of cands) {
   const L = light[c.rank];
-  if (L && L.o.is_competitor_site === false) { left_out.push({ name: c.name, why: 'the site found, ' + host(c.site_url) + ', is not its own' + (clean(L.o.page_company) ? ' (it is the page of ' + clean(L.o.page_company) + ')' : '') }); continue; }
+  // An address that is exactly the company's name is taken as its own site whatever the page says; a company of the same name in another trade fails the next test.
+  if (L && L.o.is_competitor_site === false && !(c.site_fit >= 100)) { left_out.push({ name: c.name, why: 'the site found, ' + host(c.site_url) + ', is not its own' + (clean(L.o.reason) ? ': ' + clean(L.o.reason).replace(/\.$/, '') : (clean(L.o.page_company) ? ' (it is the page of ' + clean(L.o.page_company) + ')' : '')) }); continue; }
   if (L && L.o.same_need === false) { left_out.push({ name: c.name, why: 'its home page shows it sells something else' + (clean(L.o.reason) ? ': ' + clean(L.o.reason).replace(/\.$/, '') : '') }); continue; }
   const land = L ? regdom(host(L.s.landed_on)) : '';
   const who = L ? plain(L.o.page_company) : '';

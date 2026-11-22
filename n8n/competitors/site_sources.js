@@ -11,9 +11,13 @@ const regdom = (h) => { const p = String(h || '').split('.').filter(Boolean); if
 const NOT_A_SITE = ['wikipedia.org', 'linkedin.com', 'crunchbase.com', 'cbinsights.com', 'craft.co', 'pitchbook.com', 'tracxn.com', 'dealroom.co', 'facebook.com', 'instagram.com', 'x.com', 'twitter.com', 'youtube.com', 'tiktok.com', 'pinterest.com', 'bloomberg.com', 'g2.com', 'capterra.com', 'getapp.com', 'softwareadvice.com', 'producthunt.com', 'trustpilot.com', 'glassdoor.com', 'zoominfo.com', 'owler.com', 'reddit.com', 'medium.com', 'amazon.com', 'amazon.co.uk', 'amazon.de', 'amazon.es', 'amazon.fr', 'amazon.it', 'amazon.nl', 'amzn.to', 'ebay.com', 'etsy.com', 'aliexpress.com', 'alibaba.com', 'walmart.com', 'target.com', 'bol.com', 'apps.apple.com', 'itunes.apple.com', 'play.google.com', 'chromewebstore.google.com', 'chrome.google.com', 'docs.google.com', 'drive.google.com', 'maps.google.com', 'support.google.com', 'apps.microsoft.com', 'appsource.microsoft.com', 'marketplace.visualstudio.com', 'github.com', 'goo.gl', 'bit.ly'];
 const LEGAL = ['inc', 'ltd', 'limited', 'ab', 'gmbh', 'llc', 'plc', 'corp', 'corporation', 'sa', 'lda', 'bv', 'nv', 'srl', 'spa', 'oy', 'ag'];
 const SMALL = ['the', 'de', 'da', 'do', 'dos', 'das', 'del', 'la', 'le', 'el', 'of', 'and', 'e', 'y', 'et', 'und', 'en', 'van', 'von', 'em'];
-const GENERIC = ['bank', 'banco', 'banque', 'group', 'grupo', 'groupe', 'company', 'companhia', 'health', 'food', 'foods', 'market', 'mortgage', 'home', 'loans', 'financial', 'insurance', 'seguros', 'dental', 'pharma', 'bio', 'biosciences', 'therapeutics', 'labs', 'software', 'technologies', 'technology', 'systems', 'solutions', 'services', 'global', 'international', 'digital', 'online', 'ai', 'app', 'mail', 'direct', 'first', 'united', 'national', 'american'];
+const GENERIC = ['bank', 'banco', 'banque', 'group', 'grupo', 'groupe', 'company', 'companhia', 'health', 'food', 'foods', 'market', 'mortgage', 'home', 'loans', 'financial', 'insurance', 'seguros', 'dental', 'pharma', 'bio', 'biosciences', 'therapeutics', 'labs', 'software', 'technologies', 'technology', 'systems', 'solutions', 'services', 'global', 'international', 'digital', 'online', 'ai', 'app', 'mail', 'direct', 'first', 'united', 'national', 'american', 'barbearia', 'barbershop', 'barber', 'clinica', 'clinic', 'studio', 'salon', 'cafe', 'restaurante', 'restaurant', 'hotel', 'loja', 'store', 'shop'];
 const plain = (s) => String(s || '').normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
-const toks = (name) => plain(name).replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(w => w && !LEGAL.includes(w));
+const toks = (name) => plain(name).replace(/['’]/g, '').replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(w => w && !LEGAL.includes(w));
+// Words a company often adds to its name in its address: shopremi.com, getzapier.com, pursonicusa.com.
+const PRE = ['shop', 'get', 'try', 'use', 'the', 'hello', 'join', 'official', 'my', 'go', 'hey', 'meet', 'with', 'team', 'buy'];
+const POST = ['shop', 'app', 'hq', 'official', 'store', 'online', 'labs', 'inc', 'group', 'global', 'usa'];
+const CC = ['uk', 'eu', 'nl', 'pt', 'es', 'de', 'fr', 'it', 'us'];
 // How well an address fits a company name, 0 to 100.
 const fit = (name, h) => {
   const t = toks(name);
@@ -25,17 +29,16 @@ const fit = (name, h) => {
   const labels = h.split('.').slice(0, -suffix).map(l => l.replace(/[^a-z0-9]/g, '')).filter(Boolean);
   const acro = t.filter(w => !SMALL.includes(w)).map(w => w[0]).join('');
   const strong = t.filter(w => !SMALL.includes(w) && !GENERIC.includes(w));
-  const longest = strong.slice().sort((a, b) => b.length - a.length)[0] || '';
+  const firsts = t.map((w, i) => t.slice(0, i + 1).join('')).slice(0, -1);          // the first one, two, ... words of the name run together
   let best = 0;
   for (const L of labels) {
     let s = 0;
     if (L === compact || L + tld === compact) s = 100;
-    else if (compact.length >= 4 && L.startsWith(compact) && compact.length * 2 >= L.length) s = 85;
-    else if (L.length >= 4 && compact.startsWith(L) && L.length * 2 >= compact.length) s = 85;
-    else if (compact.length >= 5 && L.indexOf(compact) !== -1 && compact.length * 2 >= L.length) s = 75;
+    else if ((compact.length >= 3 && (PRE.some(x => L === x + compact) || POST.some(x => L === compact + x))) || (compact.length >= 5 && CC.some(x => L === compact + x))) s = 90;
+    else if (L.length >= 4 && firsts.includes(L) && L.length * 2 >= compact.length) s = 85;
     else if (acro.length >= 3 && L === acro) s = 70;
-    else if (strong.length && strong[0].length >= 5 && L === strong[0]) s = 65;
-    else if (longest.length >= 5 && L.indexOf(longest) !== -1) s = 55;
+    else if (strong.some(w => w.length >= 5 && L === w)) s = 65;
+    else if (strong.some(w => w.length >= 6 && L.indexOf(w) !== -1)) s = 55;
     if (s > best) best = s;
   }
   return best;
@@ -48,7 +51,8 @@ const address = (u) => {
   if (PLATFORM.some(x => h.endsWith('.' + x))) { const seg = path1(u); return 'https://' + h + '/' + (h.endsWith('.wixsite.com') && seg ? seg : ''); }
   if (PLATFORM.includes(h)) return '';
   const r = regdom(h);
-  if (h !== r && APP.includes(h.split('.')[0])) return 'https://' + r + '/';
+  const subs = h === r ? [] : h.slice(0, h.length - r.length - 1).split('.');
+  if (subs.some(x => APP.includes(x) || /^v[0-9]+$/.test(x))) return 'https://' + r + '/';          // an app or sign-in address is not the home page
   return 'https://' + rawhost(u) + '/';          // with www when the address found has it: some sites do not answer without
 };
 const home_tld = Object.entries({ pt: 'Portugal', es: 'Spain', fr: 'France', de: 'Germany', it: 'Italy', nl: 'Netherlands', be: 'Belgium', uk: 'United Kingdom', ie: 'Ireland', se: 'Sweden', no: 'Norway', dk: 'Denmark', fi: 'Finland', ch: 'Switzerland', at: 'Austria', pl: 'Poland', br: 'Brazil', mx: 'Mexico', ca: 'Canada', au: 'Australia' }).filter(e => e[1] === q0.home_country).map(e => e[0])[0] || '';
@@ -93,7 +97,7 @@ for (const c of found) {
   merged[merged.length - 1].kept = m.name;
 }
 const list = Object.values(one);
-list.sort((a, b) => (SELL[a.sells] - SELL[b.sells]) || (PRI[a.measure] - PRI[b.measure]) || (b.value - a.value) || (b.mentions - a.mentions));
+list.sort((a, b) => (SELL[a.sells] - SELL[b.sells]) || (PRI[a.measure] - PRI[b.measure]) || (b.value - a.value) || (b.mentions - a.mentions) || ((a.type === 'Substitute') - (b.type === 'Substitute')));
 const report = { left_out, merged, empty_searches };
 if (!list.length) return [{ json: { _none: true, _sites: report } }];
 return list.map((c, i) => ({ json: i === 0 ? { ...c, rank: i + 1, _sites: report } : { ...c, rank: i + 1 } }));
