@@ -3,6 +3,7 @@
 const q0 = $('Queries').first().json;
 const comps = $('Site queries').all().map(i => i.json);
 const host = (u) => { const s = String(u || ''); const a = s.indexOf('//'); if (a === -1) return ''; const b = s.indexOf('/', a + 2); return s.slice(a + 2, b === -1 ? s.length : b).toLowerCase().replace('www.', ''); };
+const rawhost = (u) => { const s = String(u || ''); const a = s.indexOf('//'); if (a === -1) return ''; const b = s.indexOf('/', a + 2); return s.slice(a + 2, b === -1 ? s.length : b).toLowerCase(); };
 const path1 = (u) => { const s = String(u || ''); const a = s.indexOf('//'); const b = a === -1 ? -1 : s.indexOf('/', a + 2); if (b === -1) return ''; return s.slice(b + 1).split(/[/?#]/)[0]; };
 const SLD = ['co', 'com', 'org', 'net', 'gov', 'edu', 'ac'];
 const PLATFORM = ['wixsite.com', 'wordpress.com', 'blogspot.com', 'myshopify.com', 'webflow.io', 'squarespace.com', 'github.io', 'netlify.app', 'vercel.app', 'weebly.com', 'substack.com', 'notion.site', 'godaddysites.com', 'business.site'];
@@ -47,7 +48,8 @@ const address = (u) => {
   if (PLATFORM.some(x => h.endsWith('.' + x))) { const seg = path1(u); return 'https://' + h + '/' + (h.endsWith('.wixsite.com') && seg ? seg : ''); }
   if (PLATFORM.includes(h)) return '';
   const r = regdom(h);
-  return 'https://' + (h !== r && APP.includes(h.split('.')[0]) ? r : h) + '/';
+  if (h !== r && APP.includes(h.split('.')[0])) return 'https://' + r + '/';
+  return 'https://' + rawhost(u) + '/';          // with www when the address found has it: some sites do not answer without
 };
 const home_tld = Object.entries({ pt: 'Portugal', es: 'Spain', fr: 'France', de: 'Germany', it: 'Italy', nl: 'Netherlands', be: 'Belgium', uk: 'United Kingdom', ie: 'Ireland', se: 'Sweden', no: 'Norway', dk: 'Denmark', fi: 'Finland', ch: 'Switzerland', at: 'Austria', pl: 'Poland', br: 'Brazil', mx: 'Mexico', ca: 'Canada', au: 'Australia' }).filter(e => e[1] === q0.home_country).map(e => e[0])[0] || '';
 const found = [];

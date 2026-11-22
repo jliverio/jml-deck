@@ -2,7 +2,7 @@
 
 Copies of the Code nodes, instructions and schemas changed by **Batch C** (22 Nov 2026), with an offline test.
 **The workflow in n8n is the source of truth.** These files were compared with what n8n stored after the update
-(version 5638e986): identical.
+(version c5753aab, after three fixes from the first real run): identical.
 
 | File | Node |
 |---|---|
@@ -19,7 +19,7 @@ Copies of the Code nodes, instructions and schemas changed by **Batch C** (22 No
 
 Not copied here because Batch C did not change them: Start, Sources, Pages and the nodes that only read or write a table.
 
-Test without n8n (78 checks):
+Test without n8n (85 checks):
 
     node n8n/competitors/t_queries.js && node n8n/competitors/t_chain.js
 
@@ -33,12 +33,14 @@ Test without n8n (78 checks):
    country code. When it is not, the searches are the same as before.
 2. **Who sells there.** The naming model says for each company whether the page shows it sells in that country
    (yes, no, unknown). Code leaves out "no", and ranks "yes" before "unknown".
-3. **Each company's own site.** Eight candidates go to the site step instead of five. The site is the address the
+3. **Each company's own site.** Up to eight candidates go to the site step instead of five (seven when three
+   searches were run, five when five were: the stage stays within its budget of 10 searches, which Code checks enforces). The site is the address the
    source page gave, or the search result whose address fits the name (exact, starts with, initials). A shop, an app
    store or a directory is never a company's site, unless the company is that shop.
 4. **One site, one company.** Names that share a site are merged. A name with no site of its own is left out.
 5. **The page is theirs and the offer is related.** The light check says whether the page read belongs to the named
    competitor and whether it serves the same need. If not, the name is left out and the next candidate moves up.
+   Two candidates whose pages land on the same site, or name the same company, also count once.
 6. The final five are numbered 1 to 5. The `competitors` table is now written at the end, with the final list.
 7. Fixed on the way: the old code read the entry A4-MODEL ("Pricing model: ...") as a market and searched for it.
 

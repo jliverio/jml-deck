@@ -16,29 +16,29 @@ const pick = async (name, urls, o) => {
 };
 (async () => {
   const cases = [
-    ['Caixa Geral de Depósitos', ['https://www.idealista.pt/news/cgd', 'https://www.cgd.pt/Particulares/Credito-Habitacao/Pages/x.aspx'], 'https://cgd.pt/'],
+    ['Caixa Geral de Depósitos', ['https://www.idealista.pt/news/cgd', 'https://www.cgd.pt/Particulares/Credito-Habitacao/Pages/x.aspx'], 'https://www.cgd.pt/'],
     ['Millennium bcp', ['https://ind.millenniumbcp.pt/pt/Particulares/Pages/x.aspx'], 'https://ind.millenniumbcp.pt/'],
-    ['Banco Santander Totta', ['https://www.bancobpi.pt/particulares', 'https://www.santander.pt/credito-habitacao'], 'https://santander.pt/', { own: 'bancobpi.pt' }],
-    ['Novo Banco', ['https://www.novobanco.pt/particulares'], 'https://novobanco.pt/'],
-    ['Crédito Agrícola', ['https://www.creditoagricola.pt/'], 'https://creditoagricola.pt/'],
-    ['North American Savings Bank', ['https://www.bankrate.com/x', 'https://www.nasb.com/lending'], 'https://nasb.com/'],
-    ['Veterans United Home Loans', ['https://www.veterans.com/x', 'https://www.veteransunited.com/'], 'https://veteransunited.com/'],
+    ['Banco Santander Totta', ['https://www.bancobpi.pt/particulares', 'https://www.santander.pt/credito-habitacao'], 'https://www.santander.pt/', { own: 'bancobpi.pt' }],
+    ['Novo Banco', ['https://www.novobanco.pt/particulares'], 'https://www.novobanco.pt/'],
+    ['Crédito Agrícola', ['https://www.creditoagricola.pt/'], 'https://www.creditoagricola.pt/'],
+    ['North American Savings Bank', ['https://www.bankrate.com/x', 'https://www.nasb.com/lending'], 'https://www.nasb.com/'],
+    ['Veterans United Home Loans', ['https://www.veterans.com/x', 'https://www.veteransunited.com/'], 'https://www.veteransunited.com/'],
     ['Ueofen Ultrasonic Retainer Cleaner', ['https://www.amazon.com/dp/B0X', 'https://www.forbes.com/best'], ''],
     ['Ueofen', ['https://www.amazon.com/dp/B0X', 'https://ueofen.com/products/x'], 'https://ueofen.com/'],
-    ['Amazon', ['https://www.amazon.com/'], 'https://amazon.com/'],
+    ['Amazon', ['https://www.amazon.com/'], 'https://www.amazon.com/'],
     ['Pursonic Ultrasonic Cleaner Pod', ['https://pursonicusa.com/products/pod'], ''],          // the product name does not fit the address; the short name does
     ['Pursonic', ['https://pursonicusa.com/products/pod'], 'https://pursonicusa.com/'],
-    ['iSonic', ['https://www.isonicinc.com/'], 'https://isonicinc.com/'],
+    ['iSonic', ['https://www.isonicinc.com/'], 'https://www.isonicinc.com/'],
     ['Missive', ['https://mail.missiveapp.com/login', 'https://missiveapp.com/pricing'], 'https://missiveapp.com/'],
     ['Reclaim.ai', ['https://reclaim.ai/'], 'https://reclaim.ai/'],
     ['Superhuman Mail', ['https://superhuman.com/'], 'https://superhuman.com/'],
-    ['Make', ['https://www.makeuseof.com/x', 'https://www.make.com/en'], 'https://make.com/'],
+    ['Make', ['https://www.makeuseof.com/x', 'https://www.make.com/en'], 'https://www.make.com/'],
     ['Make', ['https://www.makeuseof.com/x'], ''],
     ['Bio em Casa', ['https://bioemcasa.wixsite.com/loja/cabazes'], 'https://bioemcasa.wixsite.com/loja'],
     ['Google Calendar', ['https://workspace.google.com/products/calendar/'], 'https://workspace.google.com/'],
     ['Zapier', ['https://zapier.com/blog/x'], 'https://zapier.com/'],
-    ['Prove', ['https://www.prove.com/', 'https://www.prove.pt/'], 'https://prove.pt/', { home: 'Portugal' }],
-    ['Prove', ['https://www.prove.com/', 'https://www.prove.pt/'], 'https://prove.com/'],
+    ['Prove', ['https://www.prove.com/', 'https://www.prove.pt/'], 'https://www.prove.pt/', { home: 'Portugal' }],
+    ['Prove', ['https://www.prove.com/', 'https://www.prove.pt/'], 'https://www.prove.com/'],
     ['Client Rival', ['https://www.client.pt/rival'], ''],                                          // the client's own site never counts
     ['Some Brand', ['https://www.linkedin.com/company/some-brand', 'https://en.wikipedia.org/wiki/Some_Brand'], ''],
     ['Odd Name', ['https://unrelated.com/'], 'https://oddsite.com/', { site: 'https://oddsite.com/about' }],   // linked from the page: taken when the search finds nothing better
@@ -69,7 +69,7 @@ const pick = async (name, urls, o) => {
     C('Doutor Finanças', 'yes', 'Doutor Finanças is a broker that compares mortgage offers for free in Portugal', { type: 'Substitute' }),
     C('Crédito Agrícola', 'unknown', 'Crédito Agrícola is a cooperative bank group with mortgage loans', { measure: 'revenue', value: 900000000, unit: 'EUR' }),
   ] } };
-  const outs = { Start: J([{ run_id: 'r1', company: 'Banco BPI', started_at: new Date().toISOString() }]), Queries: J([q0, q0, q0]), Sources: J([{ url: p1.url }, { url: p2.url }]), Pages: J([p1, p2]) };
+  const outs = { Start: J([{ run_id: 'r1', company: 'Banco BPI', started_at: new Date().toISOString() }]), Queries: J([q0, q0]), Sources: J([{ url: p1.url }, { url: p2.url }]), Pages: J([p1, p2]) };          // two searches: eight candidates fit the budget of 10
   let rank = await run('rank.js', { outs, input: J([out1, out2]) });
   outs.Rank = rank;
   const R = rank.map(i => i.json);
@@ -93,7 +93,7 @@ const pick = async (name, urls, o) => {
   const santander = S.find(x => /Santander/.test(x.name));
   ok('sites: two names on one site are one company', S.filter(x => /Santander/.test(x.name)).length === 1 && S[0]._sites.merged.length === 1 && santander.mentions === 2 && santander.name === 'Banco Santander Totta' && santander.aliases.join() === 'Santander' && santander.rank === 2, [S.map(x => x.name), S[0]._sites.merged]);
   ok('sites: ranks renumbered without gaps', S.map(x => x.rank).join() === S.map((x, i) => i + 1).join(), S.map(x => x.rank));
-  ok('sites: the address from the page is used when the search finds none', S.find(x => x.name === 'Novobanco').site_url === 'https://novobanco.pt/' && /linked/.test(S.find(x => x.name === 'Novobanco').site_found), S.find(x => x.name === 'Novobanco'));
+  ok('sites: the address from the page is used when the search finds none', S.find(x => x.name === 'Novobanco').site_url === 'https://www.novobanco.pt/' && /linked/.test(S.find(x => x.name === 'Novobanco').site_found), S.find(x => x.name === 'Novobanco'));
   console.log('after the site step:', S.map(x => x.rank + ' ' + x.name + ' ' + x.site_url).join(' | '));
   const md = (t) => ({ data: { markdown: (t + ' ').repeat(30) } });
   const fetched = S.map(c => c.name === 'Bankinter' ? { error: 'timeout' } : md('Crédito habitação com as melhores condições. Somos o banco de confiança dos portugueses há muitos anos. ' + c.name));
@@ -115,7 +115,7 @@ const pick = async (name, urls, o) => {
   ok('build: the entry keeps the format the slide stage reads', K.every(r => RX.test(r.statement)) && K[0].statement === 'Caixa Geral de Depósitos: Direct competitor, based in Portugal. Ranking measure: customers 25000000000 EUR credit granted (2025).', K[0].statement);
   ok('build: merged names are noted', /Also named as: Santander\.$/.test(K.find(r => /^Banco Santander Totta/.test(r.statement)).check_note), K.find(r => /^Banco Santander Totta/.test(r.statement)).check_note);
   const bk = K.find(r => /^Bankinter/.test(r.statement));
-  ok('build: a site that did not load stays, with a note', bk && /Site not loaded: https:\/\/bankinter\.pt\/\./.test(bk.check_note) && !B.some(r => r.entry_id === bk.entry_id + '-S'), bk && bk.check_note);
+  ok('build: a site that did not load stays, with a note', bk && /Site not loaded: https:\/\/www\.bankinter\.pt\/\./.test(bk.check_note) && !B.some(r => r.entry_id === bk.entry_id + '-S'), bk && bk.check_note);
   ok('build: an advantage is kept only with its quote on the page', B.filter(r => /-A\d$/.test(r.entry_id)).length === 4 && B.filter(r => /-A2$/.test(r.entry_id)).length === 0 && sum.quotes_dropped_light_check === 4, [B.filter(r => /-A\d$/.test(r.entry_id)).length, sum.quotes_dropped_light_check]);
   ok('build: same-claim count over the pages read', B.find(r => r.entry_id === 'B2-CLAIM-1').statement === 'Claim 1 is also made by 4 of the 4 competitors whose home page was read.', B.find(r => r.entry_id === 'B2-CLAIM-1').statement);
   ok('build: no gap entry when five are found', !B.some(r => r.entry_id === 'B2-COUNT'));
@@ -127,7 +127,7 @@ const pick = async (name, urls, o) => {
   const su = await run('summary.js', { outs, input: lr });
   const SU = su[0].json;
   console.log('note:', SU.note);
-  ok('summary', SU.outcome === 'ok' && SU.searches === 11 && SU.model_calls === 7 && SU.pages_fetched === 7 && /^11 searches run in Portugal \(its web address ends in \.pt\), 2 pages read; 11 companies named, 5 of 5 listed/.test(SU.note) && /left out: UCI \(no website of its own was found\)/.test(SU.note) && /not selling in Portugal: Veterans United Home Loans$/.test(SU.note) && SU.home_country === 'Portugal', SU);
+  ok('summary', SU.outcome === 'ok' && SU.searches === 10 && SU.model_calls === 7 && SU.pages_fetched === 7 && /^10 searches run in Portugal \(its web address ends in \.pt\), 2 pages read; 11 companies named, 5 of 5 listed/.test(SU.note) && /left out: UCI \(no website of its own was found\)/.test(SU.note) && /not selling in Portugal: Veterans United Home Loans$/.test(SU.note) && SU.home_country === 'Portugal', SU);
 
   // ---- Fewer than five pass ----
   const few = S.slice(0, 3);
@@ -160,6 +160,28 @@ const pick = async (name, urls, o) => {
   ok('country: all named sell elsewhere -> none, with the names', nr.length === 1 && nr[0].json._none === true && nr[0].json.candidates === 1 && nr[0].json.not_selling.length === 1, nr[0].json);
   const su2 = await run('summary.js', { outs: { Start: outs.Start, Queries: J([q0, q0, q0]), Sources: J([{ url: p2.url }]), Pages: J([p2]), Rank: nr }, input: nr });
   ok('summary: none kept', su2[0].json.outcome === 'partial' && /1 companies named, none kept: the pages show they do not sell in Portugal\.$/.test(su2[0].json.note), su2[0].json.note);
+  // ---- Round 2: accents and spacing in names, the search budget, www, and two sites of one company ----
+  const a1 = { url: 'https://a.pt/x', title: 'a', text: 'A Caixa Geral de Depósitos é o maior banco do país em crédito. O Millennium bcp é o maior banco privado em Portugal.' };
+  const a2 = { url: 'https://b.pt/y', title: 'b', text: 'Caixa Geral de Depositos is the largest bank in Portugal. Millenniumbcp is the largest private bank in Portugal.' };
+  const ar = await run('rank.js', { outs: { Queries: J([q0, q0, q0]), Pages: J([a1, a2]) }, input: J([{ output: { companies: [C('Caixa Geral de Depósitos', 'yes', 'A Caixa Geral de Depósitos é o maior banco do país em crédito'), C('Millennium bcp', 'yes', 'O Millennium bcp é o maior banco privado em Portugal')] } }, { output: { companies: [C('Caixa Geral de Depositos', 'yes', 'Caixa Geral de Depositos is the largest bank in Portugal'), C('Millenniumbcp', 'yes', 'Millenniumbcp is the largest private bank in Portugal')] } }]) });
+  ok('rank: an accent or a space does not make a second company', ar.length === 2 && ar.every(i => i.json.mentions === 2) && ar[0].json.name === 'Caixa Geral de Depósitos', ar.map(i => [i.json.name, i.json.mentions]));
+  const many = { output: { companies: 'ABCDEFGHIJ'.split('').map(x => C('Company ' + x + x + x, 'yes', 'Company ' + x + x + x + ' is one of the banks on this page')) } };
+  const mp = { url: 'https://c.pt/z', title: 'c', text: 'ABCDEFGHIJ'.split('').map(x => 'Company ' + x + x + x + ' is one of the banks on this page.').join(' ') };
+  const pool = async (n) => (await run('rank.js', { outs: { Queries: J(Array(n).fill(q0)), Pages: J([mp]) }, input: J([many]) })).length;
+  ok('rank: candidates passed on keep the stage at 10 searches', (await pool(3)) === 7 && (await pool(2)) === 8 && (await pool(5)) === 5, [await pool(3), await pool(2), await pool(5)]);
+  ok('site: www is kept when the address found has it', (await pick('Caixa Geral de Depósitos', ['https://www.cgd.pt/Particulares/x'])) === 'https://www.cgd.pt/' && (await pick('Novo Banco', ['https://novobanco.pt/particulares'])) === 'https://novobanco.pt/' && (await pick('Missive', ['https://mail.missiveapp.com/login'])) === 'https://missiveapp.com/', [await pick('Caixa Geral de Depósitos', ['https://www.cgd.pt/Particulares/x'])]);
+  const two = [{ name: 'Santander Totta', rank: 1, type: 'Direct', hq: '', measure: 'none', value: 0, unit: '', as_of: '', quote: 'q', source_url: 'https://a.pt/x', source_title: 't', mentions: 2, markets: [], sells: 'yes', site_url: 'https://www.santandertotta.pt/', site_found: 's', aliases: [], _sites: { left_out: [], merged: [], empty_searches: 0 } }, { name: 'Banco Santander Portugal', rank: 2, type: 'Direct', hq: '', measure: 'none', value: 0, unit: '', as_of: '', quote: 'q', source_url: 'https://a.pt/x', source_title: 't', mentions: 1, markets: [], sells: 'yes', site_url: 'https://www.santander.pt/', site_found: 's', aliases: [] }, { name: 'Novo Banco', rank: 3, type: 'Direct', hq: '', measure: 'none', value: 0, unit: '', as_of: '', quote: 'q', source_url: 'https://a.pt/x', source_title: 't', mentions: 1, markets: [], sells: 'yes', site_url: 'https://www.novobanco.pt/', site_found: 's', aliases: [] }];
+  const fetched2 = [{ data: { markdown: ('Somos o banco de confiança dos portugueses há muitos anos ').repeat(20), metadata: { sourceURL: 'https://www.santandertotta.pt/', url: 'https://www.santander.pt/particulares' } } }, { data: { markdown: ('Somos o banco de confiança dos portugueses há muitos anos ').repeat(20), metadata: { sourceURL: 'https://www.santander.pt/', url: 'https://www.santander.pt/' } } }, { data: { markdown: ('Somos o banco de confiança dos portugueses há muitos anos ').repeat(20), metadata: { sourceURL: 'https://www.novobanco.pt/' } } }];
+  const o2 = { Start: outs.Start, Queries: J([q0]), Rank: J([{ candidates: 3, quotes_dropped: 0, also_named: [], not_selling: [] }]), 'Site sources': J(two) };
+  o2['Site pages'] = await run('site_pages.js', { outs: o2, input: J(fetched2) });
+  ok('home pages: where the page landed is kept', o2['Site pages'][0].json.landed_on === 'https://www.santander.pt/particulares' && o2['Site pages'][2].json.landed_on === 'https://www.novobanco.pt/', o2['Site pages'].map(i => i.json.landed_on));
+  let b4 = (await run('build.js', { outs: o2, input: J([LC({ page_company: 'Santander' }), LC({ page_company: 'Banco Santander' }), LC({ page_company: 'novobanco' })]) })).map(i => i.json);
+  ok('build: two names whose pages land on one site are one company', b4[0]._summary.competitors.length === 2 && b4[0]._summary.competitors[0].name === 'Santander Totta' && b4[0]._summary.competitors[0].mentions === 3 && b4[0]._summary.competitors[0].also_named_as.join() === 'Banco Santander Portugal' && b4[0]._summary.competitors[1].name === 'Novo Banco' && b4[0]._summary.competitors[1].rank === 2 && b4[0]._summary.merged.length === 1, b4[0]._summary.competitors);
+  o2['Site pages'] = J(o2['Site pages'].map(i => ({ ...i.json, landed_on: '' })));
+  b4 = (await run('build.js', { outs: o2, input: J([LC({ page_company: 'Santander' }), LC({ page_company: 'SANTANDER' }), LC({ page_company: 'novobanco' })]) })).map(i => i.json);
+  ok('build: ... or name the same company', b4[0]._summary.competitors.length === 2 && b4[0]._summary.merged.length === 1, b4[0]._summary.competitors.map(c => c.name));
+  b4 = (await run('build.js', { outs: o2, input: J([LC({ page_company: '' }), LC({ page_company: '' }), LC({ page_company: 'novobanco' })]) })).map(i => i.json);
+  ok('build: an empty page name merges nothing', b4[0]._summary.competitors.length === 3, b4[0]._summary.competitors.map(c => c.name));
   console.log(pass + ' passed, ' + fail + ' failed (chain)');
   process.exit(fail ? 1 : 0);
 })();

@@ -1,10 +1,11 @@
 // Keeps a company only if its quote is on the page, merges mentions of the same company, leaves out those the pages show do not sell in the
-// client's country, ranks by revenue, then customers, then funding, then by how many pages name it, and passes on the first eight for the site checks.
+// client's country, ranks by revenue, then customers, then funding, then by how many pages name it, and passes on up to eight for the site checks
+// (fewer when more searches were run: the stage's budget is 10 searches in all).
 const q0 = $('Queries').first().json;
 const pages = $('Pages').all().map(i => i.json);
 const norm = (s) => String(s || '').replace(/\]\([^)]*\)/g, ' ').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
 const DROP = ['inc', 'ltd', 'limited', 'ab', 'gmbh', 'llc', 'plc', 'corp', 'corporation', 'the', 'sa', 'lda', 'bv', 'nv', 'srl', 'spa', 'oy', 'as', 'ag'];
-const key = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(w => !DROP.includes(w)).join(' ');
+const key = (s) => String(s || '').normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(w => !DROP.includes(w)).join(' ');
 const own = key(q0.company);
 const inside = (a, b) => (' ' + a + ' ').indexOf(' ' + b + ' ') !== -1;
 const home = String(q0.home_country || '');
@@ -41,7 +42,8 @@ $input.all().forEach((i, idx) => {
     if (!k || k === own || inside(k, own) || inside(own, k)) continue;
     const needle = norm(x.quote);
     if (!needle || needle.split(' ').length < 4 || hay.indexOf(needle) === -1) { dropped += 1; continue; }
-    const e = by[k] || (by[k] = { name, pages: new Set(), types: {}, hq: '', measure: 'none', value: 0, unit: '', as_of: '', quote: String(x.quote).trim(), source_url: p.url, source_title: p.title, markets: new Set(), sells: {}, site: '' });
+    const kk = k.split(' ').join('');          // "Millennium bcp" and "Millenniumbcp" are one name
+    const e = by[kk] || (by[kk] = { name, pages: new Set(), types: {}, hq: '', measure: 'none', value: 0, unit: '', as_of: '', quote: String(x.quote).trim(), source_url: p.url, source_title: p.title, markets: new Set(), sells: {}, site: '' });
     e.pages.add(p.url);
     const t = x.type === 'Substitute' ? 'Substitute' : 'Direct';
     e.types[t] = (e.types[t] || 0) + 1;
@@ -60,7 +62,7 @@ const named = list.length;
 const not_selling = list.filter(e => e.sells === 'no').map(e => e.name);
 list = list.filter(e => e.sells !== 'no');
 list.sort((a, b) => (SELL[a.sells] - SELL[b.sells]) || (PRI[a.measure] - PRI[b.measure]) || (b.value - a.value) || (b.mentions - a.mentions));
-const POOL = 8;
+const POOL = Math.max(5, Math.min(8, 10 - $('Queries').all().length));
 const pool = list.slice(0, POOL).map((e, i) => ({ ...e, rank: i + 1, candidates: named, quotes_dropped: dropped, also_named: list.slice(POOL, POOL + 10).map(x => x.name), not_selling }));
 if (!pool.length) return [{ json: { _none: true, candidates: named, quotes_dropped: dropped, not_selling } }];
 return pool.map(e => ({ json: e }));
