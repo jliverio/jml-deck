@@ -147,5 +147,41 @@ check("/logos: logos and notes", r.status_code == 200 and list(j["logos"]) == ["
 check("/logos: nothing asked", client.post("/logos", json={}).status_code == 400)
 check("/health: says logos are ready", client.get("/health").get_json().get("logos") is True)
 
+# 13. another brand's logo is never the site's logo (seen live on 22 Nov: Google Calendar, G2 and Figma logos shown for
+#     Reclaim.ai, Missive and Superhuman)
+TOUCH = {"/touch.png": (png(red, (180, 180)), "image/png")}
+HEAD = '<head><link rel="apple-touch-icon" sizes="180x180" href="/touch.png"></head>'
+# a link that only carries the word "logo" is not the home link; the drawing in the real home link wins
+data, note = site("reclaimx", f"""<html>{HEAD}<body><header><a href="/">{CURRENT_SVG}</a></header>
+<a class="integration-logo" href="/integrations/google-calendar"><img src="https://www.reclaimx.com/img/google-calendar.png" alt="Google Calendar"></a>
+</body></html>""", dict(TOUCH, **{"/img/google-calendar.png": (png(green), "image/png")}))
+check("an integration's logo in a 'logo' link is not taken", data is not None and colour(data) != green and "drawing in the page in the home link" in note, note)
+# a review badge in the header, the real logo drawn from a sprite: the site icon is used
+data, note = site("missivex", f"""<html>{HEAD}<body><header><a href="/"><svg class="logo"><use href="#sprite-logo"/></svg></a>
+<img src="https://www.missivex.com/assets/g2-leader-logo.svg" alt="G2 logo"><img src="/assets/figma.png" alt="Figma logo" class="logo">
+</header></body></html>""", dict(TOUCH, **{"/assets/g2-leader-logo.svg": (png(green), "image/png"), "/assets/figma.png": (png(green), "image/png")}))
+check("a review badge or a customer's logo in the header is not taken", data is not None and colour(data) == red and note == "found: touch icon", note)
+# a customer's logo in the page, on the site's own address and saying "logo": not the site's logo
+data, note = site("superx", f"""<html>{HEAD}<body><section><img src="https://www.superx.com/media/superx-prod/figma-logo.svg" alt="Figma logo">
+</section></body></html>""", dict(TOUCH, **{"/media/superx-prod/figma-logo.svg": (png(green), "image/png")}))
+check("a customer's logo stored on the site's own address is not taken", data is not None and colour(data) == red and note == "found: touch icon", note)
+# the site's own logo outside a home link is still found: by its name, or by a plain file name
+data, note = site("plainco", f"""<html>{HEAD}<body><header><img class="logo" src="/img/logo-dark.png" alt=""></header></body></html>""",
+                  dict(TOUCH, **{"/img/logo-dark.png": (png(blue), "image/png")}))
+check("a plain logo.png in the header is taken", data is not None and colour(data) == blue and note == "found: image in the header", note)
+PAGES["https://www.missiveapp.com"] = f"""<html>{HEAD}<body><header><div><img src="/img/missive-wordmark.png" alt="Missive"></div></header></body></html>"""
+FILES["https://www.missiveapp.com/img/missive-wordmark.png"] = (png(blue), "image/png")
+FILES["https://www.missiveapp.com/touch.png"] = (png(red, (180, 180)), "image/png")
+data, note = logos.find("https://www.missiveapp.com")
+check("the site's name without 'app' still names its logo", data is not None and colour(data) == blue, note)
+# the front page in a language folder, or on the full address, is still the home link; another site's front page is not
+data, note = site("langco", f"""<html>{HEAD}<body><a href="https://www.langco.com/pt-pt/"><img src="/x/a1b2c3d4.png"></a></body></html>""",
+                  dict(TOUCH, **{"/x/a1b2c3d4.png": (png(blue), "image/png")}))
+check("a home link to /pt-pt/ counts", data is not None and colour(data) == blue and "home link" in note, note)
+data, note = site("otherco", f"""<html>{HEAD}<body><a href="https://www.partner.com/"><img src="/x/partner.png" alt="logo"></a></body></html>""",
+                  dict(TOUCH, **{"/x/partner.png": (png(green), "image/png")}))
+check("a link to another site's front page is not the home link", data is not None and colour(data) == red, note)
+check("names", logos._names("missiveapp") == {"missiveapp", "missive"} and logos._names("odysseytx") == {"odysseytx", "odyssey"} and logos._names("app") == {"app"}, logos._names("missiveapp"))
+
 print(f"{passed}/{passed + failed} passed")
 sys.exit(1 if failed else 0)

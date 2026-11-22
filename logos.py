@@ -35,7 +35,15 @@ HINT = re.compile(r"logo|brand|wordmark", re.I)
 LIGHT = re.compile(r"white|light|inverse|inverted|negative|reverse|branco|blanc", re.I)
 DARK = re.compile(r"dark|black|colou?r|primary|default", re.I)
 NOT_LOGO = re.compile(r"sprite|icon-|/icons?/|arrow|menu|search|close|flag|avatar|badge|app-?store|google-?play|"
-                      r"payment|visa|mastercard|paypal|partner|client|customer|testimonial|award|press", re.I)
+                      r"payment|visa|mastercard|paypal|partner|client|customer|testimonial|award|press|"
+                      r"integration|g2|capterra|trustpilot|review|rating|leader|soc-?2|gdpr|hipaa|iso-?\d|certif|"
+                      r"featured|investor|backed|trusted|logos/|logo-?(cloud|wall|strip|grid|garden)", re.I)
+# Words a picture's file name or description may hold without naming another brand.
+PLAIN = re.compile(r"logo(type)?s?|brand(ing)?|wordmark|company|site|header|footer|navbar|nav|main|dark|light|white|black|"
+                   r"colou?r|full|horizontal|vertical|primary|secondary|default|image|img|icon|mark|symbol|svg|png|"
+                   r"jpe?g|webp|gif|new|final|rgb|web|small|large|retina|desktop|mobile|home|top|[0-9a-f]{6,}", re.I)
+AFFIX = ("app", "hq", "get", "try", "use", "the", "shop", "store", "online", "official", "usa", "labs", "inc", "tx",
+         "bio", "group", "global")
 
 
 class _Safe(urllib.request.HTTPRedirectHandler):
@@ -67,8 +75,9 @@ def _fetch(url, limit, timeout, cut=False):
 
 class _Page(HTMLParser):
     """Collects logo candidates in page order: <img>, inline <svg> and <link rel=icon>."""
-    def __init__(self):
+    def __init__(self, token=""):
         super().__init__(convert_charrefs=True)
+        self.token = token         # the site's own name, to tell its front page from another site's
         self.stack = []            # open tags that give context: header, nav, a (home link or not)
         self.cands = []            # dicts: kind, src / svg, where, hint text, order
         self.svg = None            # (depth, parts, where, hint) while inside an inline svg
@@ -93,19 +102,24 @@ class _Page(HTMLParser):
         elif tag in ("header", "nav"):
             self.stack.append((tag, False))
         elif tag == "a":
+            # A home link leads to the site's own front page (/, /index.html, /home, /en, /pt-pt). A link that
+            # merely carries the word "logo" (an integration's or a customer's logo) is not one.
             href = a.get("href", "").strip()
-            path = urllib.parse.urlparse(href).path if href else "x"
-            home = bool(href) and not href.startswith(("#", "mailto:", "tel:", "javascript:")) and path in ("", "/") \
-                and not urllib.parse.urlparse(href).query
-            hint = " ".join(a.get(k, "") for k in ("class", "id", "aria-label", "title"))
-            self.stack.append(("a", home or bool(HINT.search(hint))))
+            u = urllib.parse.urlparse(href) if href else None
+            front = bool(u) and bool(re.fullmatch(r"/?(index\.(html?|php)|home|[a-z]{2}([-_][a-z]{2})?)?/?", u.path, re.I))
+            own = bool(u) and (not u.netloc or not self.token or _token("https://" + u.netloc) == self.token)
+            home = bool(href) and not href.startswith(("#", "mailto:", "tel:", "javascript:")) and front and own \
+                and not u.query
+            self.stack.append(("a", home))
         elif tag == "img":
             src = a.get("src") or a.get("data-src") or a.get("data-lazy-src") or ""
             if not src and a.get("srcset"):
                 src = a["srcset"].split(",")[0].strip().split(" ")[0]
             if src and not src.startswith("data:image/gif"):
+                local = urllib.parse.urlparse(src).path or src
                 self.cands.append({"kind": "img", "src": src, "where": self._where(), "order": self.n,
-                                   "hint": " ".join([src, a.get("alt", ""), a.get("class", ""), a.get("id", "")])})
+                                   "local": local, "alt": a.get("alt", ""),
+                                   "hint": " ".join([local, a.get("alt", ""), a.get("class", ""), a.get("id", "")])})
         elif tag == "svg":
             hint = " ".join(a.get(k, "") for k in ("class", "id", "aria-label", "title", "data-name"))
             self.svg = [1, [self.get_starttag_text()], self._where(), hint]
@@ -159,19 +173,44 @@ def _token(url):
     return re.sub(r"[^a-z0-9]", "", parts[-2] if len(parts) >= 2 else (parts[0] if parts else ""))
 
 
+def _names(token):
+    """The site's name and its shorter forms: missiveapp -> missiveapp, missive."""
+    out = {token}
+    for x in AFFIX:
+        if token.startswith(x):
+            out.add(token[len(x):])
+        if token.endswith(x):
+            out.add(token[:-len(x)])
+    return {t for t in out if len(t) >= 3}
+
+
+def _other_brand(c, names):
+    """True when the picture's own file name or description names something else than the site:
+    figma-logo.svg, alt="Google Calendar". Such a picture is a customer's, a partner's or an integration's logo."""
+    stem = c.get("local", "").split("?")[0].rstrip("/").split("/")[-1].rsplit(".", 1)[0]
+    for text in (stem, c.get("alt", "")):
+        t = text.lower()
+        for n in names:
+            t = t.replace(n, "")
+        if len(re.sub(r"[^a-z]", "", PLAIN.sub("", t))) >= 3:
+            return True
+    return False
+
+
 def _score(c, token):
     hint = c["hint"]
     flat = re.sub(r"[^a-z0-9]", "", hint.lower())
-    named = len(token) >= 3 and token in flat
+    names = _names(token)
+    named = any(n in flat for n in names)
     says = bool(HINT.search(hint))
     if c["kind"] == "img":
-        if NOT_LOGO.search(c["src"]) and not named:
+        if NOT_LOGO.search(c.get("local", c["src"])) and not named:
             return 0
-        if c["where"] in ("home", "header") and (says or named):
-            s = 100 if c["where"] == "home" else 92
-        elif c["where"] == "home":
-            s = 70                                   # the picture inside the link to the home page
-        elif says and named:
+        if c["where"] == "home":
+            s = 100 if (says or named) else 66       # the picture inside the link to the home page
+        elif c["where"] == "header" and (named or says) and not _other_brand(c, names):
+            s = 92
+        elif says and named and not _other_brand(c, names):
             s = 80
         else:
             return 0
@@ -255,13 +294,13 @@ def find(url, budget=SITE_BUDGET):
         raw, final, _ = _fetch(url, MAX_HTML, min(left(), 6.0), cut=True)
     except Exception as e:
         return None, f"the home page could not be read ({type(e).__name__})"
-    page = _Page()
+    token = _token(final)
+    page = _Page(token)
     try:
         page.feed(raw.decode("utf8", "ignore"))
     except Exception:
         pass                                          # a broken page still gives what was read before the break
     base = urllib.parse.urljoin(final, page.base) if page.base else final
-    token = _token(final)
     cands = [dict(c, score=_score(c, token)) for c in page.cands]
     if not any(c["kind"] in ("touch", "icon") for c in cands):
         cands.append({"kind": "touch", "src": "/apple-touch-icon.png", "where": "head", "order": 0, "hint": "", "score": 30})
