@@ -1,6 +1,6 @@
 """Build template_v1_5_4.potx from José's PowerPoint file (20261028_JML_template_1.5.3.pptx, sent 22 Nov).
 
-    python tools/make_template_1_5_4.py <his file.pptx> [--keep-team]
+    python tools/make_template_1_5_4.py <his file.pptx> [--no-team]
 
 His file is the deck as he wants it, with the two market research slides (48 variables) in place. Three of its
 slides are pictures of what the renderer draws (approach overview, timeline, deliverables), written with
@@ -11,8 +11,11 @@ and applies the decisions of 22 Nov:
   and reads "section_03 | approach_title_01";
 - slides 9 and 10 (timeline, deliverables): the drawn example is removed; title, subtitle and marker stay.
   The small section tracker above the title is removed (slides 3 to 8 have none; the title names the section);
-- slide 11 (team): left out unless --keep-team. It holds a stock template's names ("Anthony Harmon") and
-  filler text, and José decided on 23 Oct that the draft carries no team slide. To confirm with José;
+- slide 11 (team): kept as he wrote it (José, 22 Nov: "Include it"). It still holds a stock template's
+  names ("Anthony Harmon") and filler text, for the firm to replace. --no-team leaves it out;
+- slide 2 (agenda): each topic's number and text become one group named agenda:row:N. His file has them as
+  loose shapes, so an unused topic could not be removed and printed "[Firm to complete]" (the 1.4 file
+  groups them). s3layout.apply_file_layout then closes the gaps and renumbers;
 - slide 5: line spacing 1.5 in all five boxes (José, 22 Nov; his file had 1.7 in the competitor boxes);
 - everything else ships as he wrote it (slides 6 and 7 are for the firm to complete by hand).
 """
@@ -95,7 +98,29 @@ def _drop_slide(prs, el):
     prs.slides._sldIdLst.remove(el)
 
 
-def build(src, keep_team=False):
+def _group_agenda(slide):
+    """Number circle + topic text -> one group per row, so an empty topic's row can be removed whole."""
+    import re
+    texts = {}
+    for sh in slide.shapes:
+        if sh.has_text_frame:
+            m = re.fullmatch(r"section_(\d+)", sh.text_frame.text.strip())
+            if m:
+                texts[int(m.group(1))] = sh
+    nums = [sh for sh in slide.shapes if sh.has_text_frame and sh.text_frame.text.strip().isdigit()]
+    made = 0
+    for n, txt in sorted(texts.items()):
+        num = min(nums, key=lambda c: abs((c.top + c.height / 2) - (txt.top + txt.height / 2)), default=None)
+        if num is None or abs((num.top + num.height / 2) - (txt.top + txt.height / 2)) > 150000:
+            continue
+        nums.remove(num)
+        g = slide.shapes.add_group_shape([num, txt])
+        g.name = f"agenda:row:{n}"
+        made += 1
+    return made
+
+
+def build(src, keep_team=True):
     prs = Presentation(src)
     slides = list(prs.slides)
     ids = list(prs.slides._sldIdLst)
@@ -117,6 +142,8 @@ def build(src, keep_team=False):
         elif "Our Expert" in tx and not keep_team:
             _drop_slide(prs, el)
             notes.append("team slide left out")
+        elif "section_01" in tx and "section_02" in tx and "section_03" in tx:
+            notes.append(f"agenda: {_group_agenda(s)} topics grouped with their numbers")
         elif "DD_Month_YYYY" in tx:
             # the cover's date is written as an example; as a variable the renderer fills it (today when empty)
             for sh in s.shapes:
@@ -172,7 +199,7 @@ def build(src, keep_team=False):
 
 if __name__ == "__main__":
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
-    data, notes = build(args[0], keep_team="--keep-team" in sys.argv)
+    data, notes = build(args[0], keep_team="--no-team" not in sys.argv)
     open(OUT, "wb").write(data)
     print("wrote", OUT, len(data), "bytes")
     for n in notes:

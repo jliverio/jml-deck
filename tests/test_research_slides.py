@@ -170,12 +170,40 @@ check("at the limits: the renderer says which boxes are too full",
 prs, warns, _ = build({**CASES["n8n"], **common("n8n")}, "structure",
                       s3={"assumptions": [{"id": "A1", "text": "A sponsor is named before kick-off.", "if_wrong": "The start moves."}]})
 titles = [next((sh.text_frame.text for sh in s.placeholders if sh.placeholder_format.idx == 0), "") for s in prs.slides]
-check("structure: 12 slides", len(titles) == 12, str(len(titles)))
+check("structure: 13 slides", len(titles) == 13, str(len(titles)))
 check("structure: titles keep their section", all(t.startswith(("Market Research | ", "Approach | ")) for t in titles[3:5] + titles[7:10]),
       str(titles))
 check("structure: assumptions close the deck", "assumption" in titles[-1], titles[-1])
-check("structure: no stock team slide", not any("Our Expert" in t for s in prs.slides for t in texts(s)))
+check("structure: the team slide is in the deck, before the closing slide (José, 22 Nov)",
+      any("Our Expert" in t for t in texts(prs.slides[10])), str(texts(prs.slides[10])[:3]))
 check("structure: the cover carries a date", not any("DD_Month" in t or "cover_date" in t for t in texts(prs.slides[0])))
+
+
+# 8. agenda: only the topics that have a slide, closed up and numbered 1, 2, 3
+def agenda(prs):
+    rows = []
+    for g in prs.slides[1].shapes:
+        if g.shape_type == 6 and g.name.startswith("agenda:row:"):
+            num = next(x.text_frame.text.strip() for x in g.shapes if x.has_text_frame and x.text_frame.text.strip().isdigit())
+            txt = next(x.text_frame.text.strip() for x in g.shapes if x.has_text_frame and not x.text_frame.text.strip().isdigit())
+            rows.append((g.top, num, txt))
+    return sorted(rows)
+
+
+rows = agenda(prs)
+check("agenda: three topics, no [Firm to complete]", [r[2] for r in rows] == ["Executive Summary", "Market Research", "Approach"],
+      str(rows))
+check("agenda: no [Firm to complete] anywhere on it", not any("[Firm to complete]" in t for t in texts(prs.slides[1])))
+first_top, pitch = rows[0][0], rows[1][0] - rows[0][0]
+prs2, warns2, _ = build({**common("Bento"), "section_02": "Market Research", "section_04": "Next Steps"}, "agenda_no_research")
+rows2 = agenda(prs2)
+check("agenda, no research: Market Research and Next Steps are left out", [r[2] for r in rows2] == ["Executive Summary", "Approach"],
+      str(rows2))
+check("agenda, no research: numbered 1 and 2", [r[1] for r in rows2] == ["1", "2"], str(rows2))
+check("agenda, no research: Approach moves up into the second place",
+      len(rows2) == 2 and abs(rows2[1][0] - (first_top + pitch)) < 20000 and abs(rows2[0][0] - first_top) < 20000, str(rows2))
+check("agenda, no research: the warning names what was left out",
+      any('"Next Steps" has no slide' in w for w in warns2) and any('"Market Research" has no slide' in w for w in warns2), str(warns2))
 
 print(f"{sum(results)}/{len(results)} passed")
 sys.exit(0 if all(results) else 1)

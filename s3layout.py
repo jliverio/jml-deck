@@ -271,9 +271,10 @@ def apply(prs, values, plan, s3):
 
 
 def apply_file_layout(prs, plan, s3):
-    """Template 1.5.4: the template file is the deck, so nothing is reordered. Only two things happen here:
-    a plan longer than 24 semesters loses its plan slides (as in 1.5), and the assumptions the draft rests on
-    (payload s3.assumptions) go on an appendix slide after the closing slide. No fees slide: the file has none."""
+    """Template 1.5.4: the template file is the deck, so no slide is reordered. Three things happen here:
+    a plan longer than 24 semesters loses its plan slides (as in 1.5); the agenda lists only the topics that
+    have a slide, closed up and renumbered; and the assumptions the draft rests on (payload s3.assumptions)
+    go on an appendix slide after the closing slide. No fees slide: the file has none."""
     warnings = []
     s3 = s3 or {}
     plan = plan if isinstance(plan, dict) else {}
@@ -286,11 +287,60 @@ def apply_file_layout(prs, plan, s3):
             if any(sh.name.startswith("workplan:") for sh in s.shapes):
                 prs.part.drop_rel(el.get(qn("r:id")))
                 lst.remove(el)
+    warnings.extend(_tidy_agenda(prs))
     items = [a for a in (s3.get("assumptions") or []) if str(a.get("text", "")).strip()]
     if items:
         _Builder(prs).assumptions(items[:5], "Appendix")      # added last: after the closing slide
     else:
         warnings.append("no assumptions in the payload; the assumptions slide is left out")
+    return warnings
+
+
+def _tidy_agenda(prs):
+    """Agenda of template 1.5.4 (rows are groups named agenda:row:N, tools/make_template_1_5_4.py).
+    varfill has already removed the rows whose topic is empty. Here a topic with no slide of its own goes too
+    (no research: "Market Research"; a flow that still sends "Next Steps"), and the rows left move up into
+    the first places and are numbered 1, 2, 3."""
+    import re
+    warnings = []
+    agenda, rows = None, []
+    for s in prs.slides:
+        found = [(int(sh.name.rsplit(":", 1)[1]), sh) for sh in s.shapes
+                 if sh.shape_type == 6 and re.fullmatch(r"agenda:row:\d+", sh.name)]
+        if found:
+            agenda, rows = s, sorted(found, key=lambda r: r[0])
+            break
+    if agenda is None:
+        return warnings
+    titles = [_title(s) for s in prs.slides if s is not agenda]
+
+    def parts(g):
+        kids = [x for x in g.shapes if x.has_text_frame]
+        num = next((x for x in kids if x.text_frame.text.strip().isdigit() and x.width < 600000), None)
+        txt = next((x for x in kids if num is None or x._element is not num._element), None)
+        return num, txt
+
+    # where the rows stand in the template: first row's top and the distance between rows
+    pitch = top0 = None
+    if len(rows) >= 2:
+        (ia, ga), (ib, gb) = rows[0], rows[-1]
+        pitch = (gb.top - ga.top) / (ib - ia)
+        top0 = ga.top - (ia - 1) * pitch
+    kept = []
+    for i, g in rows:
+        _, txt = parts(g)
+        name = txt.text_frame.text.strip() if txt is not None else ""
+        if name and not any(t == name or t.startswith(name + " |") for t in titles):
+            warnings.append(f"agenda: \"{name}\" has no slide and is left out")
+            g._element.getparent().remove(g._element)
+            continue
+        kept.append(g)
+    for k, g in enumerate(kept, 1):
+        num, _ = parts(g)
+        if num is not None and num.text_frame.paragraphs and num.text_frame.paragraphs[0].runs:
+            num.text_frame.paragraphs[0].runs[0].text = str(k)
+        if pitch is not None:
+            g.top = Emu(int(top0 + (k - 1) * pitch))
     return warnings
 
 
