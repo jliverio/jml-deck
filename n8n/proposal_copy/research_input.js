@@ -10,4 +10,8 @@ let why_not = '';
 if (!company) why_not = 'The brief names no client.';
 else if (!/^https?:\/\/[^\s\/]+\.[a-z]{2,}/i.test(url)) why_not = 'No website was found for ' + company + '.';
 else if (prof.client_verified === false) why_not = company + ' could not be confirmed online, so its website was not researched.';
-return [{ json: { research_go: !why_not, why_not, company, url: why_not ? '' : url, product: '', folder_name: '', max_pages: 60, test_force_fail: 0, test_force_fail_always: false } }];
+// Time limit (23 Nov): the flow starts the research and does not wait inside it. It makes the run id here, so it can
+// read the research's rows in run_log, and stops waiting after research_limit_s seconds (12 minutes).
+const slug = company.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 30) || 'company';
+return [{ json: { research_go: !why_not, why_not, company, url: why_not ? '' : url, product: '', folder_name: '', max_pages: 60, test_force_fail: 0, test_force_fail_always: false,
+  run_id: why_not ? '' : 'run-par-' + slug + '-' + Date.now(), research_started_at: new Date().toISOString(), research_limit_s: 720 } }];
