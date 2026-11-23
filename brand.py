@@ -92,10 +92,13 @@ def hue_gap(h1, h2):
 # 1E3A5F is left out: it is the navy of the JML logo (cover and closing), which keeps its own colours.
 JML_BLUES = ["051C2C", "061F32", "062032", "142B4C", "00335A", "03527B", "1877A2", "2E868C", "22A3DF",
              "A2D5EC", "E6E9EE", "2222F6", "3478AB", "00A9F4", "1F40E6", "AAE6F0", "3C96B4", "AFC3FF", "034B6F",
-             "027AB1", "39BDF3", "71D2F1"]
+             "027AB1", "39BDF3", "71D2F1",
+             "1977A2", "93D7EF"]            # 23 Nov: two header bars of template 1.5.4 (objectives slide)
 JML_ACCENT = "F8BC3B"                       # phase gates
 REF_CHROMA = hex_to_oklch("22A3DF")[1]      # our signature blue; the client's colour takes its place
-COVER_HUE = 205.0                           # dominant hue of the cover photograph (HSV degrees)
+COVER_HUE = 205.0                           # hue of a JML photograph when it cannot be measured (HSV degrees)
+BLUE_BAND = (170.0, 260.0)                  # hues that count as "our blue" in a picture
+PHOTO_SHARE = 0.5                           # a picture is one of our photographs when half of what shows is that blue
 
 
 def build_mapping(primary, accent=None):
@@ -112,26 +115,82 @@ def build_mapping(primary, accent=None):
     return mapping
 
 
+def _blue_photo(im):
+    """Is this picture one of the deck's blue photographs (cover, closing)? Returns its own blue hue in degrees, or
+    None. Screenshots, logos and icons are mostly white, grey or another colour: they are left as they are."""
+    small = im.convert("RGBA").resize((64, 64))
+    rgba = small.tobytes()
+    hsv = small.convert("RGB").convert("HSV").tobytes()
+    shown = 0
+    hues = []
+    for k in range(64 * 64):
+        if rgba[4 * k + 3] < 40:                 # transparent: not part of the picture
+            continue
+        shown += 1
+        h, s, v = hsv[3 * k] * 360 / 255, hsv[3 * k + 1], hsv[3 * k + 2]
+        if s > 60 and v > 40 and BLUE_BAND[0] <= h <= BLUE_BAND[1]:
+            hues.append(h)
+    if not shown or len(hues) < PHOTO_SHARE * shown:
+        return None
+    hues.sort()
+    return hues[len(hues) // 2]
+
+
 def _shift_photo(data, primary):
-    """Hue-shift a photograph from our blue to the client's hue; a grey brand gives a grey photograph."""
+    """Hue-shift one of our blue photographs to the client's hue; a grey brand gives a grey photograph. Returns the
+    new bytes, or None when the picture is not one of our photographs. Transparency is kept (the 1.5.4 cover is a
+    drawing on a transparent ground)."""
     _, C, _ = hex_to_oklch(primary)
     r, g, b = (int(primary[i:i + 2], 16) for i in (0, 2, 4))
     target = Image.new("RGB", (1, 1), (r, g, b)).convert("HSV").getpixel((0, 0))[0] * 360 / 255
     im = Image.open(io.BytesIO(data))
     fmt = im.format or "JPEG"
     im.draft("RGB", (2400, 2400))            # decode a large JPEG at reduced size: memory stays small on Render
-    im = im.convert("RGB")
+    if im.mode == "P" and "transparency" in im.info:
+        im = im.convert("RGBA")
     if im.width > 2400:
         im = im.resize((2400, round(im.height * 2400 / im.width)))
-    shift = round((target - COVER_HUE) * 255 / 360)
+    own = _blue_photo(im)
+    if own is None:
+        return None
+    alpha = im.getchannel("A") if im.mode in ("RGBA", "LA") else None
+    im = im.convert("RGB")
+    shift = round((target - own) * 255 / 360)
     sat = min(1.0, C / 0.12)
     h, s, v = im.convert("HSV").split()
     h = h.point(lambda x: (x + shift) % 256)
     s = s.point(lambda x: round(x * sat))
     out = Image.merge("HSV", (h, s, v)).convert("RGB")
     buf = io.BytesIO()
-    out.save(buf, fmt, quality=88)
+    if alpha is not None and fmt.upper() == "PNG":
+        out.putalpha(alpha)
+        out.save(buf, "PNG")
+    else:
+        out.save(buf, fmt, quality=88)
     return buf.getvalue()
+
+
+def _logo_media(z):
+    """Media files shown as a logo (picture shapes named "logo:...", placed by research_slides.py): a client's or
+    a competitor's logo keeps its own colours whatever they are."""
+    out = set()
+    names = set(z.namelist())
+    for n in names:
+        m = re.match(r"ppt/slides/(slide\d+)\.xml$", n)
+        if not m:
+            continue
+        rids = set()
+        for pic in re.findall(r"<p:pic>.*?</p:pic>", z.read(n).decode("utf8"), re.S):
+            if re.search(r'<p:cNvPr\b[^>]*\bname="logo:', pic):
+                rids.update(re.findall(r'r:embed="([^"]+)"', pic))
+        rels = f"ppt/slides/_rels/{m.group(1)}.xml.rels"
+        if rids and rels in names:
+            for rel in re.findall(r"<Relationship\b[^>]*>", z.read(rels).decode("utf8")):
+                rid = re.search(r'\bId="([^"]+)"', rel)
+                tgt = re.search(r'\bTarget="([^"]+)"', rel)
+                if rid and tgt and rid.group(1) in rids:
+                    out.add("ppt/media/" + tgt.group(1).rsplit("/", 1)[-1])
+    return out
 
 
 def recolor_pptx(pptx_bytes, primary, accent=None):
@@ -140,6 +199,7 @@ def recolor_pptx(pptx_bytes, primary, accent=None):
     mapping = build_mapping(primary, accent.lstrip("#").upper() if accent else None)
     pat = re.compile(r'(srgbClr val=")(' + "|".join(mapping) + r')(")', re.I)
     zin = zipfile.ZipFile(io.BytesIO(pptx_bytes))
+    logos = _logo_media(zin)
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zout:
         for it in zin.infolist():
@@ -147,8 +207,12 @@ def recolor_pptx(pptx_bytes, primary, accent=None):
             if it.filename.startswith("ppt/") and it.filename.endswith(".xml"):
                 data = pat.sub(lambda m: m.group(1) + mapping[m.group(2).upper()] + m.group(3),
                                data.decode("utf8")).encode("utf8")
-            elif re.match(r"ppt/media/.+\.(jpe?g|png)$", it.filename, re.I) and len(data) > 200_000:
-                data = _shift_photo(data, primary)   # the cover and closing photographs, not icons
+            elif (re.match(r"ppt/media/.+\.(jpe?g|png)$", it.filename, re.I) and len(data) > 200_000
+                  and it.filename not in logos):
+                try:                                 # our blue photographs (cover, closing); nothing else
+                    data = _shift_photo(data, primary) or data
+                except Exception:
+                    pass                             # a picture that cannot be read stays as it is
             zout.writestr(it, data)
     return buf.getvalue(), mapping
 

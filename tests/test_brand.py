@@ -82,6 +82,97 @@ check("medium evidence does not repaint the deck (Feedzai's near-grey olive)", r
 logo = zipfile.ZipFile(io.BytesIO(brand.recolor_pptx(open("template.pptx", "rb").read(), "E60000")[0])).read("ppt/slides/slide1.xml").decode().upper()
 check("the JML logo keeps its navy and green (only the deck's blues change)", "1E3A5F" in logo and "5DCAA5" in logo, None)
 
+# 4. template 1.5.4, José's own file (23 Nov, plan step 5): the two market research slides, the approach panel,
+#    a cover drawn on a transparent ground, a slide of screenshots, and logos read from websites
+import base64
+import varfill
+from PIL import Image
+HERE = os.path.dirname(os.path.abspath(__file__))
+RULES154 = json.load(open(os.path.join(HERE, "..", "variables", "template_variables_1_5_4.json"), encoding="utf8"))
+CASE = json.load(open(os.path.join(HERE, "research_cases.json"), encoding="utf8"))["n8n"]
+PLAN = json.load(open(os.path.join(HERE, "metalco_1_4.json"), encoding="utf8"))["workplan"]
+
+
+def _png(color, size=(900, 500), noise=False):
+    im = Image.new("RGB", size, color)
+    if noise:                                   # noise makes the file large, like a photograph
+        px = im.load()
+        for y in range(size[1]):
+            for x in range(size[0]):
+                r, g, b = color
+                k = (x * 7919 + y * 104729) % 23
+                px[x, y] = (min(255, r + k), min(255, g + k), min(255, b + k))
+    buf = io.BytesIO(); im.save(buf, "PNG"); return buf.getvalue()
+
+
+blue_logo = _png((20, 110, 200), (700, 300))
+deck154, _ = varfill.build_deck({**CASE, "footer_01": "n8n | Draft for discussion"}, RULES154, workplan=PLAN, version="1.5.4",
+                                last_resort=True, s3={"assumptions": [{"id": "A1", "text": "x", "if_wrong": "y"}]},
+                                logos={"competitor_01": base64.b64encode(blue_logo).decode(),
+                                       "client": base64.b64encode(blue_logo).decode()})
+z0 = zipfile.ZipFile(io.BytesIO(deck154))
+red154, _ = brand.recolor_pptx(deck154, "E60000")
+z1 = zipfile.ZipFile(io.BytesIO(red154))
+slides = [n for n in z1.namelist() if re.match(r"ppt/slides/slide\d+\.xml$", n)]
+left = sorted({(n.split("/")[-1], c.upper()) for n in slides
+               for c in re.findall(r'srgbClr val="([0-9A-Fa-f]{6})"', z1.read(n).decode("utf8"))
+               if c.upper() in brand.JML_BLUES})
+check("1.5.4: no JML blue is left on any slide after the repaint", not left, left[:6])
+check("1.5.4: the two bars of the objectives slide are in the ladder", {"1977A2", "93D7EF"} <= set(brand.JML_BLUES), None)
+media = [n for n in z0.namelist() if re.match(r"ppt/media/.+\.(png|jpe?g)$", n, re.I)]
+changed = [n for n in media if z0.read(n) != z1.read(n)]
+photos = [n for n in media if len(z0.read(n)) > 200_000 and brand._blue_photo(Image.open(io.BytesIO(z0.read(n)))) is not None]
+check("1.5.4: only the blue photographs are repainted (cover, closing)", changed and sorted(changed) == sorted(photos), (changed, photos))
+shots = [n for n in media if len(z0.read(n)) > 200_000 and n not in photos]
+check("1.5.4: the screenshots of the experience slide are left as they are", shots and all(z0.read(n) == z1.read(n) for n in shots), shots)
+cover = [n for n in changed if Image.open(io.BytesIO(z0.read(n))).mode == "RGBA"]
+ok_alpha = bool(cover)
+for n in cover:
+    a0 = Image.open(io.BytesIO(z0.read(n))).getchannel("A"); im1 = Image.open(io.BytesIO(z1.read(n)))
+    ok_alpha = ok_alpha and im1.mode == "RGBA" and im1.size == a0.size and im1.getchannel("A").tobytes() == a0.tobytes()
+check("1.5.4: the cover drawing keeps its transparent ground (it came out on black before)", ok_alpha, cover)
+logos154 = brand._logo_media(z0)
+check("1.5.4: the logo pictures are found by their shape names", len(logos154) >= 1, logos154)
+check("1.5.4: logos are never repainted", all(z0.read(n) == z1.read(n) for n in logos154), None)
+big_blue = _png((20, 110, 200), (900, 500), noise=True)
+check("a blue picture alone would be repainted (so the logo rule is what protects a blue logo)",
+      brand._shift_photo(big_blue, "E60000") is not None, len(big_blue))
+check("a white screenshot and a red photograph are not ours: left alone",
+      brand._shift_photo(_png((250, 250, 250), noise=True), "E60000") is None
+      and brand._shift_photo(_png((200, 30, 40), noise=True), "007A33") is None, None)
+shifted = Image.open(io.BytesIO(brand._shift_photo(big_blue, "007A33"))).convert("RGB").resize((8, 8)).convert("HSV")
+hue = sorted(shifted.tobytes()[0::3])[32] * 360 / 255
+want = Image.new("RGB", (1, 1), (0, 0x7A, 0x33)).convert("HSV").getpixel((0, 0))[0] * 360 / 255
+check("the photograph lands on the client's hue, measured from the photograph's own blue", abs(hue - want) < 8, (round(hue), round(want)))
+
+# 5. all text stays readable. The deck writes white on the dark and middle steps and dark on the two light steps.
+#    White text may lose at most 5% of its contrast; dark text on the light panels at most 10%, and stays above 10:1.
+WHEEL = {"red": "E60000", "orange": "F26522", "yellow": "FFD100", "green": "00843D", "teal": "00A0AF",
+         "blue": "0058A3", "purple": "5405BD", "magenta": "C6007E", "near-black": "1A1A1A", "pastel": "A8D5BA"}
+STEPS = ["051C2C", "062032", "03527B", "1877A2", "22A3DF", "A2D5EC", "E6E9EE"]
+worst = []
+low_white, low_dark = 1.0, 1.0
+for name, c in WHEEL.items():
+    m = brand.build_mapping(c)
+    for s in STEPS:
+        ratio = brand.contrast(m[s], "FFFFFF") / brand.contrast(s, "FFFFFF")
+        low_white = min(low_white, ratio)
+        if ratio < 0.95:
+            worst.append((name, "white on " + s, round(ratio, 3)))
+    for light in ("A2D5EC", "E6E9EE"):
+        for dark, was in ((m["051C2C"], "051C2C"), ("000000", "000000")):
+            now = brand.contrast(dark, m[light])
+            ratio = now / brand.contrast(was, light)
+            low_dark = min(low_dark, ratio)
+            if ratio < 0.90 or now < 10:
+                worst.append((name, was + " on " + light, round(ratio, 3), round(now, 1)))
+    if brand.contrast(m["051C2C"], "FFFFFF") < 12:
+        worst.append((name, "white on the darkest step"))
+check("contrast: ten client colours round the wheel keep the deck's text contrast", not worst, worst[:5])
+check("contrast: white text loses at most 5%, dark text on light panels at most 10%",
+      low_white >= 0.95 and low_dark >= 0.90, (round(low_white, 3), round(low_dark, 3)))
+print(f"contrast against the JML deck, worst case: white text {low_white:.3f}, dark text on light panels {low_dark:.3f}")
+
 failed = [x for x in results if not x[1]]
 for n, ok, d in results:
     print(("PASS " if ok else "FAIL ") + n + ("" if ok else f"  -> {d}"))
