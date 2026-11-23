@@ -16,5 +16,10 @@ const slug = company.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/
 // A test brief may set a shorter limit ("research_limit_s" in its body), to prove that the flow goes on without the research.
 let limit = 720;
 try { const t = Number((($('Test brief (no email)').first().json.body) || {}).research_limit_s); if (t >= 20 && t <= 720) limit = t; } catch (e) { limit = 720; }
-return [{ json: { research_go: !why_not, why_not, company, url: why_not ? '' : url, product: '', folder_name: '', max_pages: 60, test_force_fail: 0, test_force_fail_always: false,
+// Product in focus (23 Nov, after step 7): the brief's own subject when the brief is about something the client sells
+// (the Client Profiler's problem_focus is offering or both). Without it the research picked the product the client's
+// home page leads with: a current account for a brief on small business lending. A brief about anything else (a topic)
+// leaves it empty, and the research describes the client's lead product as before.
+const product = ['offering', 'both'].includes(prof.problem_focus) ? s(prof.product).slice(0, 120) : '';
+return [{ json: { research_go: !why_not, why_not, company, url: why_not ? '' : url, product: why_not ? '' : product, folder_name: '', max_pages: 60, test_force_fail: 0, test_force_fail_always: false,
   run_id: why_not ? '' : 'run-par-' + slug + '-' + Date.now(), research_started_at: new Date().toISOString(), research_limit_s: limit } }];

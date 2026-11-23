@@ -12,6 +12,18 @@ r = run('research_input.js', { 'Test brief (no email)': { body: { research_limit
 ok(r.research_limit_s === 30, 'a test brief may shorten the limit');
 r = run('research_input.js', { 'Test brief (no email)': { body: { research_limit_s: 99999 } } }, { output: { client_name: 'Equal Food', client_url: 'www.equalfood.co', client_verified: true } });
 ok(r.research_limit_s === 720, 'never longer than 12 minutes');
+// product in focus: the brief's subject when the brief is about an offering; empty for a topic
+const prof = (o) => ({ output: Object.assign({ client_name: 'Millennium bcp', client_url: 'https://www.millenniumbcp.pt', client_verified: true }, o) });
+r = run('research_input.js', {}, prof({ problem_focus: 'both', product: 'Small-business onboarding and first loan (credit decision)' }));
+ok(r.product === 'Small-business onboarding and first loan (credit decision)', 'both: the product goes to the research');
+r = run('research_input.js', {}, prof({ problem_focus: 'offering', product: 'x'.repeat(200) }));
+ok(r.product.length === 120, 'a long product is cut at 120 characters');
+r = run('research_input.js', {}, prof({ problem_focus: 'topic', topic: 'finance operating model', product: null }));
+ok(r.product === '' && r.research_go === true, 'topic: no product, the research still runs');
+r = run('research_input.js', {}, prof({ problem_focus: 'offering', product: null }));
+ok(r.product === '', 'no product named: empty');
+r = run('research_input.js', {}, { output: { client_name: 'Atrium', client_url: '', problem_focus: 'offering', product: 'Care plans' } });
+ok(r.research_go === false && r.product === '', 'no research: no product');
 r = run('research_input.js', {}, { output: { client_name: 'Chips4all', client_url: 'https://chips4all.example.com', client_verified: false } });
 ok(r.research_go === false && r.why_not.includes('could not be confirmed'));
 r = run('research_input.js', {}, { output: { client_url: 'https://x.pt' } });

@@ -15,7 +15,7 @@ Copies of the Code nodes that step 6 added to or changed in "TEST: Proposal flow
 | read_attachments.js | Read attachments: the files of the reply as base64 (several files) |
 | build_mime.js | Build MIME: the email itself; a test brief becomes a draft |
 
-Tests without n8n: `node n8n/proposal_copy/t_wiring.js` (29 checks) and `node n8n/proposal_copy/t_reply.js` (46 + 3 checks).
+Tests without n8n: `node n8n/proposal_copy/t_wiring.js` (34 checks) and `node n8n/proposal_copy/t_reply.js` (46 + 3 checks).
 
 ## The time limit
 
@@ -73,3 +73,14 @@ Open for step 8: either the live "JML send reply" takes these two nodes (old req
 field names), or the reply stays inside the proposal flow.
 
 Working record of the step: project note `Plan_Step6_Wiring_Nov23.md`.
+
+## Product in focus (23 Nov, after step 7)
+
+"Research input" passes the Client Profiler's `product` to the research when the brief is about an offering
+(`problem_focus` offering or both); a brief about a topic passes nothing and the research describes the client's lead
+product, as before. For this the research stage "3 Position and product" (faD59YwI10ucFYob) now declares
+`product_in_focus` as an input of its trigger: the parallel parent always sent it, but the trigger dropped it, so the
+model always heard "The request names no product in focus". Step 7 showed the effect: for a brief on small business
+lending, Millennium bcp's slides compared current accounts and cards with four digital banks.
+
+`cost_parse.py`: reads the token use of every model call from saved n8n execution results (used for step 7).
