@@ -59,7 +59,25 @@ def health():
     return jsonify(ok=True, service="jml-deck", auth=bool(API_KEY),
                    renderer="variables-1.2", legacy=LEGACY,
                    template=os.path.exists(varfill.TEMPLATE),
-                   templates=sorted(varfill.TEMPLATES), extract=True, fit=_fit_ready(), logos=_logos_ready())
+                   templates=sorted(varfill.TEMPLATES), extract=True, fit=_fit_ready(), logos=_logos_ready(),
+                   approach_panel=_panel_ready())
+
+
+_PANEL = []
+
+
+def _panel_ready():
+    """Template 1.5.4 keeps the "Main Deliverables" panel on its approach slide (23 Nov) and the renderer draws
+    the phases beside it. True when both the template file and the code of this deploy have it. Worked out once:
+    it opens the template file."""
+    if not _PANEL:
+        try:
+            import workplan
+            prs = varfill._load_template(varfill.TEMPLATES["1.5.4"])
+            _PANEL.append(hasattr(workplan, "_panel") and any(workplan._panel(s) is not None for s in prs.slides))
+        except Exception:
+            _PANEL.append(False)
+    return _PANEL[0]
 
 
 def _logos_ready():
