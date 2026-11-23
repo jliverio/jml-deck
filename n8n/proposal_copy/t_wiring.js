@@ -8,6 +8,10 @@ ok(r.research_go === true && r.url === 'https://www.equalfood.co' && r.company =
 ok(/^run-par-equal-food-\d{13}$/.test(r.run_id) && r.research_limit_s === 720 && Math.abs(Date.parse(r.research_started_at) - Date.now()) < 5000, 'the run id and the time limit: ' + r.run_id);
 r = run('research_input.js', {}, { output: { client_name: 'Atrium', client_url: '', client_verified: true } });
 ok(r.research_go === false && r.url === '' && r.why_not.includes('No website') && r.run_id === '');
+r = run('research_input.js', { 'Test brief (no email)': { body: { research_limit_s: 30 } } }, { output: { client_name: 'Equal Food', client_url: 'www.equalfood.co', client_verified: true } });
+ok(r.research_limit_s === 30, 'a test brief may shorten the limit');
+r = run('research_input.js', { 'Test brief (no email)': { body: { research_limit_s: 99999 } } }, { output: { client_name: 'Equal Food', client_url: 'www.equalfood.co', client_verified: true } });
+ok(r.research_limit_s === 720, 'never longer than 12 minutes');
 r = run('research_input.js', {}, { output: { client_name: 'Chips4all', client_url: 'https://chips4all.example.com', client_verified: false } });
 ok(r.research_go === false && r.why_not.includes('could not be confirmed'));
 r = run('research_input.js', {}, { output: { client_url: 'https://x.pt' } });

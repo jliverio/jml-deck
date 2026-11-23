@@ -15,7 +15,7 @@ Copies of the Code nodes that step 6 added to or changed in "TEST: Proposal flow
 | read_attachments.js | Read attachments: the files of the reply as base64 (several files) |
 | build_mime.js | Build MIME: the email itself; a test brief becomes a draft |
 
-Tests without n8n: `node n8n/proposal_copy/t_wiring.js` (27 checks) and `node n8n/proposal_copy/t_reply.js` (43 + 3 checks).
+Tests without n8n: `node n8n/proposal_copy/t_wiring.js` (29 checks) and `node n8n/proposal_copy/t_reply.js` (43 + 3 checks).
 
 ## The time limit
 
@@ -35,6 +35,8 @@ For this the research parent takes an optional `run_id` input and writes its res
 
 Not covered: a research that stops with an error other than an unreadable website leaves its row at "running", so
 the flow waits the full 12 minutes before it goes on.
+
+A test brief may shorten the limit: `research_limit_s` (20 to 720) in its body. Real emails always get 720.
 
 ## The reply
 
