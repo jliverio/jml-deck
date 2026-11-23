@@ -9,6 +9,6 @@ Copies of the Code nodes that step 6 added to or changed in "TEST: Proposal flow
 | assemble_market.js | Assemble market (new code, same name): findings and warnings for the rest of the flow, plus `research` |
 | research_into_payload.js | Research into payload (new): the deck request becomes a template 1.5.4 request with the two research slides, the logos and the client colour |
 
-Test without n8n (21 checks): `node n8n/proposal_copy/t_wiring.js`
+Test without n8n (24 checks): `node n8n/proposal_copy/t_wiring.js`
 
 Working record of the step: project note `Plan_Step6_Wiring_Nov23.md`.

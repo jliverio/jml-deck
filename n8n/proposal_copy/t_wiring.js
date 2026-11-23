@@ -33,18 +33,21 @@ ok(a.market_warnings.length === 2 && a.market_warnings[0].includes('partial: thi
 a = run('assemble_market.js', { 'Research input': inp, 'Market research': res, 'Slide values': { values: {}, slides: { profile: false, compare: false }, thin: ['the research found nothing for the two slides'] } });
 ok(a.market_findings.length === 0 && a.market_warnings.some(w => w.includes('found nothing')) && a.research.ran);
 // 3. the deck request for template 1.5.4
-const flow = { values: { objective_01: 'Decide where to grow next', summary_title_01: 'Two phases take n8n from diagnosis to a decision', section_01: 'Context', finding_01_headline: 'old slide', situation_01: 'old' }, rules: [{ variable: 'finding_01_headline', max_chars: 80, if_empty: 'drop_slide' }], template: '1.5', workplan: { phases: [] }, s3: { assumptions: [] }, email: { subject: 's' }, meta: { filename: 'n8n_proposal_draft.pptx' }, warnings: [] };
+const flow = { values: { objective_01: 'Decide where to grow next', summary_title_01: 'Two phases take n8n from diagnosis to a decision', section_01: 'Executive Summary', section_02: 'Context', section_03: 'Approach', section_04: 'Next Steps', cover_subtitle_01: 'A proposal for n8n', footer_01: 'n8n | Draft for discussion', finding_01_headline: 'old slide', situation_01: 'old' }, rules: [{ variable: 'finding_01_headline', max_chars: 80, if_empty: 'drop_slide' }], template: '1.5', workplan: { phases: [] }, s3: { assumptions: [] }, email: { subject: 's' }, meta: { filename: 'n8n_proposal_draft.pptx' }, warnings: [] };
 const nodes = { 'Slide values': sv, 'Assemble market': run('assemble_market.js', { 'Research input': inp, 'Market research': res, 'Slide values': sv, 'Read client colour': { primary: 'EA4B71', confidence: 'high', apply: true } }), 'checkProfiler': { output: { client_name: 'n8n GmbH' } } };
 let p = run('research_into_payload.js', nodes, flow);
 ok(p.template === '1.5.4' && p.rules.length === 76 && p.rules.every(x => x.variable && 'max_chars' in x && x.if_empty) && !p.rules.some(x => x.variable.startsWith('finding_')));
 ok(p.values.profile_title_01 === V.profile_title_01 && p.values.compare_title_01 === V.compare_title_01 && p.values.objective_01 === 'Decide where to grow next' && p.values.competitor_01_name === V.competitor_01_name);
 ok(p.values.cover_subtitle_01 === 'A proposal for n8n' && p.values.footer_01 === 'n8n | Draft for discussion' && p.values.section_02 === 'Market Research' && /^\d{1,2} [A-Z][a-z]+ \d{4}$/.test(p.values.cover_date_01), JSON.stringify([p.values.cover_subtitle_01, p.values.cover_date_01]));
 ok(p.logos.client === 'AAAA' && p.brand.primary === 'EA4B71' && p.research_slides === true);
+ok(p.values.section_01 === 'Executive Summary' && p.values.section_02 === 'Market Research' && p.values.section_03 === 'Approach' && p.values.section_04 === '' && p.values.section_07 === '', 'the agenda of 1.5.4: ' + JSON.stringify([p.values.section_01, p.values.section_02, p.values.section_03, p.values.section_04]));
 ok(p.workplan && p.s3 && p.email.subject === 's' && p.meta.filename === 'n8n_proposal_draft.pptx', 'everything else in the request is kept');
 p = run('research_into_payload.js', { 'Assemble market': { research: { slides: { profile: false, compare: false }, brand: null } }, 'checkProfiler': { output: { client_name: 'Atrium' } } }, flow);
 ok(p.template === '1.5.4' && p.values.profile_title_01 === '' && p.values.compare_title_01 === '' && p.values.competitor_01_name === '' && !('brand' in p) && Object.keys(p.logos).length === 0 && p.research_slides === false);
-ok(p.values.cover_subtitle_01 === 'A proposal for Atrium' && p.values.client_name_01 === 'Atrium' && p.values.objective_01 === 'Decide where to grow next');
+ok(p.values.cover_subtitle_01 === 'A proposal for n8n' && p.values.client_name_01 === 'Atrium' && p.values.objective_01 === 'Decide where to grow next', 'the flow\'s own cover text is kept');
+ok(p.values.section_02 === '' && p.values.section_01 === 'Executive Summary' && p.values.section_04 === '', 'no research: no Market Research topic');
 p = run('research_into_payload.js', { 'Slide values': sv, 'Assemble market': nodes['Assemble market'] }, {});
 ok(p.template === '1.5.4' && p.values.client_name_01 === V.client_name_01, 'an empty request still gives a 1.5.4 request');
+ok(p.values.section_01 === 'Executive Summary' && p.values.section_03 === 'Approach' && p.values.cover_title_01 === 'Consulting Proposal' && p.values.footer_01.startsWith(V.client_name_01), 'missing texts fall back to the fixed texts');
 if (process.argv[2]) fs.writeFileSync(process.argv[2], JSON.stringify(run('research_into_payload.js', nodes, flow)));
 console.log(n + ' checks passed');

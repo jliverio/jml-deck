@@ -15,11 +15,19 @@ const R = get('Assemble market').research || {};
 const prof = get('checkProfiler').output || {};
 const client = String((sv.values && sv.values.client_name_01) || prof.client_name || '').replace(/\*\*|__/g, '').trim();
 const values = Object.assign({}, p.values || {});
-for (const [variable, , , fixed] of RULES) if (fixed !== undefined) values[variable] = String(fixed).replace(/\{client_name\}/g, client);
+// A fixed text of 1.5.4 fills a variable only when the flow left it empty. The agenda entries are set below.
+for (const [variable, , , fixed] of RULES) if (fixed !== undefined && !/^section_/.test(variable) && !String(values[variable] || '').trim()) values[variable] = String(fixed).replace(/\{client_name\}/g, client);
 const hasSlides = !!(R.slides && (R.slides.profile || R.slides.compare));
 if (hasSlides) Object.assign(values, sv.values || {});
 else for (const [variable] of RULES) if (/^(profile_title|compare_title|client_point|competitor|product|value_layer|details|sources_profile|sources_compare)_/.test(variable)) values[variable] = '';
 if (!values.client_name_01) values.client_name_01 = client;
+// The agenda of 1.5.4 has three topics: Executive Summary, Market Research (only with the research slides) and
+// Approach. The flow still names the topics of the 1.5 deck (Context, Next Steps), which have no slide here
+// (first test run, 23 Nov: "Next Steps" came out twice on the agenda).
+values.section_01 = String(values.section_01 || '').trim() || 'Executive Summary';
+values.section_02 = hasSlides ? 'Market Research' : '';
+values.section_03 = String(values.section_03 || '').trim() || 'Approach';
+for (const k of ['04', '05', '06', '07']) values['section_' + k] = '';
 const d = new Date();
 values.cover_date_01 = d.getUTCDate() + ' ' + MONTHS[d.getUTCMonth()] + ' ' + d.getUTCFullYear();
 const out = Object.assign({}, p, {
