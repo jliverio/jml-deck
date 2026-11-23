@@ -1064,10 +1064,50 @@ def _steering_line(meetings, who, phases, limit=150):
     return next((o for o in options if len(o) <= limit), options[-1])
 
 
+PANEL_GAP = Emu(61900)          # template 1.5.4: room between the last phase and the panel, as in José's file
+
+
+def _panel(slide):
+    """The "Main Deliverables" panel of template 1.5.4's approach slide (shapes named approach:panel:*, kept
+    exactly as José drew them; 23 Nov). -> (left, top, bottom, heading height), or None when the slide has none."""
+    shapes = [sh for sh in slide.shapes if sh.name.startswith("approach:panel") and sh.left is not None]
+    if not shapes:
+        return None
+    head = next((sh for sh in shapes if sh.name == "approach:panel:head"), None)
+    return (min(sh.left for sh in shapes), min(sh.top for sh in shapes),
+            max(sh.top + sh.height for sh in shapes), head.height if head is not None else None)
+
+
+def _fits(text, w, h, size, bold=False, italic=False):
+    import fit
+    return fit.lines_of([(text, size, bold, italic)], w / 12700.0) * size * fit.LINE <= h / 12700.0 + fit.SLACK
+
+
+def _fit_text(text, w, h, sizes, bold=False, italic=False):
+    """The largest of `sizes` at which `text` fits a box of w by h (EMU), measured with the deck's letter widths
+    (fit.py). A text too long at the smallest size is cut at a word and ends in an ellipsis. -> (size, text)"""
+    text = " ".join(str(text or "").split())
+    for size in sizes:
+        if _fits(text, w, h, size, bold, italic):
+            return size, text
+    size = sizes[-1]
+    words = text.split()
+    while len(words) > 1:
+        words.pop()
+        cut = " ".join(words).rstrip(" ,.;:–-") + "…"
+        if _fits(cut, w, h, size, bold, italic):
+            return size, cut
+    return size, _clip(text, max(4, int(w / 12700.0 / (size * 0.6))))
+
+
 def roadmap_slide(prs, plan, section, client, slide=None):
     """Approach overview: one column per phase (its scope or what it answers, when it ends,
     the decision that closes it) and a governance strip. Everything is read
-    from the plan; the scope and decision texts are the planner's, the rest is built here."""
+    from the plan; the scope and decision texts are the planner's, the rest is built here.
+
+    Template 1.5.4 keeps a panel on the right of this slide (_panel). The phases and the strip are then drawn in
+    the room to its left. Each kind of text (phase names, scopes, decisions...) takes the largest size at which it
+    fits its narrower box in every column, so the columns stay alike."""
     s = _new_slide(prs, titles(plan)["roadmap"], "Approach overview: phases, decisions and how we work together",
                    section, slide=slide)
     if plan.get("_unit"):
@@ -1079,75 +1119,126 @@ def roadmap_slide(prs, plan, section, client, slide=None):
     events = plan["governance"]["events"]
     n = len(phases)
     gap = Inches(0.12)
-    cw = (W - gap * (n - 1)) / n
-    chev_h = Inches(0.62)
+    pan = _panel(s)
+    Wc = W if pan is None else pan[0] - PANEL_GAP - L          # the room the phases have
+    cw = (Wc - gap * (n - 1)) / n
+    chev_h = Inches(0.62) if pan is None or not pan[3] else pan[3]
     y = TOP - Inches(0.2) if plan.get("_unit") else TOP   # 1.5: the subtitle is gone, the content moves up into its room
+    if pan is not None:
+        y = pan[1]                                             # level with the panel's heading
     scoped = any(str(p.get("scope") or "").strip() for p in phases)   # plans whose planner wrote a scope per phase
     strip_h = Inches(1.0)
     scope_h = SCOPE_H
+    sy = (BOTTOM - Inches(0.05) if pan is None else pan[2]) - strip_h     # top of the governance strip
+    tw = cw - Inches(0.1)                                      # width of a column's text
     gates = {e["phase_order"]: e for e in events if e["type"] == "gate"}
     kick = next((e for e in events if e["type"] == "kickoff"), None)
+    # the texts of each column
+    cols = []
     for i, p in enumerate(phases):
-        x = L + i * (cw + gap)
-        shape = MSO_SHAPE.PENTAGON if i == 0 else MSO_SHAPE.CHEVRON
-        ch = _box(s, x, y, cw + (gap if i < n - 1 else 0), chev_h, fill=_phase_color(p["order"]), shape=shape)
-        ch.adjustments[0] = 0.25
         weeks = _range(plan, p["start_week"], p["end_week"]) if p.get("start_week") else ""
-        tf = ch.text_frame
-        tf.margin_left = Inches(0.3) if i else Inches(0.15)
-        _text(ch, [f"Phase {p['order']}: {p['name']}", f"{weeks} ({_dur(plan, p)})" if weeks
-                   else _dur(plan, p)], size=12, bold=True, color=_ink(_phase_color(p["order"])))
-        tf.paragraphs[1].runs[0].font.bold = False
-        tf.paragraphs[1].runs[0].font.size = Pt(10)
+        c = {"head": [f"Phase {p['order']}: {p['name']}", f"{weeks} ({_dur(plan, p)})" if weeks else _dur(plan, p)]}
         # what it waits for (José, Oct 18: the sequence belongs on this slide)
         if i == 0:
-            starts = f"Starts at the kick-off, {_at(plan, kick['week'] if kick else 1)}"
-            if len(starts) > int((cw - Inches(0.1)) / Inches(0.075)):
-                starts = f"{_at(plan, kick['week'] if kick else 1, True)}, at the kick-off"
+            c["opts"] = [f"Starts at the kick-off, {_at(plan, kick['week'] if kick else 1)}",
+                         f"{_at(plan, kick['week'] if kick else 1, True)}, at the kick-off"]
         else:
             pg = gates.get(phases[i - 1]["order"]) or {}
             plabel = (phases[i - 1].get("gate") or {}).get("label") or pg.get("label") or "previous decision"
             pw = pg.get('week') or phases[i - 1].get('end_week')
-            starts = f"Starts after the {plabel}, {_at(plan, pw)}"
-            if len(starts) > int((cw - Inches(0.1)) / Inches(0.075)):   # narrow columns (5 phases): keep the week
-                starts = f"{_at(plan, pw, True)}, after the {plabel}"
-            if len(starts) > int((cw - Inches(0.1)) / Inches(0.075)):   # still too long: name the phase, not the gate (Oct 19)
-                starts = f"{_at(plan, pw, True)}, after Phase {phases[i - 1]['order']}"
-        _text(s, _clip(starts, int((cw - Inches(0.1)) / Inches(0.075))), size=10, italic=True, color=GREY,
+            c["opts"] = [f"Starts after the {plabel}, {_at(plan, pw)}",
+                         f"{_at(plan, pw, True)}, after the {plabel}",       # narrow columns (5 phases): keep the week
+                         f"{_at(plan, pw, True)}, after Phase {phases[i - 1]['order']}"]   # still too long: name the phase, not the gate (Oct 19)
+        # José, 24-25 Oct: the phase's scope in the client's own terms replaces "What it answers" (at most
+        # 300 characters for 1-3 phases, 220 for 4-5); the gate block moves down into the room left free
+        c["body"] = (_clip(p.get("scope") or p.get("objective_one_line", ""), SCOPE_MAX[min(n, 5)]) if scoped
+                     else _clip(p.get("objective_one_line", ""), 170))
+        g = gates.get(p["order"]) or {}
+        gate = p.get("gate") or {}
+        c["label"] = gate.get("label") or g.get("label") or "Phase decision"
+        c["decision"] = gate.get("decision") or g.get("decision") or ""
+        c["wk"] = g.get("week") or p.get("end_week")
+        c["full"] = f"{c['label']}" + (f", {_at(plan, c['wk'])}" if c["wk"] else "")
+        cols.append(c)
+    # their sizes: by the number of phases, as since October
+    fitc = int((cw - Inches(0.1)) / Inches(0.075))
+    gfit = int((cw - Inches(0.34)) / Inches(0.085))
+    hsize, ssize, gsize = 12, 10, 11
+    bsize = SCOPE_PT[min(n, 5)] if scoped else (12 if n < 5 else 11)        # 5 columns: 11 pt (Oct 18)
+    dsize = 11 if n < 5 else 10
+    gy = y + chev_h + (Inches(0.58) + scope_h + Inches(0.05) if scoped else Inches(1.6))
+    dh = (sy - Inches(0.05) - gy - Inches(0.48)) if scoped or pan is not None else Inches(1.0)
+    margin = lambda i: Inches(0.3) if i else Inches(0.15)
+    for c in cols:
+        c["starts"] = _clip(next((o for o in c["opts"] if len(o) <= fitc), c["opts"][-1]), fitc)
+        c["short"] = len(c["full"]) > gfit and c["wk"]       # narrow columns (5 phases): the week moves to the decision line
+        c["gtext"] = _clip(c["label"] if c["short"] else c["full"], gfit)
+    if pan is not None:
+        # ... or, beside the panel, by measure: the largest size at which every column's text fits its box
+        import fit
+        one = lambda z: Emu(int(z * fit.LINE * 12700))
+        tip = chev_h * 0.25                                    # the arrow's point; a chevron's text starts and ends inside it
+        margin = lambda i: Inches(0.15) if i == 0 else (Inches(0.1) if cw < Inches(2.6) else Inches(0.3))
+        room = lambda i: (cw + (gap if i < n - 1 else 0) - (tip * 2 if i else tip / 2) - margin(i) - Emu(45720)) / 12700.0
+        high = (chev_h - Emu(18288) * 2) / 12700.0 + fit.SLACK
+        need = lambda i, z: (fit.lines_of([(cols[i]["head"][0], z, True, False)], room(i)) * z
+                             + fit.lines_of([(cols[i]["head"][1], z - 2, False, False)], room(i)) * (z - 2)) * fit.LINE
+        hsize = next((z for z in (12, 11, 10, 9) if all(need(i, z) <= high for i in range(n))), 9)
+        for i, c in enumerate(cols):
+            if need(i, hsize) > high:                          # a long phase name in a narrow column: one line each
+                c["head"][0] = _fit_text(c["head"][0], room(i) * 12700, one(hsize), (hsize,), bold=True)[1]
+                c["head"][1] = _fit_text(c["head"][1], room(i) * 12700, one(hsize - 2), (hsize - 2,))[1]
+        ok = lambda o, z: _fits(o, tw, one(z), z, italic=True)
+        ssize = next((z for z in (10, 9) if all(any(ok(o, z) for o in c["opts"]) for c in cols)), 9)
+        bh = scope_h if scoped else Inches(1.0)
+        bsize = next((z for z in range(bsize, 7, -1) if all(_fits(c["body"], tw, bh, z) for c in cols)), 8)
+        gw = cw - Inches(0.34)
+        text = lambda c, short: c["label"] if short and c["wk"] else c["full"]
+        pick = next(((z, sh) for z in (11, 10, 9) for sh in (False, True)
+                     if all(_fits(text(c, sh), gw, one(z), z, bold=True) for c in cols)), None)
+        gsize, short = pick if pick else (9, True)             # nothing fits one line: 9 pt on two lines
+        for c in cols:
+            c["starts"] = next((o for o in c["opts"] if ok(o, ssize)), None) or _fit_text(c["opts"][-1], tw, one(ssize), (ssize,), italic=True)[1]
+            c["body"] = _fit_text(c["body"], tw, bh, (bsize,))[1]
+            c["short"] = bool(short and c["wk"])
+            c["gtext"] = text(c, short) if pick else _fit_text(text(c, short), gw, Inches(0.3), (9,), bold=True)[1]
+    for c in cols:
+        c["dtext"] = _clip((f"{_at(plan, c['wk'], True)} decision: " if c["short"] else "Decision: ") + c["decision"], 190)
+    if pan is not None:
+        dsize = next((z for z in range(dsize, 7, -1) if all(_fits(c["dtext"], tw, dh, z) for c in cols if c["decision"])), 8)
+        for c in cols:
+            c["dtext"] = _fit_text(c["dtext"], tw, dh, (dsize,))[1]
+    for i, p in enumerate(phases):
+        c = cols[i]
+        x = L + i * (cw + gap)
+        shape = MSO_SHAPE.PENTAGON if i == 0 else MSO_SHAPE.CHEVRON
+        ch = _box(s, x, y, cw + (gap if i < n - 1 else 0), chev_h, fill=_phase_color(p["order"]), shape=shape)
+        ch.adjustments[0] = 0.25
+        tf = ch.text_frame
+        tf.margin_left = margin(i)
+        _text(ch, c["head"], size=hsize, bold=True, color=_ink(_phase_color(p["order"])))
+        tf.paragraphs[1].runs[0].font.bold = False
+        tf.paragraphs[1].runs[0].font.size = Pt(hsize - 2)
+        _text(s, c["starts"], size=ssize, italic=True, color=GREY,
               anchor=MSO_ANCHOR.TOP, x=x, y=y + chev_h + Inches(0.08), w=cw - Inches(0.1), h=Inches(0.22))
         if scoped:
-            # José, 24-25 Oct: the phase's scope in the client's own terms replaces "What it answers" (at most
-            # 300 characters for 1-3 phases, 220 for 4-5); the gate block moves down into the room left free
             top = Inches(0.58)
             _text(s, "Scope", size=9, bold=True, color=GREY, anchor=MSO_ANCHOR.TOP,
                   x=x, y=y + chev_h + top - Inches(0.22), w=cw, h=Inches(0.2))
-            _text(s, _clip(p.get("scope") or p.get("objective_one_line", ""), SCOPE_MAX[min(n, 5)]),
-                  size=SCOPE_PT[min(n, 5)], anchor=MSO_ANCHOR.TOP, x=x, y=y + chev_h + top, w=cw - Inches(0.1), h=scope_h)
-            gy = y + chev_h + top + scope_h + Inches(0.05)
+            _text(s, c["body"], size=bsize, anchor=MSO_ANCHOR.TOP, x=x, y=y + chev_h + top, w=cw - Inches(0.1), h=scope_h)
         else:
             # what the phase answers
             _text(s, "What it answers", size=9, bold=True, color=GREY, anchor=MSO_ANCHOR.TOP,
                   x=x, y=y + chev_h + Inches(0.36), w=cw, h=Inches(0.2))
-            _text(s, _clip(p.get("objective_one_line", ""), 170), size=12 if n < 5 else 11, anchor=MSO_ANCHOR.TOP,  # 5 columns: 11 pt (Oct 18)
+            _text(s, c["body"], size=bsize, anchor=MSO_ANCHOR.TOP,
                   x=x, y=y + chev_h + Inches(0.58), w=cw - Inches(0.1), h=Inches(1.0))
-            # the decision that closes it
-            gy = y + chev_h + Inches(1.6)
-        g = gates.get(p["order"]) or {}
-        gate = p.get("gate") or {}
-        label = gate.get("label") or g.get("label") or "Phase decision"
-        decision = gate.get("decision") or g.get("decision") or ""
-        wk = g.get("week") or p.get("end_week")
+        # the decision that closes it
         _line(s, x, gy, x + cw, gy, color=BLACK, width=1.0)
         dm = _box(s, x, gy + Inches(0.14), Inches(0.24), Inches(0.24), fill=YELLOW, shape=MSO_SHAPE.DIAMOND)
-        gfit = int((cw - Inches(0.34)) / Inches(0.085))
-        full = f"{label}" + (f", {_at(plan, wk)}" if wk else "")
-        short = len(full) > gfit and wk          # narrow columns (5 phases): the week moves to the decision line
-        _text(s, _clip(label if short else full, gfit),
-              size=11, bold=True, x=x + Inches(0.32), y=gy + Inches(0.1), w=cw - Inches(0.32), h=Inches(0.3))
-        if decision:
-            _text(s, _clip((f"{_at(plan, wk, True)} decision: " if short else "Decision: ") + decision, 190), size=11 if n < 5 else 10, color=NAVY, anchor=MSO_ANCHOR.TOP,
-                  x=x, y=gy + Inches(0.48), w=cw - Inches(0.1),
-                  h=(BOTTOM - strip_h - Inches(0.1) - gy - Inches(0.48)) if scoped else Inches(1.0))
+        _text(s, c["gtext"], size=gsize, bold=True, x=x + Inches(0.32), y=gy + Inches(0.1), w=cw - Inches(0.32), h=Inches(0.3))
+        if c["decision"]:
+            _text(s, c["dtext"], size=dsize, color=NAVY, anchor=MSO_ANCHOR.TOP,
+                  x=x, y=gy + Inches(0.48), w=cw - Inches(0.1), h=dh)
     # governance strip
     gov = plan["governance"]
     steer = [e for e in events if e["type"] != "kickoff"]
@@ -1165,19 +1256,32 @@ def roadmap_slide(prs, plan, section, client, slide=None):
          + (f"; status meetings every {cad} weeks" if cad and cad > 1 else ("; weekly status meetings" if cad == 1 else ""))),
         (f"What we ask of {client}", "A named project lead, plus time from the steering members; the exact commitment to agree at kick-off"),
     ]
-    sy = BOTTOM - strip_h - Inches(0.05)
-    band = _box(s, L, sy, W, strip_h, fill=None, line=NAVY)
-    cwid = W / 3
+    band = _box(s, L, sy, Wc, strip_h, fill=None, line=NAVY)
+    cwid = Wc / 3
     for k, (head, body) in enumerate(cells):
         cx = L + k * cwid
-        _text(s, head, size=10, bold=True, color=NAVY, anchor=MSO_ANCHOR.TOP,
+        hsize, bsize, body = 10, 10, _clip(body, 150)
+        if pan is not None:
+            hsize, head = _fit_text(head, cwid - Inches(0.3), Emu(int(10 * 1.2 * 12700)), (10, 9), bold=True)
+            bsize, body = _fit_text(body, cwid - Inches(0.3), Inches(0.6), (10, 9, 8))
+        _text(s, head, size=hsize, bold=True, color=NAVY, anchor=MSO_ANCHOR.TOP,
               x=cx + Inches(0.15), y=sy + Inches(0.1), w=cwid - Inches(0.3), h=Inches(0.22))
-        _text(s, _clip(body, 150), size=10, anchor=MSO_ANCHOR.TOP,
+        _text(s, body, size=bsize, anchor=MSO_ANCHOR.TOP,
               x=cx + Inches(0.15), y=sy + Inches(0.36), w=cwid - Inches(0.3), h=Inches(0.6))
         if k:
             _line(s, cx, sy + Inches(0.12), cx, sy + strip_h - Inches(0.12), color=LGREY, width=0.75)
-    _text(s, f"Initial view – to confirm with {client}", size=10, italic=True, color=GREY,
-          align=PP_ALIGN.RIGHT, x=L + W - Inches(4), y=y - Inches(0.28), w=Inches(4), h=Inches(0.22))
+    note = f"Initial view – to confirm with {client}"
+    place = next((sh for sh in s.shapes if sh.name == "approach:note" and sh.has_text_frame), None)
+    if place is not None and place.text_frame.paragraphs and place.text_frame.paragraphs[0].runs:
+        # template 1.5.4: the note goes on the slide's own line at the foot (where José's file writes "Source: xx"),
+        # in that line's type; above the phases it sat on the title's rule
+        runs = place.text_frame.paragraphs[0].runs
+        runs[0].text = note
+        for r in runs[1:]:
+            r.text = ""
+    else:
+        _text(s, note, size=10, italic=True, color=GREY,
+              align=PP_ALIGN.RIGHT, x=L + Wc - Inches(4), y=y - Inches(0.28), w=Inches(4), h=Inches(0.22))
     return s
 
 
@@ -1210,6 +1314,10 @@ def fill_template_slides(prs, plan, marked, client="[Client]", unit_scale=False)
                 "steering": "Steering meetings"}
         for kind, sl in marked.items():
             _new_slide(prs, "[Firm to complete] " + todo[kind], "", "", slide=sl)
+            for sh in sl.shapes:                      # template 1.5.4: the approach slide's note line stays empty
+                if sh.name == "approach:note" and sh.has_text_frame:
+                    for r in [r for para in sh.text_frame.paragraphs for r in para.runs]:
+                        r.text = ""
         return list(marked.values())
     global _PALETTE
     if unit_scale:                         # 1.5: every plan slide in the timeline's unit (José, 24 Oct)

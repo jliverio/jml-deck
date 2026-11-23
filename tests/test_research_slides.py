@@ -284,5 +284,59 @@ check("agenda, no research: Approach moves up into the second place",
 check("agenda, no research: the warning names what was left out",
       any('"Next Steps" has no slide' in w for w in warns2) and any('"Market Research" has no slide' in w for w in warns2), str(warns2))
 
+# 9. approach slide: the "Main Deliverables" panel stays as in José's file, the phases are drawn beside it
+import approach_plans  # noqa: E402
+import fit  # noqa: E402
+
+
+def approach(prs):
+    return next(s for s in prs.slides if any(sh.name == "workplan:roadmap" for sh in s.shapes))
+
+
+def drawn(slide):
+    return [sh for sh in slide.shapes if not sh.name.startswith("approach:") and not sh.is_placeholder]
+
+
+for n, scoped in ((1, True), (2, True), (2, False), (3, True), (4, True), (5, True)):
+    tag = f"approach, {n} phase(s){'' if scoped else ', no scope'}"
+    client = "Barbearias Bento" if n == 5 else "MetalCo"
+    prs9, _, _ = build({**CASES["n8n"], **common(client)}, f"approach_{n}{'' if scoped else 'u'}",
+                       workplan=approach_plans.plan(n, scoped, client=client))
+    sl = approach(prs9)
+    panel = [sh for sh in sl.shapes if sh.name.startswith("approach:panel")]
+    if n == 1:
+        check("approach: the panel is in the deck, 13 shapes", len(panel) == 13, str(len(panel)))
+        check("approach: its heading and its four lines are as in the file",
+              [sh.text_frame.text for sh in panel if sh.name == "approach:panel:head"] == ["Main Deliverables"]
+              and sum(1 for sh in panel if sh.name.startswith("approach:panel:text") and sh.text_frame.text.startswith("[Insert guiding principle")) == 4)
+        check("approach: its four icons are in the deck", sum(1 for sh in panel if sh.shape_type == 13) == 4)
+        check("approach: the note sits on the line at the foot", [sh.text_frame.text for sh in sl.shapes if sh.name == "approach:note"]
+              == ["Initial view – to confirm with MetalCo"] and not any("Source: xx" in t for t in texts(sl)))
+    left = min(sh.left for sh in panel)
+    check(f"{tag}: nothing drawn reaches the panel", max(sh.left + sh.width for sh in drawn(sl)) < left,
+          str(max(sh.left + sh.width for sh in drawn(sl))))
+    over = [sh.text_frame.text[:40] for sh in drawn(sl) if sh.has_text_frame and sh.text_frame.text.strip() and fit.measure(sh)["over"]]
+    check(f"{tag}: every text fits its box", not over, str(over))
+    cut = [t[:40] for t in texts(sl) if t.endswith("…")]
+    check(f"{tag}: no text is cut", not cut, str(cut))
+    sizes = {}
+    for sh in drawn(sl):
+        if sh.has_text_frame and sh.text_frame.text.strip():
+            t, r = sh.text_frame.text, sh.text_frame.paragraphs[0].runs[0]
+            kind = "phase" if t.startswith("Phase ") else "scope" if t.startswith(("Map how", "Answer the")) else "decision" if "ecision: " in t else None
+            if kind:
+                sizes.setdefault(kind, set()).add(r.font.size.pt)
+    check(f"{tag}: one type size per kind of text", all(len(v) == 1 for v in sizes.values()) and len(sizes) == 3, str(sizes))
+    if n <= 2:
+        check(f"{tag}: the type is as large as without the panel (12, 12 and 11 pt)",
+              sizes == {"phase": {12.0}, "scope": {12.0}, "decision": {11.0}}, str(sizes))
+    if n == 5:
+        check(f"{tag}: no text under 9 pt but the weeks line in the arrows", min(min(v) for v in sizes.values()) >= 9, str(sizes))
+prs9, warns9, _ = build({**CASES["n8n"], **common("n8n")}, "approach_no_plan", workplan=None)
+sl = approach(prs9)
+check("approach, no plan: the panel stays and the note line is empty",
+      sum(1 for sh in sl.shapes if sh.name.startswith("approach:panel")) == 13
+      and [sh.text_frame.text for sh in sl.shapes if sh.name == "approach:note"] == [""], str(texts(sl))[:200])
+
 print(f"{sum(results)}/{len(results)} passed")
 sys.exit(0 if all(results) else 1)

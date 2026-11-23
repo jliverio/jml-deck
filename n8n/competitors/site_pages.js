@@ -9,7 +9,7 @@ $input.all().forEach((i, idx) => {
   const c = comps[idx];
   if (!c || j.error || md.split(' ').length < 60) return;
   const meta = (d && d.metadata) || {};
-  out.push({ rank: c.rank, name: c.name, site_url: c.site_url, landed_on: String(meta.url || meta.sourceURL || ''), text: md.slice(0, 10000), claims_text: q0.claims_text, category: q0.category });
+  out.push({ rank: c.rank, name: c.name, site_url: c.site_url, landed_on: String(meta.url || meta.sourceURL || ''), text: md.slice(0, 10000), claims_text: q0.claims_text, category: q0.category, home_country: q0.home_country || '' });
 });
 if (!out.length) return [{ json: { _none: true } }];
 return out.map(o => ({ json: o }));

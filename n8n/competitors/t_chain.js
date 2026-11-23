@@ -199,6 +199,25 @@ const pick = async (name, urls, o) => {
   o2['Site pages'] = J([{ rank: 1, name: 'Santander Totta', site_url: 'https://www.santandertotta.pt/', landed_on: 'https://www.santander.at/', text: 'Somos o banco de confiança dos portugueses há muitos anos' }, { rank: 3, name: 'Novo Banco', site_url: 'https://www.novobanco.pt/', landed_on: 'https://www.novobanco.pt/particulares', text: 'Somos o banco de confiança dos portugueses há muitos anos' }]);
   b4 = (await run('build.js', { outs: o2, input: J([LC({ hq_country: 'Austria', page_company: 'a' }), LC({ hq_country: 'Portugal', page_company: 'b' })]) })).map(i => i.json);
   ok('build: the country of a page that answered from another address is not used', b4.find(r => r.entry_id === 'B2-K1').statement.indexOf('based in') === -1 && b4.find(r => /^Novo Banco/.test(r.statement)).statement.indexOf('based in Portugal') !== -1, b4.filter(r => /^B2-K\d$/.test(r.entry_id)).map(r => r.statement));
+  // ---- With a country known, only companies that something read shows sell there ----
+  const nl = { ...q0, company: 'Zima Dental', own_host: 'zimadental.nl', home_country: 'Netherlands', home_code: 'NL', claims: [], claims_text: 'none listed' };
+  const cand = (rank, name, site, sells) => ({ name, rank, type: 'Direct', hq: '', measure: 'none', value: 0, unit: '', as_of: '', quote: 'q', source_url: 'https://a.com/x', source_title: 't', mentions: 1, markets: [], sells, site_url: site, site_found: 's', site_fit: 100, aliases: [] });
+  const seven = [cand(1, 'Oral-B', 'https://www.oralb.nl/', 'unknown'), cand(2, 'Sonic Dental', 'https://nl.sonicdental.co/', 'unknown'), cand(3, 'Voraiya', 'https://voraiya.com/', 'unknown'), cand(4, 'Ueofen', 'https://www.ueofen.com/', 'unknown'), cand(5, 'Remi', 'https://shopremi.com/', 'unknown'), cand(6, 'Pursonic', 'https://pursonicusa.com/', 'unknown'), cand(7, 'Philips', 'https://www.philips.com/', 'yes')];
+  seven[0]._sites = { left_out: [], merged: [], empty_searches: 0 };
+  const o3 = { Start: outs.Start, Queries: J([nl]), Rank: J([{ candidates: 7, quotes_dropped: 0, also_named: [], not_selling: [] }]), 'Site sources': J(seven) };
+  o3['Site pages'] = J(seven.filter(c => c.name !== 'Pursonic' && c.name !== 'Philips').map(c => ({ rank: c.rank, name: c.name, site_url: c.site_url, landed_on: c.site_url, text: 'Somos o banco de confiança dos portugueses há muitos anos' })));
+  const says = { 'Oral-B': 'unknown', 'Sonic Dental': 'yes', Voraiya: 'yes', Ueofen: 'unknown', Remi: 'no' };
+  let b5 = (await run('build.js', { outs: o3, input: J(o3['Site pages'].map(i => LC({ page_company: i.json.name, sells_there: says[i.json.name] }))) })).map(i => i.json);
+  const s5 = b5[0]._summary;
+  ok('country: kept only with proof, in rank order', s5.competitors.map(c => c.name).join() === 'Oral-B,Sonic Dental,Voraiya,Philips' && s5.competitors.map(c => c.sells_in_country).join('|') === 'its own site is a site of that country|its own site is a site of that country|its home page shows it|a page that names it says so', s5.competitors.map(c => [c.name, c.sells_in_country]));
+  const why5 = Object.fromEntries(s5.left_out.map(x => [x.name, x.why]));
+  ok('country: left out with the reason', why5.Ueofen === 'nothing read shows it sells in Netherlands' && why5.Remi === 'its home page shows it does not sell in Netherlands' && why5.Pursonic === 'nothing read shows it sells in Netherlands', why5);
+  ok('country: the proof is in the entry, the count says four of five', /Sells in Netherlands: its own site is a site of that country\.$/.test(b5.find(r => r.entry_id === 'B2-K1').check_note) && /Site not loaded: https:\/\/www\.philips\.com\/\. Sells in Netherlands: a page that names it says so\.$/.test(b5.find(r => r.entry_id === 'B2-K4').check_note) && b5.find(r => r.entry_id === 'B2-COUNT').statement === '4 of 5 found.', [b5.find(r => r.entry_id === 'B2-K1').check_note, b5.find(r => r.entry_id === 'B2-K4').check_note]);
+  o3.Queries = J([{ ...nl, home_country: '', home_code: 'ALL' }]);
+  b5 = (await run('build.js', { outs: o3, input: J(o3['Site pages'].map(i => LC({ page_company: i.json.name, sells_there: 'unknown' }))) })).map(i => i.json);
+  ok('no country: nobody is left out for where it sells, no proof line', b5[0]._summary.competitors.length === 5 && b5[0]._summary.left_out.length === 0 && b5.find(r => r.entry_id === 'B2-K1').check_note.indexOf('Sells in') === -1, b5[0]._summary.competitors.map(c => c.name));
+  const sp5 = await run('site_pages.js', { outs: { Queries: J([nl]), 'Site sources': J(seven.slice(0, 1)) }, input: J([{ data: { markdown: ('Somos o banco de confiança dos portugueses há muitos anos ').repeat(20), metadata: {} } }]) });
+  ok('home pages: the client country goes to the check', sp5[0].json.home_country === 'Netherlands', sp5[0].json);
   console.log(pass + ' passed, ' + fail + ' failed (chain)');
   process.exit(fail ? 1 : 0);
 })();

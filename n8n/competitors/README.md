@@ -33,6 +33,14 @@ Test without n8n (104 checks):
    country code. When it is not, the searches are the same as before.
 2. **Who sells there.** The naming model says for each company whether the page shows it sells in that country
    (yes, no, unknown). Code leaves out "no", and ranks "yes" before "unknown".
+   **Only companies shown to sell there are listed** (José, 23 Nov: the market research is conducted in the
+   company's home country). When the country is known, Build entries keeps a candidate only with one of three
+   proofs: a page that names it says it sells there; its own site is a site of that country (oralb.nl,
+   nl.sonicdental.co); or its home page shows it (the light check's `sells_there`: the country's own site, prices
+   or delivery for it, or the country, its region or the whole world among the places it sells). The proof is
+   written in the entry's check note ("Sells in Portugal: its own site is a site of that country."). A candidate
+   with no proof is left out and named in the stage's note, and nothing fills its place: the list can be shorter
+   than five (Zima Dental, the Netherlands: one company). When no country is known nothing changes.
 3. **Each company's own site.** Up to eight candidates go to the site step instead of five (seven when three
    searches were run, five when five were: the stage stays within its budget of 10 searches, which Code checks
    enforces). The site is the address the source page gave, or the search result whose address fits the name on

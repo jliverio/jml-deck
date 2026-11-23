@@ -40,6 +40,7 @@ LIGHT_SYSTEM = """You read the home page of ONE company. It was named as a compe
 - is_competitor_site: true when this page is the own website of the competitor named in the request, or of the company that owns that brand. false when it belongs to a different company, or when it is a shop that sells many brands, a directory or an article.
 - same_need: true when the page shows this company works in the same field as the client's product category, given in the request, even if the page does not show the exact product: a large company with many products counts when the field is the same. false only when the page shows a different trade altogether, for example an identity-check firm or a general shop when the client sells food boxes.
 - reason: when either of the two is false, one short sentence saying what the page shows instead. Otherwise an empty string.
+- sells_there: whether this company sells in the client's country, given in the request. yes when the page shows that it does: the page is the company's site for that country, or it gives prices or delivery for that country, or it names that country, or a region that contains it, or the whole world, among the places it sells or delivers. no when the page shows that it sells only in other places. unknown when the page does not show it. When the client's country is not known, always use unknown.
 - hq_country: the country of the company's head office, only when the page says where its head office or headquarters is. The address of a national site, a local office or a national subsidiary does not count. Otherwise an empty string.
 - advantages: up to 3 things the company says make it better than alternatives, taken from its headlines and opening lines only. Each is one sentence that starts with: The company presents itself as. Each has a quote copied from the page character for character, one continuous stretch of 5 to 60 words.
 - price: its public price if the page shows one: the amount as a number, the currency code, what it buys in a few words, and the quote that shows it. If the page shows no price, use amount 0 and empty strings.
@@ -49,6 +50,7 @@ Do not collect evidence for its claims and do not describe its products in detai
 
 LIGHT_TEXT = """=Competitor: {{ $json.name }}
 Client product category: {{ $json.category }}
+Client country: {{ $json.home_country || 'not known' }}
 
 The client makes these claims:
 {{ $json.claims_text }}
@@ -58,7 +60,7 @@ Home page address: {{ $json.site_url }}
 Home page text:
 {{ $json.text }}"""
 
-LIGHT_SCHEMA = {"type": "object", "additionalProperties": False, "required": ["page_company", "is_competitor_site", "same_need", "reason", "hq_country", "advantages", "price", "same_claims"], "properties": {"page_company": {"type": "string"}, "is_competitor_site": {"type": "boolean"}, "same_need": {"type": "boolean"}, "reason": {"type": "string"}, "hq_country": {"type": "string"}, "advantages": {"type": "array", "items": {"type": "object", "additionalProperties": False, "required": ["claim", "quote"], "properties": {"claim": {"type": "string"}, "quote": {"type": "string"}}}}, "price": {"type": "object", "additionalProperties": False, "required": ["amount", "currency", "buys", "quote"], "properties": {"amount": {"type": "number"}, "currency": {"type": "string"}, "buys": {"type": "string"}, "quote": {"type": "string"}}}, "same_claims": {"type": "array", "items": {"type": "integer"}}}}
+LIGHT_SCHEMA = {"type": "object", "additionalProperties": False, "required": ["page_company", "is_competitor_site", "same_need", "reason", "sells_there", "hq_country", "advantages", "price", "same_claims"], "properties": {"page_company": {"type": "string"}, "is_competitor_site": {"type": "boolean"}, "same_need": {"type": "boolean"}, "reason": {"type": "string"}, "sells_there": {"type": "string", "enum": ["yes", "no", "unknown"]}, "hq_country": {"type": "string"}, "advantages": {"type": "array", "items": {"type": "object", "additionalProperties": False, "required": ["claim", "quote"], "properties": {"claim": {"type": "string"}, "quote": {"type": "string"}}}}, "price": {"type": "object", "additionalProperties": False, "required": ["amount", "currency", "buys", "quote"], "properties": {"amount": {"type": "number"}, "currency": {"type": "string"}, "buys": {"type": "string"}, "quote": {"type": "string"}}}, "same_claims": {"type": "array", "items": {"type": "integer"}}}}
 
 if __name__ == '__main__':
     for n, v in [('NAME_SYSTEM', NAME_SYSTEM), ('LIGHT_SYSTEM', LIGHT_SYSTEM)]:

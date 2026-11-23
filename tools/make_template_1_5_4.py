@@ -7,8 +7,12 @@ slides are pictures of what the renderer draws (approach overview, timeline, del
 placeholders such as "phases[1].name". This script turns them back into marked slides the renderer draws on,
 and applies the decisions of 22 Nov:
 
-- slide 8 (approach overview): the drawn example is removed; the title becomes the marker workplan:roadmap
-  and reads "section_03 | approach_title_01";
+- slide 8 (approach overview): the drawn example of the phases is removed; the title becomes the marker
+  workplan:roadmap and reads "section_03 | approach_title_01". The "Main Deliverables" panel on the right
+  stays exactly as he drew it (José, 23 Nov: "Keep the panel as it is in the file I shared"): its shapes are
+  named approach:panel:*, and the renderer draws the phases in the room to its left. The "Source: xx" line
+  at the foot stays too, named approach:note: the renderer writes "Initial view – to confirm with <client>"
+  there;
 - slides 9 and 10 (timeline, deliverables): the drawn example is removed; title, subtitle and marker stay.
   The small section tracker above the title is removed (slides 3 to 8 have none; the title names the section);
 - slide 11 (team): kept as he wrote it (José, 22 Nov: "Include it"). It still holds a stock template's
@@ -44,14 +48,56 @@ def _texts(slide):
     return " | ".join(sh.text_frame.text for sh in slide.shapes if sh.has_text_frame)
 
 
-def _clear_drawing(slide, keep_subtitle=True):
-    """Remove everything but the title (and the subtitle): the renderer draws the rest."""
+def _clear_drawing(slide, keep_subtitle=True, keep=()):
+    """Remove everything but the title (and the subtitle): the renderer draws the rest. Shapes whose name
+    starts with one of `keep` stay."""
     for sh in list(slide.shapes):
         if sh.is_placeholder and sh.placeholder_format.idx == 0:
             continue
         if keep_subtitle and sh.is_placeholder and sh.placeholder_format.idx == 1:
             continue
+        if any(sh.name.startswith(k) for k in keep):
+            continue
         sh._element.getparent().remove(sh._element)
+
+
+def _mark_panel(slide):
+    """The "Main Deliverables" panel of the approach slide: its heading, its background, the four lines of
+    text with their icons and the rules between them. Everything from the heading's left edge to the right
+    is the panel. Returns the number of shapes named."""
+    head = next((sh for sh in slide.shapes if sh.has_text_frame and not sh.is_placeholder
+                 and sh.text_frame.text.strip() == "Main Deliverables"), None)
+    if head is None:
+        return 0
+    kinds = {"text": 0, "icon": 0, "rule": 0}
+    n = 0
+    for sh in sorted(slide.shapes, key=lambda x: (x.top or 0, x.left or 0)):
+        if sh.is_placeholder or sh.left is None or sh.left < head.left - 20000:
+            continue
+        if sh is head or sh._element is head._element:
+            sh.name = "approach:panel:head"
+        elif sh.shape_type == 13:
+            kinds["icon"] += 1
+            sh.name = f"approach:panel:icon:{kinds['icon']}"
+        elif sh.shape_type == 9:
+            kinds["rule"] += 1
+            sh.name = f"approach:panel:rule:{kinds['rule']}"
+        elif sh.has_text_frame and sh.text_frame.text.strip():
+            kinds["text"] += 1
+            sh.name = f"approach:panel:text:{kinds['text']}"
+        else:
+            sh.name = "approach:panel:back"
+        n += 1
+    return n
+
+
+def _mark_note(slide):
+    """The "Source: xx" line at the foot of the approach slide becomes the place of the slide's note."""
+    for sh in slide.shapes:
+        if sh.has_text_frame and not sh.is_placeholder and sh.text_frame.text.strip().lower().startswith("source:"):
+            sh.name = "approach:note"
+            return 1
+    return 0
 
 
 def _drop_unused_rels(slide):
@@ -130,11 +176,14 @@ def build(src, keep_team=True):
         names = {sh.name for sh in s.shapes}
         if "phases[1].objective_one_line" in tx and not any(n.startswith("workplan:") for n in names):
             t = _title(s)
-            _clear_drawing(s, keep_subtitle=False)
+            kept = _mark_panel(s)
+            noted = _mark_note(s)
+            _clear_drawing(s, keep_subtitle=False, keep=("approach:panel", "approach:note"))
             _drop_unused_rels(s)
             t.name = "workplan:roadmap"
             _set_last_run(t, "approach_title_01")
-            notes.append("approach overview: marker workplan:roadmap")
+            notes.append("approach overview: marker workplan:roadmap; Main Deliverables panel kept "
+                         f"({kept} shapes)" + ("; note line kept" if noted else ""))
         elif "workplan:timeline" in names or "workplan:deliverables" in names:
             _clear_drawing(s)
             _drop_unused_rels(s)
