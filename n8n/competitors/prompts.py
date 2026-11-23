@@ -9,7 +9,7 @@ The request gives the client's name, its product category, its markets and its c
 For each such company give:
 - name: the company or brand, as the page writes it. Give the company, not a product: when the page names a product or a model, give the company or brand that sells it and leave the product words out.
 - type: Direct when it sells the same kind of product for the same need, Substitute when it sells a different kind of product, or people's time, for the same need.
-- hq_country: the country it is based in if the page says, otherwise an empty string.
+- hq_country: the country of its head office, only when the page says where the company's head office or headquarters is. The country of a national site, a local office or a national subsidiary does not count. Otherwise an empty string.
 - sells_there: whether the company sells in the client's country. yes when the page says or shows that it does: the page is about that country's market, or it names that country, or a region that contains it, or the whole world, among the places the company sells. no when the page shows that the company sells only in other places, for example the page is about another country's market and says nothing of the client's country. unknown when the page does not say. When the client's country is not known, always use unknown.
 - site: the address of the company's own website when the page writes it or links to it, copied exactly. Otherwise an empty string. Never guess an address. Never give the address of a shop, an app store, a directory or the page you are reading.
 - measure: the best size figure the page gives for that company. Prefer revenue, then customer numbers, then total funding raised. Use none when the page gives no figure for it.
