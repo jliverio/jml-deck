@@ -1,0 +1,50 @@
+// Offline check of the step 6 wiring code. Run: node n8n/proposal_copy/t_wiring.js [out.json]
+const fs = require('fs'); const assert = require('assert');
+const run = (file, nodes, input) => { const $ = (n) => ({ first: () => { if (!(n in nodes)) throw new Error('no node ' + n); return { json: nodes[n] }; } }); const $input = { first: () => ({ json: input || {} }) }; return new Function('$', '$input', fs.readFileSync(__dirname + '/' + file, 'utf8'))($, $input)[0].json; };
+let n = 0; const ok = (c, m) => { assert(c, m); n++; };
+// 1. the research request
+let r = run('research_input.js', {}, { output: { client_name: 'Equal Food', client_url: 'www.equalfood.co', client_verified: true, problem_focus: 'topic' } });
+ok(r.research_go === true && r.url === 'https://www.equalfood.co' && r.company === 'Equal Food' && r.max_pages === 60 && r.why_not === '', JSON.stringify(r));
+r = run('research_input.js', {}, { output: { client_name: 'Atrium', client_url: '', client_verified: true } });
+ok(r.research_go === false && r.url === '' && r.why_not.includes('No website'));
+r = run('research_input.js', {}, { output: { client_name: 'Chips4all', client_url: 'https://chips4all.example.com', client_verified: false } });
+ok(r.research_go === false && r.why_not.includes('could not be confirmed'));
+r = run('research_input.js', {}, { output: { client_url: 'https://x.pt' } });
+ok(r.research_go === false && r.why_not.includes('names no client'));
+r = run('research_input.js', {}, { output: { client_name: 'X', client_url: 'not a site' } });
+ok(r.research_go === false);
+// 2. what the rest of the flow reads
+const cases = JSON.parse(fs.readFileSync(__dirname + '/../../tests/research_cases.json', 'utf8'));
+const V = cases.n8n;
+const inp = { research_go: true, company: 'n8n', url: 'https://n8n.io' };
+const res = { run_id: 'run-par-n8n-1', outcome: 'ok', reasons: [], doc_url: 'https://docs/d', pdf_file_id: 'PDF1', pdf_name: '20261123_n8n_Market_Research.pdf', pdf_url: 'https://drive/p', duration_s: 229 };
+const sv = { values: V, slides: { profile: true, compare: true }, thin: [], logos: { client: 'AAAA', competitor_01: 'BBBB' }, logos_found: ['client', 'competitor_01'] };
+let a = run('assemble_market.js', { 'Research input': inp, 'Market research': res, 'Slide values': sv, 'Read client colour': { primary: '#ea4b71', confidence: 'high', apply: true } });
+ok(Array.isArray(a.market_slides) && a.market_slides.length === 0 && a.market_slide_count === 0);
+ok(a.market_findings.length >= 3 && a.market_findings.length <= 8 && a.market_findings.every(f => f.actor && f.summary && f.scope_risk === 'none' && !/\*\*|__/.test(f.summary)), JSON.stringify(a.market_findings).slice(0, 300));
+ok(a.market_warnings.length === 0 && a.research.ran && a.research.pdf_file_id === 'PDF1' && a.research.slides.profile && a.research.brand.primary === 'EA4B71' && a.research.colour_note === '');
+ok(!('values' in a.research) && !('logos' in a.research), 'texts and logos are not copied through the flow');
+a = run('assemble_market.js', { 'Research input': { research_go: false, why_not: 'No website was found for Atrium.' } });
+ok(a.market_findings.length === 0 && a.market_warnings[0].includes('not run') && a.market_warnings[0].includes('Atrium') && !a.research.ran && a.research.brand === null && a.research.colour_confidence === 'not read');
+a = run('assemble_market.js', { 'Research input': inp, 'Market research': { error: { message: 'Workflow timed out' } }, 'Slide values': { error: 'needs the run id' }, 'Read client colour': { primary: '112233', confidence: 'low', apply: false } });
+ok(!a.research.ran && a.market_warnings[0].includes('did not return a result: Workflow timed out') && a.research.pdf_file_id === '' && a.research.brand === null && a.research.colour_note.includes('HEX code'));
+a = run('assemble_market.js', { 'Research input': inp, 'Market research': { ...res, outcome: 'partial', reasons: ['thin crawl: 1 page stored'] }, 'Slide values': { values: { client_name_01: 'Banco BPI', profile_title_01: 'Banco BPI sells **mortgages**' }, slides: { profile: true, compare: false }, thin: ['only 1 competitor was found'] }, 'Read client colour': { error: 'HTTP 403' } });
+ok(a.market_warnings.length === 2 && a.market_warnings[0].includes('partial: thin crawl') && a.market_warnings[1].includes('thin: only 1 competitor') && a.market_findings[0].summary === 'Banco BPI sells mortgages' && a.research.colour_confidence === 'not read');
+a = run('assemble_market.js', { 'Research input': inp, 'Market research': res, 'Slide values': { values: {}, slides: { profile: false, compare: false }, thin: ['the research found nothing for the two slides'] } });
+ok(a.market_findings.length === 0 && a.market_warnings.some(w => w.includes('found nothing')) && a.research.ran);
+// 3. the deck request for template 1.5.4
+const flow = { values: { objective_01: 'Decide where to grow next', summary_title_01: 'Two phases take n8n from diagnosis to a decision', section_01: 'Context', finding_01_headline: 'old slide', situation_01: 'old' }, rules: [{ variable: 'finding_01_headline', max_chars: 80, if_empty: 'drop_slide' }], template: '1.5', workplan: { phases: [] }, s3: { assumptions: [] }, email: { subject: 's' }, meta: { filename: 'n8n_proposal_draft.pptx' }, warnings: [] };
+const nodes = { 'Slide values': sv, 'Assemble market': run('assemble_market.js', { 'Research input': inp, 'Market research': res, 'Slide values': sv, 'Read client colour': { primary: 'EA4B71', confidence: 'high', apply: true } }), 'checkProfiler': { output: { client_name: 'n8n GmbH' } } };
+let p = run('research_into_payload.js', nodes, flow);
+ok(p.template === '1.5.4' && p.rules.length === 76 && p.rules.every(x => x.variable && 'max_chars' in x && x.if_empty) && !p.rules.some(x => x.variable.startsWith('finding_')));
+ok(p.values.profile_title_01 === V.profile_title_01 && p.values.compare_title_01 === V.compare_title_01 && p.values.objective_01 === 'Decide where to grow next' && p.values.competitor_01_name === V.competitor_01_name);
+ok(p.values.cover_subtitle_01 === 'A proposal for n8n' && p.values.footer_01 === 'n8n | Draft for discussion' && p.values.section_02 === 'Market Research' && /^\d{1,2} [A-Z][a-z]+ \d{4}$/.test(p.values.cover_date_01), JSON.stringify([p.values.cover_subtitle_01, p.values.cover_date_01]));
+ok(p.logos.client === 'AAAA' && p.brand.primary === 'EA4B71' && p.research_slides === true);
+ok(p.workplan && p.s3 && p.email.subject === 's' && p.meta.filename === 'n8n_proposal_draft.pptx', 'everything else in the request is kept');
+p = run('research_into_payload.js', { 'Assemble market': { research: { slides: { profile: false, compare: false }, brand: null } }, 'checkProfiler': { output: { client_name: 'Atrium' } } }, flow);
+ok(p.template === '1.5.4' && p.values.profile_title_01 === '' && p.values.compare_title_01 === '' && p.values.competitor_01_name === '' && !('brand' in p) && Object.keys(p.logos).length === 0 && p.research_slides === false);
+ok(p.values.cover_subtitle_01 === 'A proposal for Atrium' && p.values.client_name_01 === 'Atrium' && p.values.objective_01 === 'Decide where to grow next');
+p = run('research_into_payload.js', { 'Slide values': sv, 'Assemble market': nodes['Assemble market'] }, {});
+ok(p.template === '1.5.4' && p.values.client_name_01 === V.client_name_01, 'an empty request still gives a 1.5.4 request');
+if (process.argv[2]) fs.writeFileSync(process.argv[2], JSON.stringify(run('research_into_payload.js', nodes, flow)));
+console.log(n + ' checks passed');
