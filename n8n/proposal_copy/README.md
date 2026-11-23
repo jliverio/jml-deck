@@ -88,7 +88,7 @@ lending, Millennium bcp's slides compared current accounts and cards with four d
 ## The product in focus, end to end (23 Nov, Millennium bcp re-tests)
 
 Three re-tests of the Millennium bcp brief found four places where the brief's subject was lost on its way to the
-research. All four are fixed; the last live re-test could not finish (n8n Gateway credits ran out at 23:33 UTC).
+research. All four are fixed. Seen working in run 4170 (after the Gateway credits were topped up): the product in focus came from the request and the competitors became Caixa Geral de Depósitos, Santander, Novo Banco and Crédito Agrícola.
 
 | # | Where | What was wrong | Fix |
 |---|---|---|---|
