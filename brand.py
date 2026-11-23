@@ -193,6 +193,15 @@ def _logo_media(z):
     return out
 
 
+def ladder_uses(pptx_bytes):
+    """How many times the JML blues are written on the slides of a deck. 0 means the deck is not in JML colours
+    (it was repainted already, or it is not one of ours), so there is nothing a repaint could change."""
+    pat = re.compile(r'srgbClr val="(?:' + "|".join(JML_BLUES) + r')"', re.I)
+    z = zipfile.ZipFile(io.BytesIO(pptx_bytes))
+    return sum(len(pat.findall(z.read(n).decode("utf8"))) for n in z.namelist()
+               if re.match(r"ppt/slides/slide\d+\.xml$", n))
+
+
 def recolor_pptx(pptx_bytes, primary, accent=None):
     """Repaint a rendered deck in the client's colours. Returns (pptx bytes, mapping used)."""
     primary = primary.lstrip("#").upper()

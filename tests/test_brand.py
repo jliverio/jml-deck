@@ -173,6 +173,33 @@ check("contrast: white text loses at most 5%, dark text on light panels at most 
       low_white >= 0.95 and low_dark >= 0.90, (round(low_white, 3), round(low_dark, 3)))
 print(f"contrast against the JML deck, worst case: white text {low_white:.3f}, dark text on light panels {low_dark:.3f}")
 
+# 6. /recolor: a deck already sent in JML colours comes back in the client's colour (the reply with a HEX code)
+os.environ["JML_API_KEY"] = "test-key"
+import importlib
+importlib.reload(app)
+rc = app.app.test_client()
+KEY = {"X-API-Key": "test-key"}
+check("/health says this deploy can repaint a deck file", rc.get("/health").get_json().get("recolor") is True, None)
+check("/recolor: no key, no service", rc.post("/recolor?primary=E60000", data=deck154).status_code == 401, None)
+bad = [rc.post("/recolor?primary=" + h, data=deck154, headers=KEY).status_code for h in ("", "red", "E600", "GGGGGG", "%23E60000FF")]
+check("/recolor: anything but six HEX digits is refused", bad == [400] * 5, bad)
+check("/recolor: a file that is not a deck is refused", rc.post("/recolor?primary=E60000", data=b"%PDF-1.4", headers=KEY).status_code == 400, None)
+rv = rc.post("/recolor?primary=%23e60000&name=n8n proposal draft.pptx", data=deck154, headers=KEY)
+got = zipfile.ZipFile(io.BytesIO(rv.data)) if rv.status_code == 200 else None
+check("/recolor: the deck comes back as a .pptx, named, with the colour used",
+      rv.status_code == 200 and rv.mimetype == app.PPTX and rv.headers.get("X-Primary") == "E60000"
+      and "n8n_proposal_draft.pptx" in rv.headers.get("Content-Disposition", ""), (rv.status_code, dict(rv.headers)))
+check("/recolor: same slides, same text, no JML blue left",
+      got is not None and brand.ladder_uses(rv.data) == 0 and brand.ladder_uses(deck154) > 50
+      and [n for n in got.namelist() if "/slides/slide" in n] == [n for n in z0.namelist() if "/slides/slide" in n]
+      and all(re.sub(r'srgbClr val="[0-9A-Fa-f]{6}"', "", got.read(n).decode("utf8")) == re.sub(r'srgbClr val="[0-9A-Fa-f]{6}"', "", z0.read(n).decode("utf8"))
+              for n in z0.namelist() if re.match(r"ppt/slides/slide\d+\.xml$", n)), None)
+check("/recolor: it is the same repaint as at build time", rv.status_code == 200 and all(
+    got.read(n) == z1.read(n) for n in z1.namelist() if n.endswith(".xml")), None)
+again = rc.post("/recolor?primary=007A33", data=rv.data, headers=KEY)
+check("/recolor: a deck that is no longer in JML colours is refused with the reason",
+      again.status_code == 422 and "not in JML colours" in (again.get_json() or {}).get("error", ""), again.status_code)
+
 failed = [x for x in results if not x[1]]
 for n, ok, d in results:
     print(("PASS " if ok else "FAIL ") + n + ("" if ok else f"  -> {d}"))

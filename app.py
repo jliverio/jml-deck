@@ -26,6 +26,8 @@ POST /fit      header X-API-Key: <secret>; same body as /render, template 1.5.4 
 POST /logos    header X-API-Key: <secret>; body {"sites": {"client": url, "competitor_01": url, ...}} -> the
                logos read from those home pages, as base64 PNG by key, with a note per site (logos.py)
 POST /palette  header X-API-Key: <secret>; body {"url": ...} -> the site's brand colours (brand.py, trial)
+POST /recolor  header X-API-Key: <secret>; ?primary=E60000; body: a deck in JML colours (raw .pptx) -> the same
+               deck in the client's colour (brand.py). 422 when the deck is not in JML colours any more
 POST /pdf-numbers  header X-API-Key: <secret>; body: a PDF (raw) -> the same PDF with "3 / 10" at the bottom right of
                every page (pdfnum.py); header X-Pages: the number of pages. 422 {"error": ...} when it cannot be numbered
 GET  /health   -> 200 {"ok": true, ...}
@@ -62,7 +64,8 @@ def health():
                    renderer="variables-1.2", legacy=LEGACY,
                    template=os.path.exists(varfill.TEMPLATE),
                    templates=sorted(varfill.TEMPLATES), extract=True, fit=_fit_ready(), logos=_logos_ready(),
-                   approach_panel=_panel_ready(), pdf_numbers=_pdf_numbers_ready())
+                   approach_panel=_panel_ready(), pdf_numbers=_pdf_numbers_ready(),
+                   recolor=hasattr(brand, "ladder_uses"))
 
 
 _PANEL = []
@@ -209,6 +212,34 @@ def palette():
         return jsonify(error=str(e)), 422
     except Exception as e:
         return jsonify(error=f"{type(e).__name__}: {e}"[:300]), 502
+
+
+@app.post("/recolor")
+def recolor():
+    """Plan step 5 (23 Nov): a deck that was sent in JML colours comes back in the client's colour. The partner
+    replies with a HEX code and the flow posts the deck file here: no research runs again, no text changes."""
+    if API_KEY and request.headers.get("X-API-Key", "") != API_KEY:
+        return jsonify(error="unauthorized"), 401
+    if request.content_length and request.content_length > MAX_FILE_BYTES:
+        return jsonify(error="file too large"), 413
+    primary = (request.args.get("primary") or request.headers.get("X-Primary") or "").strip()
+    if not re.fullmatch(r"#?[0-9A-Fa-f]{6}", primary):
+        return jsonify(error="primary must be a HEX colour of six digits, such as #E60000"), 400
+    data = request.get_data(cache=False)
+    if len(data) > MAX_FILE_BYTES:
+        return jsonify(error="file too large"), 413
+    if data[:2] != b"PK":
+        return jsonify(error="the body is not a PowerPoint file"), 400
+    try:
+        if not brand.ladder_uses(data):
+            return jsonify(error="the deck is not in JML colours, so there is nothing to repaint"), 422
+        out, _ = brand.recolor_pptx(data, primary)
+    except Exception as e:
+        return jsonify(error=f"the deck could not be repainted: {type(e).__name__}: {e}"[:300]), 422
+    primary = primary.lstrip("#").upper()
+    name = re.sub(r"[^A-Za-z0-9._-]+", "_", request.args.get("name") or "proposal_draft.pptx")[:120]
+    return Response(out, mimetype=PPTX, headers={"X-Primary": primary,
+                                                 "Content-Disposition": f'attachment; filename="{name}"'})
 
 
 @app.post("/pdf-numbers")
