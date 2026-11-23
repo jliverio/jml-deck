@@ -26,6 +26,8 @@ POST /fit      header X-API-Key: <secret>; same body as /render, template 1.5.4 
 POST /logos    header X-API-Key: <secret>; body {"sites": {"client": url, "competitor_01": url, ...}} -> the
                logos read from those home pages, as base64 PNG by key, with a note per site (logos.py)
 POST /palette  header X-API-Key: <secret>; body {"url": ...} -> the site's brand colours (brand.py, trial)
+POST /pdf-numbers  header X-API-Key: <secret>; body: a PDF (raw) -> the same PDF with "3 / 10" at the bottom right of
+               every page (pdfnum.py); header X-Pages: the number of pages. 422 {"error": ...} when it cannot be numbered
 GET  /health   -> 200 {"ok": true, ...}
 """
 import json
@@ -60,7 +62,7 @@ def health():
                    renderer="variables-1.2", legacy=LEGACY,
                    template=os.path.exists(varfill.TEMPLATE),
                    templates=sorted(varfill.TEMPLATES), extract=True, fit=_fit_ready(), logos=_logos_ready(),
-                   approach_panel=_panel_ready())
+                   approach_panel=_panel_ready(), pdf_numbers=_pdf_numbers_ready())
 
 
 _PANEL = []
@@ -78,6 +80,15 @@ def _panel_ready():
         except Exception:
             _PANEL.append(False)
     return _PANEL[0]
+
+
+def _pdf_numbers_ready():
+    """Page numbers on the report PDF (/pdf-numbers, 23 Nov): true when this deploy has the code."""
+    try:
+        import pdfnum
+        return callable(pdfnum.number_pages)
+    except Exception:
+        return False
 
 
 def _logos_ready():
@@ -198,6 +209,28 @@ def palette():
         return jsonify(error=str(e)), 422
     except Exception as e:
         return jsonify(error=f"{type(e).__name__}: {e}"[:300]), 502
+
+
+@app.post("/pdf-numbers")
+def pdf_numbers():
+    """Plan step 4 (23 Nov): the report PDF comes back with "page / pages" at the bottom right of every page."""
+    if API_KEY and request.headers.get("X-API-Key", "") != API_KEY:
+        return jsonify(error="unauthorized"), 401
+    if request.content_length and request.content_length > MAX_FILE_BYTES:
+        return jsonify(error="file too large"), 413
+    data = request.get_data(cache=False)
+    if len(data) > MAX_FILE_BYTES:
+        return jsonify(error="file too large"), 413
+    if b"%PDF" not in data[:1024]:
+        return jsonify(error="the body is not a PDF"), 400
+    try:
+        import pdfnum
+        out, pages = pdfnum.number_pages(data)
+    except ValueError as e:
+        return jsonify(error=str(e)[:300]), 422
+    except Exception as e:
+        return jsonify(error=f"the PDF could not be numbered: {type(e).__name__}: {e}"[:300]), 422
+    return Response(out, mimetype="application/pdf", headers={"X-Pages": str(pages)})
 
 
 @app.post("/extract")
