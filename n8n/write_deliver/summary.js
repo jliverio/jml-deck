@@ -11,6 +11,8 @@ try { exp = $('Export as PDF').first().json || {}; } catch (e) { exp = {}; }
 try { pdf = $('Save the PDF').first().json || {}; } catch (e) { pdf = {}; }
 let read = {};
 try { read = $('Read the PDF').first().json || {}; } catch (e) { read = {}; }
+let pick = {};
+try { pick = $('Pick the PDF').first().json || {}; } catch (e) { pick = {}; }
 const ended = new Date();
 const duration_s = Math.round((ended.getTime() - new Date(start.started_at).getTime()) / 100) / 10;
 const doc_url = doc.id ? 'https://docs.google.com/document/d/' + doc.id + '/edit' : '';
@@ -24,7 +26,12 @@ const pdf_pages = read.error ? 0 : (Number(read.numpages) || 0);
 const pdf_words = read.error || !read.text ? 0 : String(read.text).split(/\s+/).filter(Boolean).length;
 const pdf_size_kb = pdf_file_id && Number(pdf.size) ? Math.round(Number(pdf.size) / 1024) : 0;
 const pdf_short = !!(pdf_file_id && rep && pdf_pages && pdf_words < 0.8 * rep.words);
-const pdf_check = !pdf_file_id ? '' : (!pdf_pages ? 'The PDF could not be read back, so its content was not checked.' : (pdf_short ? 'The PDF holds ' + pdf_words + ' words against ' + rep.words + ' in the report: open it before it is sent.' : pdf_pages + ' page' + (pdf_pages === 1 ? '' : 's') + ', ' + pdf_words + ' words read back.'));
+// Page numbers are written on the PDF by the renderer. They are counted in the text read back ("3 / 10").
+const pdf_numbered = !!(pdf_file_id && pick.numbered);
+const numRe = pdf_pages ? new RegExp('(^|[^0-9])[0-9]+\\s*/\\s*' + pdf_pages + '(?![0-9])', 'g') : null;
+const pdf_numbers_seen = numRe && read.text && !read.error ? Math.min((String(read.text).match(numRe) || []).length, pdf_pages) : 0;
+const pdf_number_note = !pdf_file_id ? '' : (pdf_numbered ? (pdf_pages ? 'page numbers on ' + pdf_numbers_seen + ' of ' + pdf_pages + ' pages' : 'page numbers added') : (pick.number_note || 'No page numbers.').replace(/\.$/, ''));
+const pdf_check = !pdf_file_id ? '' : (!pdf_pages ? 'The PDF could not be read back, so its content was not checked.' : (pdf_short ? 'The PDF holds ' + pdf_words + ' words against ' + rep.words + ' in the report: open it before it is sent.' : pdf_pages + ' page' + (pdf_pages === 1 ? '' : 's') + ', ' + pdf_words + ' words read back.')) + (pdf_file_id ? ' ' + pdf_number_note.charAt(0).toUpperCase() + pdf_number_note.slice(1) + '.' : '');
 const pdf_note = !doc.id ? '' : (pdf_file_id ? 'PDF: ' + pdf_name + ' (' + pdf_check + ')' : 'The PDF was not made' + ((errText(exp) || errText(pdf)) ? ': ' + (errText(exp) || errText(pdf)) : '.'));
 const not_applied = ['Page numbers in the footer: add them with Insert > Page numbers.'];
 if (!doc.id || setup.error || !setup.documentId) not_applied.push('A4 page size and the margins (0.63, 0.63, 0.63 and 1.44 cm).');
@@ -39,4 +46,4 @@ else {
 }
 const out = rep ? Object.assign({}, rep) : {};
 delete out.html; delete out.text;
-return [{ json: Object.assign({ run_id: start.run_id, stage: 'write', ended_at: ended.toISOString(), duration_s, model_calls: 6, outcome, note: note.slice(0, 900), doc_url, doc_id: doc.id || '', pdf_file_id, pdf_name, pdf_url, pdf_pages, pdf_words, pdf_size_kb, pdf_note, folder_note: up.folder_note || '', format_settings_not_applied: not_applied }, out) }];
+return [{ json: Object.assign({ run_id: start.run_id, stage: 'write', ended_at: ended.toISOString(), duration_s, model_calls: 6, outcome, note: note.slice(0, 900), doc_url, doc_id: doc.id || '', pdf_file_id, pdf_name, pdf_url, pdf_pages, pdf_words, pdf_size_kb, pdf_numbered, pdf_numbers_seen, pdf_note, folder_note: up.folder_note || '', format_settings_not_applied: not_applied }, out) }];
