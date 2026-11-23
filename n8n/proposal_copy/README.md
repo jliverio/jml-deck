@@ -84,3 +84,19 @@ model always heard "The request names no product in focus". Step 7 showed the ef
 lending, Millennium bcp's slides compared current accounts and cards with four digital banks.
 
 `cost_parse.py`: reads the token use of every model call from saved n8n execution results (used for step 7).
+
+## The product in focus, end to end (23 Nov, Millennium bcp re-tests)
+
+Three re-tests of the Millennium bcp brief found four places where the brief's subject was lost on its way to the
+research. All four are fixed; the last live re-test could not finish (n8n Gateway credits ran out at 23:33 UTC).
+
+| # | Where | What was wrong | Fix |
+|---|---|---|---|
+| 1 | Research input (this copy) | sent no product | sends the Client Profiler's product |
+| 2 | Research input | the Profiler classed the same brief once as offering, once as topic, and names a product only for an offering | falls back to the Profiler's market phrase |
+| 3 | "3 Position and product", trigger | declared no `product_in_focus` input, so the parallel parent's value was dropped | input declared (seen arriving in Start, executions 4129 and 4147) |
+| 4 | "3 Position and product", Prepare | read the product from "Log start", the run_log row, which has no such column: the model always read "The request names no product in focus" | reads it from Start (`position_prepare.js`, `t_prepare.js`, 2 checks) |
+
+Also changed in "3 Position and product": the model keeps a product the request names even when no passage
+describes it (`position_prompt.txt`). Millennium bcp's 60 crawled pages hold only personal banking; without this the
+model would again fall back to the current account.
