@@ -148,6 +148,7 @@ check("logo: inside its header", head.left <= pic.left and pic.left + pic.width 
 prs, warns, _ = build(common("Bento"), "no_research")
 check("no research: both research slides left out", find(prs, "Product Portfolio") is None and find(prs, "Competitors Analysis") is None)
 check("no research: the warning names them", any("profile_title_01" in w for w in warns), str(warns))
+check("no research: no warning about a variable on a slide that was left out", not any("survived filling" in w for w in warns), str(warns))
 
 # 5b. no competitor, but the company's claims are there: the slide stays and says so
 v = {**CASES["equalfood"], **common("Equal Food")}

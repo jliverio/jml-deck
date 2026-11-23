@@ -442,8 +442,11 @@ def build_deck(values, rules=None, template=TEMPLATE, workplan=None, version=Non
                 for r in p.runs:
                     r.text = TOKEN.sub(lambda mt: value(mt.group()) if mt.group() in present else mt.group(), r.text)
 
-    # 5. safety net: no template variable may survive
+    # 5. safety net: no template variable may survive. A slide that is about to be left out is not looked at:
+    #    its variables go with it (23 Nov: a deck without the research slides gave two false warnings).
     for sl in slides:
+        if sl.slide_id in to_drop:
+            continue
         for sh in _text_shapes(sl):
             for p in sh.text_frame.paragraphs:
                 for r in p.runs:
