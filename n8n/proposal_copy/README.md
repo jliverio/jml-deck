@@ -15,7 +15,7 @@ Copies of the Code nodes that step 6 added to or changed in "TEST: Proposal flow
 | read_attachments.js | Read attachments: the files of the reply as base64 (several files) |
 | build_mime.js | Build MIME: the email itself; a test brief becomes a draft |
 
-Tests without n8n: `node n8n/proposal_copy/t_wiring.js` (29 checks) and `node n8n/proposal_copy/t_reply.js` (43 + 3 checks).
+Tests without n8n: `node n8n/proposal_copy/t_wiring.js` (29 checks) and `node n8n/proposal_copy/t_reply.js` (46 + 3 checks).
 
 ## The time limit
 
@@ -48,7 +48,7 @@ notes of the email:
 |---|---|
 | slides filled, PDF fetched | The market research behind the two research slides is attached as a PDF, with its sources. |
 | slides filled, PDF not fetched | The market research report could not be attached this time. The two research slides name their sources. |
-| a field shows "Not public" | The research was thin on some points: where a slide says "Not public", no public source was found. |
+| a field shows "not public", or a competitor column holds no claim (step 7) | The research was thin on some points: where a slide says "not public" or "no claims captured", no public source was found. |
 | time limit passed | The market research was still running when this draft had to leave, so the deck has no market research slides. |
 | website not readable | The client's website could not be read, so the deck has no market research slides. |
 | research ran, nothing for the slides | The market research found nothing it could source, so the deck has no market research slides. |

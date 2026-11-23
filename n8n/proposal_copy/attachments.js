@@ -26,7 +26,12 @@ const lines = [];
 if (hasSlides) {
   lines.push(report_attached ? 'The market research behind the two research slides is attached as a PDF, with its sources.'
     : 'The market research report could not be attached this time. The two research slides name their sources.');
-  if (Array.isArray(R.thin) && R.thin.length) lines.push('The research was thin on some points: where a slide says "Not public", no public source was found.');
+  // Thin (the 22 Nov rule): the slide values say so, or a field shows "not public", or a competitor's column holds no claim
+  // (step 7, Millennium bcp: two empty columns and two "not public" fields, and no line in the email).
+  const vals = get('Research into payload').values || {};
+  const notPublic = Object.keys(vals).some(k => /^(details|client_point|competitor|product)_/.test(k) && /not public/i.test(String(vals[k])));
+  const emptyColumn = ['01', '02', '03', '04'].some(i => String(vals['competitor_' + i + '_name'] || '').trim() && !String(vals['competitor_' + i + '_point_01'] || '').trim());
+  if ((Array.isArray(R.thin) && R.thin.length) || notPublic || emptyColumn) lines.push('The research was thin on some points: where a slide says "not public" or "no claims captured", no public source was found.');
 } else if (R.state === 'timeout') lines.push('The market research was still running when this draft had to leave, so the deck has no market research slides.');
 else if (R.state === 'failed') lines.push("The client's website could not be read, so the deck has no market research slides.");
 else if (R.asked) lines.push('The market research found nothing it could source, so the deck has no market research slides.');

@@ -43,9 +43,17 @@ let n = 0; const ok = (c, m) => { assert(c, m); n++; };
   ok(!a.json.reply_note_html.includes('no market slide') && a.json.reply_note_html.startsWith('<p>Kept note.</p><p>Still open.</p>') && a.json.reply_note_html.includes('attached as a PDF') && a.json.reply_note_html.includes('HEX code'), a.json.reply_note_html);
   ok(a.json.review_report_html.includes('href="https://drive/p"') && a.json.research_lines.length === 2);
   a = (await run('attachments.js', nodes({ ...R, colour_applied: true, colour_note: '', thin: ['only 1 competitor was found'] }, { 'Download report': [{ json: { error: 'not found' } }] }), []))[0];
-  ok(a.json.report_attached === false && a.json.reply_attach === 'deck' && !a.binary.report && a.json.reply_note_html.includes('could not be attached') && a.json.reply_note_html.includes('&quot;') === false && a.json.reply_note_html.includes('"Not public"') && !a.json.reply_note_html.includes('HEX'), a.json.reply_note_html);
+  ok(a.json.report_attached === false && a.json.reply_attach === 'deck' && !a.binary.report && a.json.reply_note_html.includes('could not be attached') && a.json.reply_note_html.includes('&quot;') === false && a.json.reply_note_html.includes('"not public" or "no claims captured"') && !a.json.reply_note_html.includes('HEX'), a.json.reply_note_html);
   a = (await run('attachments.js', nodes(R), []))[0];
   ok(a.json.report_attached === false && a.json.reply_attach === 'deck', 'the download did not run: the deck alone');
+  // thin: a field shows "not public", or a competitor column has no claim; none of these: no line
+  const thinVals = (vals) => nodes(R, { 'Download report': [{ json: {}, binary: { report: pdf } }], 'Research into payload': J({ values: vals }) });
+  a = (await run('attachments.js', thinVals({ details_01: '__Markets: not public.__', competitor_01_name: 'A', competitor_01_point_01: 'x' }), []))[0];
+  ok(a.json.research_lines.some(l => l.includes('thin on some points')), 'a "not public" field gives the thin line');
+  a = (await run('attachments.js', thinVals({ details_01: 'Portugal', competitor_01_name: 'Banco CTT', competitor_01_point_01: '', competitor_02_name: 'B', competitor_02_point_01: 'y' }), []))[0];
+  ok(a.json.research_lines.some(l => l.includes('no claims captured')), 'an empty competitor column gives the thin line');
+  a = (await run('attachments.js', thinVals({ details_01: 'Portugal', competitor_01_name: 'A', competitor_01_point_01: 'x', competitor_02_name: '', competitor_02_point_01: '' }), []))[0];
+  ok(!a.json.research_lines.some(l => l.includes('thin')), 'full slides: no thin line');
   a = (await run('attachments.js', nodes({ asked: true, ran: false, state: 'timeout', slides: { profile: false, compare: false }, colour_applied: false, colour_note: 'JML colours. HEX.' }), []))[0];
   ok(a.json.reply_note_html.includes('still running') && !a.json.reply_note_html.includes('attached as a PDF') && a.json.review_report_html === '' && !a.binary.report);
   a = (await run('attachments.js', nodes({ asked: true, ran: false, state: 'failed', slides: {}, colour_applied: false }), []))[0];
