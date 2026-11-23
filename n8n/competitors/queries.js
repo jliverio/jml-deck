@@ -1,5 +1,6 @@
 // Reads the product category, the markets and the claims, works out the company's country, and writes the searches from fixed templates.
-// No model writes a search. When the country is known every search carries it.
+// The searches are fixed templates; when the country is known every search carries it. One of them is later written in the
+// country's language by a model (Searches), which only translates the template.
 const start = $('Start').first().json;
 const rows = $input.all().map(i => i.json).filter(r => r && r.run_id === start.run_id);
 const find = (id) => { const r = rows.find(x => x.entry_id === id); return r ? String(r.statement || '').trim() : ''; };
@@ -57,6 +58,14 @@ if (!home_country && lang && LANG[lang].places.length) {
 if (!home_country && markets.length === 1 && COUNTRY[markets[0].toLowerCase()]) { home_country = COUNTRY[markets[0].toLowerCase()]; country_basis = 'it is the only market found on its site'; }
 const home_code = home_country ? (CODES[home_country.toLowerCase()] || 'ALL') : 'ALL';
 
+// The language of the company's country, for one of the searches (José, 23 Nov: search in any language, always write in English).
+// A country with more than one language takes the language of the company's pages. English-speaking countries stay in English.
+// Each entry: the language's name for the translator, and the code the search engine knows it by. A country that is not here
+// (Greece: the search engine has no code for Greek) is searched in English.
+const LOCAL = { Portugal: ['Portuguese', 'pt-pt'], Brazil: ['Portuguese', 'pt-br'], Spain: ['Spanish', 'es'], Mexico: ['Spanish', 'es'], Argentina: ['Spanish', 'es'], Chile: ['Spanish', 'es'], France: ['French', 'fr'], Germany: ['German', 'de'], Austria: ['German', 'de'], Italy: ['Italian', 'it'], Netherlands: ['Dutch', 'nl'], Sweden: ['Swedish', 'sv'], Norway: ['Norwegian', 'nb'], Denmark: ['Danish', 'da'], Finland: ['Finnish', 'fi'], Poland: ['Polish', 'pl'], Czechia: ['Czech', 'cs'], Hungary: ['Hungarian', 'hu'], Romania: ['Romanian', 'ro'], Turkey: ['Turkish', 'tr'], Israel: ['Hebrew', 'he'], Japan: ['Japanese', 'jp'], 'South Korea': ['Korean', 'ko'] };
+const BY_PAGES = { Belgium: { nl: ['Dutch', 'nl'], fr: ['French', 'fr'] }, Switzerland: { de: ['German', 'de'], fr: ['French', 'fr'], it: ['Italian', 'it'] }, Luxembourg: { fr: ['French', 'fr'], de: ['German', 'de'] }, Canada: { fr: ['French', 'fr'] } };
+const local = LOCAL[home_country] || (BY_PAGES[home_country] || {})[lang] || null;
+
 const c = start.company;
 let queries;
 if (home_country) {
@@ -69,5 +78,7 @@ if (home_country) {
   queries = [{ purpose: 'the category, anywhere', q: category + ' companies', country: 'ALL' }, { purpose: 'named rivals of the company', q: c + ' competitors alternatives', country: 'ALL' }];
   for (const m of markets.slice(0, 3)) queries.push({ purpose: 'the category in ' + m, q: category + ' companies ' + m, country: CODES[m.toLowerCase()] || 'ALL' });
 }
-const shared = { company: c, category, markets, markets_text: markets.join(', ') || 'not public', claims, claims_text: claims.map(x => x.n + '. ' + x.claim).join('\n') || 'none listed', own_host, home_country, home_code, country_basis, page_language: lang ? LANG[lang].name : '' };
-return queries.map(x => ({ json: { ...x, ...shared } }));
+// The last search of a known country is the one written in that country's language; Searches swaps it in once it is translated.
+const local_line = home_country && local ? queries[queries.length - 1].q : '';
+const shared = { company: c, category, markets, markets_text: markets.join(', ') || 'not public', claims, claims_text: claims.map(x => x.n + '. ' + x.claim).join('\n') || 'none listed', own_host, home_country, home_code, country_basis, page_language: lang ? LANG[lang].name : '', local_language: local_line ? local[0] : '', local_code: local_line ? local[1] : '', local_line };
+return queries.map(x => ({ json: { ...x, search_lang: 'en', ...shared } }));

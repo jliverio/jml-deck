@@ -31,6 +31,14 @@ Test without n8n (104 checks):
    anyone such as .co, .io, .ai say nothing), else the language of its pages when only one country fits (or one of
    its markets), else its only market. When a country is known, all three searches carry its name and Brave's
    country code. When it is not, the searches are the same as before.
+   **One search in the country's language** (José, 23 Nov: search in any language, always write in English). When
+   the country has a language of its own, the last of the three searches is written in that language: Portuguese
+   for Portugal and Brazil, Dutch for the Netherlands, and so on (the list is in `queries.js`; Belgium, Switzerland,
+   Luxembourg and Canada take the language of the company's pages; Greece stays in English because the search engine
+   has no code for Greek). One small model call (Translate the search) rewrites the fixed English line; the node
+   Searches swaps it in and tells the search engine the language. Nothing usable back: the English line is searched,
+   as before. The two other searches stay in English. Both instructions say: write in English whatever the page's
+   language; quotes and names stay as the page writes them. The budget is unchanged: 10 searches.
 2. **Who sells there.** The naming model says for each company whether the page shows it sells in that country
    (yes, no, unknown). Code leaves out "no", and ranks "yes" before "unknown".
    **Only companies shown to sell there are listed** (José, 23 Nov: the market research is conducted in the
