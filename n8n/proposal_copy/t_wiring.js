@@ -18,10 +18,12 @@ r = run('research_input.js', {}, prof({ problem_focus: 'both', product: 'Small-b
 ok(r.product === 'Small-business onboarding and first loan (credit decision)', 'both: the product goes to the research');
 r = run('research_input.js', {}, prof({ problem_focus: 'offering', product: 'x'.repeat(200) }));
 ok(r.product.length === 120, 'a long product is cut at 120 characters');
-r = run('research_input.js', {}, prof({ problem_focus: 'topic', topic: 'finance operating model', product: null }));
-ok(r.product === '' && r.research_go === true, 'topic: no product, the research still runs');
-r = run('research_input.js', {}, prof({ problem_focus: 'offering', product: null }));
-ok(r.product === '', 'no product named: empty');
+r = run('research_input.js', {}, prof({ problem_focus: 'topic', topic: 'SME onboarding and credit decisions', product: null, market: 'Bank lending to small and medium-sized businesses in Portugal' }));
+ok(r.product === 'Bank lending to small and medium-sized businesses in Portugal' && r.research_go === true, 'topic: the market is the focus');
+r = run('research_input.js', {}, prof({ problem_focus: 'both', product: 'SME first loan', market: 'Bank lending to SMEs in Portugal' }));
+ok(r.product === 'SME first loan', 'a named product wins over the market');
+r = run('research_input.js', {}, prof({ problem_focus: 'topic', product: null, market: null }));
+ok(r.product === '', 'nothing named: empty, the research chooses as before');
 r = run('research_input.js', {}, { output: { client_name: 'Atrium', client_url: '', problem_focus: 'offering', product: 'Care plans' } });
 ok(r.research_go === false && r.product === '', 'no research: no product');
 r = run('research_input.js', {}, { output: { client_name: 'Chips4all', client_url: 'https://chips4all.example.com', client_verified: false } });
