@@ -21,6 +21,8 @@ try { const t = Number((($('Test brief (no email)').first().json.body) || {}).re
 // about a topic, such as a process that serves that business). Without it the research picked the product the client's
 // home page leads with: a current account for a brief on small business lending. The Profiler classed the same
 // Millennium bcp brief once as offering and topic, once as topic only, so the market is needed as the fallback.
-const product = (s(prof.product) || s(prof.market)).slice(0, 120);
+// At most 200 characters, cut at a word: Galp's product (re-test, 23 Nov) was cut mid-phrase at 120.
+const focusRaw = s(prof.product) || s(prof.market);
+const product = focusRaw.length <= 200 ? focusRaw : focusRaw.slice(0, 200).replace(/[\s,;:]+\S*$/, '');
 return [{ json: { research_go: !why_not, why_not, company, url: why_not ? '' : url, product: why_not ? '' : product, folder_name: '', max_pages: 60, test_force_fail: 0, test_force_fail_always: false,
   run_id: why_not ? '' : 'run-par-' + slug + '-' + Date.now(), research_started_at: new Date().toISOString(), research_limit_s: limit } }];

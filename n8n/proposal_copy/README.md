@@ -15,7 +15,7 @@ Copies of the Code nodes that step 6 added to or changed in "TEST: Proposal flow
 | read_attachments.js | Read attachments: the files of the reply as base64 (several files) |
 | build_mime.js | Build MIME: the email itself; a test brief becomes a draft |
 
-Tests without n8n: `node n8n/proposal_copy/t_wiring.js` (34 checks) and `node n8n/proposal_copy/t_reply.js` (46 + 3 checks).
+Tests without n8n: `node n8n/proposal_copy/t_wiring.js` (36 checks) and `node n8n/proposal_copy/t_reply.js` (46 + 3 checks).
 
 ## The time limit
 
