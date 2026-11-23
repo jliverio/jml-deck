@@ -8,12 +8,13 @@ Copies of the Code nodes that **plan step 4** (23 Nov 2026) added or changed, wi
 | upload_request.js | Upload request (now also hands on the folder id) |
 | pdf_details.js | PDF details (new) |
 | summary.js | Summary |
+| parent_summary.js | Summary of the parallel parent (Krt2web1P1RxyWii) |
 
 Not copied here: the other nodes of the stage, which step 4 did not change.
 
-Test without n8n (21 checks):
+Test without n8n (21 + 4 checks):
 
-    node n8n/write_deliver/t_pdf.js
+    node n8n/write_deliver/t_pdf.js && node n8n/write_deliver/t_parent.js
 
 ## What step 4 does
 

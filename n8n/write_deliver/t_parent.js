@@ -1,0 +1,16 @@
+const fs = require('fs'); const assert = require('assert');
+const code = fs.readFileSync(__dirname + '/parent_summary.js', 'utf8');
+const run = (nodes, rows) => { const $ = (n) => ({ first: () => { if (!(n in nodes)) throw new Error('no ' + n); return { json: nodes[n] }; } }); const $input = { all: () => rows.map(r => ({ json: r })) }; return new Function('$', '$input', code)($, $input)[0].json; };
+const start = { run_id: 'r', company: 'X', started_at: new Date(Date.now() - 200000).toISOString() };
+const rows = [{ run_id: 'r', stage: 'crawl', started_at: '2026-11-23T10:00:00Z', ended_at: '2026-11-23T10:00:20Z', outcome: 'ok', pages_fetched: 30 }, { run_id: 'r', stage: 'claims', started_at: '2026-11-23T10:00:30Z', ended_at: '2026-11-23T10:01:00Z', outcome: 'ok' }, { run_id: 'r', stage: 'write', started_at: '2026-11-23T10:02:00Z', ended_at: '2026-11-23T10:02:40Z', outcome: 'ok' }];
+const base = { Start: start, 'Before writing': { fix_loops: 0, failed_left: 0 }, 'Stages done?': { state: { polls: 9, timed_out: [] } }, Crawl: { pages_fetched: 30, outcome: 'ok' } };
+let n = 0; const ok = (c, m) => { assert(c, m); n++; };
+let s = run({ ...base, 'Write and deliver': { doc_url: 'https://d', words: 3000, pdf_file_id: 'P1', pdf_name: '20261123_X_Market_Research.pdf', pdf_url: 'https://p' } }, rows);
+ok(s.outcome === 'ok' && s.pdf_file_id === 'P1' && s.pdf_name === '20261123_X_Market_Research.pdf' && s.pdf_url === 'https://p' && s.reasons.length === 0, JSON.stringify(s.reasons));
+s = run({ ...base, 'Write and deliver': { doc_url: 'https://d', words: 3000, pdf_file_id: '', pdf_name: '', pdf_url: '' } }, rows);
+ok(s.outcome === 'partial' && s.reasons.includes('the PDF of the report was not made') && s.pdf_file_id === '' && s.note.includes('partial because: the PDF of the report was not made'), s.note);
+s = run({ ...base, 'Write and deliver': {} }, rows);
+ok(s.outcome === 'error' && s.reasons[0] === 'no report was created' && !s.reasons.includes('the PDF of the report was not made') && s.pdf_file_id === '', JSON.stringify(s.reasons));
+s = run({ ...base, Crawl: { pages_fetched: 1, outcome: 'partial' }, 'Write and deliver': { doc_url: 'https://d', pdf_file_id: 'P' } }, rows);
+ok(s.outcome === 'partial' && s.reasons.length === 1 && s.reasons[0].startsWith('thin crawl') && s.pdf_file_id === 'P');
+console.log(n + ' checks passed');
